@@ -56,6 +56,49 @@ export function parseBirthInput(body) {
   };
 }
 
+export const DEFAULT_PLACE = {
+  lat: 28.6139,
+  lon: 77.209,
+  tz: "Asia/Kolkata",
+  label: "Delhi",
+};
+
+// Place for the daily features, from query parameters. Falls back to Delhi.
+export function parseQueryPlace(q) {
+  if (q?.lat === undefined && q?.lon === undefined && !q?.tz) {
+    return { ...DEFAULT_PLACE };
+  }
+  const lat = Number(q.lat);
+  const lon = Number(q.lon);
+  const tz = String(q.tz ?? "");
+  if (!Number.isFinite(lat) || lat < -90 || lat > 90)
+    throw new InputError("That place is not valid.");
+  if (!Number.isFinite(lon) || lon < -180 || lon > 180)
+    throw new InputError("That place is not valid.");
+  if (!tz || !DateTime.now().setZone(tz).isValid)
+    throw new InputError("We could not find the timezone for that place.");
+  return { lat, lon, tz, label: "" };
+}
+
+// A YYYY-MM-DD date, or today in the place's timezone when none is given.
+export function parseQueryDate(q, tz) {
+  const raw = q?.date ? String(q.date) : DateTime.now().setZone(tz).toISODate();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) throw new InputError("Please give a valid date.");
+  const d = DateTime.fromISO(raw, { zone: tz });
+  if (!d.isValid || d.year < 1950 || d.year > 2100)
+    throw new InputError("Please give a valid date.");
+  return raw;
+}
+
+// Moon sign index 0 to 11, or null when not given.
+export function parseMoonIndex(raw) {
+  if (raw === undefined || raw === "") return null;
+  const n = Number(raw);
+  if (!Number.isInteger(n) || n < 0 || n > 11)
+    throw new InputError("That rashi is not valid.");
+  return n;
+}
+
 export function parseTopic(raw) {
   return Object.hasOwn(TOPICS, raw) ? raw : "general";
 }

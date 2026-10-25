@@ -4,12 +4,20 @@ import { fileURLToPath } from "node:url";
 import { computeKundli } from "./src/kundli.js";
 import { searchPlaces } from "./src/geocode.js";
 import { generateReport, aiConfigured } from "./src/report.js";
+import { DateTime } from "luxon";
+import { computePanchang } from "./src/panchang.js";
+import { buildDailyHoroscope } from "./src/horoscope.js";
+import { quickInsights } from "./src/insights.js";
+import { sadeSati, saturnWindow, slowPlanets } from "./src/transits.js";
 import {
   InputError,
   cleanName,
   parseBirthInput,
-  parseTopic,
   parseLanguage,
+  parseMoonIndex,
+  parseQueryDate,
+  parseQueryPlace,
+  parseTopic,
 } from "./src/validate.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -57,10 +65,60 @@ const reportLimit = rateLimit({
   max: 8,
   message: "You have reached the hourly limit for reports. Please try later.",
 });
+const dailyLimit = rateLimit({
+  windowMs: 60_000,
+  max: 60,
+  message: "Too many requests. Please wait a minute.",
+});
+
+// Only genuine WhatsApp links are passed on to the page.
+const WHATSAPP_RE = /^https:\/\/(wa\.me|api\.whatsapp\.com|chat\.whatsapp\.com)\//;
+const whatsappUrl = WHATSAPP_RE.test(process.env.WHATSAPP_URL || "")
+  ? process.env.WHATSAPP_URL
+  : null;
 
 // ---- API -----------------------------------------------------------------
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, ai: aiConfigured() });
+});
+
+app.get("/api/config", (_req, res) => {
+  res.json({ whatsappUrl });
+});
+
+// Today's panchang, plus a personal Moon-transit note when `moon` is given.
+app.get("/api/today", dailyLimit, (req, res, next) => {
+  try {
+    const place = parseQueryPlace(req.query);
+    const date = parseQueryDate(req.query, place.tz);
+    const moon = parseMoonIndex(req.query.moon);
+    const panchang = computePanchang({
+      date, lat: place.lat, lon: place.lon, tz: place.tz,
+      natalMoonSignIndex: moon, includeUpcoming: true,
+    });
+    const slow = slowPlanets(date, place.tz);
+    const personal =
+      moon === null
+        ? null
+        : {
+            sadeSati: sadeSati(moon, slow.Saturn.index),
+            saturn: saturnWindow(date, place.tz),
+          };
+    res.json({ place, panchang, slow, personal });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// Daily horoscope for all twelve rashis.
+app.get("/api/horoscope", dailyLimit, (req, res, next) => {
+  try {
+    const place = parseQueryPlace(req.query);
+    const date = parseQueryDate(req.query, place.tz);
+    res.json(buildDailyHoroscope({ date, lat: place.lat, lon: place.lon, tz: place.tz }));
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.get("/api/places", placesLimit, async (req, res, next) => {
@@ -78,7 +136,18 @@ app.post("/api/kundli", kundliLimit, (req, res, next) => {
   try {
     const birth = parseBirthInput(req.body);
     const chart = computeKundli(birth);
-    res.json({ name: cleanName(req.body?.name), chart });
+    const moon = chart.planets.find((p) => p.key === "Moon");
+    const today = DateTime.now().setZone("Asia/Kolkata").toISODate();
+    const saturn = slowPlanets(today, "Asia/Kolkata").Saturn;
+    res.json({
+      name: cleanName(req.body?.name),
+      chart,
+      insights: quickInsights(chart, { timeUnknown: birth.timeUnknown }),
+      sadeSati: {
+        ...sadeSati(moon.signIndex, saturn.index),
+        saturn: saturnWindow(today, "Asia/Kolkata"),
+      },
+    });
   } catch (e) {
     next(e);
   }

@@ -4,138 +4,283 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Shubhly: Kundli, Puja &amp; more</title>
-  <meta name="description" content="Free kundli chart in seconds, plus an AI-guided report in Hindi or English. Your kundli, your puja, your vibe." />
-  <meta name="theme-color" content="#5E1A2B" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23E8892B'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%235E1A2B'/%3E%3C/svg%3E" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet" />
+  <meta name="description" content="Free daily rashifal, panchang and choghadiya, plus your kundli in minutes. Shubhly: your kundli, your puja, your vibe." />
+  <meta name="theme-color" content="#2a0b1e" />
+  <meta property="og:title" content="Shubhly: Kundli, Puja &amp; more" />
+  <meta property="og:description" content="Daily rashifal, panchang, choghadiya and your kundli, in simple Hinglish." />
+  <meta property="og:image" content="/img/og-image.jpg" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%232a0b1e'/%3E%3Ccircle cx='32' cy='32' r='17' fill='%23f7a81b'/%3E%3Ccircle cx='40' cy='28' r='15' fill='%232a0b1e'/%3E%3C/svg%3E" />
+  <link rel="preload" href="/fonts/yatra-one-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/hind-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
-  <header class="top">
-    <div class="wrap top-inner">
-      <a class="brand" href="/" aria-label="Shubhly home">
-        <svg class="sun" viewBox="0 0 48 48" aria-hidden="true">
-          <circle cx="24" cy="24" r="9" fill="#E8892B" />
-          <circle cx="24" cy="24" r="4" fill="#5E1A2B" />
-          <g stroke="#E8892B" stroke-width="2.4" stroke-linecap="round">
-            <path d="M24 4v6M24 38v6M4 24h6M38 24h6M9.9 9.9l4.2 4.2M33.9 33.9l4.2 4.2M9.9 38.1l4.2-4.2M33.9 14.1l4.2-4.2" />
-          </g>
-        </svg>
-        <span>Shubhly</span>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="#top" aria-label="Shubhly home">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#4a1236"/><circle cx="32" cy="32" r="17" fill="#f7a81b"/><circle cx="40" cy="28" r="15" fill="#4a1236"/></svg>
+        Shubhly
       </a>
-      <span class="tag">Kundli · Puja · More</span>
+      <nav class="nav-links" aria-label="Main">
+        <a href="#aaj">Aaj ka panchang</a>
+        <a href="#rashifal">Rashifal</a>
+        <a href="#kundli">Kundli</a>
+        <a href="#store">Puja store</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-end">
+        <span class="streak" id="streak" hidden></span>
+        <a class="btn btn-primary" href="#kundli">Free kundli</a>
+      </div>
     </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="wrap">
-        <h1>Your kundli,<br />your puja, your vibe.</h1>
-        <p>Apni kundli free mein dekho, aur AI guide se apni chart ko simple Hindi mein samjho.</p>
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-h">
+      <picture class="hero-bg">
+        <source media="(max-width: 700px)" srcset="/img/hero-banner-mobile.jpg" />
+        <img src="/img/hero-banner.jpg" alt="" width="1920" height="1080" fetchpriority="high" />
+      </picture>
+      <div class="wrap hero-in">
+        <div>
+          <h1 id="hero-h">Your kundli, your puja, your vibe.</h1>
+          <p class="hero-lead">Aaj ka panchang, choghadiya aur rashifal. Aur apni kundli, bas 2 minute mein.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#kundli">Make my kundli</a>
+            <a class="btn btn-line" href="#rashifal">Read today's rashifal</a>
+          </div>
+          <ul class="trust">
+            <li>Chart Swiss Ephemeris se banta hai, AI se nahi</li>
+            <li>Free during launch, no sign-up</li>
+            <li>Simple Hinglish mein, bina dar ke</li>
+          </ul>
+        </div>
+        <aside class="moon-card" aria-live="polite">
+          <div id="moonBox"><div class="skeleton" style="height:190px"></div></div>
+          <p class="moon-day" id="moonDay"></p>
+          <div class="moon-tithi" id="moonTithi"></div>
+          <p class="moon-sub" id="moonSub"></p>
+          <dl class="moon-facts" id="moonFacts"></dl>
+        </aside>
       </div>
     </section>
 
-    <section class="wrap">
-      <form id="form" class="card" autocomplete="off" novalidate>
-        <h2>Apni birth details daalo</h2>
-
-        <label class="field">
-          <span>Name</span>
-          <input id="name" name="name" type="text" maxlength="40" placeholder="Aapka naam" required />
-        </label>
-
-        <div class="row">
-          <label class="field">
-            <span>Date of birth</span>
-            <input id="date" name="date" type="date" min="1900-01-01" max="2100-12-31" required />
-          </label>
-          <label class="field">
-            <span>Time of birth</span>
-            <input id="time" name="time" type="time" value="12:00" required />
-          </label>
+    <section class="block" id="aaj" aria-labelledby="aaj-h">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="aaj-h">Aaj ka panchang</h2>
+          <p>Tithi, nakshatra, shubh samay aur rahu kaal, aapke sheher ke sunrise ke hisaab se.</p>
+          <div class="loc-line">
+            <span id="locName">Delhi</span>
+            <button type="button" class="link-btn" id="locChange">Sheher badlo</button>
+          </div>
+          <div class="loc-edit" id="locEdit" hidden>
+            <label class="field">
+              <span>Sheher ka naam</span>
+              <input type="text" id="locInput" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="locList" />
+              <ul class="places" id="locList" role="listbox" hidden></ul>
+            </label>
+          </div>
         </div>
+        <div id="panchang"><div class="skeleton" style="height:260px"></div></div>
+      </div>
+    </section>
 
-        <label class="check">
-          <input id="timeUnknown" type="checkbox" />
-          <span>Mujhe exact time nahi pata (noon use hoga, lagna thoda alag ho sakta hai)</span>
-        </label>
-
-        <div class="field place-field">
-          <span>Birth place</span>
-          <input id="place" type="text" placeholder="City ya town likho, jaise Delhi" role="combobox" aria-expanded="false" aria-controls="places" />
-          <ul id="places" class="places" role="listbox" hidden></ul>
-          <small id="placePicked" class="picked" hidden></small>
+    <section class="block block--tight" id="rashifal" aria-labelledby="rf-h">
+      <div class="wrap">
+        <div class="banner">
+          <img src="/img/rashifal-banner.jpg" alt="" width="1600" height="500" loading="lazy" />
+          <div class="banner-in">
+            <h2 id="rf-h">Aaj ka rashifal</h2>
+            <p>Chandrama aaj jis ghar mein hai, usi se har rashi ka din padhte hain. Roz naya.</p>
+          </div>
         </div>
+        <div class="date-nav">
+          <button type="button" class="icon-btn" id="dPrev" aria-label="Pichla din">&#8249;</button>
+          <div class="date-now" id="dNow" aria-live="polite"></div>
+          <button type="button" class="icon-btn" id="dNext" aria-label="Agla din">&#8250;</button>
+          <button type="button" class="link-btn" id="dToday" hidden>Aaj par wapas</button>
+        </div>
+        <div class="rashi-grid" id="rashiGrid" role="group" aria-label="Apni rashi chuno"></div>
+        <div id="reading"></div>
 
-        <div class="row">
-          <label class="field">
-            <span>Report focus</span>
-            <select id="topic">
-              <option value="general">General life</option>
-              <option value="career">Career &amp; money</option>
-              <option value="marriage">Marriage &amp; relationships</option>
-            </select>
-          </label>
-          <div class="field">
-            <span>Report language</span>
-            <div class="seg" role="radiogroup" aria-label="Report language">
-              <label><input type="radio" name="lang" value="hi" checked /><span>हिंदी</span></label>
-              <label><input type="radio" name="lang" value="en" /><span>English</span></label>
-            </div>
+        <h3 class="sub-h">Aane wale vrat aur tithi</h3>
+        <ul class="vrat" id="vrat"></ul>
+        <p class="fine">Tithi aur vrat ki dates sunrise ke hisaab se nikalti hain. Kabhi kabhi tithi do din par lagti hai, isliye vrat se pehle apne panditji ya mandir ka calendar bhi dekh lo.</p>
+      </div>
+    </section>
+
+    <section class="block block--tight" id="kundli" aria-labelledby="k-h">
+      <div class="wrap">
+        <div class="banner">
+          <img src="/img/kundli-banner.jpg" alt="" width="1600" height="500" loading="lazy" />
+          <div class="banner-in">
+            <h2 id="k-h">Apni kundli banao</h2>
+            <p>Janm ki date, time aur jagah daalo. Chart astronomy ke code se banta hai, aur AI sirf use samjhata hai.</p>
           </div>
         </div>
 
-        <p id="formError" class="error" role="alert" hidden></p>
-        <button id="go" class="btn" type="submit">Get my kundli</button>
-      </form>
+        <div class="saved" id="saved" hidden></div>
 
-      <section id="result" class="result" hidden>
-        <div class="card">
-          <div class="who">
+        <form class="card" id="form" novalidate>
+          <label class="field">
+            <span>Naam</span>
+            <input type="text" id="name" autocomplete="given-name" maxlength="60" />
+          </label>
+          <div class="row">
+            <label class="field">
+              <span>Janm ki date</span>
+              <input type="date" id="date" min="1900-01-01" required />
+            </label>
+            <label class="field">
+              <span>Janm ka time</span>
+              <input type="time" id="time" value="10:00" />
+            </label>
+          </div>
+          <label class="check"><input type="checkbox" id="timeUnknown" /> Mujhe janm ka time nahi pata (lagna aur dasha tab nahi dikhenge)</label>
+          <label class="field">
+            <span>Janm ki jagah</span>
+            <input type="text" id="place" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="places" placeholder="Sheher ka naam likho" />
+            <ul class="places" id="places" role="listbox" hidden></ul>
+            <span class="picked" id="placePicked" hidden></span>
+          </label>
+          <label class="check"><input type="checkbox" id="remember" checked /> Is device par yaad rakho, agli baar dobara na bharna pade</label>
+          <p class="error" id="formError" role="alert" hidden></p>
+          <button type="submit" class="btn btn-primary btn-wide" id="go">Get my kundli</button>
+        </form>
+
+        <div id="result" hidden>
+          <div class="card who">
             <h2 id="resName"></h2>
-            <p id="resMeta" class="muted"></p>
-          </div>
-          <div id="chips" class="chips"></div>
-          <p id="unknownNote" class="note" hidden>Exact birth time pata nahi hai, isliye lagna aur houses sirf andaza hain.</p>
-
-          <div class="chart-wrap">
-            <div id="chart" aria-label="North Indian style kundli chart"></div>
-            <p class="legend" id="legend"></p>
+            <p class="muted" id="resMeta"></p>
+            <div class="chips" id="chips"></div>
+            <p class="note" id="unknownNote" hidden>Janm ka time nahi diya, isliye lagna aur dasha nahi dikhaye gaye. Chandra rashi aur nakshatra phir bhi sahi rehte hain.</p>
+            <ul class="insight" id="insight"></ul>
           </div>
 
-          <div class="table-wrap">
-            <table id="planetTable">
-              <thead>
-                <tr><th>Graha</th><th>Rashi</th><th>Degree</th><th>House</th><th>Nakshatra</th></tr>
-              </thead>
-              <tbody></tbody>
-            </table>
+          <div class="card">
+            <div class="chart-wrap">
+              <div>
+                <div id="chart"></div>
+                <p class="legend-line" id="legend"></p>
+              </div>
+              <div class="table-wrap">
+                <table id="planetTable">
+                  <thead><tr><th>Graha</th><th>Rashi</th><th>Degree</th><th>Ghar</th><th>Nakshatra</th></tr></thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="dasha" id="dashaBox" hidden></div>
+            <div class="callout" id="satiBox" hidden></div>
           </div>
 
-          <div id="dashaBox" class="dasha" hidden></div>
+          <div class="card" id="next">
+            <h3 class="card-h">Ab kya?</h3>
+            <div class="next">
+              <button type="button" class="btn btn-primary" id="scrollReport">Poori AI report padho</button>
+              <button type="button" class="btn btn-outline" id="shareBtn">Share card banao</button>
+              <a class="btn btn-outline" id="waBtn" href="#" target="_blank" rel="noopener" hidden>WhatsApp par jud'o</a>
+            </div>
+            <p class="soon">Kundli milan aur puja store jaldi aa rahe hain.</p>
+          </div>
+
+          <div class="card" id="reportCard">
+            <h3 class="card-h">AI report</h3>
+            <div class="row">
+              <label class="field">
+                <span>Report focus</span>
+                <select id="topic">
+                  <option value="general">General life</option>
+                  <option value="career">Career &amp; money</option>
+                  <option value="marriage">Marriage &amp; relationships</option>
+                </select>
+              </label>
+              <div class="field">
+                <span>Report language</span>
+                <div class="seg" role="radiogroup" aria-label="Report language">
+                  <label><input type="radio" name="lang" value="hi" checked /><span>हिंदी</span></label>
+                  <label><input type="radio" name="lang" value="en" /><span>English</span></label>
+                </div>
+              </div>
+            </div>
+            <p class="error" id="reportError" role="alert" hidden></p>
+            <div class="reading-actions">
+              <button type="button" class="btn btn-dark" id="reportBtn">Get my AI report</button>
+              <button type="button" class="btn btn-outline" id="printBtn" hidden>Print or save PDF</button>
+            </div>
+            <div class="report" id="reportOut" hidden></div>
+            <p class="fine">Yeh AI guidance hai, kisi pandit ya doctor ki salah ka vikalp nahi. Bade faisle apne vivek se lo.</p>
+          </div>
         </div>
+      </div>
+    </section>
 
-        <div class="card report-card">
-          <h2>Shubhly AI Jyotish Guide</h2>
-          <p class="muted">Aapki chart ke hisaab se ek personal report. Chart exact astronomy se calculate hota hai, AI sirf usse samjhata hai.</p>
-          <button id="reportBtn" class="btn" type="button">Get my AI report</button>
-          <p id="reportError" class="error" role="alert" hidden></p>
-          <div id="reportOut" class="report" hidden></div>
-          <button id="printBtn" class="btn ghost" type="button" hidden>Save or print</button>
+    <section class="block block--night" id="how" aria-labelledby="how-h">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="how-h">Kaise kaam karta hai</h2>
+          <p>Gantan code karta hai, samjhane ka kaam AI karta hai.</p>
         </div>
-      </section>
+        <ol class="steps">
+          <li class="step"><img src="/img/step-1.png" alt="" width="640" height="640" loading="lazy" /><h3>Janm details daalo</h3><p>Date, time aur sheher. Time na pata ho to chalega.</p></li>
+          <li class="step"><img src="/img/step-2.png" alt="" width="640" height="640" loading="lazy" /><h3>Chart ban jaata hai</h3><p>Swiss Ephemeris se grah, lagna aur dasha ki sahi ganana.</p></li>
+          <li class="step"><img src="/img/step-3.png" alt="" width="640" height="640" loading="lazy" /><h3>Simple bhasha mein padho</h3><p>Hindi ya English mein, bina dar aur bina bade daavon ke.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="block" id="store" aria-labelledby="store-h">
+      <div class="wrap">
+        <div class="store-banner">
+          <img src="/img/store-banner.jpg" alt="" width="1600" height="600" loading="lazy" />
+          <h2 id="store-h">Puja ka saman, jaldi aa raha hai</h2>
+          <p>Murtiyan, puja kits aur rudraksha. Pehle jaano jab store khule.</p>
+          <a class="btn btn-primary" id="storeWa" href="#kundli">Mujhe batana</a>
+        </div>
+        <div class="products">
+          <div class="product"><img src="/img/product-ganesha.jpg" alt="" width="800" height="800" loading="lazy" /><h3>Ganesha murti</h3><span>Jaldi aa raha hai</span></div>
+          <div class="product"><img src="/img/product-lakshmi.jpg" alt="" width="800" height="800" loading="lazy" /><h3>Lakshmi murti</h3><span>Jaldi aa raha hai</span></div>
+          <div class="product"><img src="/img/product-puja-kit.jpg" alt="" width="800" height="800" loading="lazy" /><h3>Puja kit</h3><span>Jaldi aa raha hai</span></div>
+          <div class="product"><img src="/img/product-rudraksha.jpg" alt="" width="800" height="800" loading="lazy" /><h3>Rudraksha mala</h3><span>Jaldi aa raha hai</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block block--tight" id="faq" aria-labelledby="faq-h">
+      <div class="wrap">
+        <div class="sec-head"><h2 id="faq-h">Sawaal jawaab</h2></div>
+        <div class="faq">
+          <details><summary>Kundli kaise banti hai?</summary><p>Swiss Ephemeris se sidereal (Lahiri) positions nikalti hain, whole-sign houses ke saath. AI chart nahi banata, sirf use samjhata hai.</p></details>
+          <details><summary>Janm ka time nahi pata, to?</summary><p>Phir bhi kundli banegi. Chandra rashi aur nakshatra dikhenge, par lagna aur dasha nahi, kyunki woh sahi time par nirbhar hain.</p></details>
+          <details><summary>Rashifal kaise banta hai?</summary><p>Chandrama aaj aapki rashi se kaunse ghar mein hai, aaj ki tithi aur din ka swami dekhkar. Yeh gochar ki paramparik reeti hai, isliye har rashi ke liye roz naya padhne ko milta hai.</p></details>
+          <details><summary>Kya yeh free hai?</summary><p>Launch ke dauran kundli, panchang aur rashifal free hain. Koi sign-up nahi.</p></details>
+          <details><summary>Mera data kahan jaata hai?</summary><p>Naam aur janm details sirf aapke device par yaad rakhe jaate hain (agar aap chaho). Server unhe save nahi karta.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="final">
+      <img src="/img/cta-banner.jpg" alt="" width="1600" height="600" loading="lazy" />
+      <div class="wrap final-in">
+        <h2>Aaj ka din apne naam karo</h2>
+        <p>Kundli banao, rashi chuno, aur roz wapas aao naye panchang ke liye.</p>
+        <a class="btn btn-primary" href="#kundli">Make my kundli</a>
+      </div>
     </section>
   </main>
 
-  <footer class="foot">
+  <footer class="footer">
     <div class="wrap">
-      <p><strong>Shubhly Jyotish Guide is AI.</strong> It is meant for reflection and guidance, not certainty. For big decisions in life, health or money, please also talk to people you trust.</p>
-      <p class="muted">© Shubhly</p>
+      <div class="brand"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#4a1236"/><circle cx="32" cy="32" r="17" fill="#f7a81b"/><circle cx="40" cy="28" r="15" fill="#4a1236"/></svg>Shubhly</div>
+      <p>Kundli, Puja &amp; more. Shubhly guidance deta hai, bhavishyavaani ya guarantee nahi.</p>
+      <p>Panchang Lahiri ayanamsa aur sunrise-based tithi par aadharit hai.</p>
     </div>
   </footer>
 
-  <script src="/app.js" type="module"></script>
+  <div class="toast" id="toast" role="status" hidden></div>
+  <script type="module" src="/app.js"></script>
 </body>
 </html>

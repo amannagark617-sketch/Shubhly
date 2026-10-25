@@ -65,3 +65,13 @@ test/            tests
 ## Coming next
 
 Payments (UPI and Razorpay), marriage matching, the WhatsApp flow, and the puja and murti store.
+
+
+## Website and daily features
+
+- Pages: landing, today's panchang and choghadiya, daily rashifal for all 12 rashis, vrat calendar, kundli form and result, share card, saved profiles, streak, puja store teaser.
+- Daily content is computed in code (no AI): `src/panchang.js`, `src/horoscope.js`, `src/transits.js`, with text tables in `src/content.js`.
+- Endpoints: `GET /api/config`, `GET /api/today?date&lat&lon&tz&moon`, `GET /api/horoscope?date&lat&lon&tz`, plus the existing `/api/places`, `/api/kundli`, `/api/report`.
+- Optional env var `WHATSAPP_URL` (an https wa.me / chat.whatsapp.com link) shows a WhatsApp button.
+- Fonts (Yatra One, Hind) are bundled in `public/fonts`. Banner and product images are in `public/img`; replace them using `docs/IMAGE-PROMPTS.md`.
+- Tests: `npm test`.

@@ -19,7 +19,7 @@ test("chart svg shows all 12 rashi numbers and every planet once", () => {
 
 test("markdown escapes html and builds headings and lists", () => {
   const out = renderMarkdown("## Title\n- <img src=x onerror=alert(1)>\n- two\n\n**bold** text");
-  assert.ok(out.includes("<h2>Title</h2>"));
+  assert.ok(out.includes("<h3>Title</h3>"));
   assert.ok(out.includes("&lt;img"));
   assert.ok(!out.includes("<img"));
   assert.ok(out.includes("<strong>bold</strong>"));
@@ -41,4 +41,37 @@ test("birth input validation rejects bad data", () => {
   assert.throws(() => parseBirthInput({ ...ok, place: { lat: 999, lon: 72, tz: "Asia/Kolkata" } }), InputError);
   assert.throws(() => parseBirthInput({ ...ok, place: { lat: 19, lon: 72, tz: "Bad/Zone" } }), InputError);
   assert.throws(() => parseBirthInput({ ...ok, date: "1800-01-01" }), InputError);
+});
+
+import { fmt12, inSlot, addDays, moonSvg, dots } from "../public/lib.js";
+
+test("fmt12 formats clock times", () => {
+  assert.equal(fmt12("00:05"), "12:05 AM");
+  assert.equal(fmt12("06:32"), "6:32 AM");
+  assert.equal(fmt12("12:00"), "12:00 PM");
+  assert.equal(fmt12("17:38"), "5:38 PM");
+});
+
+test("inSlot handles slots that cross midnight", () => {
+  assert.ok(inSlot("07:00", { from: "06:00", to: "07:30" }));
+  assert.ok(!inSlot("07:30", { from: "06:00", to: "07:30" }));
+  assert.ok(inSlot("00:30", { from: "23:00", to: "01:00" }));
+  assert.ok(!inSlot("12:00", { from: "23:00", to: "01:00" }));
+});
+
+test("addDays crosses month and year ends", () => {
+  assert.equal(addDays("2026-12-31", 1), "2027-01-01");
+  assert.equal(addDays("2026-03-01", -1), "2026-02-28");
+});
+
+test("moonSvg draws new, half and full moons and mirrors the waning side", () => {
+  assert.ok(moonSvg(180).includes("<svg"));
+  assert.ok(moonSvg(90).includes("<path"));
+  assert.ok(!moonSvg(90).includes("scale(-1 1)"));
+  assert.ok(moonSvg(270).includes("scale(-1 1)"));
+});
+
+test("dots fills n of 5", () => {
+  assert.equal((dots(3).match(/class="on"/g) || []).length, 3);
+  assert.equal((dots(3).match(/<i /g) || []).length, 5);
 });
