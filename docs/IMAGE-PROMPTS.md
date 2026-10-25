@@ -1,62 +1,56 @@
 # Shubhly image prompts
 
-Generate each image with Gemini image generation (or Imagen), save it with the exact file name below into `public/img/`, and redeploy. The placeholders already use these names and sizes.
+Generate each image with Gemini image generation (or Imagen), save it with the exact file name below into `public/img/`, and redeploy. The current files are drawn in the same style by `tools/make-art.cjs`, so they already match.
 
-Palette for every image: midnight ink #0C0516, deep violet #2A0B4A, royal purple #4B1A73, hot magenta #FF2E7E, saffron #FF8A1F, gold #FFC83D, moonlight cream #FFE8B0, electric teal #2EE6C5.
+Style for every image: a flat printed puja-poster illustration. Solid colour fills, thick indigo outlines, no gradients, no glow, no photo realism, no 3D shading. Subtle dot-grid texture.
 
-Add to the end of every prompt: "No text, no letters, no watermark, no logo. Leave calm empty space for text overlay."
+Palette: haldi yellow #F6B81C, deep indigo #1B1B3A, kumkum red #D8321A, cream #FFF4DC, marigold orange #F28C0F, soft pink #F4A9A0, leaf green #17803F.
+
+Add to the end of every prompt: "No text, no letters, no watermark, no logo."
 
 ## Banners
 
-### hero-banner.jpg (1920x1080, 16:9)
-Used behind the home page hero. Text sits on the left, so keep the left 55% darker and quiet.
-Prompt: A cinematic night sky over a quiet Indian temple courtyard, a large empty glowing halo on the right (the website draws the live moon there, so do not paint a moon), marigold garlands and a row of lit brass diyas along the bottom, faint gold star-map lines and zodiac constellations across the sky. Midnight violet and magenta tones with warm saffron and gold light. Painterly, premium, serene mood.
-
-### hero-banner-mobile.jpg (900x1200, 3:4)
-Used on phones in the same place.
-Prompt: Vertical version of a night sky above a temple courtyard, a soft empty glow in the upper middle (no moon, the page draws it), faint gold constellations, diyas lit at the bottom edge. Midnight violet, magenta, saffron and gold. Keep the middle band darker for text.
-
 ### rashifal-banner.jpg (1600x500, 16:5)
-Behind the "Aaj ka rashifal" heading.
-Prompt: A wide band of deep violet twilight sky with twelve small gold zodiac glyph-like constellations spread in an arc, a crescent moon at the right, soft saffron glow. Elegant and minimal.
+Behind the "Aaj ka rashifal" heading. Text sits on the left, so keep the left 50% plain indigo.
+Prompt: On the right, a large mandala of thin yellow line petals, a ring of the twelve zodiac glyphs in cream, a red ring, and a half-red half-cream moon in the centre. Solid indigo background.
 
 ### kundli-banner.jpg (1600x500, 16:5)
-Behind the "Apni kundli banao" heading.
-Prompt: An abstract North Indian kundli diamond chart drawn as thin glowing gold lines over a dark violet starfield, with soft planetary orbit rings and tiny planets in saffron and cream. No readable symbols.
+Behind the "Apni kundli banao" heading. Text on the left.
+Prompt: On the right, a cream North Indian kundli diamond chart with a thick yellow border and indigo lines, five round planets in red, yellow, orange and cream with indigo outlines, a yellow line mandala behind. Solid indigo background.
 
 ### store-banner.jpg (1600x600, 8:3)
-Behind the puja store teaser. Text sits on the left.
-Prompt: A warm still life of a brass puja thali with diyas, saffron marigold flowers, incense smoke and a small ganesha idol on the right, dark violet background, soft golden light. Premium product-photography feel.
+Behind the puja store teaser. Text on the left.
+Prompt: Solid kumkum red background. On the right, a pink lotus with cream petals on a yellow plate, four brass diyas with orange flames, a yellow line mandala behind, thick indigo outlines.
 
 ### cta-banner.jpg (1600x600, 8:3)
-Behind the closing call to action. Text sits on the left.
-Prompt: A calm sunrise over a river ghat with floating saffron marigold petals and diyas on the water, violet sky turning to magenta, saffron and gold at the horizon, crescent moon fading in the top right.
+Behind the closing call to action. Text on the left.
+Prompt: Solid kumkum red background. A big yellow sun with red rays on the right, an indigo temple silhouette, triangle bunting along the top, a row of diyas and a lotus at the bottom.
 
 ### og-image.jpg (1200x630, 1.91:1)
 Link preview image when the site is shared.
-Prompt: A centred glowing crescent-and-full moon pair over a deep violet sky with saffron stars, gold zodiac ring around it, large empty area in the lower third for the Shubhly name added later.
+Prompt: Solid haldi yellow background with an indigo border, a half-red half-cream moon with a mandala on the right, large empty area on the left for the Shubhly name.
 
-## How it works illustrations (square)
+## How it works illustrations (square, 640x640)
 
-### step-1.png (640x640)
-Prompt: Flat, warm illustration of an open hand holding a small glowing calendar and clock with a location pin above it, hot magenta and white on a violet-to-magenta gradient background, rounded friendly shapes.
+### step-1.png
+Prompt: A cream calendar with a red header and a clock beside it, on a haldi yellow background with dot texture.
 
-### step-2.png (640x640)
-Prompt: Flat illustration of a glowing diamond kundli chart with small planet dots orbiting it and a telescope beside it, hot magenta and white on a violet-to-magenta gradient background.
+### step-2.png
+Prompt: A yellow kundli diamond chart with seven coloured planet dots and a small moon, on a cream background.
 
-### step-3.png (640x640)
-Prompt: Flat illustration of a phone showing soft glowing text lines with a small lotus and a crescent moon above it, hot magenta and white on a violet-to-magenta gradient background.
+### step-3.png
+Prompt: A phone showing a moon and text lines with a small yellow lotus, on a soft pink background.
 
-## Product photos (square, 800x800)
+## Product images (square, 800x800)
 
 ### product-ganesha.jpg
-Prompt: Studio product photo of a small brass Ganesha idol on a dark violet velvet cloth, saffron marigold petals around, soft rim light, centred.
+Prompt: Haldi yellow background, a big red circle with an indigo outline and a yellow Om symbol in the middle.
 
 ### product-lakshmi.jpg
-Prompt: Studio product photo of a Goddess Lakshmi idol seated on a lotus, brass with gold shine, dark violet background, saffron marigold petals, soft light, centred.
+Prompt: Soft pink background, a yellow sun disc, a red and cream lotus, two small diyas.
 
 ### product-puja-kit.jpg
-Prompt: Flat-lay product photo of a puja kit: brass thali, diya, kumkum, incense sticks, camphor and a small bell, on dark violet fabric, warm light.
+Prompt: Cream background, a big yellow thali with eight small diyas around a pink lotus.
 
 ### product-rudraksha.jpg
-Prompt: Close product photo of a rudraksha mala coiled on dark violet velvet with a few saffron marigold petals, shallow depth of field, warm light.
+Prompt: Kumkum red background, a ring of brown rudraksha beads with indigo outlines and a yellow cap bead at the bottom.

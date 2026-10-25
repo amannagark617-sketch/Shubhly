@@ -91,15 +91,9 @@ export function moonSvg(elong, label = "Chandrama aaj") {
   const lit = `M ${c} ${c - R} A ${R} ${R} 0 0 1 ${c} ${c + R} A ${rx} ${R} 0 0 ${sweep} ${c} ${c - R} Z`;
   const flip = waxing ? "" : ' transform="translate(200 0) scale(-1 1)"';
   return `<svg class="moon" viewBox="0 0 200 200" role="img" aria-label="${esc(label)}">
-  <defs>
-    <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="62%" stop-color="#FFE9B8" stop-opacity="0.28"/>
-      <stop offset="100%" stop-color="#FFE9B8" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <circle cx="100" cy="100" r="99" fill="url(#moonGlow)"/>
-  <circle cx="100" cy="100" r="${R}" fill="#5a1a24" stroke="#FFE9B8" stroke-opacity="0.35" stroke-width="1.5"/>
-  <path d="${lit}" fill="#FFE9B8"${flip}/>
+  <circle cx="100" cy="100" r="${R}" fill="#1b1b3a"/>
+  <path d="${lit}" fill="#f6b81c"${flip}/>
+  <circle cx="100" cy="100" r="${R}" fill="none" stroke="#1b1b3a" stroke-width="5"/>
 </svg>`;
 }
 
@@ -114,8 +108,8 @@ const HOUSE_CENTERS = [
 
 export function chartSvg(chart) {
   let parts = "";
-  parts += '<rect x="10" y="10" width="380" height="380" fill="#fffdf8" stroke="#8f2330" stroke-width="2.5"/>';
-  parts += '<g stroke="#8f2330" stroke-width="1.6" fill="none">';
+  parts += '<rect x="10" y="10" width="380" height="380" fill="#fffaf0" stroke="#1b1b3a" stroke-width="2.5"/>';
+  parts += '<g stroke="#1b1b3a" stroke-width="1.6" fill="none">';
   parts += '<path d="M10 10L390 390M390 10L10 390"/>';
   parts += '<path d="M200 10L390 200L200 390L10 200Z"/>';
   parts += "</g>";
@@ -128,12 +122,12 @@ export function chartSvg(chart) {
     for (let j = 0; j < pls.length; j += 2) lines.push(pls.slice(j, j + 2).join(" "));
     const total = 1 + lines.length;
     const startY = cy - ((total - 1) * 15) / 2;
-    parts += `<text x="${cx}" y="${startY}" text-anchor="middle" dominant-baseline="middle" font-size="12" fill="#b45309" font-weight="700">${signNo}</text>`;
+    parts += `<text x="${cx}" y="${startY}" text-anchor="middle" dominant-baseline="middle" font-size="12" fill="#d8321a" font-weight="700">${signNo}</text>`;
     lines.forEach((ln, k) => {
-      parts += `<text x="${cx}" y="${startY + 15 * (k + 1)}" text-anchor="middle" dominant-baseline="middle" font-size="13.5" fill="#2f1015" font-weight="700">${esc(ln)}</text>`;
+      parts += `<text x="${cx}" y="${startY + 15 * (k + 1)}" text-anchor="middle" dominant-baseline="middle" font-size="13.5" fill="#1b1b3a" font-weight="700">${esc(ln)}</text>`;
     });
   });
-  parts += '<text x="200" y="62" text-anchor="middle" font-size="10" fill="#6f5359">Lagna</text>';
+  parts += '<text x="200" y="62" text-anchor="middle" font-size="10" fill="#4a4870">Lagna</text>';
 
   return `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kundli chart, North Indian style">${parts}</svg>`;
 }

@@ -10,8 +10,7 @@ const FONT = path.join(__dirname, "..", "public", "fonts", "yatra-one-latin-400-
 const FONT_DEV = path.join(__dirname, "..", "public", "fonts", "yatra-one-devanagari-400-normal.woff2");
 
 const C = {
-  night: "#1b0a33", wine: "#4b1a73", deep: "#0c0516", saffron: "#ff9f1c", burnt: "#c2561c",
-  gold: "#ffd166", cream: "#ffe8b0", ivory: "#fff8ee", rose: "#e0527a",
+  ink: "#1b1b3a", haldi: "#f6b81c", haldi2: "#ffd45e", cream: "#fff4dc", red: "#d8321a", paper: "#fffaf0", green: "#17803f", orange: "#f28c0f", pink: "#f4a9a0",
 };
 
 function rng(seed) {
@@ -25,212 +24,162 @@ function rng(seed) {
   };
 }
 
-const stars = (w, h, n, seed, maxY = h) => {
-  const r = rng(seed);
-  let s = "";
-  for (let i = 0; i < n; i++) {
-    const x = r() * w, y = r() * maxY, rad = 0.6 + r() * 1.8, o = 0.25 + r() * 0.7;
-    s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rad.toFixed(1)}" fill="${r() > 0.7 ? C.gold : C.cream}" opacity="${o.toFixed(2)}"/>`;
-  }
-  return s;
-};
+const dots = (w, h, col = C.ink, op = 0.16) =>
+  `<defs><pattern id="dt" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.6" fill="${col}" opacity="${op}"/></pattern></defs><rect width="${w}" height="${h}" fill="url(#dt)"/>`;
 
+const SW = 6;
 const mandala = (cx, cy, R, o = {}) => {
-  const stroke = o.stroke || C.cream, op = o.op ?? 0.3, sw = o.sw || 1.6;
-  let s = `<g fill="none" stroke="${stroke}" stroke-opacity="${op}" stroke-width="${sw}">`;
-  [1, 0.93, 0.78, 0.6, 0.42, 0.26].forEach((k) => { s += `<circle cx="${cx}" cy="${cy}" r="${(R * k).toFixed(1)}"/>`; });
-  [[24, 0.86, 0.07], [16, 0.69, 0.1], [12, 0.51, 0.1], [8, 0.34, 0.1]].forEach(([n, k, w]) => {
+  const stroke = o.stroke || C.haldi, sw = o.sw || 3;
+  let s = `<g fill="none" stroke="${stroke}" stroke-width="${sw}">`;
+  [1, 0.8, 0.6, 0.4].forEach((k) => { s += `<circle cx="${cx}" cy="${cy}" r="${(R * k).toFixed(1)}"/>`; });
+  [[16, 0.7, 0.09], [12, 0.5, 0.1], [8, 0.3, 0.11]].forEach(([n, k, w]) => {
     for (let i = 0; i < n; i++) {
-      const a = (360 / n) * i;
-      s += `<ellipse cx="${cx}" cy="${(cy - R * k).toFixed(1)}" rx="${(R * w).toFixed(1)}" ry="${(R * w * 2.6).toFixed(1)}" transform="rotate(${a} ${cx} ${cy})"/>`;
+      s += `<ellipse cx="${cx}" cy="${(cy - R * k).toFixed(1)}" rx="${(R * w).toFixed(1)}" ry="${(R * w * 2.4).toFixed(1)}" transform="rotate(${(360 / n) * i} ${cx} ${cy})"/>`;
     }
   });
-  for (let i = 0; i < 48; i++) {
-    const a = (Math.PI * 2 * i) / 48;
-    s += `<line x1="${(cx + Math.cos(a) * R * 0.94).toFixed(1)}" y1="${(cy + Math.sin(a) * R * 0.94).toFixed(1)}" x2="${(cx + Math.cos(a) * R).toFixed(1)}" y2="${(cy + Math.sin(a) * R).toFixed(1)}"/>`;
-  }
   return s + "</g>";
 };
 
-const moon = (cx, cy, r, id = "m") => `
-  <defs><radialGradient id="${id}g" cx="50%" cy="50%" r="50%">
-    <stop offset="55%" stop-color="${C.cream}" stop-opacity="0.45"/><stop offset="100%" stop-color="${C.cream}" stop-opacity="0"/></radialGradient>
-    <radialGradient id="${id}f" cx="40%" cy="38%" r="70%"><stop offset="0%" stop-color="#fffaf0"/><stop offset="100%" stop-color="${C.cream}"/></radialGradient></defs>
-  <circle cx="${cx}" cy="${cy}" r="${r * 2.1}" fill="url(#${id}g)"/>
-  <circle cx="${cx}" cy="${cy}" r="${r}" fill="url(#${id}f)"/>
-  <g fill="#e8c98a" opacity="0.35"><circle cx="${cx - r * 0.3}" cy="${cy - r * 0.2}" r="${r * 0.14}"/><circle cx="${cx + r * 0.25}" cy="${cy + r * 0.25}" r="${r * 0.2}"/><circle cx="${cx + r * 0.1}" cy="${cy - r * 0.45}" r="${r * 0.09}"/></g>`;
+const sun = (cx, cy, r, fill = C.haldi, rays = 16) => {
+  let s = "";
+  for (let i = 0; i < rays; i++) {
+    s += `<path d="M${-r * 0.2} ${-r * 1.15} L0 ${-r * 1.7} L${r * 0.2} ${-r * 1.15}Z" fill="${C.red}" stroke="${C.ink}" stroke-width="4" stroke-linejoin="round" transform="translate(${cx} ${cy}) rotate(${(360 / rays) * i})"/>`;
+  }
+  return s + `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="${C.ink}" stroke-width="${SW}"/>`;
+};
+
+const moonF = (cx, cy, r) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${C.cream}" stroke="${C.ink}" stroke-width="${SW}"/>
+  <path d="M${cx} ${cy - r} A${r} ${r} 0 0 1 ${cx} ${cy + r} A${r * 0.45} ${r} 0 0 0 ${cx} ${cy - r}Z" fill="${C.red}"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${C.ink}" stroke-width="${SW}"/>`;
 
 const diya = (x, y, s = 1) => `
-  <g transform="translate(${x} ${y}) scale(${s})">
-    <circle cx="0" cy="-26" r="46" fill="${C.saffron}" opacity="0.28"/>
-    <path d="M-34 0 Q0 46 34 0 Q0 10 -34 0 Z" fill="#c2561c"/>
-    <path d="M-34 0 Q0 10 34 0 Q0 -6 -34 0 Z" fill="#ff8a1f"/>
-    <path d="M0 -6 Q-13 -26 0 -54 Q13 -26 0 -6 Z" fill="${C.gold}"/>
-    <path d="M0 -8 Q-6 -22 0 -38 Q6 -22 0 -8 Z" fill="#fff4cf"/>
+  <g transform="translate(${x} ${y}) scale(${s})" stroke="${C.ink}" stroke-width="5" stroke-linejoin="round">
+    <path d="M-40 0 Q0 56 40 0 Z" fill="${C.red}"/>
+    <path d="M0 -6 Q-17 -30 0 -62 Q17 -30 0 -6 Z" fill="${C.orange}"/>
+    <path d="M0 -10 Q-7 -26 0 -42 Q7 -26 0 -10 Z" fill="${C.haldi2}" stroke="none"/>
   </g>`;
 
-const lotus = (cx, cy, s = 1, fill = C.rose, fill2 = "#f6a5be") => {
+const lotus = (cx, cy, s = 1, fill = C.pink, fill2 = C.cream) => {
   let p = "";
-  [-70, -42, -14, 14, 42, 70].forEach((a, i) => {
-    p += `<ellipse cx="0" cy="-48" rx="16" ry="50" fill="${i % 2 ? fill2 : fill}" transform="rotate(${a})"/>`;
+  [-72, -44, -16, 16, 44, 72].forEach((a, i) => {
+    p += `<ellipse cx="0" cy="-48" rx="17" ry="52" fill="${i % 2 ? fill2 : fill}" transform="rotate(${a})"/>`;
   });
-  p += `<ellipse cx="0" cy="-52" rx="18" ry="56" fill="${fill}"/><ellipse cx="0" cy="-44" rx="10" ry="40" fill="${fill2}"/>`;
-  return `<g transform="translate(${cx} ${cy}) scale(${s})">${p}</g>`;
+  p += `<ellipse cx="0" cy="-52" rx="19" ry="58" fill="${fill}"/>`;
+  return `<g transform="translate(${cx} ${cy}) scale(${s})" stroke="${C.ink}" stroke-width="${5 / s}">${p}</g>`;
 };
 
-const temple = (x, base, s, color = C.deep, op = 0.95) => {
+const temple = (x, base, s, color = C.ink) => {
   const tier = (w, h, y) => `<path d="M${-w / 2} ${y} L${-w / 2 + 6} ${y - h} L${w / 2 - 6} ${y - h} L${w / 2} ${y} Z"/>`;
-  const dome = (cx, r) => `<path d="M${cx - r} 0 A${r} ${r} 0 0 1 ${cx + r} 0 Z"/><rect x="${cx - 2}" y="${-r - 22}" width="4" height="22"/><circle cx="${cx}" cy="${-r - 26}" r="5"/>`;
-  return `<g transform="translate(${x} ${base}) scale(${s})" fill="${color}" opacity="${op}">
-    <rect x="-330" y="-34" width="660" height="34"/>
-    <rect x="-250" y="-120" width="500" height="86"/>
+  return `<g transform="translate(${x} ${base}) scale(${s})" fill="${color}" stroke="${C.ink}" stroke-width="${4 / s}">
+    <rect x="-330" y="-34" width="660" height="34"/><rect x="-250" y="-120" width="500" height="86"/>
     ${tier(260, 40, -120)}${tier(220, 40, -160)}${tier(180, 44, -200)}${tier(140, 44, -244)}${tier(100, 44, -288)}${tier(60, 40, -332)}
-    <rect x="-3" y="-392" width="6" height="60"/><circle cx="0" cy="-398" r="8"/>
-    <g transform="translate(0 -120)">${dome(-190, 46)}${dome(190, 46)}</g>
-    <g transform="translate(0 -34)">${dome(-290, 34)}${dome(290, 34)}</g>
-    <path d="M-42 0 V-70 A42 42 0 0 1 42 -70 V0 Z" fill="${C.wine}" opacity="0.9"/>
-  </g>`;
+    <rect x="-3" y="-392" width="6" height="60"/><circle cx="0" cy="-398" r="8" fill="${C.red}"/>
+    <path d="M-42 0 V-70 A42 42 0 0 1 42 -70 V0 Z" fill="${C.haldi}"/></g>`;
 };
 
-const garland = (x1, x2, y, n, sag) => {
-  let s = "";
-  for (let i = 0; i < n; i++) {
-    const t = i / (n - 1), x = x1 + (x2 - x1) * t, yy = y + Math.sin(t * Math.PI) * sag;
-    s += `<circle cx="${x.toFixed(1)}" cy="${yy.toFixed(1)}" r="11" fill="${i % 3 === 0 ? C.saffron : C.gold}"/><circle cx="${x.toFixed(1)}" cy="${yy.toFixed(1)}" r="5" fill="#ffbf4a" opacity="0.8"/>`;
+const bunting = (x1, x2, y, n) => {
+  let s = `<path d="M${x1} ${y} Q${(x1 + x2) / 2} ${y + 60} ${x2} ${y}" fill="none" stroke="${C.ink}" stroke-width="4"/>`;
+  for (let i = 1; i < n; i++) {
+    const t = i / n, x = x1 + (x2 - x1) * t, yy = y + 60 * 2 * t * (1 - t);
+    s += `<path d="M${x - 16} ${yy} L${x + 16} ${yy} L${x} ${yy + 40}Z" fill="${i % 2 ? C.red : C.haldi}" stroke="${C.ink}" stroke-width="4" stroke-linejoin="round"/>`;
   }
   return s;
 };
 
-const skyGrad = (id, w, h, stops) =>
-  `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">${stops.map(([o, c]) => `<stop offset="${o}" stop-color="${c}"/>`).join("")}</linearGradient></defs><rect width="${w}" height="${h}" fill="url(#${id})"/>`;
+const flat = (w, h, fill) => `<rect width="${w}" height="${h}" fill="${fill}"/>`;
 
-// ---------- scenes ----------
 const scenes = {};
-
-scenes["hero-banner.jpg"] = { w: 1920, h: 1080, svg: () => `
-  ${skyGrad("sky", 1920, 1080, [[0, "#0c0516"], [0.45, "#2a0b4a"], [0.78, "#c2306a"], [1, "#ff8a1f"]])}
-  ${stars(1920, 1080, 220, 11, 640)}
-  ${mandala(1400, 430, 520, { op: 0.22 })}
-  <ellipse cx="960" cy="1010" rx="1100" ry="120" fill="#ff9f1c" opacity="0.18"/>
-  ${temple(1500, 1010, 1.25, "#14072a", 0.55)}
-  ${temple(430, 1030, 0.8, "#0c0516", 0.6)}
-  <rect y="990" width="1920" height="90" fill="#0c0516"/>
-  ${[120, 330, 560, 790, 1020, 1250, 1480, 1710].map((x, i) => diya(x, 1010 + (i % 2) * 10, 0.9)).join("")}`};
-
-scenes["hero-banner-mobile.jpg"] = { w: 900, h: 1200, svg: () => `
-  ${skyGrad("sky", 900, 1200, [[0, "#0c0516"], [0.5, "#2a0b4a"], [0.82, "#c2306a"], [1, "#ff8a1f"]])}
-  ${stars(900, 1200, 160, 21, 700)}
-  ${mandala(450, 330, 380, { op: 0.22 })}
-  ${temple(450, 1130, 1.1, "#14072a", 0.6)}
-  <rect y="1110" width="900" height="90" fill="#0c0516"/>
-  ${[90, 270, 450, 630, 810].map((x) => diya(x, 1135, 0.85)).join("")}`};
 
 scenes["rashifal-banner.jpg"] = { w: 1600, h: 500, svg: () => {
   const glyphs = ["♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓"];
-  const cx = 1250, cy = 250, R = 210;
+  const cx = 1250, cy = 250, R = 190;
   let g = "";
   glyphs.forEach((s, i) => {
     const a = (Math.PI * 2 * i) / 12 - Math.PI / 2;
-    g += `<text x="${(cx + Math.cos(a) * R).toFixed(1)}" y="${(cy + Math.sin(a) * R + 14).toFixed(1)}" text-anchor="middle" font-size="40" fill="${C.cream}" opacity="0.85" font-family="serif">${s}&#xFE0E;</text>`;
+    g += `<text x="${(cx + Math.cos(a) * R).toFixed(1)}" y="${(cy + Math.sin(a) * R + 16).toFixed(1)}" text-anchor="middle" font-size="46" fill="${C.cream}" font-family="serif" font-weight="700">${s}&#xFE0E;</text>`;
   });
-  return `${skyGrad("sky", 1600, 500, [[0, "#14072a"], [1, "#4b1a73"]])}${stars(1600, 500, 110, 5)}
-    ${mandala(cx, cy, 300, { op: 0.2 })}<circle cx="${cx}" cy="${cy}" r="250" fill="none" stroke="${C.gold}" stroke-opacity="0.45"/>
-    <circle cx="${cx}" cy="${cy}" r="170" fill="none" stroke="${C.gold}" stroke-opacity="0.3"/>${g}${moon(cx, cy, 70, "rm")}`; } };
+  return `${flat(1600, 500, C.ink)}${dots(1600, 500, C.haldi, 0.18)}${mandala(cx, cy, 330, { stroke: C.haldi, sw: 3 })}
+    <circle cx="${cx}" cy="${cy}" r="245" fill="none" stroke="${C.red}" stroke-width="8"/>${g}${moonF(cx, cy, 90)}`; } };
 
 scenes["kundli-banner.jpg"] = { w: 1600, h: 500, svg: () => {
-  const cx = 1230, cy = 250, s = 190;
-  const planets = [[0, -1.0, C.gold], [0.95, 0.05, C.rose], [0.3, 0.75, C.cream], [-0.8, -0.3, C.saffron], [-0.4, 0.8, C.gold]];
-  return `${skyGrad("sky", 1600, 500, [[0, "#1b0a33"], [1, "#7a2a8f"]])}${stars(1600, 500, 100, 8)}
-    ${mandala(cx, cy, 300, { op: 0.15 })}
-    <g fill="none" stroke="${C.gold}" stroke-opacity="0.8" stroke-width="2.5">
-      <rect x="${cx - s}" y="${cy - s}" width="${s * 2}" height="${s * 2}"/>
-      <path d="M${cx - s} ${cy - s}L${cx + s} ${cy + s}M${cx + s} ${cy - s}L${cx - s} ${cy + s}"/>
-      <path d="M${cx} ${cy - s}L${cx + s} ${cy}L${cx} ${cy + s}L${cx - s} ${cy}Z"/></g>
-    <circle cx="${cx}" cy="${cy}" r="260" fill="none" stroke="${C.cream}" stroke-opacity="0.25" stroke-dasharray="4 10"/>
-    ${planets.map(([x, y, c]) => `<circle cx="${cx + x * s * 0.7}" cy="${cy + y * s * 0.7}" r="14" fill="${c}"/><circle cx="${cx + x * s * 0.7}" cy="${cy + y * s * 0.7}" r="26" fill="${c}" opacity="0.18"/>`).join("")}`; } };
+  const cx = 1240, cy = 250, s = 180;
+  const planets = [[0, -1.0, C.haldi], [0.95, 0.05, C.red], [0.3, 0.75, C.cream], [-0.8, -0.3, C.orange], [-0.4, 0.8, C.haldi]];
+  return `${flat(1600, 500, C.ink)}${dots(1600, 500, C.haldi, 0.18)}${mandala(cx, cy, 330, { stroke: C.haldi, sw: 2.5 })}
+    <rect x="${cx - s}" y="${cy - s}" width="${s * 2}" height="${s * 2}" fill="${C.cream}" stroke="${C.haldi}" stroke-width="8"/>
+    <g fill="none" stroke="${C.ink}" stroke-width="5"><path d="M${cx - s} ${cy - s}L${cx + s} ${cy + s}M${cx + s} ${cy - s}L${cx - s} ${cy + s}"/><path d="M${cx} ${cy - s}L${cx + s} ${cy}L${cx} ${cy + s}L${cx - s} ${cy}Z"/></g>
+    ${planets.map(([x, y, c]) => `<circle cx="${cx + x * s * 0.7}" cy="${cy + y * s * 0.7}" r="20" fill="${c}" stroke="${C.ink}" stroke-width="5"/>`).join("")}`; } };
 
 scenes["store-banner.jpg"] = { w: 1600, h: 600, svg: () => `
-  ${skyGrad("sky", 1600, 600, [[0, "#14072a"], [1, "#b3265f"]])}${stars(1600, 600, 60, 3, 300)}
-  ${mandala(1230, 330, 330, { op: 0.16 })}
-  <ellipse cx="1230" cy="520" rx="330" ry="38" fill="#c2561c"/><ellipse cx="1230" cy="510" rx="330" ry="34" fill="#e8a53a"/><ellipse cx="1230" cy="506" rx="270" ry="26" fill="#f3c15c"/>
-  ${lotus(1230, 500, 1.35)}
-  ${diya(1010, 480, 1.3)}${diya(1450, 480, 1.3)}${diya(1115, 490, 1)}${diya(1345, 490, 1)}
-  <g opacity="0.5" fill="${C.gold}">${Array.from({ length: 14 }, (_, i) => `<circle cx="${900 + i * 60}" cy="${560 + (i % 2) * 8}" r="9"/>`).join("")}</g>`};
+  ${flat(1600, 600, C.red)}${dots(1600, 600, C.ink, 0.2)}${mandala(1230, 320, 340, { stroke: C.haldi, sw: 3 })}
+  <ellipse cx="1230" cy="530" rx="330" ry="40" fill="${C.haldi}" stroke="${C.ink}" stroke-width="6"/>
+  ${lotus(1230, 520, 1.35)}
+  ${diya(1010, 490, 1.3)}${diya(1450, 490, 1.3)}${diya(1115, 505, 1)}${diya(1345, 505, 1)}`};
 
 scenes["cta-banner.jpg"] = { w: 1600, h: 600, svg: () => `
-  ${skyGrad("sky", 1600, 600, [[0, "#1b0a33"], [0.45, "#c2306a"], [0.62, "#ffb347"], [0.621, "#3a1450"], [1, "#0c0516"]])}
-  <circle cx="1180" cy="372" r="150" fill="${C.gold}" opacity="0.28"/><circle cx="1180" cy="372" r="95" fill="${C.cream}"/>
-  ${temple(1400, 372, 0.55, "#14072a", 0.8)}
-  <g stroke="${C.gold}" stroke-opacity="0.35" stroke-width="3" fill="none">${Array.from({ length: 9 }, (_, i) => `<path d="M${700 + i * 60} ${390 + i * 20} h${400 - i * 22}"/>`).join("")}</g>
-  ${[860, 1010, 1180, 1330].map((x, i) => diya(x, 470 + (i % 2) * 50, 0.7)).join("")}
-  ${lotus(1100, 560, 0.5)}${lotus(1300, 580, 0.42)}`};
+  ${flat(1600, 600, C.red)}${dots(1600, 600, C.ink, 0.2)}${sun(1200, 270, 110, C.haldi)}
+  ${temple(1380, 600, 0.6, C.ink)}${bunting(760, 1600, 20, 12)}
+  ${[820, 960, 1100].map((x, i) => diya(x, 540 + (i % 2) * 20, 0.8)).join("")}${lotus(1000, 590, 0.5)}`};
 
 scenes["og-image.jpg"] = { w: 1200, h: 630, svg: () => `
-  ${skyGrad("sky", 1200, 630, [[0, "#0c0516"], [0.6, "#4b1a73"], [1, "#c2561c"]])}${stars(1200, 630, 120, 4, 400)}
-  ${mandala(930, 300, 330, { op: 0.2 })}${moon(930, 300, 100, "om")}
-  <text x="80" y="300" font-family="Yatra One" font-size="150" fill="${C.cream}">Shubhly</text>
-  <text x="84" y="375" font-family="Yatra One" font-size="42" fill="${C.gold}">Your kundli, your puja, your vibe.</text>
-  ${temple(600, 640, 0.6, "#0c0516", 0.7)}`};
+  ${flat(1200, 630, C.haldi)}${dots(1200, 630)}${mandala(930, 310, 330, { stroke: C.ink, sw: 2.5 })}${moonF(930, 310, 120)}
+  <rect x="14" y="14" width="1172" height="602" fill="none" stroke="${C.ink}" stroke-width="10"/>
+  <text x="70" y="300" font-family="Yatra One" font-size="160" fill="${C.ink}">Shubhly</text>
+  <text x="74" y="385" font-family="Yatra One" font-size="44" fill="${C.red}">Your kundli, your puja, your vibe.</text>`};
 
-const goldBg = (id) => `${skyGrad(id, 640, 640, [[0, "#8b5cf6"], [1, "#ff2e7e"]])}<circle cx="320" cy="320" r="270" fill="#ffffff" opacity="0.14"/>`;
+const tile = (bg) => `${flat(640, 640, bg)}${dots(640, 640)}`;
 
-scenes["step-1.png"] = { w: 640, h: 640, svg: () => `${goldBg("g")}
-  <rect x="150" y="140" width="300" height="320" rx="26" fill="#fff8ee" stroke="${C.night}" stroke-width="8"/>
-  <rect x="150" y="140" width="300" height="76" rx="26" fill="${C.wine}"/><rect x="150" y="190" width="300" height="26" fill="${C.wine}"/>
-  <rect x="200" y="112" width="16" height="50" rx="8" fill="${C.night}"/><rect x="384" y="112" width="16" height="50" rx="8" fill="${C.night}"/>
-  ${Array.from({ length: 12 }, (_, i) => `<rect x="${176 + (i % 4) * 66}" y="${244 + Math.floor(i / 4) * 62}" width="46" height="40" rx="9" fill="${i === 6 ? C.saffron : "#f3dcc0"}"/>`).join("")}
-  <circle cx="440" cy="440" r="86" fill="${C.night}"/><circle cx="440" cy="440" r="70" fill="#fff8ee"/>
-  <path d="M440 390V440L474 460" stroke="${C.wine}" stroke-width="10" fill="none" stroke-linecap="round"/>
-  <path d="M130 500 q34 -64 68 0 a34 34 0 1 1 -68 0Z" fill="${C.rose}"/><circle cx="164" cy="496" r="12" fill="#fff8ee"/>`};
+scenes["step-1.png"] = { w: 640, h: 640, svg: () => `${tile(C.haldi)}
+  <rect x="140" y="140" width="320" height="330" rx="26" fill="${C.cream}" stroke="${C.ink}" stroke-width="8"/>
+  <rect x="140" y="140" width="320" height="80" rx="26" fill="${C.red}" stroke="${C.ink}" stroke-width="8"/><rect x="148" y="190" width="304" height="30" fill="${C.red}"/>
+  <rect x="200" y="106" width="18" height="56" rx="9" fill="${C.ink}"/><rect x="382" y="106" width="18" height="56" rx="9" fill="${C.ink}"/>
+  ${Array.from({ length: 12 }, (_, i) => `<rect x="${170 + (i % 4) * 68}" y="${248 + Math.floor(i / 4) * 66}" width="48" height="42" rx="9" fill="${i === 6 ? C.red : C.haldi2}" stroke="${C.ink}" stroke-width="4"/>`).join("")}
+  <circle cx="450" cy="450" r="88" fill="${C.ink}"/><circle cx="450" cy="450" r="70" fill="${C.cream}"/>
+  <path d="M450 398V450L486 470" stroke="${C.red}" stroke-width="12" fill="none" stroke-linecap="round"/>`};
 
-scenes["step-2.png"] = { w: 640, h: 640, svg: () => `${goldBg("g")}
-  <g fill="#fff8ee" stroke="${C.night}" stroke-width="8"><rect x="130" y="130" width="380" height="380"/></g>
-  <g fill="none" stroke="${C.night}" stroke-width="6"><path d="M130 130L510 510M510 130L130 510"/><path d="M320 130L510 320L320 510L130 320Z"/></g>
-  ${[[320, 220, C.saffron], [225, 175, C.rose], [415, 175, C.wine], [320, 420, C.saffron], [225, 320, C.wine], [415, 320, C.rose], [270, 470, C.night]].map(([x, y, c]) => `<circle cx="${x}" cy="${y}" r="20" fill="${c}"/><circle cx="${x}" cy="${y}" r="8" fill="#fff8ee" opacity="0.8"/>`).join("")}
-  <circle cx="510" cy="130" r="54" fill="${C.night}"/>${moon(510, 130, 34, "s2")}`};
+scenes["step-2.png"] = { w: 640, h: 640, svg: () => `${tile(C.cream)}
+  <rect x="120" y="120" width="400" height="400" fill="${C.haldi2}" stroke="${C.ink}" stroke-width="9"/>
+  <g fill="none" stroke="${C.ink}" stroke-width="6"><path d="M120 120L520 520M520 120L120 520"/><path d="M320 120L520 320L320 520L120 320Z"/></g>
+  ${[[320, 220, C.red], [220, 170, C.ink], [420, 170, C.orange], [320, 420, C.red], [220, 320, C.green], [420, 320, C.ink], [270, 470, C.orange]].map(([x, y, c]) => `<circle cx="${x}" cy="${y}" r="24" fill="${c}" stroke="${C.ink}" stroke-width="5"/>`).join("")}
+  ${moonF(520, 130, 50)}`};
 
-scenes["step-3.png"] = { w: 640, h: 640, svg: () => `${goldBg("g")}
-  <rect x="190" y="90" width="260" height="470" rx="40" fill="${C.night}"/>
-  <rect x="206" y="116" width="228" height="418" rx="26" fill="#fff8ee"/>
-  <circle cx="320" cy="190" r="46" fill="${C.wine}"/>${moon(320, 190, 28, "s3")}
-  ${[250, 285, 320, 355, 390].map((y, i) => `<rect x="${236}" y="${y + 20}" width="${i === 4 ? 100 : 168}" height="14" rx="7" fill="${i === 0 ? C.saffron : "#e8cfae"}"/>`).join("")}
-  <rect x="236" y="470" width="168" height="40" rx="20" fill="${C.saffron}"/>
-  ${lotus(500, 520, 0.6)}`};
+scenes["step-3.png"] = { w: 640, h: 640, svg: () => `${tile(C.pink)}
+  <rect x="190" y="80" width="260" height="480" rx="42" fill="${C.ink}"/>
+  <rect x="206" y="110" width="228" height="420" rx="26" fill="${C.cream}"/>
+  ${moonF(320, 190, 42)}
+  ${[250, 285, 320, 355, 390].map((y, i) => `<rect x="236" y="${y + 20}" width="${i === 4 ? 100 : 168}" height="14" rx="7" fill="${i === 0 ? C.red : C.ink}" opacity="${i === 0 ? 1 : 0.7}"/>`).join("")}
+  <rect x="236" y="466" width="168" height="44" rx="22" fill="${C.red}" stroke="${C.ink}" stroke-width="4"/>
+  ${lotus(520, 520, 0.6, C.haldi, C.cream)}`};
 
-const prodBg = (id) => `${skyGrad(id, 800, 800, [[0, "#4b1a73"], [1, "#0c0516"]])}${mandala(400, 400, 360, { op: 0.16 })}`;
+const prod = (bg) => `${flat(800, 800, bg)}${dots(800, 800)}`;
 
-scenes["product-ganesha.jpg"] = { w: 800, h: 800, svg: () => `${prodBg("p")}
-  <circle cx="400" cy="400" r="230" fill="none" stroke="${C.gold}" stroke-width="5"/><circle cx="400" cy="400" r="214" fill="${C.deep}" opacity="0.6"/>
-  <text x="400" y="480" text-anchor="middle" font-family="Yatra One" font-size="300" fill="${C.gold}">ॐ</text>
-  ${lotus(400, 690, 0.7, C.rose, "#f6a5be")}`};
+scenes["product-ganesha.jpg"] = { w: 800, h: 800, svg: () => `${prod(C.haldi)}
+  <circle cx="400" cy="400" r="260" fill="${C.red}" stroke="${C.ink}" stroke-width="10"/><circle cx="400" cy="400" r="226" fill="none" stroke="${C.haldi}" stroke-width="6" stroke-dasharray="4 14" stroke-linecap="round"/>
+  <text x="400" y="495" text-anchor="middle" font-family="Yatra One" font-size="320" fill="${C.haldi}" stroke="${C.ink}" stroke-width="6">ॐ</text>`};
 
-scenes["product-lakshmi.jpg"] = { w: 800, h: 800, svg: () => `${prodBg("p")}
-  <circle cx="400" cy="380" r="210" fill="${C.gold}" opacity="0.25"/><circle cx="400" cy="380" r="170" fill="none" stroke="${C.gold}" stroke-width="6"/>
-  ${lotus(400, 520, 2.2, C.rose, "#f6a5be")}
-  <circle cx="400" cy="330" r="46" fill="${C.gold}"/><circle cx="400" cy="330" r="30" fill="#ffb347"/>
-  ${[180, 620].map((x) => diya(x, 640, 1.1)).join("")}`};
+scenes["product-lakshmi.jpg"] = { w: 800, h: 800, svg: () => `${prod(C.pink)}
+  <circle cx="400" cy="340" r="190" fill="${C.haldi}" stroke="${C.ink}" stroke-width="10"/>
+  ${lotus(400, 560, 2.3, C.red, C.cream)}
+  <circle cx="400" cy="320" r="52" fill="${C.cream}" stroke="${C.ink}" stroke-width="8"/>
+  ${[150, 650].map((x) => diya(x, 700, 1.1)).join("")}`};
 
 scenes["product-puja-kit.jpg"] = { w: 800, h: 800, svg: () => {
   let d = "";
   for (let i = 0; i < 8; i++) {
     const a = (Math.PI * 2 * i) / 8;
-    d += `<g transform="translate(${400 + Math.cos(a) * 220} ${420 + Math.sin(a) * 220})"><circle r="40" fill="#c2561c"/><circle r="30" fill="#ff8a1f"/><path d="M0 -4 Q-9 -22 0 -42 Q9 -22 0 -4Z" fill="${C.gold}"/></g>`;
+    d += diya(400 + Math.cos(a) * 230, 440 + Math.sin(a) * 230 + 20, 0.62);
   }
-  return `${prodBg("p")}<circle cx="400" cy="420" r="320" fill="#e8a53a"/><circle cx="400" cy="420" r="300" fill="#f3c15c"/><circle cx="400" cy="420" r="280" fill="none" stroke="#b86e00" stroke-width="4"/>${d}
-    ${lotus(400, 470, 0.9)}<circle cx="400" cy="420" r="16" fill="#b4531c"/>`; } };
+  return `${prod(C.cream)}<circle cx="400" cy="430" r="330" fill="${C.haldi}" stroke="${C.ink}" stroke-width="10"/><circle cx="400" cy="430" r="296" fill="none" stroke="${C.ink}" stroke-width="4" stroke-dasharray="3 12" stroke-linecap="round"/>${d}${lotus(400, 490, 0.95)}`; } };
 
 scenes["product-rudraksha.jpg"] = { w: 800, h: 800, svg: () => {
   let b = "";
-  const n = 28;
+  const n = 22;
   for (let i = 0; i < n; i++) {
     const a = (Math.PI * 2 * i) / n;
-    const x = 400 + Math.cos(a) * 250, y = 380 + Math.sin(a) * 250;
-    b += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="26" fill="#7a3b1c"/><circle cx="${(x - 6).toFixed(1)}" cy="${(y - 7).toFixed(1)}" r="12" fill="#a9582b" opacity="0.7"/>`;
+    const x = 400 + Math.cos(a) * 250, y = 370 + Math.sin(a) * 250;
+    b += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="32" fill="#8a4a24" stroke="${C.ink}" stroke-width="6"/><circle cx="${(x - 8).toFixed(1)}" cy="${(y - 9).toFixed(1)}" r="9" fill="#c27a45"/>`;
   }
-  return `${prodBg("p")}${b}
-    <path d="M400 630 L400 690" stroke="#7a3b1c" stroke-width="10"/>
-    <circle cx="400" cy="700" r="34" fill="#7a3b1c"/><circle cx="392" cy="692" r="14" fill="#a9582b" opacity="0.7"/>
-    <path d="M370 630 h60 l-8 -30 h-44z" fill="${C.gold}"/>`; } };
+  return `${prod(C.red)}${b}<path d="M400 622 L400 680" stroke="${C.ink}" stroke-width="10"/>
+    <circle cx="400" cy="715" r="40" fill="#8a4a24" stroke="${C.ink}" stroke-width="6"/><circle cx="390" cy="704" r="11" fill="#c27a45"/>
+    <path d="M365 628 h70 l-8 -34 h-54z" fill="${C.haldi}" stroke="${C.ink}" stroke-width="5" stroke-linejoin="round"/>`; } };
 
 (async () => {
   fs.mkdirSync(OUT, { recursive: true });

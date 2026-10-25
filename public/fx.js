@@ -1,16 +1,17 @@
-// Motion layer: starfield, zodiac wheel, scroll progress, cursor glow,
-// scroll reveals, card tilt and the live ticker. Nothing here is needed to use
+// Motion layer: floating confetti, zodiac wheel, scroll progress, cursor dot,
+// scroll reveals and the live ticker. Nothing here is needed to use
 // the page, and everything switches off for people who prefer reduced motion.
 
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-// ---------- starfield ----------
+// ---------- floating marigold confetti ----------
 function starfield() {
   const cv = document.getElementById("stars");
   if (!cv) return;
   const ctx = cv.getContext("2d");
-  let w = 0, h = 0, stars = [], shoot = null, px = 0, py = 0, tx = 0, ty = 0, visible = true, last = 0;
+  let w = 0, h = 0, bits = [], px = 0, py = 0, tx = 0, ty = 0, visible = true, last = 0;
+  const COLS = ["#1b1b3a", "#d8321a", "#fff4dc", "#1b1b3a"];
 
   const size = () => {
     const r = cv.parentElement.getBoundingClientRect();
@@ -18,40 +19,38 @@ function starfield() {
     w = r.width; h = r.height;
     cv.width = w * dpr; cv.height = h * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const n = w < 700 ? 70 : 170;
-    stars = Array.from({ length: n }, () => ({
-      x: Math.random() * w, y: Math.random() * h, z: 0.2 + Math.random() * 0.8,
-      r: 0.5 + Math.random() * 1.4, p: Math.random() * 6.28, s: 0.6 + Math.random() * 1.8,
-      c: Math.random() > 0.75 ? "255,200,61" : Math.random() > 0.6 ? "255,150,200" : "255,240,230",
+    const n = w < 700 ? 14 : 28;
+    bits = Array.from({ length: n }, () => ({
+      x: Math.random() * w, y: Math.random() * h, z: 0.3 + Math.random() * 0.7,
+      r: 5 + Math.random() * 10, rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.8,
+      vy: 6 + Math.random() * 14, kind: Math.floor(Math.random() * 3), c: COLS[Math.floor(Math.random() * COLS.length)],
     }));
+  };
+
+  const draw = (b) => {
+    ctx.save();
+    ctx.translate(b.x + px * b.z * 30, b.y + py * b.z * 20);
+    ctx.rotate(b.rot);
+    ctx.fillStyle = b.c; ctx.strokeStyle = "#1b1b3a"; ctx.lineWidth = 2;
+    if (b.kind === 0) { ctx.beginPath(); ctx.arc(0, 0, b.r * 0.6, 0, 6.283); ctx.fill(); }
+    else if (b.kind === 1) { ctx.beginPath(); ctx.arc(0, 0, b.r, 0, 6.283); ctx.stroke(); }
+    else {
+      ctx.beginPath();
+      for (let i = 0; i < 8; i++) { const a = (Math.PI / 4) * i, rr = i % 2 ? b.r * 0.35 : b.r; ctx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); }
+      ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
   };
 
   const frame = (ts) => {
     if (!visible) { requestAnimationFrame(frame); return; }
     const dt = Math.min((ts - last) / 1000, 0.05); last = ts;
-    px += (tx - px) * 0.05; py += (ty - py) * 0.05;
+    px += (tx - px) * 0.06; py += (ty - py) * 0.06;
     ctx.clearRect(0, 0, w, h);
-    for (const s of stars) {
-      const a = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(ts / 1000 * s.s + s.p));
-      ctx.fillStyle = `rgba(${s.c},${a.toFixed(2)})`;
-      ctx.beginPath();
-      ctx.arc(s.x + px * s.z * 26, s.y + py * s.z * 18, s.r * (0.6 + s.z * 0.6), 0, 6.283);
-      ctx.fill();
-    }
-    if (!shoot && Math.random() < dt * 0.35) {
-      shoot = { x: Math.random() * w * 0.8, y: Math.random() * h * 0.4, vx: 520 + Math.random() * 300, vy: 240 + Math.random() * 160, life: 1 };
-    }
-    if (shoot) {
-      const len = 110;
-      const g = ctx.createLinearGradient(shoot.x, shoot.y, shoot.x - shoot.vx / 6, shoot.y - shoot.vy / 6);
-      g.addColorStop(0, `rgba(255,255,255,${shoot.life})`);
-      g.addColorStop(1, "rgba(255,138,31,0)");
-      ctx.strokeStyle = g; ctx.lineWidth = 2; ctx.beginPath();
-      ctx.moveTo(shoot.x, shoot.y);
-      ctx.lineTo(shoot.x - shoot.vx / 6, shoot.y - shoot.vy / 6);
-      ctx.stroke();
-      shoot.x += shoot.vx * dt; shoot.y += shoot.vy * dt; shoot.life -= dt * 0.9;
-      if (shoot.life <= 0 || shoot.x > w + len) shoot = null;
+    for (const b of bits) {
+      b.y += b.vy * b.z * dt; b.rot += b.vr * dt;
+      if (b.y > h + 20) { b.y = -20; b.x = Math.random() * w; }
+      draw(b);
     }
     requestAnimationFrame(frame);
   };
@@ -79,28 +78,28 @@ function wheel() {
   let glyphs = "";
   signs.forEach((g, i) => {
     const a = (Math.PI * 2 * i) / 12 - Math.PI / 2;
-    glyphs += `<text x="${(200 + Math.cos(a) * 172).toFixed(1)}" y="${(200 + Math.sin(a) * 172 + 8).toFixed(1)}" text-anchor="middle" font-size="22">${g}&#xFE0E;</text>`;
+    glyphs += `<text x="${(200 + Math.cos(a) * 172).toFixed(1)}" y="${(200 + Math.sin(a) * 172 + 8).toFixed(1)}" text-anchor="middle" font-size="24" font-weight="700">${g}&#xFE0E;</text>`;
   });
   let ticks = "";
   for (let i = 0; i < 72; i++) {
     const a = (Math.PI * 2 * i) / 72, r1 = i % 6 === 0 ? 192 : 196;
     ticks += `<line x1="${(200 + Math.cos(a) * r1).toFixed(1)}" y1="${(200 + Math.sin(a) * r1).toFixed(1)}" x2="${(200 + Math.cos(a) * 199).toFixed(1)}" y2="${(200 + Math.sin(a) * 199).toFixed(1)}"/>`;
   }
-  const planet = (cx, cy, r, c) => `<circle cx="${cx}" cy="${cy}" r="${r * 2.4}" fill="${c}" opacity="0.2"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="${c}"/>`;
+  const planet = (cx, cy, r, c) => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${c}" stroke="#1b1b3a" stroke-width="2.5"/>`;
   host.insertAdjacentHTML("afterbegin", `
     <svg class="wheel" viewBox="0 0 400 400" aria-hidden="true">
       <g class="ring-a">
-        <circle cx="200" cy="200" r="196" fill="none" stroke="rgba(255,255,255,.28)"/>
-        <circle cx="200" cy="200" r="148" fill="none" stroke="rgba(255,138,31,.55)" stroke-dasharray="3 7"/>
-        <g stroke="rgba(255,255,255,.4)">${ticks}</g>${glyphs}
+        <circle cx="200" cy="200" r="196" fill="none" stroke="#1b1b3a" stroke-width="2.5"/>
+        <circle cx="200" cy="200" r="148" fill="none" stroke="#1b1b3a" stroke-width="2" stroke-dasharray="2 8" stroke-linecap="round"/>
+        <g stroke="#1b1b3a" stroke-width="1.6">${ticks}</g>${glyphs}
       </g>
       <g class="ring-b">
-        <circle cx="200" cy="200" r="122" fill="none" stroke="rgba(255,46,126,.6)" stroke-width="1.5"/>
-        ${planet(322, 200, 7, "#ff2e7e")}${planet(139, 306, 5, "#8b5cf6")}${planet(110, 120, 6, "#2ee6c5")}
+        <circle cx="200" cy="200" r="122" fill="none" stroke="#d8321a" stroke-width="2.5"/>
+        ${planet(322, 200, 8, "#d8321a")}${planet(139, 306, 6, "#1b1b3a")}${planet(110, 120, 7, "#f6b81c")}
       </g>
       <g class="ring-c">
-        <circle cx="200" cy="200" r="98" fill="none" stroke="rgba(255,200,61,.45)" stroke-dasharray="2 6"/>
-        ${planet(200, 102, 6, "#ffc83d")}${planet(285, 249, 4, "#ff8a1f")}
+        <circle cx="200" cy="200" r="98" fill="none" stroke="#1b1b3a" stroke-width="1.8" stroke-dasharray="2 6"/>
+        ${planet(200, 102, 7, "#f6b81c")}${planet(285, 249, 5, "#d8321a")}
       </g>
     </svg>`);
 }
@@ -153,25 +152,6 @@ function scan() {
   });
 }
 
-function tilt() {
-  if (!fine || reduce) return;
-  document.addEventListener("pointermove", (e) => {
-    const el = e.target.closest?.(".fact, .plan, .product, .card");
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
-    el.style.setProperty("--mx", `${(x * 100).toFixed(1)}%`);
-    el.style.setProperty("--my", `${(y * 100).toFixed(1)}%`);
-    if (el.matches(".fact, .plan, .product")) {
-      el.style.transform = `perspective(700px) rotateX(${((0.5 - y) * 7).toFixed(2)}deg) rotateY(${((x - 0.5) * 9).toFixed(2)}deg) translateY(-3px)`;
-    }
-  }, { passive: true });
-  document.addEventListener("pointerout", (e) => {
-    const el = e.target.closest?.(".fact, .plan, .product");
-    if (el && !el.contains(e.relatedTarget)) el.style.transform = "";
-  });
-}
-
 // ---------- ticker ----------
 export function fillMarquee(items) {
   const tr = document.getElementById("marqueeTrack");
@@ -180,13 +160,50 @@ export function fillMarquee(items) {
   tr.innerHTML = html + html;
 }
 
+// ---------- 3D kundli driven by scroll ----------
+function kundli3d() {
+  const host = document.getElementById("s3dObj");
+  const sec = document.getElementById("s3d");
+  if (!host || !sec) return;
+  const signs = ["♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓"];
+  let ring = "";
+  signs.forEach((g, i) => {
+    const a = (360 / 12) * i;
+    ring += `<span class="g" style="--a:${a}deg">${g}&#xFE0E;</span>`;
+  });
+  const pl = [["Su", "#f6b81c", 0, -1], ["Mo", "#fff4dc", 1, 0], ["Ma", "#d8321a", 0, 1], ["Me", "#17803f", -1, 0], ["Ju", "#f28c0f", 0.55, -0.55], ["Ve", "#f4a9a0", -0.55, 0.55], ["Sa", "#1b1b3a", -0.55, -0.55]];
+  const planets = pl.map(([n, c, x, y]) => `<i class="pl" style="--x:${x};--y:${y};background:${c};color:${c === "#1b1b3a" ? "#fff4dc" : "#1b1b3a"}">${n}</i>`).join("");
+  host.innerHTML = `
+    <div class="l l-ring">${ring}</div>
+    <div class="l l-chart"><svg viewBox="0 0 200 200"><rect x="6" y="6" width="188" height="188"/><path d="M6 6L194 194M194 6L6 194M100 6L194 100L100 194L6 100Z"/></svg></div>
+    <div class="l l-pl">${planets}</div>
+    <div class="l l-moon"></div>`;
+  if (reduce) { host.style.transform = "rotateX(55deg) rotateZ(-20deg)"; return; }
+  const steps = [...sec.querySelectorAll(".s3d-steps li")];
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const r = sec.getBoundingClientRect();
+    const total = r.height - window.innerHeight;
+    const p = Math.max(0, Math.min(1, total > 0 ? -r.top / total : 0));
+    host.style.setProperty("--p", p.toFixed(4));
+    const rx = 62 - p * 50, rz = -40 + p * 400, ry = Math.sin(p * Math.PI) * 14;
+    host.style.transform = `rotateX(${rx.toFixed(1)}deg) rotateY(${ry.toFixed(1)}deg) rotateZ(${rz.toFixed(1)}deg)`;
+    const idx = Math.min(2, Math.floor(p * 3));
+    steps.forEach((li, i) => li.classList.toggle("on", i === idx));
+  };
+  window.addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  window.addEventListener("resize", update);
+  update();
+}
+
 export function initFx() {
   document.documentElement.classList.add("js");
   starfield();
   wheel();
+  kundli3d();
   progress();
   cursorGlow();
-  tilt();
   scan();
   if (!reduce && "MutationObserver" in window) {
     const mo = new MutationObserver(() => scan());

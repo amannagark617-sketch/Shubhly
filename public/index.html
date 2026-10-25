@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Shubhly: Kundli, Puja &amp; more</title>
   <meta name="description" content="Free daily rashifal, panchang and choghadiya, plus your kundli in minutes. Shubhly: your kundli, your puja, your vibe." />
-  <meta name="theme-color" content="#0c0516" />
+  <meta name="theme-color" content="#f6b81c" />
   <meta property="og:title" content="Shubhly: Kundli, Puja &amp; more" />
   <meta property="og:description" content="Daily rashifal, panchang, choghadiya and your kundli, in English, Hindi or Hinglish." />
   <meta property="og:image" content="/img/og-image.jpg" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230c0516'/%3E%3Ccircle cx='32' cy='32' r='17' fill='%23ff2e7e'/%3E%3Ccircle cx='40' cy='28' r='15' fill='%230c0516'/%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%23f6b81c' stroke='%231b1b3a' stroke-width='5'/%3E%3Cpath d='M32 3a29 29 0 0 1 0 58a18 29 0 0 0 0-58z' fill='%23d8321a'/%3E%3C/svg%3E" />
   <link rel="preload" href="/fonts/yatra-one-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/hind-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/style.css" />
@@ -22,7 +22,7 @@
   <header class="nav">
     <div class="wrap nav-in">
       <a class="brand" href="#top" aria-label="Shubhly">
-        <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#4b1a73"/><circle cx="32" cy="32" r="17" fill="#ff8a1f"/><circle cx="40" cy="28" r="15" fill="#4b1a73"/></svg>
+        <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f6b81c" stroke="#1b1b3a" stroke-width="5"/><path d="M32 3a29 29 0 0 1 0 58a18 29 0 0 0 0-58z" fill="#d8321a"/></svg>
         Shubhly
       </a>
       <nav class="nav-links" aria-label="Main">
@@ -47,10 +47,6 @@
 
   <main id="top">
     <section class="hero" aria-labelledby="hero-h">
-      <picture class="hero-bg">
-        <source media="(max-width: 700px)" srcset="/img/hero-banner-mobile.jpg" />
-        <img src="/img/hero-banner.jpg" alt="" width="1920" height="1080" fetchpriority="high" />
-      </picture>
       <canvas id="stars" aria-hidden="true"></canvas>
       <div class="wrap hero-in">
         <div>
@@ -77,6 +73,23 @@
     </section>
 
     <div class="marquee" aria-hidden="true"><div class="track" id="marqueeTrack"></div></div>
+
+    <section class="s3d" id="s3d" aria-labelledby="s3d-h">
+      <div class="s3d-stick">
+        <div class="wrap s3d-in">
+          <div class="s3d-copy">
+            <h2 id="s3d-h" data-i="s3d_h"></h2>
+            <p data-i="s3d_p"></p>
+            <ol class="s3d-steps">
+              <li data-s="0"><h3 data-i="s3d_1h"></h3><p data-i="s3d_1p"></p></li>
+              <li data-s="1"><h3 data-i="s3d_2h"></h3><p data-i="s3d_2p"></p></li>
+              <li data-s="2"><h3 data-i="s3d_3h"></h3><p data-i="s3d_3p"></p></li>
+            </ol>
+          </div>
+          <div class="s3d-scene" aria-hidden="true"><div class="s3d-obj" id="s3dObj"></div></div>
+        </div>
+      </div>
+    </section>
 
     <section class="block" id="aaj" aria-labelledby="aaj-h">
       <div class="wrap">
@@ -323,7 +336,7 @@
 
   <footer class="footer">
     <div class="wrap">
-      <div class="brand"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#4b1a73"/><circle cx="32" cy="32" r="17" fill="#ff8a1f"/><circle cx="40" cy="28" r="15" fill="#4b1a73"/></svg>Shubhly</div>
+      <div class="brand"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f6b81c" stroke="#1b1b3a" stroke-width="5"/><path d="M32 3a29 29 0 0 1 0 58a18 29 0 0 0 0-58z" fill="#d8321a"/></svg>Shubhly</div>
       <p data-i="foot1"></p>
       <p data-i="foot2"></p>
     </div>
