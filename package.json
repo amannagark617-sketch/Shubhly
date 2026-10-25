@@ -8,16 +8,29 @@
   "scripts": {
     "start": "node --env-file-if-exists=.env server.js",
     "dev": "node --env-file-if-exists=.env --watch server.js",
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "build:sky": "esbuild tools/sky3d.src.js --bundle --minify --format=esm --outfile=public/sky3d.js"
   },
   "engines": {
     "node": ">=22"
   },
   "dependencies": {
+    "@fontsource/hind-guntur": "^5.3.0",
+    "@fontsource/hind-vadodara": "^5.3.0",
+    "@fontsource/noto-sans": "^5.3.0",
+    "@fontsource/noto-sans-bengali": "^5.3.0",
+    "@fontsource/noto-sans-devanagari": "^5.3.0",
+    "@fontsource/noto-sans-tamil": "^5.3.0",
     "@google/genai": "^2.31.0",
     "express": "^5.3.0",
     "luxon": "^3.7.2",
+    "pdfkit": "^0.20.2",
+    "svg-to-pdfkit": "^0.1.8",
     "sweph": "^2.10.3-8",
     "tz-lookup": "^6.1.25"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "three": "^0.186.1"
   }
 }

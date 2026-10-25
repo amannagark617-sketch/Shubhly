@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import { TOPICS } from "./prompt.js";
+import { LANGUAGES } from "./langs.js";
 
 export class InputError extends Error {}
 
@@ -53,6 +54,7 @@ export function parseBirthInput(body) {
     tz,
     placeLabel: String(place.label ?? "").slice(0, 120),
     timeUnknown: body?.timeUnknown === true,
+    tradition: parseTradition(body?.tradition),
   };
 }
 
@@ -103,11 +105,17 @@ export function parseTopic(raw) {
   return Object.hasOwn(TOPICS, raw) ? raw : "general";
 }
 
-export function parseLanguage(raw) {
-  return raw === "en" ? "en" : raw === "hn" ? "hn" : "hi";
+export function parseTradition(raw) {
+  return raw === "western" ? "western" : "vedic";
 }
 
-// Display language for the daily pages: en (default), hi or hn (Hinglish).
+// Language of the written report: any language the site offers.
+export function parseLanguage(raw) {
+  return Object.hasOwn(LANGUAGES, raw) ? raw : "en";
+}
+
+// Display language for the daily pages. Languages without their own daily
+// wording use the closest one that has it.
 export function parseLang(raw) {
-  return raw === "hi" || raw === "hn" ? raw : "en";
+  return LANGUAGES[Object.hasOwn(LANGUAGES, raw) ? raw : "en"].prose;
 }

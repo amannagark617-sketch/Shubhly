@@ -1,11 +1,34 @@
-// All words shown by the page, in English (en), Hindi (hi) and Hinglish (hn).
+// All words shown by the page. English, Hindi and Hinglish live here; the other
+// languages are in lang/. Missing keys fall back to English, then Hinglish.
 // Hinglish is the fallback for any missing key.
 
-export const LANGS = ["en", "hi", "hn"];
+import mr from "./lang/mr.js";
+import bn from "./lang/bn.js";
+import ta from "./lang/ta.js";
+import te from "./lang/te.js";
+import gu from "./lang/gu.js";
+
+export const LANGS = ["en", "hi", "hn", "mr", "bn", "ta", "te", "gu"];
 // Names shown in the language menu, each in its own script.
-export const LANG_NAMES = { en: "English", hi: "हिंदी", hn: "Hinglish" };
+export const LANG_NAMES = { en: "English", hi: "हिंदी", hn: "Hinglish", mr: "मराठी", bn: "বাংলা", ta: "தமிழ்", te: "తెలుగు", gu: "ગુજરાતી" };
 
 const hn = {
+  s3d_sample: "Sample chart",
+  s3d_mine: "Meri apni kundli dekho",
+  sky_h: "Aapke grah, 3D mein",
+  sky_planet: "{planet}, {sign} mein, {deg}°, bhav {house}",
+  sky_planet_nh: "{planet}, {sign} mein, {deg}°",
+  faq6q: "Vedic ya Western: kaunsi chunu?",
+  faq6a: "Vedic (Bhartiya) paddhati sidereal rashi chakra use karti hai, isliye aapki Chandra rashi aur nakshatra taaron ki asli position se aate hain. Western paddhati mausam se jura tropical rashi chakra leti hai aur Sun, Moon aur Rising sign par zor deti hai. Ek hi janm par dono mein rashiyan alag aa sakti hain. Jo aapka parivaar maanta hai wahi chuno; dono Swiss Ephemeris se nikalti hain.",
+  tr_label: "Jyotish paddhati", tr_vedic: "Vedic", tr_western: "Western",
+  tr_vedic_sub: "Bhartiya parampara: sidereal rashi chakra (Lahiri), Chandra rashi, nakshatra aur dasha.",
+  tr_western_sub: "Western parampara: tropical rashi chakra, Sun, Moon aur Rising sign, houses aur aspects.",
+  r_sun: "Sun sign", r_moon: "Moon sign", r_rising: "Rising sign",
+  r_ins_sun: "Aapka core swabhav (Sun sign)", r_ins_moon: "Aapka mann (Moon sign)", r_ins_rising: "Log aapko kaisa dekhte hain (Rising sign)",
+  r_legend_w: "Numbers houses hain, 1 se 12, Rising sign se ginte hue.",
+  asp_h: "Aspects", asp_conjunction: "conjunction", asp_sextile: "sextile", asp_square: "square", asp_trine: "trine", asp_opposition: "opposition",
+  rep_pdf: "PDF download karo", pdf_busy: "PDF ban rahi hai...", pdf_done: "PDF download ho gayi",
+  pdf_h_vedic: "Vedic kundli", pdf_h_western: "Western birth chart", pdf_report: "Aapki report",
   lang_label: "Bhasha",
   nav_today: "Aaj ka panchang", nav_rashifal: "Rashifal", nav_kundli: "Kundli", nav_premium: "Premium",
   nav_store: "Puja store", nav_faq: "FAQ", nav_cta: "Free kundli",
@@ -80,7 +103,7 @@ const hn = {
   card_footer: "Your kundli, your puja, your vibe.", card_done: "Card download ho gaya", card_text: "Meri kundli, Shubhly par",
   rep_h: "AI report", rep_focus: "Report focus", rep_lang: "Report ki bhasha",
   rep_t_general: "General life", rep_t_career: "Career aur paisa", rep_t_marriage: "Shaadi aur rishte",
-  rep_btn: "Get my AI report", rep_busy: "Report likh rahe hain...", rep_print: "Print ya PDF save karo",
+  rep_btn: "Get my AI report", rep_busy: "Report likh rahe hain...",
   rep_fine: "Yeh AI guidance hai, kisi pandit ya doctor ki salah ka vikalp nahi. Bade faisle apne vivek se lo.",
   pr_h: "Shubhly Premium",
   pr_p: "Free mein roz ka panchang, rashifal aur kundli. Premium mein aur gehri aur personal reading.",
@@ -104,7 +127,7 @@ const hn = {
   how_h: "Kaise kaam karta hai", how_p: "Ganana code karta hai, samjhane ka kaam AI karta hai.",
   how1_h: "Janm details daalo", how1_p: "Date, time aur sheher. Time na pata ho to chalega.",
   how2_h: "Chart ban jaata hai", how2_p: "Swiss Ephemeris se grah, lagna aur dasha ki sahi ganana.",
-  how3_h: "Simple bhasha mein padho", how3_p: "English, Hindi ya Hinglish mein, bina dar aur bina bade daavon ke.",
+  how3_h: "Simple bhasha mein padho", how3_p: "Apni bhasha mein, bina dar ke aur bina bade claims ke.",
   store_h: "Puja ka saman, jaldi aa raha hai", store_p: "Murtiyan, puja kits aur rudraksha. Store khulne par sabse pehle jaano.",
   store_cta: "Mujhe batana", p_ganesha: "Ganesha murti", p_lakshmi: "Lakshmi murti", p_kit: "Puja kit", p_rudraksha: "Rudraksha mala", p_soon: "Jaldi aa raha hai", p_shankh: "Shankh", p_incense: "Agarbatti", p_diya: "Pital ka diya", p_yantra: "Shri Yantra",
   faq_h: "Sawaal jawaab",
@@ -121,6 +144,22 @@ const hn = {
 };
 
 const en = {
+  s3d_sample: "Sample chart",
+  s3d_mine: "See my own kundli",
+  sky_h: "Your planets, in 3D",
+  sky_planet: "{planet} in {sign}, {deg}°, house {house}",
+  sky_planet_nh: "{planet} in {sign}, {deg}°",
+  faq6q: "Vedic or Western: which should I pick?",
+  faq6a: "Vedic (Indian) uses the sidereal zodiac, so your Moon sign and nakshatra come from where the stars actually are. Western uses the tropical zodiac, tied to the seasons, and focuses on your Sun, Moon and Rising signs. The same birth can give different signs in the two. Pick the one your family follows; both are calculated with Swiss Ephemeris.",
+  tr_label: "Astrology system", tr_vedic: "Vedic", tr_western: "Western",
+  tr_vedic_sub: "Indian tradition: sidereal zodiac (Lahiri), Moon sign, nakshatra and dasha.",
+  tr_western_sub: "Western tradition: tropical zodiac, Sun, Moon and Rising signs, houses and aspects.",
+  r_sun: "Sun sign", r_moon: "Moon sign", r_rising: "Rising sign",
+  r_ins_sun: "Your core self (Sun sign)", r_ins_moon: "Your inner mood (Moon sign)", r_ins_rising: "How others see you (Rising sign)",
+  r_legend_w: "Numbers are houses 1 to 12, counted from the Rising sign.",
+  asp_h: "Aspects", asp_conjunction: "conjunct", asp_sextile: "sextile", asp_square: "square", asp_trine: "trine", asp_opposition: "opposite",
+  rep_pdf: "Download PDF", pdf_busy: "Preparing PDF...", pdf_done: "PDF downloaded",
+  pdf_h_vedic: "Vedic kundli", pdf_h_western: "Western birth chart", pdf_report: "Your report",
   lang_label: "Language",
   nav_today: "Today's panchang", nav_rashifal: "Rashifal", nav_kundli: "Kundli", nav_premium: "Premium",
   nav_store: "Puja store", nav_faq: "FAQ", nav_cta: "Free kundli",
@@ -195,7 +234,7 @@ const en = {
   card_footer: "Your kundli, your puja, your vibe.", card_done: "Card downloaded", card_text: "My kundli, made on Shubhly",
   rep_h: "AI report", rep_focus: "Report focus", rep_lang: "Report language",
   rep_t_general: "General life", rep_t_career: "Career and money", rep_t_marriage: "Marriage and relationships",
-  rep_btn: "Get my AI report", rep_busy: "Writing your report...", rep_print: "Print or save as PDF",
+  rep_btn: "Get my AI report", rep_busy: "Writing your report...",
   rep_fine: "This is AI guidance, not a substitute for a pandit's or doctor's advice. Take big decisions with your own judgement.",
   pr_h: "Shubhly Premium",
   pr_p: "Free gives you the daily panchang, rashifal and kundli. Premium goes deeper and gets personal.",
@@ -219,7 +258,7 @@ const en = {
   how_h: "How it works", how_p: "Code does the calculation, AI does the explaining.",
   how1_h: "Enter birth details", how1_p: "Date, time and city. No birth time? That's fine.",
   how2_h: "Your chart is made", how2_p: "Planets, lagna and dasha, calculated with Swiss Ephemeris.",
-  how3_h: "Read it in plain language", how3_p: "In English, Hindi or Hinglish, with no fear and no big claims.",
+  how3_h: "Read it in plain language", how3_p: "In your own language, with no fear and no big claims.",
   store_h: "Puja items, coming soon", store_p: "Murtis, puja kits and rudraksha. Be the first to know when the store opens.",
   store_cta: "Tell me when it opens", p_ganesha: "Ganesha murti", p_lakshmi: "Lakshmi murti", p_kit: "Puja kit", p_rudraksha: "Rudraksha mala", p_soon: "Coming soon", p_shankh: "Shankh (conch)", p_incense: "Incense sticks", p_diya: "Brass diya", p_yantra: "Shri Yantra",
   faq_h: "Questions and answers",
@@ -236,6 +275,22 @@ const en = {
 };
 
 const hi = {
+  s3d_sample: "नमूना चार्ट",
+  s3d_mine: "अपनी कुंडली देखें",
+  sky_h: "आपके ग्रह, 3D में",
+  sky_planet: "{planet}, {sign} में, {deg}°, भाव {house}",
+  sky_planet_nh: "{planet}, {sign} में, {deg}°",
+  faq6q: "वैदिक या पाश्चात्य: कौन सी चुनूँ?",
+  faq6a: "वैदिक (भारतीय) पद्धति निरयन राशिचक्र इस्तेमाल करती है, इसलिए आपकी चंद्र राशि और नक्षत्र तारों की असली स्थिति से आते हैं। पाश्चात्य पद्धति ऋतुओं से जुड़ा सायन राशिचक्र लेती है और सूर्य, चंद्र व उदय राशि पर ज़ोर देती है। एक ही जन्म पर दोनों में राशियाँ अलग आ सकती हैं। जो आपका परिवार मानता है वही चुनें; दोनों Swiss Ephemeris से निकाली जाती हैं।",
+  tr_label: "ज्योतिष पद्धति", tr_vedic: "वैदिक", tr_western: "पाश्चात्य",
+  tr_vedic_sub: "भारतीय परंपरा: निरयन राशिचक्र (लाहिरी), चंद्र राशि, नक्षत्र और दशा।",
+  tr_western_sub: "पाश्चात्य परंपरा: सायन राशिचक्र, सूर्य, चंद्र और उदय राशि, भाव और दृष्टि।",
+  r_sun: "सूर्य राशि", r_moon: "चंद्र राशि", r_rising: "उदय राशि",
+  r_ins_sun: "आपका मूल स्वभाव (सूर्य राशि)", r_ins_moon: "आपका मन (चंद्र राशि)", r_ins_rising: "दूसरे आपको कैसे देखते हैं (उदय राशि)",
+  r_legend_w: "संख्याएँ भाव हैं, 1 से 12, उदय राशि से गिने हुए।",
+  asp_h: "दृष्टि संबंध", asp_conjunction: "युति", asp_sextile: "60° (सेक्स्टाइल)", asp_square: "90° (केंद्र)", asp_trine: "120° (त्रिकोण)", asp_opposition: "आमने-सामने",
+  rep_pdf: "PDF डाउनलोड करें", pdf_busy: "PDF बन रही है...", pdf_done: "PDF डाउनलोड हो गई",
+  pdf_h_vedic: "वैदिक कुंडली", pdf_h_western: "पाश्चात्य जन्म चार्ट", pdf_report: "आपकी रिपोर्ट",
   lang_label: "भाषा",
   nav_today: "आज का पंचांग", nav_rashifal: "राशिफल", nav_kundli: "कुंडली", nav_premium: "प्रीमियम",
   nav_store: "पूजा स्टोर", nav_faq: "सवाल-जवाब", nav_cta: "मुफ़्त कुंडली",
@@ -310,7 +365,7 @@ const hi = {
   card_footer: "आपकी कुंडली, आपकी पूजा, आपका अंदाज़।", card_done: "कार्ड डाउनलोड हो गया", card_text: "मेरी कुंडली, Shubhly पर",
   rep_h: "AI रिपोर्ट", rep_focus: "रिपोर्ट का विषय", rep_lang: "रिपोर्ट की भाषा",
   rep_t_general: "सामान्य जीवन", rep_t_career: "करियर और पैसा", rep_t_marriage: "शादी और रिश्ते",
-  rep_btn: "मेरी AI रिपोर्ट पाएँ", rep_busy: "रिपोर्ट लिख रहे हैं...", rep_print: "प्रिंट या PDF सेव करें",
+  rep_btn: "मेरी AI रिपोर्ट पाएँ", rep_busy: "रिपोर्ट लिख रहे हैं...",
   rep_fine: "यह AI मार्गदर्शन है, किसी पंडित या डॉक्टर की सलाह का विकल्प नहीं। बड़े फ़ैसले अपने विवेक से लें।",
   pr_h: "Shubhly प्रीमियम",
   pr_p: "मुफ़्त में रोज़ का पंचांग, राशिफल और कुंडली। प्रीमियम में और गहरी और निजी रीडिंग।",
@@ -334,7 +389,7 @@ const hi = {
   how_h: "यह कैसे काम करता है", how_p: "गणना कोड करता है, समझाने का काम AI करता है।",
   how1_h: "जन्म विवरण डालें", how1_p: "तारीख़, समय और शहर। समय न पता हो तो भी चलेगा।",
   how2_h: "चार्ट बन जाता है", how2_p: "Swiss Ephemeris से ग्रह, लग्न और दशा की सही गणना।",
-  how3_h: "सरल भाषा में पढ़ें", how3_p: "English, हिंदी या Hinglish में, बिना डर और बिना बड़े दावों के।",
+  how3_h: "सरल भाषा में पढ़ें", how3_p: "अपनी भाषा में, बिना डर और बिना बड़े दावों के।",
   store_h: "पूजा का सामान, जल्द आ रहा है", store_p: "मूर्तियाँ, पूजा किट और रुद्राक्ष। स्टोर खुलने पर सबसे पहले जानें।",
   store_cta: "मुझे बताना", p_ganesha: "गणेश मूर्ति", p_lakshmi: "लक्ष्मी मूर्ति", p_kit: "पूजा किट", p_rudraksha: "रुद्राक्ष माला", p_soon: "जल्द आ रहा है", p_shankh: "शंख", p_incense: "अगरबत्ती", p_diya: "पीतल का दीया", p_yantra: "श्री यंत्र",
   faq_h: "सवाल-जवाब",
@@ -350,7 +405,7 @@ const hi = {
   err_generic: "कुछ गड़बड़ हो गई। दोबारा कोशिश करें।",
 };
 
-export const STR = { hn, en, hi };
+export const STR = { hn, en, hi, mr, bn, ta, te, gu };
 
 let current = "en";
 export function getLang() { return current; }

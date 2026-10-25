@@ -8,6 +8,8 @@ import { DateTime } from "luxon";
 import { computePanchang } from "./src/panchang.js";
 import { buildDailyHoroscope } from "./src/horoscope.js";
 import { quickInsights } from "./src/insights.js";
+import { buildPdf } from "./src/pdf.js";
+import { DATE_LOCALE } from "./public/names.js";
 import { sadeSati, saturnWindow, slowPlanets } from "./src/transits.js";
 import {
   InputError,
@@ -25,7 +27,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 app.set("trust proxy", true); // behind Cloud Run / a load balancer
 app.disable("x-powered-by");
-app.use(express.json({ limit: "20kb" }));
+app.use(express.json({ limit: "80kb" }));
 
 // ---- very small in-memory rate limiter (per IP) -------------------------
 function rateLimit({ windowMs, max, message }) {
@@ -141,18 +143,52 @@ app.post("/api/kundli", kundliLimit, (req, res, next) => {
     const birth = parseBirthInput(req.body);
     const lang = parseLang(req.body?.lang);
     const chart = computeKundli(birth);
-    const moon = chart.planets.find((p) => p.key === "Moon");
-    const today = DateTime.now().setZone("Asia/Kolkata").toISODate();
-    const saturn = slowPlanets(today, "Asia/Kolkata").Saturn;
-    res.json({
+    const out = {
       name: cleanName(req.body?.name),
       chart,
       insights: quickInsights(chart, { timeUnknown: birth.timeUnknown, lang }),
-      sadeSati: {
+    };
+    if (chart.tradition !== "western") {
+      const moon = chart.planets.find((p) => p.key === "Moon");
+      const today = DateTime.now().setZone("Asia/Kolkata").toISODate();
+      const saturn = slowPlanets(today, "Asia/Kolkata").Saturn;
+      out.sadeSati = {
         ...sadeSati(moon.signIndex, saturn.index, lang),
         saturn: saturnWindow(today, "Asia/Kolkata"),
-      },
+      };
+    }
+    res.json(out);
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.post("/api/pdf", kundliLimit, async (req, res, next) => {
+  try {
+    const birth = parseBirthInput(req.body);
+    const language = parseLanguage(req.body?.lang);
+    const chart = computeKundli(birth);
+    const report = typeof req.body?.report === "string" ? req.body.report.slice(0, 14000) : "";
+    const locale = DATE_LOCALE[language] || "en-IN";
+    const when = DateTime.fromObject({ year: birth.year, month: birth.month, day: birth.day }, { zone: "utc" });
+    const h12 = birth.hour % 12 || 12;
+    const pdf = await buildPdf({
+      name: cleanName(req.body?.name),
+      chart,
+      insights: quickInsights(chart, { timeUnknown: birth.timeUnknown, lang: parseLang(language) }),
+      lang: language,
+      report,
+      timeUnknown: birth.timeUnknown,
+      placeLabel: birth.placeLabel,
+      dateLabel: when.setLocale(locale).toLocaleString({ day: "numeric", month: "long", year: "numeric" }),
+      timeLabel: `${h12}:${String(birth.minute).padStart(2, "0")} ${birth.hour < 12 ? "AM" : "PM"}`,
     });
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": 'attachment; filename="shubhly-kundli.pdf"',
+      "Cache-Control": "no-store",
+    });
+    res.send(pdf);
   } catch (e) {
     next(e);
   }
@@ -175,6 +211,7 @@ app.post("/api/report", reportLimit, async (req, res, next) => {
       name,
       topic,
       language,
+      tradition: birth.tradition,
       chart,
       timeUnknown: birth.timeUnknown,
     });

@@ -106,4 +106,18 @@ export const EN = {
     "At heart you are independent, a little different, and care about humanity.",
     "At heart you are emotional, spiritual and full of imagination.",
   ],
+  SUN: [
+    "Sun in Aries: you are direct, brave and quick to take the first step. Enthusiasm comes fast; a little patience is a good skill to build.",
+    "Sun in Taurus: you are steady, dependable and fond of comfort. You move slowly but build things that last.",
+    "Sun in Gemini: you are curious, talkative and a quick learner. Your mind rarely stays in one place.",
+    "Sun in Cancer: you are emotional, caring and close to family. Your intuition is sharp.",
+    "Sun in Leo: you have natural confidence and leader energy. You like to be appreciated and you give generously.",
+    "Sun in Virgo: you are practical, detail-minded and helpful. You expect a lot of perfection from yourself.",
+    "Sun in Libra: you value balance, beauty and good relationships. Decisions take you time.",
+    "Sun in Scorpio: you are deep, determined and good at keeping secrets. Whatever you decide, you see through.",
+    "Sun in Sagittarius: you are open-hearted, optimistic and love to travel and learn. Freedom matters to you.",
+    "Sun in Capricorn: you are hardworking, disciplined and steady toward long goals. Success comes late but surely.",
+    "Sun in Aquarius: you think differently, are friendly and full of new ideas. Your freedom and space are important.",
+    "Sun in Pisces: you are kind, creative and a dreamer. You feel other people's pain quickly.",
+  ],
 };

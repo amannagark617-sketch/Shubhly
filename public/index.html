@@ -89,7 +89,14 @@
               <li data-s="2"><h3 data-i="s3d_3h"></h3><p data-i="s3d_3p"></p></li>
             </ol>
           </div>
-          <div class="s3d-scene" aria-hidden="true"><div class="s3d-obj" id="s3dObj"></div></div>
+          <div class="s3d-scene">
+            <div class="s3d-sky" id="s3dSky" role="img" data-i-aria="s3d_h"></div>
+            <div class="s3d-obj" id="s3dObj" aria-hidden="true"></div>
+            <div class="s3d-badge" id="s3dBadge" hidden>
+              <span data-i="s3d_sample"></span>
+              <a class="btn btn-primary" href="#kundli" data-i="s3d_mine"></a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -162,6 +169,14 @@
         <div class="saved" id="saved" hidden></div>
 
         <form class="card" id="form" novalidate>
+          <div class="field">
+            <span data-i="tr_label"></span>
+            <div class="seg" role="radiogroup" data-i-aria="tr_label">
+              <label><input type="radio" name="tradition" value="vedic" checked /><span data-i="tr_vedic"></span></label>
+              <label><input type="radio" name="tradition" value="western" /><span data-i="tr_western"></span></label>
+            </div>
+            <small class="hint" id="trHint" data-i="tr_vedic_sub"></small>
+          </div>
           <label class="field">
             <span data-i="f_name"></span>
             <input type="text" id="name" autocomplete="given-name" maxlength="60" />
@@ -205,13 +220,20 @@
               </div>
               <div class="table-wrap">
                 <table id="planetTable">
-                  <thead><tr><th data-i="t_graha"></th><th data-i="t_rashi"></th><th data-i="t_deg"></th><th data-i="t_house"></th><th data-i="t_nak"></th></tr></thead>
+                  <thead><tr><th data-i="t_graha"></th><th data-i="t_rashi"></th><th data-i="t_deg"></th><th data-i="t_house"></th><th id="thNak" data-i="t_nak"></th></tr></thead>
                   <tbody></tbody>
                 </table>
               </div>
             </div>
+            <div class="aspects" id="aspectBox" hidden></div>
             <div class="dasha" id="dashaBox" hidden></div>
             <div class="callout" id="satiBox" hidden></div>
+          </div>
+
+          <div class="card sky-card" id="skyCard">
+            <h3 class="card-h" data-i="sky_h"></h3>
+            <div class="sky" id="sky3d" role="img" data-i-aria="sky_h"></div>
+            <p class="sky-info" id="skyInfo" aria-live="polite"></p>
           </div>
 
           <div class="card" id="next">
@@ -219,6 +241,7 @@
             <div class="next">
               <button type="button" class="btn btn-primary" id="scrollReport" data-i="next_report"></button>
               <button type="button" class="btn btn-outline" id="shareBtn" data-i="next_share"></button>
+              <button type="button" class="btn btn-outline" id="pdfBtn" data-i="rep_pdf"></button>
               <a class="btn btn-outline" id="waBtn" href="#" target="_blank" rel="noopener" hidden data-i="next_wa"></a>
             </div>
             <a class="upsell" href="#premium">
@@ -240,17 +263,12 @@
               </label>
               <div class="field">
                 <span data-i="rep_lang"></span>
-                <div class="seg seg3" role="radiogroup" data-i-aria="rep_lang">
-                  <label><input type="radio" name="lang" value="en" checked /><span>English</span></label>
-                  <label><input type="radio" name="lang" value="hi" /><span>हिंदी</span></label>
-                  <label><input type="radio" name="lang" value="hn" /><span>Hinglish</span></label>
-                </div>
+                <select id="repLang" data-i-aria="rep_lang"></select>
               </div>
             </div>
             <p class="error" id="reportError" role="alert" hidden></p>
             <div class="reading-actions">
               <button type="button" class="btn btn-dark" id="reportBtn" data-i="rep_btn"></button>
-              <button type="button" class="btn btn-outline" id="printBtn" hidden data-i="rep_print"></button>
             </div>
             <div class="report" id="reportOut" hidden></div>
             <p class="fine" data-i="rep_fine"></p>
@@ -337,6 +355,7 @@
           <details><summary data-i="faq3q"></summary><p data-i="faq3a"></p></details>
           <details><summary data-i="faq4q"></summary><p data-i="faq4a"></p></details>
           <details><summary data-i="faq5q"></summary><p data-i="faq5a"></p></details>
+          <details><summary data-i="faq6q"></summary><p data-i="faq6a"></p></details>
         </div>
         </div>
       </div>

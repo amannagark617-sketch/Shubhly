@@ -172,6 +172,21 @@ export const LAGNA = [
   "Aap dayalu, creative aur sapno mein jeene wale hain. Doosron ka dard jaldi mehsoos karte ho.",
 ];
 
+export const SUN = [
+  "Sun sign Mesh: aap seedhe, himmatwale aur pehla kadam uthane wale hain. Jaldi josh aata hai, thoda sabr seekhna achha rehta hai.",
+  "Sun sign Vrishabh: aap sthir, bharosemand aur aaram pasand karne wale hain. Dheere chalte hain par pakka kaam karte hain.",
+  "Sun sign Mithun: aap jigyasu, baatuni aur jaldi seekhne wale hain. Aapka dimaag ek jagah kam tikta hai.",
+  "Sun sign Kark: aap bhaavuk, dhyaan rakhne wale aur parivaar se jude hain. Aapka antarmann tez hai.",
+  "Sun sign Singh: aap mein swabhavik confidence aur leader wali energy hai. Aap kadar chahte hain aur dil se udaar hain.",
+  "Sun sign Kanya: aap practical, detail par dhyan dene wale aur madadgaar hain. Khud se perfection ki umeed rakhte hain.",
+  "Sun sign Tula: aap balance, sundarta aur achhe rishton ko value dete hain. Faisla lene mein samay lagta hai.",
+  "Sun sign Vrishchik: aap gehre, drid-nishchayi aur raaz sambhalne wale hain. Jo thaan lete hain, karke dikhate hain.",
+  "Sun sign Dhanu: aap khule dil ke, aashavaadi aur ghoomne-seekhne ke shaukeen hain. Aazaadi aapke liye zaroori hai.",
+  "Sun sign Makar: aap mehnati, anushaasit aur lambe goals ki taraf sthir hain. Safalta der se, par pakki aati hai.",
+  "Sun sign Kumbh: aap alag sochte hain, dostana hain aur naye vichaaron se bhare hain. Aapki aazaadi aur space zaroori hai.",
+  "Sun sign Meen: aap dayalu, creative aur sapne dekhne wale hain. Dusron ka dard jaldi mehsoos karte hain.",
+];
+
 export const RASHI = [
   "Mann se aap josh se bhare aur jaldi react karne wale hain.",
   "Mann se aap stable, sukoon-pasand aur loyal hain.",
@@ -190,7 +205,7 @@ export const RASHI = [
 
 const BASE = {
   MOOD_LABEL, WEEKDAY_INFO, HOUSE_READING, TITHI_TONE, RASHI_TRAIT, HIGHLIGHTS,
-  DASHA_THEME, SADE_SATI, LAGNA, RASHI,
+  DASHA_THEME, SADE_SATI, LAGNA, RASHI, SUN,
 };
 
 // Tables for a language: "hn" (Hinglish, default), "en" or "hi".
@@ -210,6 +225,7 @@ function merge(base, t) {
   out.SADE_SATI = t.SADE_SATI;
   out.LAGNA = t.LAGNA;
   out.RASHI = t.RASHI;
+  out.SUN = t.SUN;
   out.WEEKDAY_INFO = Object.fromEntries(
     Object.entries(base.WEEKDAY_INFO).map(([k, v]) => [k, {
       ...v,

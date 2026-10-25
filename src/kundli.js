@@ -114,6 +114,7 @@ const iso = (d) => d.toISOString().slice(0, 10);
  * tz is an IANA zone like "Asia/Kolkata"; hour is 0-23 local time.
  */
 export function computeKundli(input, now = new Date()) {
+  if (input.tradition === "western") return computeWestern(input);
   const { year, month, day, hour, minute, lat, lon, tz } = input;
 
   const local = DateTime.fromObject(
@@ -188,6 +189,7 @@ export function computeKundli(input, now = new Date()) {
       lat,
       lon,
     },
+    tradition: "vedic",
     ayanamsa: "Lahiri",
     ayanamsaValue: sweph.get_ayanamsa_ut(jd),
     ascendant: asc,
@@ -229,5 +231,129 @@ export function computeKundli(input, now = new Date()) {
           }
         : null,
     },
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Western (tropical) chart: Sun to Pluto and the North Node, Placidus houses
+// (whole-sign near the poles, where Placidus cannot be drawn), major aspects.
+// ---------------------------------------------------------------------------
+
+const WEST_FLAGS = C.SEFLG_MOSEPH | C.SEFLG_SPEED;
+const WEST_IDS = [
+  ["Sun", C.SE_SUN, "Su"],
+  ["Moon", C.SE_MOON, "Mo"],
+  ["Mercury", C.SE_MERCURY, "Me"],
+  ["Venus", C.SE_VENUS, "Ve"],
+  ["Mars", C.SE_MARS, "Ma"],
+  ["Jupiter", C.SE_JUPITER, "Ju"],
+  ["Saturn", C.SE_SATURN, "Sa"],
+  ["Uranus", C.SE_URANUS, "Ur"],
+  ["Neptune", C.SE_NEPTUNE, "Ne"],
+  ["Pluto", C.SE_PLUTO, "Pl"],
+  ["NorthNode", C.SE_TRUE_NODE, "NN"],
+];
+
+const ASPECTS = [
+  { key: "conjunction", angle: 0, orb: 8 },
+  { key: "sextile", angle: 60, orb: 4 },
+  { key: "square", angle: 90, orb: 6 },
+  { key: "trine", angle: 120, orb: 6 },
+  { key: "opposition", angle: 180, orb: 8 },
+];
+
+function westPoint(lon) {
+  const l = norm360(lon);
+  const signIndex = Math.floor(l / 30);
+  return {
+    lon: l,
+    signIndex,
+    sign: SIGNS[signIndex].en,
+    signHi: SIGNS[signIndex].hi,
+    degInSign: l - signIndex * 30,
+  };
+}
+
+function computeWestern(input) {
+  const { year, month, day, hour, minute, lat, lon, tz } = input;
+  const local = DateTime.fromObject({ year, month, day, hour, minute }, { zone: tz });
+  if (!local.isValid) throw new Error("Invalid birth date, time or timezone");
+  const utc = local.toUTC();
+  const ut = utc.hour + utc.minute / 60 + utc.second / 3600;
+  const jd = sweph.julday(utc.year, utc.month, utc.day, ut, C.SE_GREG_CAL);
+
+  let h = sweph.houses_ex(jd, 0, lat, lon, "P");
+  let system = "Placidus";
+  if (h.error || h.flag < 0 || !h.data?.houses || h.data.houses.some((x) => !Number.isFinite(x))) {
+    h = sweph.houses_ex(jd, 0, lat, lon, "W");
+    system = "Whole sign";
+  }
+  if (h.error) throw new Error("House calculation failed: " + h.error);
+  const ascLon = norm360(h.data.points[0]);
+  const mcLon = norm360(h.data.points[1]);
+  const asc = westPoint(ascLon);
+  const cusps = h.data.houses.map(norm360);
+
+  const houseOf = (l) => {
+    for (let i = 0; i < 12; i++) {
+      const a = cusps[i], b = cusps[(i + 1) % 12];
+      const span = norm360(b - a);
+      if (norm360(l - a) < span) return i + 1;
+    }
+    return 1;
+  };
+
+  const planets = [];
+  for (const [key, id, short] of WEST_IDS) {
+    const r = sweph.calc_ut(jd, id, WEST_FLAGS);
+    if (r.error) throw new Error(`${key} calculation failed: ${r.error}`);
+    planets.push({
+      key,
+      short,
+      ...westPoint(r.data[0]),
+      house: houseOf(r.data[0]),
+      retrograde: key === "NorthNode" ? true : r.data[3] < 0,
+    });
+  }
+
+  const houses = cusps.map((c, i) => ({ house: i + 1, ...westPoint(c) }));
+
+  const aspects = [];
+  const bodies = planets.filter((p) => p.key !== "NorthNode");
+  for (let i = 0; i < bodies.length; i++) {
+    for (let j = i + 1; j < bodies.length; j++) {
+      let d = Math.abs(bodies[i].lon - bodies[j].lon);
+      if (d > 180) d = 360 - d;
+      for (const a of ASPECTS) {
+        const off = Math.abs(d - a.angle);
+        if (off <= a.orb) {
+          aspects.push({ a: bodies[i].key, b: bodies[j].key, type: a.key, orb: Number(off.toFixed(1)) });
+          break;
+        }
+      }
+    }
+  }
+
+  const moon = planets.find((p) => p.key === "Moon");
+  const sun = planets.find((p) => p.key === "Sun");
+
+  return {
+    tradition: "western",
+    birth: {
+      local: local.toFormat("yyyy-LL-dd HH:mm"),
+      utc: utc.toFormat("yyyy-LL-dd HH:mm"),
+      tz,
+      lat,
+      lon,
+    },
+    zodiac: "Tropical",
+    houseSystem: system,
+    ascendant: asc,
+    midheaven: westPoint(mcLon),
+    moonSign: { sign: moon.sign, signHi: moon.signHi, signIndex: moon.signIndex },
+    sunSign: { sign: sun.sign, signHi: sun.signHi, signIndex: sun.signIndex },
+    planets,
+    houses,
+    aspects,
   };
 }

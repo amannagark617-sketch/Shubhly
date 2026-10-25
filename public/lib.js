@@ -3,11 +3,13 @@
 export const SHORT = {
   Sun: "Su", Moon: "Mo", Mars: "Ma", Mercury: "Me", Jupiter: "Ju",
   Venus: "Ve", Saturn: "Sa", Rahu: "Ra", Ketu: "Ke",
+  Uranus: "Ur", Neptune: "Ne", Pluto: "Pl", NorthNode: "NN",
 };
 
 export const HI = {
   Sun: "सूर्य", Moon: "चंद्र", Mars: "मंगल", Mercury: "बुध", Jupiter: "गुरु",
   Venus: "शुक्र", Saturn: "शनि", Rahu: "राहु", Ketu: "केतु",
+  Uranus: "यूरेनस", Neptune: "नेप्च्यून", Pluto: "प्लूटो", NorthNode: "उत्तर नोड",
 };
 
 export function esc(s) {
@@ -130,6 +132,73 @@ export function chartSvg(chart) {
   parts += '<text x="200" y="62" text-anchor="middle" font-size="10" fill="#4a4870">Lagna</text>';
 
   return `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kundli chart, North Indian style">${parts}</svg>`;
+}
+
+// ---- western chart wheel ---------------------------------------------------------
+
+const SIGN_ABBR = ["Ari", "Tau", "Gem", "Can", "Leo", "Vir", "Lib", "Sco", "Sag", "Cap", "Aqu", "Pis"];
+const ZODIAC = ["♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓"];
+
+// The classic wheel: Rising sign on the left, signs counter-clockwise, house
+// cusps as spokes, planets on the ring, aspect lines in the middle.
+export function westernSvg(chart, { glyphs = true } = {}) {
+  const cx = 200, cy = 200, R1 = 192, R2 = 158, R3 = 74, RP = 128;
+  const asc = chart.ascendant.lon;
+  const ang = (lon) => ((((lon - asc) % 360) + 360) % 360) * Math.PI / 180;
+  const pt = (lon, r) => { const a = ang(lon); return [cx - r * Math.cos(a), cy + r * Math.sin(a)]; };
+  const f = (n) => n.toFixed(1);
+  const line = (l1, r1, l2, r2, extra = "") => {
+    const [x1, y1] = pt(l1, r1), [x2, y2] = pt(l2, r2);
+    return `<line x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}" ${extra}/>`;
+  };
+  let o = `<circle cx="${cx}" cy="${cy}" r="${R1}" fill="#fffaf0" stroke="#1b1b3a" stroke-width="2.5"/>`;
+  o += `<circle cx="${cx}" cy="${cy}" r="${R2}" fill="none" stroke="#1b1b3a" stroke-width="1.6"/>`;
+  o += `<circle cx="${cx}" cy="${cy}" r="${R3}" fill="#fff" stroke="#1b1b3a" stroke-width="1.6"/>`;
+
+  o += '<g stroke="#1b1b3a" stroke-width="1.2">';
+  for (let k = 0; k < 12; k++) o += line(k * 30, R2, k * 30, R1);
+  o += "</g>";
+  for (let k = 0; k < 12; k++) {
+    const [x, y] = pt(k * 30 + 15, (R1 + R2) / 2);
+    o += glyphs
+      ? `<text x="${f(x)}" y="${f(y + 6)}" text-anchor="middle" font-size="17" fill="#1b1b3a">${ZODIAC[k]}&#xFE0E;</text>`
+      : `<text x="${f(x)}" y="${f(y + 4)}" text-anchor="middle" font-size="11" font-weight="700" fill="#1b1b3a">${SIGN_ABBR[k]}</text>`;
+  }
+
+  chart.houses.forEach((h, i) => {
+    const major = i === 0 || i === 9 || i === 6 || i === 3;
+    o += line(h.lon, R3, h.lon, R2, `stroke="${major ? "#d8321a" : "#1b1b3a"}" stroke-width="${major ? 2.2 : 1}"`);
+    const next = chart.houses[(i + 1) % 12].lon;
+    const span = ((next - h.lon) % 360 + 360) % 360;
+    const [x, y] = pt(h.lon + span / 2, R3 + 15);
+    o += `<text x="${f(x)}" y="${f(y + 4)}" text-anchor="middle" font-size="11" fill="#d8321a" font-weight="700">${i + 1}</text>`;
+  });
+
+  const byKey = Object.fromEntries(chart.planets.map((p) => [p.key, p]));
+  for (const a of chart.aspects || []) {
+    if (a.type === "conjunction") continue;
+    const A = byKey[a.a], B = byKey[a.b];
+    if (!A || !B) continue;
+    const colour = a.type === "trine" || a.type === "sextile" ? "#e0a100" : "#d8321a";
+    o += line(A.lon, R3 - 1, B.lon, R3 - 1, `stroke="${colour}" stroke-width="1.4"${a.type === "sextile" ? ' stroke-dasharray="4 3"' : ""}`);
+  }
+
+  // Spread labels that would overlap, keeping a small tick at the true position.
+  const sorted = [...chart.planets].sort((a, b) => a.lon - b.lon);
+  let prev = -999;
+  const shown = sorted.map((p) => {
+    let d = ((p.lon - asc) % 360 + 360) % 360;
+    if (d < prev + 11) d = prev + 11;
+    prev = d;
+    return { p, lon: asc + d };
+  });
+  for (const { p, lon } of shown) {
+    o += line(p.lon, R2, p.lon, R2 - 7, 'stroke="#1b1b3a" stroke-width="1.6"');
+    const [x, y] = pt(lon, RP);
+    o += `<circle cx="${f(x)}" cy="${f(y)}" r="10" fill="#f6b81c" stroke="#1b1b3a" stroke-width="1.8"/>`;
+    o += `<text x="${f(x)}" y="${f(y + 3.6)}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#1b1b3a">${SHORT[p.key]}</text>`;
+  }
+  return `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Birth chart wheel, Western style">${o}</svg>`;
 }
 
 // ---- report text -----------------------------------------------------------------

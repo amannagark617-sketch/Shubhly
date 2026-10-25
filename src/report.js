@@ -21,6 +21,7 @@ export async function generateReport({
   name,
   topic,
   language,
+  tradition = "vedic",
   chart,
   timeUnknown = false,
 }) {
@@ -36,7 +37,7 @@ export async function generateReport({
     model: MODEL,
     contents: buildUserContent({ name, topic, chart, today, timeUnknown }),
     config: {
-      systemInstruction: buildSystemInstruction(language),
+      systemInstruction: buildSystemInstruction(language, tradition),
       temperature: 0.7,
       maxOutputTokens: 4096,
     },

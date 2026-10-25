@@ -1,9 +1,10 @@
 import {
-  HI as PLANET_HI, esc, fmt12, todayIn, nowIn, addDays, dateLabel, setDateLocale,
-  inSlot, dots, moonSvg, chartSvg, renderMarkdown,
+  esc, fmt12, todayIn, nowIn, addDays, dateLabel, setDateLocale,
+  inSlot, dots, moonSvg, chartSvg, westernSvg, renderMarkdown, SHORT,
 } from "/lib.js";
 import { makeShareCard } from "/card.js";
 import { initFx, fillMarquee } from "/fx.js";
+import { SIGN_EN, planetName, signName, nakName, dayName, pickName, DATE_LOCALE } from "/names.js";
 import { t, getLang, setLang, applyStatic, LANGS, LANG_NAMES } from "/i18n.js";
 
 const $ = (id) => document.getElementById(id);
@@ -28,17 +29,12 @@ let myRashi = store.get("shubhly.rashi", null); // 0..11
 let profiles = store.get("shubhly.profiles", []);
 let config = { whatsappUrl: null };
 
-// pick a name by language: Hindi uses the Devanagari field, the others the roman one
-const L = (en, hi) => (getLang() === "hi" ? hi : en);
-const HN_PLANET = { Sun: "Surya", Moon: "Chandra", Mars: "Mangal", Mercury: "Budh", Jupiter: "Guru", Venus: "Shukra", Saturn: "Shani", Rahu: "Rahu", Ketu: "Ketu" };
-const HN_SIGN = { Aries: "Mesh", Taurus: "Vrishabh", Gemini: "Mithun", Cancer: "Kark", Leo: "Singh", Virgo: "Kanya", Libra: "Tula", Scorpio: "Vrishchik", Sagittarius: "Dhanu", Capricorn: "Makar", Aquarius: "Kumbh", Pisces: "Meen" };
-const HN_DAY = { Monday: "Somvar", Tuesday: "Mangalvar", Wednesday: "Budhvar", Thursday: "Guruvar", Friday: "Shukravar", Saturday: "Shanivar", Sunday: "Ravivar" };
-const planet = (key) => (getLang() === "hi" ? PLANET_HI[key] : getLang() === "hn" ? HN_PLANET[key] || key : key);
-// sign name: Hindi script, English, or Hinglish ("Meen (Pisces)"; short drops the brackets)
-const sn = (en, hi, short = false) =>
-  getLang() === "hi" ? hi : getLang() === "hn" ? (short ? HN_SIGN[en] || en : `${HN_SIGN[en] || en} (${en})`) : en;
-// weekday name in the current language (works on {en, hi} objects or an English name)
-const day = (en, hi) => (getLang() === "hi" ? hi : getLang() === "hn" ? HN_DAY[en] || en : en);
+// names in the chosen language (tables live in names.js)
+const L = (en, hi) => pickName(getLang(), en, hi);
+const planet = (key) => planetName(getLang(), key);
+const sn = (en, hi, short = false) => signName(getLang(), en, hi, short);
+const nak = (en, hi) => nakName(getLang(), en, hi);
+const day = (en, hi) => dayName(getLang(), en, hi);
 
 const until = (e) => (e ? t(e.nextDay ? "until_next" : "until", { time: fmt12(e.time) }) : "");
 const rng = (r) => (r ? t("range", { a: fmt12(r.from), b: fmt12(r.to) }) : "");
@@ -157,7 +153,7 @@ function renderMoon(p) {
   $("moonTithi").textContent = L(`${p.tithi.paksha.en} ${p.tithi.name}`, `${p.tithi.paksha.hi} ${p.tithi.nameHi}`);
   $("moonSub").textContent = until(p.tithi.ends);
   $("moonFacts").innerHTML = `
-    <div><dt>${esc(t("m_nak"))}</dt><dd>${esc(L(p.nakshatra.name, p.nakshatra.nameHi))}</dd></div>
+    <div><dt>${esc(t("m_nak"))}</dt><dd>${esc(nak(p.nakshatra.name, p.nakshatra.nameHi))}</dd></div>
     <div><dt>${esc(t("m_moon"))}</dt><dd>${esc(sn(p.moonSign.sign, p.moonSign.signHi))}</dd></div>
     <div><dt>${esc(t("m_rise"))}</dt><dd>${fmt12(p.sunrise)}</dd></div>
     <div><dt>${esc(t("m_set"))}</dt><dd>${fmt12(p.sunset)}</dd></div>`;
@@ -185,7 +181,7 @@ function renderPanchang(p) {
     ${hl}
     <div class="facts">
       ${fact(t("p_tithi"), esc(tn), esc(until(p.tithi.ends)))}
-      ${fact(t("p_nak"), esc(L(p.nakshatra.name, p.nakshatra.nameHi)), esc(until(p.nakshatra.ends)))}
+      ${fact(t("p_nak"), esc(nak(p.nakshatra.name, p.nakshatra.nameHi)), esc(until(p.nakshatra.ends)))}
       ${fact(t("p_yoga"), esc(L(p.yoga.name, p.yoga.nameHi)), esc(until(p.yoga.ends)))}
       ${fact(t("p_karana"), esc(L(p.karana.name, p.karana.nameHi)), esc(until(p.karana.ends)))}
       ${fact(t("p_abhijit"), esc(p.abhijit ? rng(p.abhijit) : t("p_abhijit_none")), esc(p.abhijit ? t("p_abhijit_sub") : t("p_abhijit_none_sub")), p.abhijit ? "fact--good" : "")}
@@ -269,7 +265,7 @@ function buildTicker(p) {
   const tn = L(`${p.tithi.paksha.en} ${p.tithi.name}`, `${p.tithi.paksha.hi} ${p.tithi.nameHi}`);
   fillMarquee([
     `${t("p_tithi")}: ${tn}`,
-    `${t("m_nak")}: ${L(p.nakshatra.name, p.nakshatra.nameHi)}`,
+    `${t("m_nak")}: ${nak(p.nakshatra.name, p.nakshatra.nameHi)}`,
     `${t("m_moon")}: ${sn(p.moonSign.sign, p.moonSign.signHi)}`,
     `${t("p_rahu")}: ${rng(p.kaal.rahu)}`,
     p.abhijit ? `${t("p_abhijit")}: ${rng(p.abhijit)}` : `${t("m_rise")}: ${fmt12(p.sunrise)}`,
@@ -437,6 +433,8 @@ async function shareText(text) {
 let selectedPlace = null;
 let lastPayload = null;
 let lastResult = null;
+let reportText = "";
+let reportLang = "en";
 const placeInput = $("place");
 const picked = $("placePicked");
 
@@ -473,6 +471,7 @@ $("saved").addEventListener("click", (e) => {
     $("timeUnknown").checked = !!p.timeUnknown;
     $("time").disabled = !!p.timeUnknown;
     $("time").value = p.time;
+    setTradition(p.tradition);
     pickBirthPlace(p.place);
     $("form").requestSubmit();
   } else if (d) {
@@ -498,8 +497,17 @@ function collect() {
     time: timeUnknown ? "12:00" : $("time").value,
     timeUnknown,
     place: selectedPlace,
+    tradition: tradition(),
   };
 }
+
+const tradition = () => document.querySelector('input[name="tradition"]:checked').value;
+function setTradition(v) {
+  const r = document.querySelector(`input[name="tradition"][value="${v === "western" ? "western" : "vedic"}"]`);
+  if (r) r.checked = true;
+  $("trHint").textContent = t(tradition() === "western" ? "tr_western_sub" : "tr_vedic_sub");
+}
+document.querySelectorAll('input[name="tradition"]').forEach((r) => r.addEventListener("change", () => setTradition(tradition())));
 
 const monthYear = (iso) => dateLabel(iso, { month: "short", year: "numeric" });
 
@@ -509,35 +517,57 @@ function renderResult(data, payload, { scroll = true } = {}) {
   $("resMeta").textContent =
     `${payload.date}, ${payload.timeUnknown ? t("r_time_unknown") : fmt12(payload.time)}, ${payload.place.label}`;
 
+  const western = chart.tradition === "western";
   const asc = chart.ascendant;
   const chips = [];
-  if (!payload.timeUnknown) {
-    chips.push([t("r_lagna"), `${sn(asc.sign, asc.signHi)} ${asc.degInSign.toFixed(1)}°`]);
+  if (western) {
+    chips.push([t("r_sun"), sn(chart.sunSign.sign, chart.sunSign.signHi)]);
+    chips.push([t("r_moon"), sn(chart.moonSign.sign, chart.moonSign.signHi)]);
+    if (!payload.timeUnknown) chips.push([t("r_rising"), `${sn(asc.sign, asc.signHi)} ${asc.degInSign.toFixed(1)}°`]);
+  } else {
+    if (!payload.timeUnknown) {
+      chips.push([t("r_lagna"), `${sn(asc.sign, asc.signHi)} ${asc.degInSign.toFixed(1)}°`]);
+    }
+    chips.push([t("r_rashi"), sn(chart.moonSign.sign, chart.moonSign.signHi)]);
+    const moonP = chart.planets.find((x) => x.key === "Moon");
+    chips.push([t("r_nak"), `${nak(chart.nakshatra.name, moonP?.nakshatraHi || chart.nakshatra.name)}, ${t("r_pada", { n: chart.nakshatra.pada })}`]);
   }
-  chips.push([t("r_rashi"), sn(chart.moonSign.sign, chart.moonSign.signHi)]);
-  const moonP = chart.planets.find((x) => x.key === "Moon");
-  chips.push([t("r_nak"), `${L(chart.nakshatra.name, moonP?.nakshatraHi || chart.nakshatra.name)}, ${t("r_pada", { n: chart.nakshatra.pada })}`]);
   $("chips").innerHTML = chips.map(([k, v]) => `<span class="chip"><b>${esc(k)}:</b> ${esc(v)}</span>`).join("");
   show($("unknownNote"), payload.timeUnknown);
 
   const ins = data.insights || {};
   const items = [];
-  if (ins.lagna) items.push([t("r_ins_lagna"), ins.lagna]);
-  if (ins.rashi) items.push([t("r_ins_rashi"), ins.rashi]);
-  if (ins.dasha) items.push([t("r_ins_dasha", { lord: planet(ins.dasha.lord) }), ins.dasha.text]);
+  if (western) {
+    if (ins.sun) items.push([t("r_ins_sun"), ins.sun]);
+    if (ins.rashi) items.push([t("r_ins_moon"), ins.rashi]);
+    if (ins.lagna) items.push([t("r_ins_rising"), ins.lagna]);
+  } else {
+    if (ins.lagna) items.push([t("r_ins_lagna"), ins.lagna]);
+    if (ins.rashi) items.push([t("r_ins_rashi"), ins.rashi]);
+    if (ins.dasha) items.push([t("r_ins_dasha", { lord: planet(ins.dasha.lord) }), ins.dasha.text]);
+  }
   $("insight").innerHTML = items.map(([h, tx]) => `<li><b>${esc(h)}</b>${esc(tx)}</li>`).join("");
 
-  $("chart").innerHTML = chartSvg(chart);
+  $("chart").innerHTML = western ? westernSvg(chart) : chartSvg(chart);
+  const legendKeys = chart.planets.map((p) => p.key);
   $("legend").textContent =
-    "Su सूर्य, Mo चंद्र, Ma मंगल, Me बुध, Ju गुरु, Ve शुक्र, Sa शनि, Ra राहु, Ke केतु. " + t("r_legend");
+    legendKeys.map((k) => `${SHORT[k]} ${planet(k)}`).join(", ") + ". " + t(western ? "r_legend_w" : "r_legend");
 
+  $("thNak").hidden = western;
   $("planetTable").querySelector("tbody").innerHTML = chart.planets.map((p) => `<tr>
       <td><b>${esc(planet(p.key))}</b>${p.retrograde ? " <small>(R)</small>" : ""}</td>
       <td>${esc(sn(p.sign, p.signHi))}</td>
       <td>${p.degInSign.toFixed(1)}°</td><td>${p.house}</td>
-      <td>${esc(L(p.nakshatra, p.nakshatraHi || p.nakshatra))} <small>${esc(t("r_pada", { n: p.pada }))}</small></td></tr>`).join("");
+      ${western ? "" : `<td>${esc(nak(p.nakshatra, p.nakshatraHi || p.nakshatra))} <small>${esc(t("r_pada", { n: p.pada }))}</small></td>`}</tr>`).join("");
 
-  const cur = chart.dasha.current;
+  const ab = $("aspectBox");
+  if (western && chart.aspects?.length) {
+    ab.innerHTML = `<h3 class="card-h">${esc(t("asp_h"))}</h3><ul>` + chart.aspects.map((a) =>
+      `<li>${esc(planet(a.a))} <b>${esc(t("asp_" + a.type))}</b> ${esc(planet(a.b))} <small>${a.orb}°</small></li>`).join("") + "</ul>";
+    show(ab, true);
+  } else show(ab, false);
+
+  const cur = chart.dasha?.current;
   const box = $("dashaBox");
   if (cur && !payload.timeUnknown) {
     const md = cur.mahadasha, ad = cur.antardasha;
@@ -556,16 +586,19 @@ function renderResult(data, payload, { scroll = true } = {}) {
   } else show(sb, false);
 
   show($("result"), true);
+  store.set("shubhly.sky", skyFromChart(chart, payload.timeUnknown));
+  mountResultSky();
+  if (s3dWanted) mountSection();
   if (scroll) {
     show($("reportOut"), false);
-    show($("printBtn"), false);
+    reportText = "";
     show($("reportError"), false);
     $("reportOut").innerHTML = "";
     setBusy($("reportBtn"), false, t("rep_btn"));
     $("result").scrollIntoView({ behavior: "smooth", block: "start" });
 
     const idx = chart.moonSign.index ?? chart.moonSign.signIndex;
-    if (Number.isInteger(idx)) {
+    if (!western && Number.isInteger(idx)) {
       myRashi = idx;
       shownRashi = idx;
       store.set("shubhly.rashi", idx);
@@ -616,11 +649,14 @@ $("form").addEventListener("submit", async (e) => {
 $("shareBtn").addEventListener("click", async () => {
   if (!lastResult) return;
   const c = lastResult.chart;
-  const rows = [
+  const rows = c.tradition === "western" ? [
+    [t("r_sun"), sn(c.sunSign.sign, c.sunSign.signHi)],
+    [t("r_moon"), sn(c.moonSign.sign, c.moonSign.signHi)],
+  ] : [
     [t("r_rashi"), sn(c.moonSign.sign, c.moonSign.signHi)],
-    [t("r_nak"), `${L(c.nakshatra.name, c.planets.find((x) => x.key === "Moon")?.nakshatraHi || c.nakshatra.name)}, ${t("r_pada", { n: c.nakshatra.pada })}`],
+    [t("r_nak"), `${nak(c.nakshatra.name, c.planets.find((x) => x.key === "Moon")?.nakshatraHi || c.nakshatra.name)}, ${t("r_pada", { n: c.nakshatra.pada })}`],
   ];
-  if (!lastPayload.timeUnknown) rows.unshift([t("r_lagna"), sn(c.ascendant.sign, c.ascendant.signHi)]);
+  if (!lastPayload.timeUnknown) rows.unshift([t(c.tradition === "western" ? "r_rising" : "r_lagna"), sn(c.ascendant.sign, c.ascendant.signHi)]);
   const blob = await makeShareCard({
     title: lastResult.name ? t("card_title", { name: lastResult.name }) : t("card_title_me"),
     subtitle: t("card_sub"),
@@ -653,7 +689,7 @@ $("reportBtn").addEventListener("click", async () => {
   show(err, false);
   setBusy(btn, true, t("rep_busy"));
   try {
-    const lang = document.querySelector('input[name="lang"]:checked').value;
+    const lang = $("repLang").value;
     const data = await api("/api/report", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -661,7 +697,8 @@ $("reportBtn").addEventListener("click", async () => {
     });
     $("reportOut").innerHTML = renderMarkdown(data.report);
     show($("reportOut"), true);
-    show($("printBtn"), true);
+    reportText = data.report;
+    reportLang = lang;
     $("reportOut").scrollIntoView({ behavior: "smooth", block: "start" });
   } catch (ex) {
     err.textContent = ex.message;
@@ -670,7 +707,36 @@ $("reportBtn").addEventListener("click", async () => {
     setBusy(btn, false, t("rep_btn"));
   }
 });
-$("printBtn").addEventListener("click", () => window.print());
+$("pdfBtn").addEventListener("click", async () => {
+  if (!lastPayload) return;
+  const btn = $("pdfBtn");
+  setBusy(btn, true, t("pdf_busy"));
+  try {
+    const res = await fetch("/api/pdf", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ ...lastPayload, lang: reportText ? reportLang : getLang(), report: reportText }),
+    });
+    if (!res.ok) {
+      let msg = t("err_generic");
+      try { msg = (await res.json()).error || msg; } catch { /* ignore */ }
+      throw new Error(msg);
+    }
+    const blob = await res.blob();
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "shubhly-kundli.pdf";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    toast(t("pdf_done"));
+  } catch (ex) {
+    toast(ex.message);
+  } finally {
+    setBusy(btn, false, t("rep_pdf"));
+  }
+});
 
 // ---------- premium ----------
 function renderPremium() {
@@ -694,12 +760,12 @@ function setLanguage(l, { first = false } = {}) {
   setLang(l);
   const lang = getLang();
   store.set("shubhly.lang", lang);
-  document.documentElement.lang = lang === "hi" ? "hi" : "en";
-  setDateLocale(lang === "hi" ? "hi-IN" : "en-IN");
+  document.documentElement.lang = lang === "hn" ? "en" : lang;
+  setDateLocale(DATE_LOCALE[lang] || "en-IN");
   applyStatic();
   renderLangMenu();
-  const radio = document.querySelector(`input[name="lang"][value="${lang}"]`);
-  if (radio) radio.checked = true;
+  fillRepLang(lang);
+  setTradition(tradition());
   setBusy($("go"), false, t("f_go"));
   setBusy($("reportBtn"), false, t("rep_btn"));
   renderPremium();
@@ -707,6 +773,7 @@ function setLanguage(l, { first = false } = {}) {
   renderSaved();
   if (selectedPlace) picked.textContent = t("f_selected", { label: selectedPlace.label });
   if (first) return;
+  refreshSky();
   loadToday();
   loadHoroscope();
   if (lastPayload) {
@@ -714,6 +781,11 @@ function setLanguage(l, { first = false } = {}) {
       .then((d) => { lastResult = d; renderResult(d, lastPayload, { scroll: false }); })
       .catch(() => {});
   }
+}
+function fillRepLang(lang) {
+  const sel = $("repLang");
+  sel.innerHTML = LANGS.map((l) => `<option value="${l}">${esc(LANG_NAMES[l])}</option>`).join("");
+  sel.value = lang;
 }
 function renderLangMenu() {
   const lang = getLang();
@@ -777,3 +849,93 @@ function watchSections() {
   loadToday();
   loadHoroscope();
 })();
+
+
+// ---------- real 3D sky ----------
+// Sample positions (a made-up birth) shown until the visitor makes their own chart.
+const SAMPLE_SKY = {
+  sample: true, tradition: "vedic", ascLon: 178.45,
+  planets: [["Sun", 118.1, 11], ["Moon", 354.9, 7], ["Mars", 171.3, 1], ["Mercury", 135.3, 12], ["Jupiter", 222, 3], ["Venus", 116.5, 11], ["Saturn", 329.7, 6], ["Rahu", 186, 2], ["Ketu", 6, 8]]
+    .map(([key, lon, house]) => ({ key, lon, house })),
+};
+let skyMod = null, s3dCtl = null, skyCtl = null, s3dWanted = false;
+
+function skyFromChart(chart, timeUnknown) {
+  return {
+    sample: false, tradition: chart.tradition || "vedic",
+    ascLon: timeUnknown ? null : chart.ascendant.lon,
+    planets: chart.planets.map((p) => ({ key: p.key, lon: p.lon, house: timeUnknown ? null : p.house })),
+  };
+}
+const currentSky = () => store.get("shubhly.sky", null) || SAMPLE_SKY;
+
+function skyOpts(src, extra = {}) {
+  return {
+    planets: src.planets, ascLon: src.ascLon, lagnaText: t(src.tradition === "western" ? "r_rising" : "r_lagna"),
+    names: { planet: (k) => planet(k), sign: (i) => signName(getLang(), SIGN_EN[i], "", true) },
+    ...extra,
+  };
+}
+
+async function loadSkyModule() {
+  if (!skyMod) skyMod = await import("/sky3d.js");
+  return skyMod;
+}
+
+async function mountSection() {
+  const host = $("s3dSky");
+  if (!host) return;
+  try {
+    const mod = await loadSkyModule();
+    s3dCtl?.destroy();
+    const src = currentSky();
+    host.classList.add("on");
+    s3dCtl = mod.mountSky(host, skyOpts(src, { scrollDriven: true }));
+    show($("s3dBadge"), src.sample);
+    updateSectionProgress();
+  } catch {
+    host.classList.remove("on"); // no WebGL: the flat version stays
+  }
+}
+function updateSectionProgress() {
+  if (!s3dCtl) return;
+  const sec = $("s3d"), r = sec.getBoundingClientRect();
+  const total = r.height - window.innerHeight;
+  s3dCtl.setProgress(Math.max(0, Math.min(1, total > 0 ? -r.top / total : 0)));
+}
+window.addEventListener("scroll", () => { if (s3dCtl) requestAnimationFrame(updateSectionProgress); }, { passive: true });
+
+async function mountResultSky() {
+  const host = $("sky3d");
+  if (!host || !lastResult) return;
+  try {
+    const mod = await loadSkyModule();
+    skyCtl?.destroy();
+    const src = skyFromChart(lastResult.chart, lastPayload?.timeUnknown);
+    const info = $("skyInfo");
+    info.textContent = "";
+    skyCtl = mod.mountSky(host, skyOpts(src, {
+      onPick(key) {
+        const p = src.planets.find((x) => x.key === key);
+        const si = Math.floor(p.lon / 30) % 12;
+        info.textContent = t(p.house ? "sky_planet" : "sky_planet_nh", {
+          planet: planet(key), sign: signName(getLang(), SIGN_EN[si], "", true), deg: (p.lon % 30).toFixed(1), house: p.house || "",
+        });
+      },
+    }));
+    show($("skyCard"), true);
+  } catch {
+    show($("skyCard"), false);
+  }
+}
+
+function refreshSky() {
+  if (s3dWanted) mountSection();
+  if (lastResult) mountResultSky();
+}
+
+if ("IntersectionObserver" in window && $("s3d")) {
+  new IntersectionObserver(([e], o) => {
+    if (e.isIntersecting) { s3dWanted = true; o.disconnect(); mountSection(); }
+  }, { rootMargin: "500px 0px" }).observe($("s3d"));
+}
