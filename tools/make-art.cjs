@@ -182,12 +182,15 @@ scenes["product-rudraksha.jpg"] = { w: 800, h: 800, svg: () => {
     <path d="M365 628 h70 l-8 -34 h-54z" fill="${C.haldi}" stroke="${C.ink}" stroke-width="5" stroke-linejoin="round"/>`; } };
 
 
-scenes["hero-strip.jpg"] = { w: 1920, h: 360, svg: () => `
-  ${flat(1920, 360, C.haldi)}${dots(1920, 360)}
-  <circle cx="1500" cy="330" r="190" fill="${C.red}" stroke="${C.ink}" stroke-width="8"/>
-  ${temple(1500, 360, 0.8, C.ink)}${temple(330, 360, 0.55, C.ink)}${temple(860, 360, 0.4, C.ink)}
-  ${bunting(0, 1920, 0, 30)}
-  ${[120, 560, 700, 1090, 1260, 1760].map((x, i) => diya(x, 330 + (i % 2) * 8, 0.8)).join("")}`};
+scenes["hero-bg.jpg"] = { w: 1920, h: 1080, svg: () => `
+  ${flat(1920, 1080, "#ffffff")}${dots(1920, 1080, C.ink, 0.08)}
+  <circle cx="1480" cy="470" r="400" fill="#fff0bf"/><circle cx="1480" cy="470" r="400" fill="none" stroke="${C.haldi}" stroke-width="5" opacity="0.7"/>
+  ${mandala(1480, 470, 560, { stroke: C.haldi, sw: 2.5 }).replace("<g ", '<g opacity="0.55" ')}
+  <circle cx="300" cy="900" r="260" fill="#ffe3df"/>
+  ${bunting(0, 1920, 0, 32)}
+  ${temple(330, 1080, 0.62, C.ink)}${temple(900, 1080, 0.42, C.ink)}${temple(1560, 1080, 0.85, C.ink)}
+  <rect y="1040" width="1920" height="40" fill="${C.ink}"/>
+  ${[110, 560, 700, 1130, 1280, 1830].map((x, i) => diya(x, 1040 + (i % 2) * 6, 0.85)).join("")}`};
 
 scenes["aaj-banner.jpg"] = { w: 1600, h: 500, svg: () => `
   ${flat(1600, 500, C.ink)}${dots(1600, 500, C.haldi, 0.18)}

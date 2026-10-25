@@ -11,7 +11,7 @@ function starfield() {
   if (!cv) return;
   const ctx = cv.getContext("2d");
   let w = 0, h = 0, bits = [], px = 0, py = 0, tx = 0, ty = 0, visible = true, last = 0;
-  const COLS = ["#1b1b3a", "#d8321a", "#fff4dc", "#1b1b3a"];
+  const COLS = ["#1b1b3a", "#d8321a", "#f6b81c", "#f6b81c"];
 
   const size = () => {
     const r = cv.parentElement.getBoundingClientRect();

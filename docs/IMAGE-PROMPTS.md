@@ -8,11 +8,28 @@ Palette: haldi yellow #F6B81C, deep indigo #1B1B3A, kumkum red #D8321A, cream #F
 
 Add to the end of every prompt: "No text, no letters, no watermark, no logo."
 
+## All file names (save into public/img/)
+
+| File | Size | Where it shows |
+|---|---|---|
+| hero-bg.jpg | 1920x1080 | Home page hero background |
+| aaj-banner.jpg | 1600x500 | Aaj ka panchang heading |
+| rashifal-banner.jpg | 1600x500 | Aaj ka rashifal heading |
+| kundli-banner.jpg | 1600x500 | Kundli heading |
+| premium-banner.jpg | 1600x500 | Premium heading |
+| store-banner.jpg | 1600x600 | Puja store teaser |
+| cta-banner.jpg | 1600x600 | Closing call to action |
+| og-image.jpg | 1200x630 | Link preview when shared |
+| step-1.png, step-2.png, step-3.png | 640x640 | How it works |
+| faq-art.png | 700x700 | Next to the FAQ |
+| product-ganesha.jpg, product-lakshmi.jpg, product-puja-kit.jpg, product-rudraksha.jpg, product-shankh.jpg, product-incense.jpg, product-diya.jpg, product-yantra.jpg | 800x800 | Store products |
+| rashi-01.png to rashi-12.png | 256x256, transparent | Rashi buttons |
+
 ## Banners
 
-### hero-strip.jpg (1920x360, wide strip)
-Sits along the bottom of the home page hero. Keep the top third plain haldi yellow.
-Prompt: A flat poster skyline strip on haldi yellow: three Indian temple silhouettes in indigo with red and yellow tops, a big red sun disc rising behind the middle temple, triangle bunting along the top, a row of small diyas along the bottom.
+### hero-bg.jpg (1920x1080, 16:9)
+Full background of the home page hero. White background. Text sits on the left and the live Moon card on the right, so keep the middle-left calm and mostly white.
+Prompt: A flat poster scene on a white background with a faint dot texture: a big pale yellow sun disc with a thin yellow line mandala behind it on the upper right, a soft pale pink circle low on the left, triangle bunting in red and white across the top edge, and a skyline of three Indian temple silhouettes in deep indigo along the bottom with a row of small red diyas with orange flames in front.
 
 ### aaj-banner.jpg (1600x500, 16:5)
 Behind the "Aaj ka panchang" heading. Text on the left, so keep the left 50% plain indigo.
