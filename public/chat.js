@@ -16,7 +16,7 @@ export function initGuides({ t, getLang, store, toast, getBirth }) {
     return id;
   })();
 
-  let left = store.get("shubhly.chatLeft", 5);
+  let left = store.get("shubhly.chatLeft", null); // null = unlimited
   let open = null; // the guide in the panel
   let history = [];
   let busy = false;
@@ -24,7 +24,9 @@ export function initGuides({ t, getLang, store, toast, getBirth }) {
 
   const hist = (id) => store.get(`shubhly.chat.${id}`, []);
   const save = () => store.set(`shubhly.chat.${open.id}`, history.slice(-HISTORY_KEEP));
-  const setLeft = (n) => { left = n; store.set("shubhly.chatLeft", n); };
+  const setLeft = (n) => { left = Number.isInteger(n) ? n : null; store.set("shubhly.chatLeft", left); };
+  const limited = () => left !== null;
+  const out = () => limited() && left <= 0;
   const avatar = (g, cls = "") => `<div class="avatar ${cls}">${avatarSvg(g.look)}</div>`;
   const role = (g) => gtext(g.role, getLang());
 
@@ -58,7 +60,7 @@ export function initGuides({ t, getLang, store, toast, getBirth }) {
     $("chatLog").innerHTML = intro + history.map(bubble).join("");
     scrollDown();
     const starters = gtext(open.starters, getLang());
-    $("chatStarters").innerHTML = history.length || left <= 0 ? "" :
+    $("chatStarters").innerHTML = history.length || out() ? "" :
       starters.map((s) => `<button type="button" class="chip-btn">${esc(s)}</button>`).join("");
   }
 
@@ -72,8 +74,8 @@ export function initGuides({ t, getLang, store, toast, getBirth }) {
     $("chatChart").innerHTML = has
       ? `<span class="meta-on">${esc(t("g_chart_on"))}</span>`
       : `<button type="button" class="link-btn" id="chatMake">${esc(t("g_chart_off"))}</button>`;
-    $("chatLeft").textContent = t("g_free_left", { n: left });
-    const wall = left <= 0;
+    $("chatLeft").textContent = limited() ? t("g_free_left", { n: left }) : "";
+    const wall = out();
     $("chatWall").hidden = !wall;
     $("chatForm").hidden = wall;
     scrollDown();
@@ -91,7 +93,7 @@ export function initGuides({ t, getLang, store, toast, getBirth }) {
     renderMeta();
     $("chat").hidden = false;
     document.documentElement.classList.add("chat-open");
-    if (left > 0) setTimeout(() => $("chatInput").focus(), 50);
+    if (!out()) setTimeout(() => $("chatInput").focus(), 50);
   }
 
   function closeChat() {
@@ -112,7 +114,7 @@ export function initGuides({ t, getLang, store, toast, getBirth }) {
 
   async function send(text) {
     text = text.trim();
-    if (!text || busy || !open || left <= 0) return;
+    if (!text || busy || !open || out()) return;
     busy = true;
     const g = open;
     history.push({ role: "user", text });
@@ -165,7 +167,7 @@ export function initGuides({ t, getLang, store, toast, getBirth }) {
     } finally {
       busy = false;
       $("chatSend").disabled = false;
-      if (open && left > 0) $("chatInput").focus();
+      if (open && !out()) $("chatInput").focus();
     }
   }
 
@@ -222,7 +224,7 @@ export function initGuides({ t, getLang, store, toast, getBirth }) {
   // The server is the source of truth for free messages.
   fetch(`/api/chat/status?cid=${encodeURIComponent(cid)}`)
     .then((r) => (r.ok ? r.json() : null))
-    .then((d) => { if (d && Number.isInteger(d.left)) { setLeft(d.left); if (open) renderMeta(); } })
+    .then((d) => { if (d) { setLeft(d.left); if (open) renderMeta(); } })
     .catch(() => {});
 
   renderCards();

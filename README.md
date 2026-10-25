@@ -48,7 +48,7 @@ In AI Studio **Build** mode, use the **+** menu to import this GitHub repository
 | --- | --- |
 | `GEMINI_API_KEY` | Key for the AI report (required for reports) |
 | `GEMINI_MODEL` | Optional model name, default `gemini-2.5-flash` |
-| `FREE_CHATS` | Optional, free AI-guide messages per device, default `5` |
+| `FREE_CHATS` | Optional, caps free AI-guide messages per device; unset means unlimited |
 | `GUIDES_ALWAYS_ON` | Optional, set to `1` while testing so no guide is resting |
 | `PORT` | Set automatically on Cloud Run |
 

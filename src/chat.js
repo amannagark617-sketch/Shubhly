@@ -7,7 +7,8 @@ import { InputError } from "./validate.js";
 import { GUIDE_BY_ID } from "../public/guides.js";
 
 const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
-export const FREE_MESSAGES = Math.max(1, Number(process.env.FREE_CHATS) || 5);
+// Unlimited unless FREE_CHATS is set to a number.
+export const FREE_MESSAGES = Number(process.env.FREE_CHATS) >= 1 ? Number(process.env.FREE_CHATS) : Infinity;
 
 const MAX_TURNS = 12;
 const MAX_USER_CHARS = 600;

@@ -237,7 +237,7 @@ const guidesAlwaysOn = process.env.GUIDES_ALWAYS_ON === "1";
 app.get("/api/chat/status", dailyLimit, (req, res, next) => {
   try {
     const cid = parseClientId(req.query.cid);
-    res.json({ left: freeChats.left(cid), free: FREE_MESSAGES });
+    res.json({ left: Number.isFinite(FREE_MESSAGES) ? freeChats.left(cid) : null, free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null });
   } catch (e) {
     next(e);
   }
@@ -286,7 +286,7 @@ app.post("/api/chat", chatLimit, async (req, res, next) => {
       today: new Date().toISOString().slice(0, 10),
     });
     const left = freeChats.use(cid);
-    res.json({ reply, left, free: FREE_MESSAGES });
+    res.json({ reply, left: Number.isFinite(left) ? left : null, free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null });
   } catch (e) {
     next(e);
   }
