@@ -309,7 +309,7 @@ function renderGrid() {
   if (!horo) return;
   $("rashiGrid").innerHTML = horo.rashis.map((r) => `
     <button type="button" class="rashi-btn${r.index === myRashi ? " mine" : ""}" data-i="${r.index}" data-mine="${esc(t("rf_mine"))}" aria-pressed="${r.index === shownRashi}">
-      <span class="sym" aria-hidden="true">${r.symbol}</span>
+      <img class="sym" src="/img/rashi-${String(r.index + 1).padStart(2, "0")}.png" alt="" width="256" height="256" loading="lazy" />
       <span class="hi">${esc(sn(r.sign, r.signHi, true))}</span>
     </button>`).join("");
 }

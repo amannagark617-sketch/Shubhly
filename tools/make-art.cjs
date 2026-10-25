@@ -181,6 +181,66 @@ scenes["product-rudraksha.jpg"] = { w: 800, h: 800, svg: () => {
     <circle cx="400" cy="715" r="40" fill="#8a4a24" stroke="${C.ink}" stroke-width="6"/><circle cx="390" cy="704" r="11" fill="#c27a45"/>
     <path d="M365 628 h70 l-8 -34 h-54z" fill="${C.haldi}" stroke="${C.ink}" stroke-width="5" stroke-linejoin="round"/>`; } };
 
+
+scenes["hero-banner.jpg"] = { w: 1920, h: 360, svg: () => `
+  ${flat(1920, 360, C.haldi)}${dots(1920, 360)}
+  <circle cx="1500" cy="330" r="190" fill="${C.red}" stroke="${C.ink}" stroke-width="8"/>
+  ${temple(1500, 360, 0.8, C.ink)}${temple(330, 360, 0.55, C.ink)}${temple(860, 360, 0.4, C.ink)}
+  ${bunting(0, 1920, 0, 30)}
+  ${[120, 560, 700, 1090, 1260, 1760].map((x, i) => diya(x, 330 + (i % 2) * 8, 0.8)).join("")}`};
+
+scenes["aaj-banner.jpg"] = { w: 1600, h: 500, svg: () => `
+  ${flat(1600, 500, C.ink)}${dots(1600, 500, C.haldi, 0.18)}
+  ${sun(1230, 250, 110, C.haldi, 16)}${moonF(1010, 380, 56)}
+  <path d="M0 470 Q400 400 800 470 T1600 470 V500 H0Z" fill="${C.red}" stroke="${C.haldi}" stroke-width="6"/>`};
+
+scenes["premium-banner.jpg"] = { w: 1600, h: 500, svg: () => {
+  let st = "";
+  [[980, 120], [1480, 150], [1130, 410], [1420, 400], [900, 300]].forEach(([x, y], i) => {
+    let p = ""; for (let k = 0; k < 8; k++) { const a = (Math.PI / 4) * k, r = k % 2 ? 9 : 26; p += `${k ? "L" : "M"}${(x + Math.cos(a) * r).toFixed(1)} ${(y + Math.sin(a) * r).toFixed(1)}`; }
+    st += `<path d="${p}Z" fill="${i % 2 ? C.cream : C.haldi}" stroke="${C.ink}" stroke-width="4"/>`;
+  });
+  return `${flat(1600, 500, C.red)}${dots(1600, 500, C.ink, 0.2)}${mandala(1230, 260, 300, { stroke: C.haldi, sw: 3 })}
+    <path d="M1100 330 L1100 190 L1165 250 L1230 150 L1295 250 L1360 190 L1360 330Z" fill="${C.haldi}" stroke="${C.ink}" stroke-width="8" stroke-linejoin="round"/>
+    <rect x="1090" y="330" width="280" height="36" rx="8" fill="${C.haldi2}" stroke="${C.ink}" stroke-width="8"/>
+    ${[1165, 1230, 1295].map((x) => `<circle cx="${x}" cy="348" r="9" fill="${C.red}" stroke="${C.ink}" stroke-width="3"/>`).join("")}${st}`; } };
+
+scenes["faq-art.png"] = { w: 700, h: 700, svg: () => `
+  ${flat(700, 700, C.pink)}${dots(700, 700)}
+  <circle cx="350" cy="330" r="250" fill="${C.haldi}" stroke="${C.ink}" stroke-width="10"/>
+  <text x="350" y="470" text-anchor="middle" font-family="Yatra One" font-size="420" fill="${C.red}" stroke="${C.ink}" stroke-width="8">?</text>
+  ${lotus(350, 640, 0.9, C.cream, C.pink)}${diya(120, 620, 0.9)}${diya(580, 620, 0.9)}`};
+
+const RASHI = [
+  ["♈", C.red, "ram"], ["♉", C.green, "bull"], ["♊", C.haldi2, "twin"], ["♋", C.cream, "crab"], ["♌", C.orange, "lion"], ["♍", C.pink, "maiden"],
+  ["♎", C.haldi, "scale"], ["♏", C.red, "scorpion"], ["♐", C.orange, "archer"], ["♑", C.green, "goat"], ["♒", "#8fb8ff", "water"], ["♓", C.pink, "fish"],
+];
+RASHI.forEach(([g, col], i) => {
+  const n = String(i + 1).padStart(2, "0");
+  scenes[`rashi-${n}.png`] = { w: 256, h: 256, svg: () => `
+    <circle cx="128" cy="128" r="118" fill="${col}" stroke="${C.ink}" stroke-width="8"/>
+    <circle cx="128" cy="128" r="94" fill="none" stroke="${C.ink}" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"/>
+    <text x="128" y="170" text-anchor="middle" font-size="124" font-family="serif" font-weight="700" fill="${C.ink}">${g}&#xFE0E;</text>`, transparent: true };
+});
+
+scenes["product-shankh.jpg"] = { w: 800, h: 800, svg: () => `${prod(C.haldi)}
+  <g stroke="${C.ink}" stroke-width="10" stroke-linejoin="round"><path d="M200 520 Q180 250 420 220 Q640 200 640 400 Q640 560 460 600 Q300 630 200 520Z" fill="${C.cream}"/>
+  <path d="M420 220 Q520 300 480 420 Q440 520 330 540" fill="none"/><path d="M300 330 Q380 300 400 380" fill="none" stroke-width="6"/></g>
+  <circle cx="200" cy="530" r="34" fill="${C.red}" stroke="${C.ink}" stroke-width="8"/>${lotus(520, 700, 0.7, C.pink, C.cream)}`};
+
+scenes["product-incense.jpg"] = { w: 800, h: 800, svg: () => `${prod(C.cream)}
+  <rect x="180" y="560" width="440" height="80" rx="14" fill="${C.red}" stroke="${C.ink}" stroke-width="10"/>
+  ${[260, 340, 420, 500, 580].map((x, i) => `<path d="M${x} 560 L${x + (i - 2) * 22} 200" stroke="${C.ink}" stroke-width="12" stroke-linecap="round"/><circle cx="${x + (i - 2) * 22}" cy="200" r="9" fill="${C.orange}" stroke="${C.ink}" stroke-width="4"/>`).join("")}
+  ${[300, 440, 560].map((x) => `<path d="M${x} 170 q-40 -50 0 -100 q40 -50 0 -100" fill="none" stroke="${C.haldi}" stroke-width="12" stroke-linecap="round" transform="translate(0 120)"/>`).join("")}`};
+
+scenes["product-diya.jpg"] = { w: 800, h: 800, svg: () => `${prod(C.red)}
+  <circle cx="400" cy="400" r="290" fill="${C.haldi}" stroke="${C.ink}" stroke-width="10"/>${diya(400, 500, 3)}`};
+
+scenes["product-yantra.jpg"] = { w: 800, h: 800, svg: () => {
+  let tri = "";
+  [[400, 160, 640, 560, 160, 560, C.red], [400, 640, 160, 240, 640, 240, C.ink]].forEach(([a, b, c, d, e, f, col]) => { tri += `<path d="M${a} ${b} L${c} ${d} L${e} ${f}Z" fill="none" stroke="${col}" stroke-width="12" stroke-linejoin="round"/>`; });
+  return `${prod(C.pink)}<rect x="90" y="90" width="620" height="620" rx="30" fill="${C.cream}" stroke="${C.ink}" stroke-width="10"/><circle cx="400" cy="400" r="270" fill="${C.haldi}" stroke="${C.ink}" stroke-width="8"/>${tri}<circle cx="400" cy="400" r="26" fill="${C.red}" stroke="${C.ink}" stroke-width="6"/>`; } };
+
 (async () => {
   fs.mkdirSync(OUT, { recursive: true });
   const browser = await chromium.launch();
@@ -195,7 +255,7 @@ scenes["product-rudraksha.jpg"] = { w: 800, h: 800, svg: () => {
     await page.evaluate(() => document.fonts.ready);
     await page.waitForTimeout(150);
     const isJpg = name.endsWith(".jpg");
-    await page.screenshot({ path: path.join(OUT, name), type: isJpg ? "jpeg" : "png", ...(isJpg ? { quality: 84 } : {}) });
+    await page.screenshot({ path: path.join(OUT, name), type: isJpg ? "jpeg" : "png", ...(isJpg ? { quality: 84 } : { omitBackground: true }) });
     await page.close();
     console.log("made", name);
   }

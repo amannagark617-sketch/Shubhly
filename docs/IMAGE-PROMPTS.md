@@ -10,6 +10,18 @@ Add to the end of every prompt: "No text, no letters, no watermark, no logo."
 
 ## Banners
 
+### hero-banner.jpg (1920x360, wide strip)
+Sits along the bottom of the home page hero. Keep the top third plain haldi yellow.
+Prompt: A flat poster skyline strip on haldi yellow: three Indian temple silhouettes in indigo with red and yellow tops, a big red sun disc rising behind the middle temple, triangle bunting along the top, a row of small diyas along the bottom.
+
+### aaj-banner.jpg (1600x500, 16:5)
+Behind the "Aaj ka panchang" heading. Text on the left, so keep the left 50% plain indigo.
+Prompt: Solid indigo background. On the right a big yellow sun with red triangle rays, a small half-red half-cream moon beside it, a red wavy hill along the bottom with a yellow outline.
+
+### premium-banner.jpg (1600x500, 16:5)
+Behind the Premium heading. Text on the left.
+Prompt: Solid kumkum red background with a yellow line mandala on the right, a yellow crown with three red jewels in the centre of it, four-point stars in yellow and cream around it, thick indigo outlines.
+
 ### rashifal-banner.jpg (1600x500, 16:5)
 Behind the "Aaj ka rashifal" heading. Text sits on the left, so keep the left 50% plain indigo.
 Prompt: On the right, a large mandala of thin yellow line petals, a ring of the twelve zodiac glyphs in cream, a red ring, and a half-red half-cream moon in the centre. Solid indigo background.
@@ -54,3 +66,28 @@ Prompt: Cream background, a big yellow thali with eight small diyas around a pin
 
 ### product-rudraksha.jpg
 Prompt: Kumkum red background, a ring of brown rudraksha beads with indigo outlines and a yellow cap bead at the bottom.
+
+## More product images (square, 800x800)
+
+### product-shankh.jpg
+Prompt: Haldi yellow background, a cream conch shell with thick indigo outline and spiral lines, a small red bead and a pink lotus below it.
+
+### product-incense.jpg
+Prompt: Cream background, five incense sticks fanned out of a red holder, orange glowing tips, yellow smoke swirls rising.
+
+### product-diya.jpg
+Prompt: Kumkum red background, a big yellow circle, one large red brass diya with an orange and yellow flame in the middle.
+
+### product-yantra.jpg
+Prompt: Soft pink background, a cream square frame, a yellow circle inside it with two interlocking triangles (one red, one indigo) and a red dot in the centre.
+
+## FAQ illustration
+
+### faq-art.png (700x700)
+Prompt: Soft pink background with a dot texture, a big yellow circle holding a red question mark, a cream lotus below it and a small red diya on each side.
+
+## Rashi icons (12 files, 256x256, transparent background)
+
+Save as `rashi-01.png` to `rashi-12.png`, in this order: 01 Mesh (Aries), 02 Vrishabh (Taurus), 03 Mithun (Gemini), 04 Kark (Cancer), 05 Singh (Leo), 06 Kanya (Virgo), 07 Tula (Libra), 08 Vrishchik (Scorpio), 09 Dhanu (Sagittarius), 10 Makar (Capricorn), 11 Kumbh (Aquarius), 12 Meen (Pisces).
+
+Prompt for each: A round flat badge, thick indigo outline, solid colour fill, with a simple bold illustration of the animal or symbol of the sign in the centre (ram, bull, twins, crab, lion, maiden with wheat, scales, scorpion, archer with bow, sea-goat, water pitcher, two fish). Colours from the palette only, one colour per badge. Transparent background around the circle. Must stay readable at 46 pixels wide, so keep shapes big and simple.

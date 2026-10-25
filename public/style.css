@@ -119,9 +119,10 @@ main, .footer { position: relative; z-index: 1; }
 
 /* ---------- hero ---------- */
 .hero { position: relative; isolation: isolate; overflow: hidden; background: var(--haldi); background-image: var(--dots); border-bottom: 3px solid var(--ink); }
-.hero-bg { display: none; }
+.hero-strip { position: absolute; left: 0; right: 0; bottom: 0; z-index: -2; width: 100%; height: 190px; object-fit: cover; object-position: center bottom; }
+@media (min-width: 900px) { .hero-strip { height: 260px; } }
 #stars { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
-.hero-in { display: grid; gap: 34px; padding-top: 44px; padding-bottom: 64px; align-items: center; }
+.hero-in { display: grid; gap: 34px; padding-top: 44px; padding-bottom: 200px; align-items: center; }
 .hero h1 { font-size: clamp(2.8rem, 9.5vw, 5.8rem); letter-spacing: -0.01em; max-width: 11ch; margin-bottom: 18px; color: var(--ink); animation: slam 0.7s cubic-bezier(.2, 1.4, .4, 1) both; transform-origin: 0 100%; }
 @keyframes slam { from { opacity: 0; transform: translateY(40px) rotate(-3deg) scale(0.96); } }
 @keyframes pop-in { from { opacity: 0; transform: translateY(18px); } }
@@ -150,7 +151,7 @@ main, .footer { position: relative; z-index: 1; }
 .moon-facts div { background: var(--paper); border: 2px solid var(--ink); border-radius: 12px; padding: 8px 12px; }
 .moon-facts dt { font-size: 0.8rem; color: var(--muted); }
 .moon-facts dd { margin: 0; font-weight: 700; font-size: 0.98rem; }
-@media (min-width: 900px) { .hero-in { grid-template-columns: 1.1fr 0.9fr; padding-top: 64px; padding-bottom: 84px; min-height: 680px; } .moon-card { justify-self: end; } }
+@media (min-width: 900px) { .hero-in { grid-template-columns: 1.1fr 0.9fr; padding-top: 64px; padding-bottom: 250px; min-height: 760px; } .moon-card { justify-self: end; } }
 
 /* ticker */
 .marquee { overflow: hidden; background: var(--ink); border-bottom: 3px solid var(--ink); position: relative; z-index: 1; }
@@ -241,11 +242,11 @@ main, .footer { position: relative; z-index: 1; }
 .rashi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 24px; }
 .rashi-btn { display: flex; flex-direction: column; align-items: center; padding: 10px 4px; border-radius: 16px; border: var(--b); background: var(--cream); cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: transform 0.12s, box-shadow 0.12s, background-color 0.15s; }
 .rashi-btn:hover { transform: translate(-2px, -4px) rotate(-2deg); box-shadow: 5px 7px 0 var(--ink); background: var(--haldi-2); }
-.rashi-btn .sym { font-size: 1.7rem; line-height: 1.1; color: var(--red); transition: transform 0.4s; }
-.rashi-btn:hover .sym { transform: rotate(360deg) scale(1.15); }
+.rashi-btn .sym { width: 46px; height: 46px; display: block; transition: transform 0.4s; }
+.rashi-btn:hover .sym { transform: rotate(360deg) scale(1.12); }
 .rashi-btn .hi { font-family: var(--display); font-size: 1.05rem; line-height: 1.25; }
 .rashi-btn[aria-pressed="true"] { background: var(--ink); color: var(--haldi); transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
-.rashi-btn[aria-pressed="true"] .sym { color: var(--haldi); }
+.rashi-btn[aria-pressed="true"] .sym { transform: scale(1.1); }
 .rashi-btn.mine::after { content: attr(data-mine); font-size: 0.7rem; font-weight: 700; margin-top: 2px; padding: 0 8px; border-radius: 999px; background: var(--red); color: var(--cream); }
 @media (min-width: 700px) { .rashi-grid { grid-template-columns: repeat(6, 1fr); } }
 @media (min-width: 1000px) { .rashi-grid { grid-template-columns: repeat(12, 1fr); } .rashi-btn .hi { font-size: 0.95rem; } }
@@ -408,6 +409,10 @@ tbody tr { transition: background-color 0.15s; } tbody tr:hover { background: va
 .product h3 { font-size: 1.15rem; margin: 12px 0 2px; }
 .product span { font-size: 0.9rem; color: var(--red); font-weight: 700; }
 @media (min-width: 800px) { .products { grid-template-columns: repeat(4, 1fr); } }
+.faq-grid { display: grid; gap: 28px; align-items: start; }
+.faq-art { width: 100%; height: auto; aspect-ratio: 1 / 1; max-width: 360px; border-radius: 26px; border: 3px solid var(--ink); box-shadow: var(--sh); transform: rotate(-2deg); transition: transform 0.25s; display: none; }
+.faq-art:hover { transform: rotate(1deg) translateY(-4px); }
+@media (min-width: 900px) { .faq-grid { grid-template-columns: 340px 1fr; gap: 48px; } .faq-art { display: block; } }
 .faq { max-width: 780px; }
 .faq details { border-bottom: 2.5px solid var(--ink); }
 .faq summary { cursor: pointer; list-style: none; padding: 18px 44px 18px 0; position: relative; font-weight: 700; font-size: 1.1rem; transition: color 0.15s; }
