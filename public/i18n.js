@@ -2,6 +2,8 @@
 // Hinglish is the fallback for any missing key.
 
 export const LANGS = ["en", "hi", "hn"];
+// Names shown in the language menu, each in its own script.
+export const LANG_NAMES = { en: "English", hi: "हिंदी", hn: "Hinglish" };
 
 const hn = {
   lang_label: "Bhasha",
@@ -350,12 +352,12 @@ const hi = {
 
 export const STR = { hn, en, hi };
 
-let current = "hn";
+let current = "en";
 export function getLang() { return current; }
-export function setLang(l) { current = LANGS.includes(l) ? l : "hn"; }
+export function setLang(l) { current = LANGS.includes(l) ? l : "en"; }
 
 export function t(key, vars) {
-  let s = STR[current][key] ?? STR.hn[key] ?? key;
+  let s = STR[current][key] ?? STR.en[key] ?? STR.hn[key] ?? key;
   if (vars) s = s.replace(/\{(\w+)\}/g, (_, k) => (vars[k] ?? ""));
   return s;
 }

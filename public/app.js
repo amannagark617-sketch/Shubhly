@@ -4,7 +4,7 @@ import {
 } from "/lib.js";
 import { makeShareCard } from "/card.js";
 import { initFx, fillMarquee } from "/fx.js";
-import { t, getLang, setLang, applyStatic, LANGS } from "/i18n.js";
+import { t, getLang, setLang, applyStatic, LANGS, LANG_NAMES } from "/i18n.js";
 
 const $ = (id) => document.getElementById(id);
 const show = (el, on = true) => { el.hidden = !on; };
@@ -697,7 +697,7 @@ function setLanguage(l, { first = false } = {}) {
   document.documentElement.lang = lang === "hi" ? "hi" : "en";
   setDateLocale(lang === "hi" ? "hi-IN" : "en-IN");
   applyStatic();
-  document.querySelectorAll(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  renderLangMenu();
   const radio = document.querySelector(`input[name="lang"][value="${lang}"]`);
   if (radio) radio.checked = true;
   setBusy($("go"), false, t("f_go"));
@@ -715,10 +715,35 @@ function setLanguage(l, { first = false } = {}) {
       .catch(() => {});
   }
 }
-document.querySelector(".lang").addEventListener("click", (e) => {
-  const b = e.target.closest("button[data-lang]");
-  if (b) setLanguage(b.dataset.lang);
+function renderLangMenu() {
+  const lang = getLang();
+  $("langCur").textContent = LANG_NAMES[lang];
+  $("langList").innerHTML = LANGS.map((l) => `<li role="option" tabindex="-1" data-lang="${l}" aria-selected="${l === lang}">${esc(LANG_NAMES[l])}</li>`).join("");
+}
+function toggleLangMenu(open) {
+  const list = $("langList"), btn = $("langBtn");
+  const want = open ?? list.hidden;
+  list.hidden = !want;
+  btn.setAttribute("aria-expanded", String(want));
+  if (want) list.querySelector('[aria-selected="true"]')?.focus();
+}
+$("langBtn").addEventListener("click", () => toggleLangMenu());
+$("langList").addEventListener("click", (e) => {
+  const li = e.target.closest("li[data-lang]");
+  if (!li) return;
+  toggleLangMenu(false);
+  setLanguage(li.dataset.lang);
+  $("langBtn").focus();
 });
+$("langList").addEventListener("keydown", (e) => {
+  const items = [...$("langList").querySelectorAll("li")];
+  const i = items.indexOf(document.activeElement);
+  if (e.key === "ArrowDown") { e.preventDefault(); items[Math.min(i + 1, items.length - 1)].focus(); }
+  else if (e.key === "ArrowUp") { e.preventDefault(); items[Math.max(i - 1, 0)].focus(); }
+  else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); document.activeElement.click(); }
+  else if (e.key === "Escape") { toggleLangMenu(false); $("langBtn").focus(); }
+});
+document.addEventListener("click", (e) => { if (!e.target.closest("#langMenu")) toggleLangMenu(false); });
 
 // ---------- section highlight in nav ----------
 function watchSections() {
@@ -735,8 +760,8 @@ function watchSections() {
 
 // ---------- start ----------
 (async function init() {
-  const saved = store.get("shubhly.lang", "hn");
-  setLanguage(LANGS.includes(saved) ? saved : "hn", { first: true });
+  const saved = store.get("shubhly.lang", "en");
+  setLanguage(LANGS.includes(saved) ? saved : "en", { first: true });
   initFx();
   touchStreak();
   watchSections();

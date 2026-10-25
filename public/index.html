@@ -35,10 +35,13 @@
       </nav>
       <div class="nav-end">
         <span class="streak" id="streak" hidden></span>
-        <div class="lang" role="group" data-i-aria="lang_label">
-          <button type="button" data-lang="en" aria-pressed="false"><span class="long">English</span><span class="short">EN</span></button>
-          <button type="button" data-lang="hi" aria-pressed="false"><span class="long">हिंदी</span><span class="short">हि</span></button>
-          <button type="button" data-lang="hn" aria-pressed="false"><span class="long">Hinglish</span><span class="short">Hn</span></button>
+        <div class="lang" id="langMenu">
+          <button type="button" class="lang-btn" id="langBtn" aria-haspopup="listbox" aria-expanded="false" aria-controls="langList" data-i-aria="lang_label">
+            <svg class="lang-globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+            <span id="langCur">English</span>
+            <svg class="lang-caret" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <ul class="lang-list" id="langList" role="listbox" tabindex="-1" hidden></ul>
         </div>
         <a class="btn btn-primary nav-cta" href="#kundli" data-i="nav_cta"></a>
       </div>
@@ -238,9 +241,9 @@
               <div class="field">
                 <span data-i="rep_lang"></span>
                 <div class="seg seg3" role="radiogroup" data-i-aria="rep_lang">
-                  <label><input type="radio" name="lang" value="en" /><span>English</span></label>
+                  <label><input type="radio" name="lang" value="en" checked /><span>English</span></label>
                   <label><input type="radio" name="lang" value="hi" /><span>हिंदी</span></label>
-                  <label><input type="radio" name="lang" value="hn" checked /><span>Hinglish</span></label>
+                  <label><input type="radio" name="lang" value="hn" /><span>Hinglish</span></label>
                 </div>
               </div>
             </div>

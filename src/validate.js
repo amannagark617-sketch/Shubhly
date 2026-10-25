@@ -107,7 +107,7 @@ export function parseLanguage(raw) {
   return raw === "en" ? "en" : raw === "hn" ? "hn" : "hi";
 }
 
-// Display language for the daily pages: en, hi or hn (Hinglish, default).
+// Display language for the daily pages: en (default), hi or hn (Hinglish).
 export function parseLang(raw) {
-  return raw === "en" || raw === "hi" ? raw : "hn";
+  return raw === "hi" || raw === "hn" ? raw : "en";
 }
