@@ -10,11 +10,11 @@ Add to the end of every prompt: "No text, no letters, no watermark, no logo. Lea
 
 ### hero-banner.jpg (1920x1080, 16:9)
 Used behind the home page hero. Text sits on the left, so keep the left 55% darker and quiet.
-Prompt: A cinematic night sky over a quiet Indian temple courtyard, a huge glowing full moon on the right, marigold garlands and a row of lit brass diyas along the bottom, faint gold star-map lines and zodiac constellations across the sky. Deep maroon and wine tones with warm saffron and gold light. Painterly, premium, serene mood.
+Prompt: A cinematic night sky over a quiet Indian temple courtyard, a large empty glowing halo on the right (the website draws the live moon there, so do not paint a moon), marigold garlands and a row of lit brass diyas along the bottom, faint gold star-map lines and zodiac constellations across the sky. Deep maroon and wine tones with warm saffron and gold light. Painterly, premium, serene mood.
 
 ### hero-banner-mobile.jpg (900x1200, 3:4)
 Used on phones in the same place.
-Prompt: Vertical version of a night sky above a temple courtyard, glowing full moon in the upper area, faint gold constellations, diyas lit at the bottom edge. Deep maroon, saffron and gold. Keep the middle band darker for text.
+Prompt: Vertical version of a night sky above a temple courtyard, a soft empty glow in the upper middle (no moon, the page draws it), faint gold constellations, diyas lit at the bottom edge. Deep maroon, saffron and gold. Keep the middle band darker for text.
 
 ### rashifal-banner.jpg (1600x500, 16:5)
 Behind the "Aaj ka rashifal" heading.

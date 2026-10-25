@@ -455,3 +455,46 @@ body { padding-bottom: 64px; }
 
 .chog-scroll { padding-top: 14px; }
 .plan ul { align-content: start; }
+
+/* ---------- v4: polish ---------- */
+body { background: linear-gradient(180deg, #fff8ee 0%, #fff3e0 100%); }
+.hero::after { background: linear-gradient(180deg, rgba(43, 10, 20, 0.55) 0%, rgba(43, 10, 20, 0.35) 60%, rgba(43, 10, 20, 0.7) 100%); }
+@media (min-width: 900px) {
+  .hero::after { background: linear-gradient(90deg, rgba(43, 10, 20, 0.88) 0%, rgba(43, 10, 20, 0.62) 42%, rgba(43, 10, 20, 0.05) 100%); }
+  .hero-in { min-height: 640px; }
+}
+.hero h1 { text-shadow: 0 2px 24px rgba(43, 10, 20, 0.45); }
+.hero-in > div:first-child { animation: rise 0.9s ease-out both; }
+
+.sec-head h2::after {
+  content: ""; display: block; width: 84px; height: 10px; margin-top: 14px;
+  background:
+    linear-gradient(var(--marigold), var(--marigold)) left center / 34px 3px no-repeat,
+    linear-gradient(var(--marigold), var(--marigold)) right center / 34px 3px no-repeat,
+    radial-gradient(circle at center, var(--marigold-deep) 0 4px, transparent 5px);
+}
+.block--night .sec-head h2::after { filter: brightness(1.15); }
+#aaj { background: #fffdf8; border-bottom: 1px solid var(--line); }
+.block--tight { padding-bottom: 56px; }
+
+.fact { box-shadow: 0 1px 0 rgba(78, 18, 32, 0.04), 0 8px 22px rgba(78, 18, 32, 0.06); border-top: 3px solid var(--marigold); }
+.fact--good { border-top-color: #e0a526; }
+.fact--avoid { border-top-color: var(--rose); }
+.card { box-shadow: 0 10px 30px rgba(78, 18, 32, 0.07); }
+.reading { box-shadow: 0 14px 36px rgba(78, 18, 32, 0.09); }
+.moon-card { box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); }
+
+.step p { color: #ffd9b8; }
+.step img, .product img { box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25); }
+.product img { transition: transform 0.2s; }
+.product:hover img { transform: translateY(-4px); }
+.banner { box-shadow: 0 14px 34px rgba(78, 18, 32, 0.18); min-height: 170px; }
+.banner::after { background: linear-gradient(90deg, rgba(43, 10, 20, 0.82) 0%, rgba(43, 10, 20, 0.5) 55%, rgba(43, 10, 20, 0.1) 100%); }
+.store-banner::after { background: linear-gradient(90deg, rgba(43, 10, 20, 0.85) 0%, rgba(43, 10, 20, 0.4) 60%, rgba(43, 10, 20, 0.05) 100%); }
+.final::after { background: linear-gradient(90deg, rgba(43, 10, 20, 0.88) 0%, rgba(43, 10, 20, 0.45) 65%, rgba(43, 10, 20, 0.05) 100%); }
+.final-in { padding-top: 84px; padding-bottom: 84px; }
+
+.pick-note { background: linear-gradient(135deg, #fff 0%, #fff4dc 100%); border-style: solid; border-color: var(--good-line); }
+.vrat li { transition: background-color 0.15s; padding-left: 8px; padding-right: 8px; border-radius: 10px; }
+.vrat li:hover { background: #fff; }
+.plan { box-shadow: 0 10px 30px rgba(78, 18, 32, 0.08); }
