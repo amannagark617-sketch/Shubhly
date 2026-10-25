@@ -180,7 +180,16 @@ app.post("/api/report", reportLimit, async (req, res, next) => {
 });
 
 // ---- static site ---------------------------------------------------------
-app.use(express.static(path.join(__dirname, "public"), { maxAge: "1h" }));
+app.use(
+  express.static(path.join(__dirname, "public"), {
+    setHeaders(res, file) {
+      // Code and pages are always revalidated so updates show up at once;
+      // fonts and images can be kept longer.
+      if (/\.(html|css|js)$/.test(file)) res.setHeader("Cache-Control", "no-cache");
+      else res.setHeader("Cache-Control", "public, max-age=86400");
+    },
+  })
+);
 
 // ---- errors --------------------------------------------------------------
 app.use((err, _req, res, _next) => {
