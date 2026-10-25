@@ -10,7 +10,7 @@ Add to the end of every prompt: "No text, no letters, no watermark, no logo."
 
 ## Banners
 
-### hero-banner.jpg (1920x360, wide strip)
+### hero-strip.jpg (1920x360, wide strip)
 Sits along the bottom of the home page hero. Keep the top third plain haldi yellow.
 Prompt: A flat poster skyline strip on haldi yellow: three Indian temple silhouettes in indigo with red and yellow tops, a big red sun disc rising behind the middle temple, triangle bunting along the top, a row of small diyas along the bottom.
 

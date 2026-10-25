@@ -189,8 +189,9 @@ app.use(
   express.static(path.join(__dirname, "public"), {
     setHeaders(res, file) {
       // Code and pages are always revalidated so updates show up at once;
-      // fonts and images can be kept longer.
-      if (/\.(html|css|js)$/.test(file)) res.setHeader("Cache-Control", "no-cache");
+      // images too, so a replaced picture shows up at once (304 when unchanged);
+      // only fonts are kept for a day.
+      if (/\.(html|css|js|jpg|jpeg|png|svg|webp)$/.test(file)) res.setHeader("Cache-Control", "no-cache");
       else res.setHeader("Cache-Control", "public, max-age=86400");
     },
   })

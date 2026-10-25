@@ -182,7 +182,7 @@ scenes["product-rudraksha.jpg"] = { w: 800, h: 800, svg: () => {
     <path d="M365 628 h70 l-8 -34 h-54z" fill="${C.haldi}" stroke="${C.ink}" stroke-width="5" stroke-linejoin="round"/>`; } };
 
 
-scenes["hero-banner.jpg"] = { w: 1920, h: 360, svg: () => `
+scenes["hero-strip.jpg"] = { w: 1920, h: 360, svg: () => `
   ${flat(1920, 360, C.haldi)}${dots(1920, 360)}
   <circle cx="1500" cy="330" r="190" fill="${C.red}" stroke="${C.ink}" stroke-width="8"/>
   ${temple(1500, 360, 0.8, C.ink)}${temple(330, 360, 0.55, C.ink)}${temple(860, 360, 0.4, C.ink)}
