@@ -6,7 +6,7 @@
 import sweph from "sweph";
 import { DateTime } from "luxon";
 import { SIGNS, NAKSHATRAS } from "./astro-data.js";
-import { HIGHLIGHTS, HOUSE_READING, MOOD_LABEL, WEEKDAY_INFO } from "./content.js";
+import { getContent } from "./content.js";
 
 const C = sweph.constants;
 sweph.set_sid_mode(C.SE_SIDM_LAHIRI, 0, 0);
@@ -180,7 +180,7 @@ function buildChoghadiya(weekdayNo, sunrise, sunset, nextSunrise) {
 }
 
 export function computePanchang({
-  date, lat, lon, tz, natalMoonSignIndex = null, includeUpcoming = false,
+  date, lat, lon, tz, natalMoonSignIndex = null, includeUpcoming = false, lang = "hn",
 }) {
   const core = dayCore(date, lat, lon, tz);
   const { dayStart, riseJd, setJd, e, tithiNo } = core;
@@ -261,6 +261,8 @@ export function computePanchang({
     sunrise.minus({ minutes: 48 })
   );
 
+  const TXT = getContent(lang);
+  const { HIGHLIGHTS, HOUSE_READING, MOOD_LABEL, WEEKDAY_INFO } = TXT;
   const highlights = tithiHighlightKeys(tithiNo).map((k) => ({ key: k, ...HIGHLIGHTS[k] }));
 
   let upcoming;

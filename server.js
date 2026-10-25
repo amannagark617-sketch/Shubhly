@@ -13,6 +13,7 @@ import {
   InputError,
   cleanName,
   parseBirthInput,
+  parseLang,
   parseLanguage,
   parseMoonIndex,
   parseQueryDate,
@@ -92,16 +93,17 @@ app.get("/api/today", dailyLimit, (req, res, next) => {
     const place = parseQueryPlace(req.query);
     const date = parseQueryDate(req.query, place.tz);
     const moon = parseMoonIndex(req.query.moon);
+    const lang = parseLang(req.query.lang);
     const panchang = computePanchang({
       date, lat: place.lat, lon: place.lon, tz: place.tz,
-      natalMoonSignIndex: moon, includeUpcoming: true,
+      natalMoonSignIndex: moon, includeUpcoming: true, lang,
     });
     const slow = slowPlanets(date, place.tz);
     const personal =
       moon === null
         ? null
         : {
-            sadeSati: sadeSati(moon, slow.Saturn.index),
+            sadeSati: sadeSati(moon, slow.Saturn.index, lang),
             saturn: saturnWindow(date, place.tz),
           };
     res.json({ place, panchang, slow, personal });
@@ -115,7 +117,9 @@ app.get("/api/horoscope", dailyLimit, (req, res, next) => {
   try {
     const place = parseQueryPlace(req.query);
     const date = parseQueryDate(req.query, place.tz);
-    res.json(buildDailyHoroscope({ date, lat: place.lat, lon: place.lon, tz: place.tz }));
+    res.json(
+      buildDailyHoroscope({ date, lat: place.lat, lon: place.lon, tz: place.tz, lang: parseLang(req.query.lang) })
+    );
   } catch (e) {
     next(e);
   }
@@ -135,6 +139,7 @@ app.get("/api/places", placesLimit, async (req, res, next) => {
 app.post("/api/kundli", kundliLimit, (req, res, next) => {
   try {
     const birth = parseBirthInput(req.body);
+    const lang = parseLang(req.body?.lang);
     const chart = computeKundli(birth);
     const moon = chart.planets.find((p) => p.key === "Moon");
     const today = DateTime.now().setZone("Asia/Kolkata").toISODate();
@@ -142,9 +147,9 @@ app.post("/api/kundli", kundliLimit, (req, res, next) => {
     res.json({
       name: cleanName(req.body?.name),
       chart,
-      insights: quickInsights(chart, { timeUnknown: birth.timeUnknown }),
+      insights: quickInsights(chart, { timeUnknown: birth.timeUnknown, lang }),
       sadeSati: {
-        ...sadeSati(moon.signIndex, saturn.index),
+        ...sadeSati(moon.signIndex, saturn.index, lang),
         saturn: saturnWindow(today, "Asia/Kolkata"),
       },
     });

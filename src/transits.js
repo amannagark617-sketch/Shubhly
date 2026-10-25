@@ -4,7 +4,7 @@
 import sweph from "sweph";
 import { DateTime } from "luxon";
 import { SIGNS } from "./astro-data.js";
-import { SADE_SATI } from "./content.js";
+import { getContent } from "./content.js";
 
 const C = sweph.constants;
 sweph.set_sid_mode(C.SE_SIDM_LAHIRI, 0, 0);
@@ -70,7 +70,8 @@ export function saturnWindow(date, tz) {
 }
 
 // Saturn's place from the person's Moon sign.
-export function sadeSati(natalMoonSignIndex, saturnSignIndex) {
+export function sadeSati(natalMoonSignIndex, saturnSignIndex, lang = "hn") {
+  const { SADE_SATI } = getContent(lang);
   const d = (saturnSignIndex - natalMoonSignIndex + 12) % 12;
   const key =
     d === 11 ? "rising" :

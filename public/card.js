@@ -33,18 +33,18 @@ export async function makeShareCard({ title, subtitle, rows, footer }) {
   const ctx = canvas.getContext("2d");
 
   const g = ctx.createLinearGradient(0, 0, W, H);
-  g.addColorStop(0, "#2a0b1e");
-  g.addColorStop(0.6, "#4a1236");
-  g.addColorStop(1, "#6b1631");
+  g.addColorStop(0, "#4e1220");
+  g.addColorStop(0.6, "#7a1f2b");
+  g.addColorStop(1, "#b4531c");
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, H);
 
   // moon motif
   ctx.fillStyle = "rgba(255,233,184,0.10)";
   ctx.beginPath(); ctx.arc(900, 220, 260, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = "#f7a81b";
+  ctx.fillStyle = "#ff9f1c";
   ctx.beginPath(); ctx.arc(900, 220, 90, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = "#3a1830";
+  ctx.fillStyle = "#5a1a24";
   ctx.beginPath(); ctx.arc(936, 200, 80, 0, Math.PI * 2); ctx.fill();
 
   ctx.textBaseline = "alphabetic";

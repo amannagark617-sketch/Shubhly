@@ -104,5 +104,10 @@ export function parseTopic(raw) {
 }
 
 export function parseLanguage(raw) {
-  return raw === "en" ? "en" : "hi";
+  return raw === "en" ? "en" : raw === "hn" ? "hn" : "hi";
+}
+
+// Display language for the daily pages: en, hi or hn (Hinglish, default).
+export function parseLang(raw) {
+  return raw === "en" || raw === "hi" ? raw : "hn";
 }

@@ -51,9 +51,12 @@ export function addDays(iso, n) {
   return new Date(Date.UTC(y, m - 1, d + n)).toISOString().slice(0, 10);
 }
 
+let dateLocale = "en-IN";
+export function setDateLocale(l) { dateLocale = l; }
+
 export function dateLabel(iso, opts = { weekday: "short", day: "numeric", month: "short" }) {
   const [y, m, d] = iso.split("-").map(Number);
-  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString("en-IN", { ...opts, timeZone: "UTC" });
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString(dateLocale, { ...opts, timeZone: "UTC" });
 }
 
 export function monthYear(iso) {
@@ -95,7 +98,7 @@ export function moonSvg(elong, label = "Chandrama aaj") {
     </radialGradient>
   </defs>
   <circle cx="100" cy="100" r="99" fill="url(#moonGlow)"/>
-  <circle cx="100" cy="100" r="${R}" fill="#3A1830" stroke="#FFE9B8" stroke-opacity="0.35" stroke-width="1.5"/>
+  <circle cx="100" cy="100" r="${R}" fill="#5a1a24" stroke="#FFE9B8" stroke-opacity="0.35" stroke-width="1.5"/>
   <path d="${lit}" fill="#FFE9B8"${flip}/>
 </svg>`;
 }
@@ -111,8 +114,8 @@ const HOUSE_CENTERS = [
 
 export function chartSvg(chart) {
   let parts = "";
-  parts += '<rect x="10" y="10" width="380" height="380" fill="#FFFDFB" stroke="#6B1631" stroke-width="2.5"/>';
-  parts += '<g stroke="#6B1631" stroke-width="1.6" fill="none">';
+  parts += '<rect x="10" y="10" width="380" height="380" fill="#fffdf8" stroke="#8f2330" stroke-width="2.5"/>';
+  parts += '<g stroke="#8f2330" stroke-width="1.6" fill="none">';
   parts += '<path d="M10 10L390 390M390 10L10 390"/>';
   parts += '<path d="M200 10L390 200L200 390L10 200Z"/>';
   parts += "</g>";
@@ -125,12 +128,12 @@ export function chartSvg(chart) {
     for (let j = 0; j < pls.length; j += 2) lines.push(pls.slice(j, j + 2).join(" "));
     const total = 1 + lines.length;
     const startY = cy - ((total - 1) * 15) / 2;
-    parts += `<text x="${cx}" y="${startY}" text-anchor="middle" dominant-baseline="middle" font-size="12" fill="#B86E00" font-weight="700">${signNo}</text>`;
+    parts += `<text x="${cx}" y="${startY}" text-anchor="middle" dominant-baseline="middle" font-size="12" fill="#b45309" font-weight="700">${signNo}</text>`;
     lines.forEach((ln, k) => {
-      parts += `<text x="${cx}" y="${startY + 15 * (k + 1)}" text-anchor="middle" dominant-baseline="middle" font-size="13.5" fill="#2A0B1E" font-weight="700">${esc(ln)}</text>`;
+      parts += `<text x="${cx}" y="${startY + 15 * (k + 1)}" text-anchor="middle" dominant-baseline="middle" font-size="13.5" fill="#2f1015" font-weight="700">${esc(ln)}</text>`;
     });
   });
-  parts += '<text x="200" y="62" text-anchor="middle" font-size="10" fill="#6B5461">Lagna</text>';
+  parts += '<text x="200" y="62" text-anchor="middle" font-size="10" fill="#6f5359">Lagna</text>';
 
   return `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kundli chart, North Indian style">${parts}</svg>`;
 }

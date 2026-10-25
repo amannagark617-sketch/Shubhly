@@ -187,3 +187,38 @@ test("query parsing: defaults, bounds and bad input", () => {
   assert.throws(() => parseMoonIndex("12"), InputError);
   assert.throws(() => parseMoonIndex("abc"), InputError);
 });
+
+// ---- languages -----------------------------------------------------------------------
+import { getContent } from "../src/content.js";
+
+test("English and Hindi tables cover every key the Hinglish tables have", () => {
+  const base = getContent("hn");
+  for (const lang of ["en", "hi"]) {
+    const c = getContent(lang);
+    assert.equal(c.RASHI_TRAIT.length, 12);
+    assert.equal(c.LAGNA.length, 12);
+    assert.equal(c.RASHI.length, 12);
+    for (const k of Object.keys(base.HOUSE_READING)) {
+      assert.ok(c.HOUSE_READING[k].text.length > 30 && c.HOUSE_READING[k].theme, `${lang} house ${k}`);
+    }
+    for (const k of Object.keys(base.HIGHLIGHTS)) assert.ok(c.HIGHLIGHTS[k].note, `${lang} ${k}`);
+    for (const k of Object.keys(base.DASHA_THEME)) assert.ok(c.DASHA_THEME[k], `${lang} ${k}`);
+    for (const k of Object.keys(base.SADE_SATI.states)) assert.ok(c.SADE_SATI.states[k].title, `${lang} ${k}`);
+    assert.deepEqual(Object.keys(c.TITHI_TONE).sort(), Object.keys(base.TITHI_TONE).sort());
+  }
+});
+
+test("the horoscope and panchang switch language", () => {
+  const en = buildDailyHoroscope({ date: "2026-10-25", ...DELHI, lang: "en" });
+  const hi = buildDailyHoroscope({ date: "2026-10-25", ...DELHI, lang: "hi" });
+  assert.match(en.rashis[0].text, /^[\x00-\x7F’]+$/);
+  assert.match(hi.rashis[0].text, /[ऀ-ॿ]/);
+  assert.equal(en.rashis[0].stars.love, hi.rashis[0].stars.love);
+  assert.equal(pan("2026-10-25", { lang: "en" }).weekday.note.includes("Sunday"), true);
+});
+
+test("English wording stays calm", () => {
+  const banned = /\b(death|die|accident|illness|curse|ruin|doom|divorce|guarantee)\b/i;
+  const text = JSON.stringify(getContent("en")).replace(/Cancer/g, "Karka");
+  assert.ok(!banned.test(text), text.match(banned)?.[0]);
+});

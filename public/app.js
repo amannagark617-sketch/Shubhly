@@ -1,8 +1,9 @@
 import {
-  HI, esc, fmt12, fmtEnds, fmtRange, todayIn, nowIn, addDays, dateLabel,
+  HI as PLANET_HI, esc, fmt12, todayIn, nowIn, addDays, dateLabel, setDateLocale,
   inSlot, dots, moonSvg, chartSvg, renderMarkdown,
 } from "/lib.js";
 import { makeShareCard } from "/card.js";
+import { t, getLang, setLang, applyStatic, LANGS } from "/i18n.js";
 
 const $ = (id) => document.getElementById(id);
 const show = (el, on = true) => { el.hidden = !on; };
@@ -26,14 +27,29 @@ let myRashi = store.get("shubhly.rashi", null); // 0..11
 let profiles = store.get("shubhly.profiles", []);
 let config = { whatsappUrl: null };
 
+// pick a name by language: Hindi uses the Devanagari field, the others the roman one
+const L = (en, hi) => (getLang() === "hi" ? hi : en);
+const HN_PLANET = { Sun: "Surya", Moon: "Chandra", Mars: "Mangal", Mercury: "Budh", Jupiter: "Guru", Venus: "Shukra", Saturn: "Shani", Rahu: "Rahu", Ketu: "Ketu" };
+const HN_SIGN = { Aries: "Mesh", Taurus: "Vrishabh", Gemini: "Mithun", Cancer: "Kark", Leo: "Singh", Virgo: "Kanya", Libra: "Tula", Scorpio: "Vrishchik", Sagittarius: "Dhanu", Capricorn: "Makar", Aquarius: "Kumbh", Pisces: "Meen" };
+const HN_DAY = { Monday: "Somvar", Tuesday: "Mangalvar", Wednesday: "Budhvar", Thursday: "Guruvar", Friday: "Shukravar", Saturday: "Shanivar", Sunday: "Ravivar" };
+const planet = (key) => (getLang() === "hi" ? PLANET_HI[key] : getLang() === "hn" ? HN_PLANET[key] || key : key);
+// sign name: Hindi script, English, or Hinglish ("Meen (Pisces)"; short drops the brackets)
+const sn = (en, hi, short = false) =>
+  getLang() === "hi" ? hi : getLang() === "hn" ? (short ? HN_SIGN[en] || en : `${HN_SIGN[en] || en} (${en})`) : en;
+// weekday name in the current language (works on {en, hi} objects or an English name)
+const day = (en, hi) => (getLang() === "hi" ? hi : getLang() === "hn" ? HN_DAY[en] || en : en);
+
+const until = (e) => (e ? t(e.nextDay ? "until_next" : "until", { time: fmt12(e.time) }) : "");
+const rng = (r) => (r ? t("range", { a: fmt12(r.from), b: fmt12(r.to) }) : "");
+
 // ---------- helpers ----------
 let toastTimer;
 function toast(msg) {
-  const t = $("toast");
-  t.textContent = msg;
-  show(t, true);
+  const el = $("toast");
+  el.textContent = msg;
+  show(el, true);
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => show(t, false), 2600);
+  toastTimer = setTimeout(() => show(el, false), 2600);
 }
 
 function setBusy(btn, busy, label) {
@@ -45,12 +61,12 @@ async function api(path, options) {
   const res = await fetch(path, options);
   let data = null;
   try { data = await res.json(); } catch { /* ignore */ }
-  if (!res.ok) throw new Error(data?.error || "Something went wrong. Please try again.");
+  if (!res.ok) throw new Error(data?.error || t("err_generic"));
   return data;
 }
 
 const q = (extra = {}) => new URLSearchParams({
-  lat: loc.lat, lon: loc.lon, tz: loc.tz, ...extra,
+  lat: loc.lat, lon: loc.lon, tz: loc.tz, lang: getLang(), ...extra,
 }).toString();
 
 // ---------- reusable place search ----------
@@ -66,9 +82,7 @@ function placeSearch({ input, list, onPick }) {
   const pick = (p) => { close(); onPick(p); };
   const render = (items) => {
     results = items;
-    list.innerHTML = items.length
-      ? ""
-      : '<li class="none">Koi place nahi mila, spelling check karo</li>';
+    list.innerHTML = items.length ? "" : `<li class="none">${esc(t("f_no_place"))}</li>`;
     items.forEach((p) => {
       const li = document.createElement("li");
       li.setAttribute("role", "option");
@@ -104,13 +118,16 @@ function placeSearch({ input, list, onPick }) {
     else if (e.key === "Escape") close();
   });
   input.addEventListener("blur", () => setTimeout(close, 120));
-  return { first: async (text) => {
-    const data = await api(`/api/places?q=${encodeURIComponent(text)}`);
-    return data.places.find((p) => p.tz) || null;
-  } };
+  return {
+    first: async (text) => {
+      const data = await api(`/api/places?q=${encodeURIComponent(text)}`);
+      return data.places.find((p) => p.tz) || null;
+    },
+  };
 }
 
 // ---------- streak ----------
+let streakCount = 0;
 function touchStreak() {
   const today = todayIn(loc.tz);
   const s = store.get("shubhly.streak", { last: null, count: 0 });
@@ -119,9 +136,13 @@ function touchStreak() {
     s.last = today;
     store.set("shubhly.streak", s);
   }
-  if (s.count >= 2) {
-    const el = $("streak");
-    el.textContent = `${s.count} din ka streak`;
+  streakCount = s.count;
+  renderStreak();
+}
+function renderStreak() {
+  const el = $("streak");
+  if (streakCount >= 2) {
+    el.textContent = t("streak", { n: streakCount });
     show(el, true);
   }
 }
@@ -130,59 +151,100 @@ function touchStreak() {
 let todayData = null;
 
 function renderMoon(p) {
-  $("moonBox").innerHTML = moonSvg(p.moonElongation, `Chandrama aaj, ${p.tithi.name}`);
-  $("moonDay").textContent = `${p.weekday.hi}, ${dateLabel(p.date)}`;
-  $("moonTithi").textContent = `${p.tithi.paksha.hi} ${p.tithi.nameHi}`;
-  $("moonSub").textContent = `${p.tithi.paksha.en} ${p.tithi.name}, ${fmtEnds(p.tithi.ends)}`;
+  $("moonBox").innerHTML = moonSvg(p.moonElongation, p.tithi.name);
+  $("moonDay").textContent = `${day(p.weekday.en, p.weekday.hi)}, ${dateLabel(p.date, { day: "numeric", month: "long" })}`;
+  $("moonTithi").textContent = L(`${p.tithi.paksha.en} ${p.tithi.name}`, `${p.tithi.paksha.hi} ${p.tithi.nameHi}`);
+  $("moonSub").textContent = until(p.tithi.ends);
   $("moonFacts").innerHTML = `
-    <div><dt>Nakshatra</dt><dd>${esc(p.nakshatra.name)}</dd></div>
-    <div><dt>Chandra rashi</dt><dd>${esc(p.moonSign.sign)} ${esc(p.moonSign.signHi)}</dd></div>
-    <div><dt>Sunrise</dt><dd>${fmt12(p.sunrise)}</dd></div>
-    <div><dt>Sunset</dt><dd>${fmt12(p.sunset)}</dd></div>`;
+    <div><dt>${esc(t("m_nak"))}</dt><dd>${esc(L(p.nakshatra.name, p.nakshatra.nameHi))}</dd></div>
+    <div><dt>${esc(t("m_moon"))}</dt><dd>${esc(sn(p.moonSign.sign, p.moonSign.signHi))}</dd></div>
+    <div><dt>${esc(t("m_rise"))}</dt><dd>${fmt12(p.sunrise)}</dd></div>
+    <div><dt>${esc(t("m_set"))}</dt><dd>${fmt12(p.sunset)}</dd></div>`;
 }
 
 function fact(title, value, sub, cls = "") {
   return `<div class="fact ${cls}"><h3>${esc(title)}</h3><div class="v">${value}</div>${sub ? `<p class="s">${sub}</p>` : ""}</div>`;
 }
 
-function slotHtml(c, now) {
+function slotHtml(c, i, part, now) {
   const cls = c.quality === "good" ? "slot--good" : c.quality === "avoid" ? "slot--avoid" : "";
-  return `<div class="slot ${cls}${now && inSlot(now, c) ? " slot--now" : ""}">
-    <b>${esc(c.nameHi)}</b><span>${esc(c.name)}</span><span>${fmt12(c.from)}</span></div>`;
+  const isNow = now && inSlot(now, c);
+  return `<button type="button" class="slot ${cls}${isNow ? " slot--now" : ""}" data-part="${part}" data-i="${i}" aria-pressed="false"${isNow ? ` data-now="${esc(t("chog_now"))}"` : ""}>
+    <b>${esc(L(c.name, c.nameHi))}</b><span>${fmt12(c.from)}</span></button>`;
 }
 
 function renderPanchang(p) {
-  const now = p.date === todayIn(loc.tz) ? nowIn(loc.tz) : null;
+  const isToday = p.date === todayIn(loc.tz);
+  const now = isToday ? nowIn(loc.tz) : null;
   const hl = p.highlights.length
-    ? `<p class="note" style="margin-bottom:14px">Aaj: <b>${p.highlights.map((h) => esc(h.hi)).join(", ")}</b>. ${esc(p.highlights[0].note)}</p>`
+    ? `<p class="note" style="margin-bottom:14px">${esc(t("p_today_is", { tithi: p.highlights.map((h) => L(h.en, h.hi)).join(", "), note: p.highlights[0].note }))}</p>`
     : "";
+  const tn = L(p.tithi.paksha.en + " " + p.tithi.name, p.tithi.paksha.hi + " " + p.tithi.nameHi);
   $("panchang").innerHTML = `
     ${hl}
     <div class="facts">
-      ${fact("Tithi", `${esc(p.tithi.paksha.hi)} ${esc(p.tithi.nameHi)}`, fmtEnds(p.tithi.ends))}
-      ${fact("Nakshatra", esc(p.nakshatra.nameHi), `${esc(p.nakshatra.name)}, ${fmtEnds(p.nakshatra.ends)}`)}
-      ${fact("Yoga", esc(p.yoga.nameHi), fmtEnds(p.yoga.ends))}
-      ${fact("Karana", esc(p.karana.nameHi), fmtEnds(p.karana.ends))}
-      ${fact("Abhijit muhurat", p.abhijit ? fmtRange(p.abhijit) : "Aaj nahi", p.abhijit ? "Shubh kaam ke liye achha samay maana jata hai" : "Budhvar ko nahi maana jata", p.abhijit ? "fact--good" : "")}
-      ${fact("Brahma muhurta", fmtRange(p.brahma), "Dhyan aur path ke liye", "fact--good")}
-      ${fact("Rahu kaal", fmtRange(p.kaal.rahu), "Naya kaam shuru karne se bachte hain", "fact--avoid")}
-      ${fact("Yamaganda", fmtRange(p.kaal.yamaganda), `Gulika: ${fmtRange(p.kaal.gulika)}`, "fact--avoid")}
+      ${fact(t("p_tithi"), esc(tn), esc(until(p.tithi.ends)))}
+      ${fact(t("p_nak"), esc(L(p.nakshatra.name, p.nakshatra.nameHi)), esc(until(p.nakshatra.ends)))}
+      ${fact(t("p_yoga"), esc(L(p.yoga.name, p.yoga.nameHi)), esc(until(p.yoga.ends)))}
+      ${fact(t("p_karana"), esc(L(p.karana.name, p.karana.nameHi)), esc(until(p.karana.ends)))}
+      ${fact(t("p_abhijit"), esc(p.abhijit ? rng(p.abhijit) : t("p_abhijit_none")), esc(p.abhijit ? t("p_abhijit_sub") : t("p_abhijit_none_sub")), p.abhijit ? "fact--good" : "")}
+      ${fact(t("p_brahma"), esc(rng(p.brahma)), esc(t("p_brahma_sub")), "fact--good")}
+      ${fact(t("p_rahu"), esc(rng(p.kaal.rahu)), esc(t("p_rahu_sub")), "fact--avoid")}
+      ${fact(t("p_yama"), esc(rng(p.kaal.yamaganda)), esc(t("p_gulika", { time: rng(p.kaal.gulika) })), "fact--avoid")}
     </div>
-    <h3 class="sub-h">Aaj ka choghadiya</h3>
-    <p class="sub-note">Din ke 8 hisse. Amrit, Shubh, Labh achhe maane jaate hain; Udveg, Rog, Kaal se bachte hain.</p>
-    <div class="chog-scroll"><div class="chog" aria-label="Din ka choghadiya">${p.choghadiya.day.map((c) => slotHtml(c, now)).join("")}</div></div>
-    <h3 class="sub-h" style="font-size:1.1rem;margin-top:18px">Raat ka choghadiya</h3>
-    <div class="chog-scroll"><div class="chog" aria-label="Raat ka choghadiya">${p.choghadiya.night.map((c) => slotHtml(c, now)).join("")}</div></div>
-    <div class="legend"><span><i class="g"></i>Shubh</span><span><i class="n"></i>Normal</span><span><i class="a"></i>Bachein</span></div>
-    <p class="fine">Din ${esc(p.weekday.hi)} ka hai, swami ${esc(p.weekday.lordHi)}. Shubh rang: ${esc(p.weekday.colour.hi)}. Mantra: ${esc(p.weekday.mantra)}</p>`;
+    <h3 class="sub-h">${esc(t("chog_h"))}</h3>
+    <p class="sub-note">${esc(t("chog_note"))}</p>
+    <div class="chog-scroll"><div class="chog" aria-label="${esc(t("chog_h"))}">${p.choghadiya.day.map((c, i) => slotHtml(c, i, "day", now)).join("")}</div></div>
+    <h3 class="sub-h" style="font-size:1.1rem;margin-top:18px">${esc(t("chog_night"))}</h3>
+    <div class="chog-scroll"><div class="chog" aria-label="${esc(t("chog_night"))}">${p.choghadiya.night.map((c, i) => slotHtml(c, i, "night", now)).join("")}</div></div>
+    <p class="slot-info" id="slotInfo" aria-live="polite" hidden></p>
+    <div class="legend"><span><i class="g"></i>${esc(t("lg_good"))}</span><span><i class="n"></i>${esc(t("lg_normal"))}</span><span><i class="a"></i>${esc(t("lg_avoid"))}</span></div>
+    <p class="fine">${esc(t("p_day_line", { day: day(p.weekday.en, p.weekday.hi), lord: planet(p.weekday.lord), colour: p.weekday.colour.name, mantra: p.weekday.mantra }))}</p>`;
 }
+
+$("panchang").addEventListener("click", (e) => {
+  const b = e.target.closest(".slot");
+  if (!b || !todayData) return;
+  document.querySelectorAll(".slot[aria-pressed='true']").forEach((x) => x.setAttribute("aria-pressed", "false"));
+  b.setAttribute("aria-pressed", "true");
+  const c = todayData.panchang.choghadiya[b.dataset.part][Number(b.dataset.i)];
+  const info = $("slotInfo");
+  info.textContent = `${fmt12(c.from)} - ${fmt12(c.to)}. ${t("chog_" + c.name)}`;
+  info.className = `slot-info slot-info--${c.quality}`;
+  show(info, true);
+});
+
+// live "right now" strip
+function renderNow() {
+  const box = $("nowStrip");
+  const p = todayData?.panchang;
+  if (!p || p.date !== todayIn(loc.tz)) { show(box, false); return; }
+  const now = nowIn(loc.tz);
+  const all = [...p.choghadiya.day, ...p.choghadiya.night];
+  const cur = all.find((c) => inSlot(now, c));
+  const m = (s) => Number(s.slice(0, 2)) * 60 + Number(s.slice(3));
+  const r = p.kaal.rahu;
+  let rahu;
+  if (m(now) >= m(r.from) && m(now) < m(r.to)) rahu = t("now_rahu_on", { time: rng(r) });
+  else if (m(now) < m(r.from)) rahu = t("now_rahu_in", { time: fmt12(r.from) });
+  else rahu = t("now_rahu_done");
+  const inRahu = m(now) >= m(r.from) && m(now) < m(r.to);
+  const q = cur ? { good: "good", avoid: "avoid", neutral: "neutral" }[cur.quality] : "neutral";
+  box.innerHTML = `
+    <span class="now-dot now-dot--${q}"></span>
+    <b>${esc(t("now_h"))}</b>
+    ${cur ? `<span>${esc(t("now_chog", { name: L(cur.name, cur.nameHi), time: until({ time: cur.to, nextDay: false }) }))} <em class="tag tag--${q}">${esc(t("now_" + q))}</em></span>` : ""}
+    <span class="${inRahu ? "bad" : ""}">${esc(rahu)}</span>`;
+  show(box, true);
+}
+setInterval(renderNow, 30000);
 
 function renderVrat(list) {
   $("vrat").innerHTML = list.slice(0, 8).map((u) => {
-    const [, m, d] = u.date.split("-");
+    const d = u.date.split("-")[2];
     return `<li><div class="d"><b>${Number(d)}</b><span>${dateLabel(u.date, { month: "short" })}</span></div>
-      <div><h3>${esc(u.hi)} <small class="muted">${esc(u.en)}</small></h3>
-      <p>${esc(u.weekday.hi)}. ${esc(u.note)}</p></div></li>`;
+      <div><h3>${esc(L(u.en, u.hi))}</h3>
+      <p>${esc(day(u.weekday.en, u.weekday.hi))}. ${esc(u.note)}</p></div></li>`;
   }).join("");
 }
 
@@ -194,6 +256,7 @@ async function loadToday() {
     renderMoon(data.panchang);
     renderPanchang(data.panchang);
     renderVrat(data.panchang.upcoming || []);
+    renderNow();
   } catch (e) {
     $("panchang").innerHTML = `<div class="fail">${esc(e.message)}</div>`;
     $("moonBox").innerHTML = "";
@@ -201,7 +264,7 @@ async function loadToday() {
 }
 
 // ---------- location change ----------
-const locSearch = placeSearch({
+placeSearch({
   input: $("locInput"),
   list: $("locList"),
   onPick: (p) => {
@@ -210,9 +273,10 @@ const locSearch = placeSearch({
     show($("locEdit"), false);
     $("locInput").value = "";
     horoDate = todayIn(loc.tz);
+    horoCache.clear();
     loadToday();
     loadHoroscope();
-    toast(`${loc.name} set`);
+    toast(t("loc_set", { city: loc.name }));
   },
 });
 $("locChange").addEventListener("click", () => {
@@ -228,39 +292,37 @@ let shownRashi = myRashi;
 const horoCache = new Map();
 
 function renderGrid() {
-  const rashis = horo ? horo.rashis : null;
-  if (!rashis) return;
-  $("rashiGrid").innerHTML = rashis.map((r) => `
-    <button type="button" class="rashi-btn${r.index === myRashi ? " mine" : ""}" data-i="${r.index}" aria-pressed="${r.index === shownRashi}">
+  if (!horo) return;
+  $("rashiGrid").innerHTML = horo.rashis.map((r) => `
+    <button type="button" class="rashi-btn${r.index === myRashi ? " mine" : ""}" data-i="${r.index}" data-mine="${esc(t("rf_mine"))}" aria-pressed="${r.index === shownRashi}">
       <span class="sym" aria-hidden="true">${r.symbol}</span>
-      <span class="hi">${esc(r.signHi)}</span>
-      <span class="en">${esc(r.sign)}</span>
+      <span class="hi">${esc(sn(r.sign, r.signHi, true))}</span>
     </button>`).join("");
 }
 
 function meter(label, n) {
-  return `<li><span>${label}</span><span class="dots" role="img" aria-label="${n} out of 5">${dots(n)}</span></li>`;
+  return `<li><span>${esc(label)}</span><span class="dots" role="img" aria-label="${esc(t("rf_out_of", { n }))}">${dots(n)}</span></li>`;
 }
 
 function readingText(r) {
-  return `${r.signHi} (${r.sign}), ${dateLabel(horo.date)}\n${r.moodLabel}: ${r.theme}\n${r.text}\n\nShubhly: ${location.origin}`;
+  return `${sn(r.sign, r.signHi)}, ${dateLabel(horo.date)}\n${r.moodLabel}: ${r.theme}\n${r.text}\n\nShubhly: ${location.origin}`;
 }
 
-async function renderReading() {
+function renderReading() {
   const box = $("reading");
   if (!horo) return;
   if (shownRashi === null) {
-    box.innerHTML = `<div class="pick-note"><h3>Apni rashi chuno</h3>
-      <p>Upar se apni chandra rashi chuno. Pata nahi? Kundli banao, hum yaad rakh lenge.</p>
-      <p class="muted" style="margin:0">Aaj chandrama ${esc(horo.moonSign.signHi)} mein hai. ${esc(horo.tithiTone)}</p></div>`;
+    box.innerHTML = `<div class="pick-note"><h3>${esc(t("rf_pick_h"))}</h3>
+      <p>${esc(t("rf_pick_p"))}</p>
+      <p class="muted" style="margin:0">${esc(t("rf_moon_today", { sign: sn(horo.moonSign.sign, horo.moonSign.signHi) }))} ${esc(horo.tithiTone)}</p></div>`;
     return;
   }
   const r = horo.rashis[shownRashi];
   const wd = horo.weekday;
   box.innerHTML = `
-    <article class="reading">
+    <article class="reading" key="${r.index}">
       <div>
-        <div class="reading-title"><h3>${r.symbol} ${esc(r.signHi)}</h3><small>${esc(r.sign)}, swami ${esc(HI[r.lord] || r.lord)}</small></div>
+        <div class="reading-title"><h3>${r.symbol} ${esc(sn(r.sign, r.signHi, true))}</h3><small>${esc(t("rf_lord", { lord: planet(r.lord) }))}</small></div>
         <span class="mood mood--${r.mood}">${esc(r.moodLabel)}</span>
         <p class="reading-theme">${esc(r.theme)}</p>
         <p>${esc(r.text)}</p>
@@ -268,27 +330,26 @@ async function renderReading() {
         <p class="muted">${esc(horo.tithiTone)}</p>
         <div id="sati"></div>
         <div class="reading-actions">
-          <button type="button" class="btn btn-dark" id="shareRead">Share karo</button>
-          ${r.index === myRashi ? "" : '<button type="button" class="btn btn-outline" id="makeMine">Yeh meri rashi hai</button>'}
+          <button type="button" class="btn btn-dark" id="shareRead">${esc(t("rf_share"))}</button>
+          ${r.index === myRashi ? "" : `<button type="button" class="btn btn-outline" id="makeMine">${esc(t("rf_make_mine"))}</button>`}
         </div>
       </div>
       <div class="reading-aside">
         <ul class="meters">
-          ${meter("Pyaar", r.stars.love)}${meter("Career", r.stars.career)}
-          ${meter("Paisa", r.stars.money)}${meter("Sehat", r.stars.health)}
+          ${meter(t("rf_love"), r.stars.love)}${meter(t("rf_career"), r.stars.career)}
+          ${meter(t("rf_money"), r.stars.money)}${meter(t("rf_health"), r.stars.health)}
         </ul>
         <div class="lucky">
-          <div><span class="swatch" style="background:${esc(r.lucky.colour.hex)}"></span><span>${esc(r.lucky.colour.hi)}</span></div>
-          <div><span class="lucky-num">${r.lucky.number}</span><span>shubh ank</span></div>
+          <div><span class="swatch" style="background:${esc(r.lucky.colour.hex)}"></span><span>${esc(r.lucky.colour.name)}</span></div>
+          <div><span class="lucky-num">${r.lucky.number}</span><span>${esc(t("rf_lucky_no"))}</span></div>
         </div>
-        <div class="mantra"><small>${esc(wd.hi)} ka mantra</small><div class="m">${esc(wd.mantra)}</div><small>${esc(wd.deityHi)}</small></div>
+        <div class="mantra"><small>${esc(t("rf_mantra_of", { day: day(wd.en, wd.hi) }))}</small><div class="m">${esc(wd.mantra)}</div><small>${esc(L(wd.deity, wd.deityHi))}</small></div>
       </div>
     </article>`;
 
   $("shareRead").addEventListener("click", () => shareText(readingText(r)));
   const mk = $("makeMine");
   if (mk) mk.addEventListener("click", () => setMyRashi(r.index));
-
   if (horoDate === todayIn(loc.tz)) loadSati(r.index);
 }
 
@@ -309,7 +370,7 @@ function setMyRashi(i) {
   store.set("shubhly.rashi", i);
   renderGrid();
   renderReading();
-  toast("Rashi yaad rakh li");
+  toast(t("rf_saved"));
 }
 
 $("rashiGrid").addEventListener("click", (e) => {
@@ -321,10 +382,13 @@ $("rashiGrid").addEventListener("click", (e) => {
 });
 
 async function loadHoroscope() {
+  const today = todayIn(loc.tz);
   $("dNow").textContent = dateLabel(horoDate, { weekday: "long", day: "numeric", month: "long" });
-  show($("dToday"), horoDate !== todayIn(loc.tz));
+  document.querySelectorAll(".quick button").forEach((b) => {
+    b.setAttribute("aria-pressed", String(addDays(today, Number(b.dataset.day)) === horoDate));
+  });
   try {
-    const key = `${horoDate}|${loc.lat}|${loc.lon}`;
+    const key = `${horoDate}|${loc.lat}|${loc.lon}|${getLang()}`;
     if (!horoCache.has(key)) horoCache.set(key, await api(`/api/horoscope?${q({ date: horoDate })}`));
     horo = horoCache.get(key);
     renderGrid();
@@ -336,7 +400,12 @@ async function loadHoroscope() {
 
 $("dPrev").addEventListener("click", () => { horoDate = addDays(horoDate, -1); loadHoroscope(); });
 $("dNext").addEventListener("click", () => { horoDate = addDays(horoDate, 1); loadHoroscope(); });
-$("dToday").addEventListener("click", () => { horoDate = todayIn(loc.tz); loadHoroscope(); });
+document.querySelector(".quick").addEventListener("click", (e) => {
+  const b = e.target.closest("button");
+  if (!b) return;
+  horoDate = addDays(todayIn(loc.tz), Number(b.dataset.day));
+  loadHoroscope();
+});
 
 async function shareText(text) {
   try {
@@ -344,9 +413,9 @@ async function shareText(text) {
   } catch (e) { if (e.name === "AbortError") return; }
   try {
     await navigator.clipboard.writeText(text);
-    toast("Copy ho gaya, ab kahin bhi paste karo");
+    toast(t("rf_copy_ok"));
   } catch {
-    toast("Copy nahi ho paya");
+    toast(t("rf_copy_fail"));
   }
 }
 
@@ -360,23 +429,23 @@ const picked = $("placePicked");
 function pickBirthPlace(p) {
   selectedPlace = p;
   placeInput.value = p.label;
-  picked.textContent = `Selected: ${p.label}`;
+  picked.textContent = t("f_selected", { label: p.label });
   show(picked, true);
 }
 const birthSearch = placeSearch({ input: placeInput, list: $("places"), onPick: pickBirthPlace });
 placeInput.addEventListener("input", () => { selectedPlace = null; show(picked, false); });
 
 $("timeUnknown").addEventListener("change", (e) => {
-  const t = $("time");
-  if (e.target.checked) { t.value = "12:00"; t.disabled = true; } else { t.disabled = false; }
+  const tm = $("time");
+  if (e.target.checked) { tm.value = "12:00"; tm.disabled = true; } else { tm.disabled = false; }
 });
 
 function renderSaved() {
   const box = $("saved");
   if (!profiles.length) { show(box, false); return; }
-  box.innerHTML = '<span class="muted">Saved:</span>' + profiles.map((p, i) => `
+  box.innerHTML = `<span class="muted">${esc(t("saved_h"))}</span>` + profiles.map((p, i) => `
     <span class="saved-chip"><button type="button" class="open" data-open="${i}">${esc(p.name || p.date)}</button>
-    <button type="button" class="del" data-del="${i}" aria-label="${esc(p.name || p.date)} hatao">&times;</button></span>`).join("");
+    <button type="button" class="del" data-del="${i}" aria-label="${esc(t("saved_del", { name: p.name || p.date }))}">&times;</button></span>`).join("");
   show(box, true);
 }
 
@@ -418,50 +487,48 @@ function collect() {
   };
 }
 
-function fmtMonth(iso) {
-  return dateLabel(iso, { month: "short", year: "numeric" });
-}
+const monthYear = (iso) => dateLabel(iso, { month: "short", year: "numeric" });
 
-function renderResult(data, payload) {
+function renderResult(data, payload, { scroll = true } = {}) {
   const chart = data.chart;
-  $("resName").textContent = data.name || "Aapki kundli";
+  $("resName").textContent = data.name || t("r_title_none");
   $("resMeta").textContent =
-    `${payload.date}, ${payload.timeUnknown ? "time pata nahi" : fmt12(payload.time)}, ${payload.place.label}`;
+    `${payload.date}, ${payload.timeUnknown ? t("r_time_unknown") : fmt12(payload.time)}, ${payload.place.label}`;
 
   const asc = chart.ascendant;
-  const chips = [
-    ["Lagna", `${asc.sign} (${asc.signHi}) ${asc.degInSign.toFixed(1)}°`],
-    ["Rashi", `${chart.moonSign.sign} (${chart.moonSign.signHi})`],
-    ["Nakshatra", `${chart.nakshatra.name}, pada ${chart.nakshatra.pada}`],
-  ];
-  $("chips").innerHTML = chips
-    .filter(([k]) => !(payload.timeUnknown && k === "Lagna"))
-    .map(([k, v]) => `<span class="chip"><b>${esc(k)}:</b> ${esc(v)}</span>`).join("");
+  const chips = [];
+  if (!payload.timeUnknown) {
+    chips.push([t("r_lagna"), `${sn(asc.sign, asc.signHi)} ${asc.degInSign.toFixed(1)}°`]);
+  }
+  chips.push([t("r_rashi"), sn(chart.moonSign.sign, chart.moonSign.signHi)]);
+  const moonP = chart.planets.find((x) => x.key === "Moon");
+  chips.push([t("r_nak"), `${L(chart.nakshatra.name, moonP?.nakshatraHi || chart.nakshatra.name)}, ${t("r_pada", { n: chart.nakshatra.pada })}`]);
+  $("chips").innerHTML = chips.map(([k, v]) => `<span class="chip"><b>${esc(k)}:</b> ${esc(v)}</span>`).join("");
   show($("unknownNote"), payload.timeUnknown);
 
   const ins = data.insights || {};
   const items = [];
-  if (ins.lagna) items.push(["Aapka swabhav (lagna)", ins.lagna]);
-  if (ins.rashi) items.push(["Aapka mann (chandra rashi)", ins.rashi]);
-  if (ins.dasha) items.push([`Abhi ka daur: ${ins.dasha.lord}`, ins.dasha.text]);
-  $("insight").innerHTML = items.map(([h, t]) => `<li><b>${esc(h)}</b>${esc(t)}</li>`).join("");
+  if (ins.lagna) items.push([t("r_ins_lagna"), ins.lagna]);
+  if (ins.rashi) items.push([t("r_ins_rashi"), ins.rashi]);
+  if (ins.dasha) items.push([t("r_ins_dasha", { lord: planet(ins.dasha.lord) }), ins.dasha.text]);
+  $("insight").innerHTML = items.map(([h, tx]) => `<li><b>${esc(h)}</b>${esc(tx)}</li>`).join("");
 
   $("chart").innerHTML = chartSvg(chart);
   $("legend").textContent =
-    "Su सूर्य, Mo चंद्र, Ma मंगल, Me बुध, Ju गुरु, Ve शुक्र, Sa शनि, Ra राहु, Ke केतु. Number = rashi (1 Aries … 12 Pisces).";
+    "Su सूर्य, Mo चंद्र, Ma मंगल, Me बुध, Ju गुरु, Ve शुक्र, Sa शनि, Ra राहु, Ke केतु. " + t("r_legend");
 
   $("planetTable").querySelector("tbody").innerHTML = chart.planets.map((p) => `<tr>
-      <td><b>${esc(p.key)}</b> <small>${esc(p.hi)}</small>${p.retrograde ? " <small>(R)</small>" : ""}</td>
-      <td>${esc(p.sign)} <small>${esc(p.signHi)}</small></td>
+      <td><b>${esc(planet(p.key))}</b>${p.retrograde ? " <small>(R)</small>" : ""}</td>
+      <td>${esc(sn(p.sign, p.signHi))}</td>
       <td>${p.degInSign.toFixed(1)}°</td><td>${p.house}</td>
-      <td>${esc(p.nakshatra)} <small>pada ${p.pada}</small></td></tr>`).join("");
+      <td>${esc(L(p.nakshatra, p.nakshatraHi || p.nakshatra))} <small>${esc(t("r_pada", { n: p.pada }))}</small></td></tr>`).join("");
 
   const cur = chart.dasha.current;
   const box = $("dashaBox");
   if (cur && !payload.timeUnknown) {
     const md = cur.mahadasha, ad = cur.antardasha;
-    box.innerHTML = `<b>Abhi ka dasha:</b> ${esc(md.lord)} (${esc(HI[md.lord])}) mahadasha, ${fmtMonth(md.start)} se ${fmtMonth(md.end)} tak` +
-      (ad ? `. Antardasha: ${esc(ad.lord)} (${esc(HI[ad.lord])}), ${fmtMonth(ad.end)} tak.` : ".");
+    box.textContent = t("r_dasha", { md: planet(md.lord), a: monthYear(md.start), b: monthYear(md.end) }) +
+      (ad ? t("r_dasha_ad", { ad: planet(ad.lord), c: monthYear(ad.end) }) : "");
     show(box, true);
   } else show(box, false);
 
@@ -470,50 +537,55 @@ function renderResult(data, payload) {
   if (s && (s.active || s.dhaiya)) {
     sb.className = "callout callout--calm";
     sb.innerHTML = `<h3>${esc(s.title)}</h3><p>${esc(s.text)}</p><p>${esc(s.common)}</p><p><b>${esc(s.tip)}</b></p>` +
-      (s.saturn ? `<p class="muted" style="margin:0">Shani ${esc(s.saturn.sign)} mein hai, ${fmtMonth(s.saturn.entered)} se ${fmtMonth(s.saturn.leaves)} tak.</p>` : "");
+      (s.saturn ? `<p class="muted" style="margin:0">${esc(t("r_saturn", { sign: sn(s.saturn.sign, s.saturn.signHi || s.saturn.sign), a: monthYear(s.saturn.entered), b: monthYear(s.saturn.leaves) }))}</p>` : "");
     show(sb, true);
   } else show(sb, false);
 
   show($("result"), true);
-  show($("reportOut"), false);
-  show($("printBtn"), false);
-  show($("reportError"), false);
-  $("reportOut").innerHTML = "";
-  setBusy($("reportBtn"), false, "Get my AI report");
-  $("result").scrollIntoView({ behavior: "smooth", block: "start" });
+  if (scroll) {
+    show($("reportOut"), false);
+    show($("printBtn"), false);
+    show($("reportError"), false);
+    $("reportOut").innerHTML = "";
+    setBusy($("reportBtn"), false, t("rep_btn"));
+    $("result").scrollIntoView({ behavior: "smooth", block: "start" });
 
-  // personalise the rashifal for this person
-  const idx = chart.moonSign.index ?? chart.moonSign.signIndex;
-  if (Number.isInteger(idx)) {
-    myRashi = idx;
-    shownRashi = idx;
-    store.set("shubhly.rashi", idx);
-    renderGrid();
-    renderReading();
+    const idx = chart.moonSign.index ?? chart.moonSign.signIndex;
+    if (Number.isInteger(idx)) {
+      myRashi = idx;
+      shownRashi = idx;
+      store.set("shubhly.rashi", idx);
+      renderGrid();
+      renderReading();
+    }
   }
+}
+
+async function fetchKundli(payload) {
+  return api("/api/kundli", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ ...payload, lang: getLang() }),
+  });
 }
 
 $("form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const err = $("formError");
   show(err, false);
-  if (!$("date").value) { err.textContent = "Janm ki date daalo."; show(err); return; }
-  if (!$("timeUnknown").checked && !$("time").value) { err.textContent = "Janm ka time daalo, ya 'time nahi pata' chuno."; show(err); return; }
+  if (!$("date").value) { err.textContent = t("f_err_date"); show(err); return; }
+  if (!$("timeUnknown").checked && !$("time").value) { err.textContent = t("f_err_time"); show(err); return; }
   const btn = $("go");
-  setBusy(btn, true, "Kundli ban rahi hai...");
+  setBusy(btn, true, t("f_going"));
   try {
     if (!selectedPlace) {
       const text = placeInput.value.trim();
       const first = text.length >= 2 ? await birthSearch.first(text).catch(() => null) : null;
-      if (!first) throw new Error("Janm ki jagah list se chuno.");
+      if (!first) throw new Error(t("f_err_place"));
       pickBirthPlace(first);
     }
     const payload = collect();
-    const data = await api("/api/kundli", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    const data = await fetchKundli(payload);
     lastPayload = payload;
     lastResult = data;
     saveProfile(payload);
@@ -522,7 +594,7 @@ $("form").addEventListener("submit", async (e) => {
     err.textContent = ex.message;
     show(err);
   } finally {
-    setBusy(btn, false, "Get my kundli");
+    setBusy(btn, false, t("f_go"));
   }
 });
 
@@ -530,18 +602,21 @@ $("form").addEventListener("submit", async (e) => {
 $("shareBtn").addEventListener("click", async () => {
   if (!lastResult) return;
   const c = lastResult.chart;
-  const rows = [["Chandra rashi", `${c.moonSign.sign} ${c.moonSign.signHi}`],
-    ["Nakshatra", `${c.nakshatra.name}, pada ${c.nakshatra.pada}`]];
-  if (!lastPayload.timeUnknown) rows.unshift(["Lagna", `${c.ascendant.sign} ${c.ascendant.signHi}`]);
+  const rows = [
+    [t("r_rashi"), sn(c.moonSign.sign, c.moonSign.signHi)],
+    [t("r_nak"), `${L(c.nakshatra.name, c.planets.find((x) => x.key === "Moon")?.nakshatraHi || c.nakshatra.name)}, ${t("r_pada", { n: c.nakshatra.pada })}`],
+  ];
+  if (!lastPayload.timeUnknown) rows.unshift([t("r_lagna"), sn(c.ascendant.sign, c.ascendant.signHi)]);
   const blob = await makeShareCard({
-    title: lastResult.name ? `${lastResult.name} ki kundli` : "Meri kundli",
-    subtitle: "shubhly.com par apni kundli banao",
+    title: lastResult.name ? t("card_title", { name: lastResult.name }) : t("card_title_me"),
+    subtitle: t("card_sub"),
     rows,
+    footer: t("card_footer"),
   });
   const file = new File([blob], "shubhly-kundli.png", { type: "image/png" });
   try {
     if (navigator.canShare?.({ files: [file] })) {
-      await navigator.share({ files: [file], text: "Meri kundli, Shubhly par" });
+      await navigator.share({ files: [file], text: t("card_text") });
       return;
     }
   } catch (e) { if (e.name === "AbortError") return; }
@@ -550,7 +625,7 @@ $("shareBtn").addEventListener("click", async () => {
   a.download = "shubhly-kundli.png";
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-  toast("Card download ho gaya");
+  toast(t("card_done"));
 });
 
 $("scrollReport").addEventListener("click", () => {
@@ -562,7 +637,7 @@ $("reportBtn").addEventListener("click", async () => {
   if (!lastPayload) return;
   const btn = $("reportBtn"), err = $("reportError");
   show(err, false);
-  setBusy(btn, true, "Report likh rahe hain...");
+  setBusy(btn, true, t("rep_busy"));
   try {
     const lang = document.querySelector('input[name="lang"]:checked').value;
     const data = await api("/api/report", {
@@ -578,15 +653,78 @@ $("reportBtn").addEventListener("click", async () => {
     err.textContent = ex.message;
     show(err);
   } finally {
-    setBusy(btn, false, "Get my AI report");
+    setBusy(btn, false, t("rep_btn"));
   }
 });
 $("printBtn").addEventListener("click", () => window.print());
 
+// ---------- premium ----------
+function renderPremium() {
+  const joined = store.get("shubhly.premium", false);
+  $("premiumNote").textContent = t(joined ? "pr_joined" : "pr_note");
+  $("premiumNote").classList.toggle("ok", !!joined);
+}
+$("premiumBtn").addEventListener("click", () => {
+  store.set("shubhly.premium", true);
+  renderPremium();
+  if (config.whatsappUrl) {
+    const u = config.whatsappUrl;
+    window.open(`${u}${u.includes("?") ? "&" : "?"}text=${encodeURIComponent(t("pr_wa_text"))}`, "_blank", "noopener");
+  } else {
+    toast(t("pr_toast"));
+  }
+});
+
+// ---------- language ----------
+function setLanguage(l, { first = false } = {}) {
+  setLang(l);
+  const lang = getLang();
+  store.set("shubhly.lang", lang);
+  document.documentElement.lang = lang === "hi" ? "hi" : "en";
+  setDateLocale(lang === "hi" ? "hi-IN" : "en-IN");
+  applyStatic();
+  document.querySelectorAll(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  const radio = document.querySelector(`input[name="lang"][value="${lang}"]`);
+  if (radio) radio.checked = true;
+  setBusy($("go"), false, t("f_go"));
+  setBusy($("reportBtn"), false, t("rep_btn"));
+  renderPremium();
+  renderStreak();
+  renderSaved();
+  if (selectedPlace) picked.textContent = t("f_selected", { label: selectedPlace.label });
+  if (first) return;
+  loadToday();
+  loadHoroscope();
+  if (lastPayload) {
+    fetchKundli(lastPayload)
+      .then((d) => { lastResult = d; renderResult(d, lastPayload, { scroll: false }); })
+      .catch(() => {});
+  }
+}
+document.querySelector(".lang").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-lang]");
+  if (b) setLanguage(b.dataset.lang);
+});
+
+// ---------- section highlight in nav ----------
+function watchSections() {
+  if (!("IntersectionObserver" in window)) return;
+  const links = [...document.querySelectorAll(".tabbar a, .nav-links a")];
+  const io = new IntersectionObserver((entries) => {
+    for (const en of entries) {
+      if (!en.isIntersecting) continue;
+      links.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === `#${en.target.id}`));
+    }
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  ["aaj", "rashifal", "kundli", "premium", "store", "faq"].forEach((id) => io.observe($(id)));
+}
+
 // ---------- start ----------
 (async function init() {
+  const saved = store.get("shubhly.lang", "hn");
+  setLanguage(LANGS.includes(saved) ? saved : "hn", { first: true });
   touchStreak();
-  renderSaved();
+  watchSections();
   try { config = await api("/api/config"); } catch { /* optional */ }
   if (config.whatsappUrl) {
     const wa = $("waBtn");

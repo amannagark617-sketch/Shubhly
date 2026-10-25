@@ -4,9 +4,7 @@
 
 import { SIGNS } from "./astro-data.js";
 import { computePanchang } from "./panchang.js";
-import {
-  HOUSE_READING, MOOD_LABEL, PLANET_NUMBER, RASHI_TRAIT, TITHI_TONE, WEEKDAY_INFO,
-} from "./content.js";
+import { PLANET_NUMBER, getContent } from "./content.js";
 
 const SYMBOLS = ["♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓"].map(
   (s) => s + "︎"
@@ -21,7 +19,8 @@ export function houseFromMoon(natalRashiIndex, moonSignIndex) {
   return ((moonSignIndex - natalRashiIndex + 12) % 12) + 1;
 }
 
-function readingFor(rashiIndex, moonSignIndex, weekdayNo) {
+function readingFor(C, rashiIndex, moonSignIndex, weekdayNo) {
+  const { HOUSE_READING, MOOD_LABEL, RASHI_TRAIT, WEEKDAY_INFO } = C;
   const house = houseFromMoon(rashiIndex, moonSignIndex);
   const r = HOUSE_READING[house];
   const week = WEEKDAY_INFO[weekdayNo];
@@ -46,8 +45,9 @@ function readingFor(rashiIndex, moonSignIndex, weekdayNo) {
   };
 }
 
-export function buildDailyHoroscope({ date, lat, lon, tz }) {
-  const p = computePanchang({ date, lat, lon, tz });
+export function buildDailyHoroscope({ date, lat, lon, tz, lang = "hn" }) {
+  const C = getContent(lang);
+  const p = computePanchang({ date, lat, lon, tz, lang });
   const moonIdx = p.moonSign.index;
   return {
     date,
@@ -56,7 +56,7 @@ export function buildDailyHoroscope({ date, lat, lon, tz }) {
     nakshatra: p.nakshatra,
     moonSign: p.moonSign,
     moonIngress: p.moonIngress,
-    tithiTone: TITHI_TONE[tithiGroup(p.tithi.number)],
-    rashis: SIGNS.map((_, i) => readingFor(i, moonIdx, p.weekday.no)),
+    tithiTone: C.TITHI_TONE[tithiGroup(p.tithi.number)],
+    rashis: SIGNS.map((_, i) => readingFor(C, i, moonIdx, p.weekday.no)),
   };
 }
