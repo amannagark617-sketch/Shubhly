@@ -1,0 +1,48 @@
+// Turns a computed chart into a written report using the Gemini API.
+
+import { GoogleGenAI } from "@google/genai";
+import { buildSystemInstruction, buildUserContent } from "./prompt.js";
+
+const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+
+let client = null;
+function getClient() {
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) return null;
+  if (!client) client = new GoogleGenAI({ apiKey: key });
+  return client;
+}
+
+export function aiConfigured() {
+  return Boolean(process.env.GEMINI_API_KEY);
+}
+
+export async function generateReport({
+  name,
+  topic,
+  language,
+  chart,
+  timeUnknown = false,
+}) {
+  const ai = getClient();
+  if (!ai) {
+    const err = new Error("AI is not configured yet");
+    err.code = "AI_NOT_CONFIGURED";
+    throw err;
+  }
+
+  const today = new Date().toISOString().slice(0, 10);
+  const response = await ai.models.generateContent({
+    model: MODEL,
+    contents: buildUserContent({ name, topic, chart, today, timeUnknown }),
+    config: {
+      systemInstruction: buildSystemInstruction(language),
+      temperature: 0.7,
+      maxOutputTokens: 4096,
+    },
+  });
+
+  const text = (response.text || "").trim();
+  if (!text) throw new Error("The AI returned an empty report");
+  return text;
+}

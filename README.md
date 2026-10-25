@@ -1,0 +1,67 @@
+# Shubhly
+
+Your kundli, your puja, your vibe.
+
+Shubhly turns birth details into a kundli chart and an AI-written report in Hindi or English.
+
+**How it works**
+
+1. The chart is calculated with the Swiss Ephemeris (sidereal, Lahiri ayanamsa, whole-sign houses, nakshatra, Vimshottari dasha). The AI never calculates positions.
+2. The chart data goes to Gemini with strict guardrails (`src/prompt.js`): no fear, no predictions of death or illness, no guarantees, no paid remedies.
+3. The page shows a North Indian style chart, a planet table and the report.
+
+## Run locally
+
+Needs Node 22 or newer.
+
+```bash
+npm install
+cp .env.example .env      # then paste your Gemini API key into .env
+npm run dev
+```
+
+Open http://localhost:8080. Without a key the chart works and the report button shows a friendly "not switched on yet" message.
+
+```bash
+npm test                  # chart accuracy and input checks
+```
+
+## Deploy
+
+### Option A: Cloud Run from this GitHub repo (recommended)
+
+1. In the Google Cloud console open **Cloud Run** and click **Connect repository**.
+2. Choose **Cloud Build**, pick this GitHub repo and the `main` branch.
+3. Set **Build type** to **Dockerfile** and the source location to `/Dockerfile`.
+4. Under **Variables & Secrets** add `GEMINI_API_KEY` (create a key in Google AI Studio). Keep it as a secret, never in the code.
+5. Allow unauthenticated invocations so the public can open the site, then click **Create**.
+
+Every push to `main` then redeploys automatically.
+
+### Option B: Google AI Studio
+
+In AI Studio **Build** mode, use the **+** menu to import this GitHub repository, then deploy to Cloud Run from there. AI Studio keeps `GEMINI_API_KEY` on the server side. If the import does not run the Express server correctly, use Option A.
+
+## Settings
+
+| Variable | Purpose |
+| --- | --- |
+| `GEMINI_API_KEY` | Key for the AI report (required for reports) |
+| `GEMINI_MODEL` | Optional model name, default `gemini-2.5-flash` |
+| `PORT` | Set automatically on Cloud Run |
+
+## Project layout
+
+```
+server.js        API and static hosting
+src/kundli.js    chart engine
+src/prompt.js    AI guide instructions and guardrails
+src/report.js    Gemini call
+src/geocode.js   place search (Open-Meteo, no key needed)
+public/          the website
+test/            tests
+```
+
+## Coming next
+
+Payments (UPI and Razorpay), marriage matching, the WhatsApp flow, and the puja and murti store.

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shubhly: Kundli, Puja &amp; more</title>
+  <meta name="description" content="Free kundli chart in seconds, plus an AI-guided report in Hindi or English. Your kundli, your puja, your vibe." />
+  <meta name="theme-color" content="#5E1A2B" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23E8892B'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%235E1A2B'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="wrap top-inner">
+      <a class="brand" href="/" aria-label="Shubhly home">
+        <svg class="sun" viewBox="0 0 48 48" aria-hidden="true">
+          <circle cx="24" cy="24" r="9" fill="#E8892B" />
+          <circle cx="24" cy="24" r="4" fill="#5E1A2B" />
+          <g stroke="#E8892B" stroke-width="2.4" stroke-linecap="round">
+            <path d="M24 4v6M24 38v6M4 24h6M38 24h6M9.9 9.9l4.2 4.2M33.9 33.9l4.2 4.2M9.9 38.1l4.2-4.2M33.9 14.1l4.2-4.2" />
+          </g>
+        </svg>
+        <span>Shubhly</span>
+      </a>
+      <span class="tag">Kundli · Puja · More</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <h1>Your kundli,<br />your puja, your vibe.</h1>
+        <p>Apni kundli free mein dekho, aur AI guide se apni chart ko simple Hindi mein samjho.</p>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <form id="form" class="card" autocomplete="off" novalidate>
+        <h2>Apni birth details daalo</h2>
+
+        <label class="field">
+          <span>Name</span>
+          <input id="name" name="name" type="text" maxlength="40" placeholder="Aapka naam" required />
+        </label>
+
+        <div class="row">
+          <label class="field">
+            <span>Date of birth</span>
+            <input id="date" name="date" type="date" min="1900-01-01" max="2100-12-31" required />
+          </label>
+          <label class="field">
+            <span>Time of birth</span>
+            <input id="time" name="time" type="time" value="12:00" required />
+          </label>
+        </div>
+
+        <label class="check">
+          <input id="timeUnknown" type="checkbox" />
+          <span>Mujhe exact time nahi pata (noon use hoga, lagna thoda alag ho sakta hai)</span>
+        </label>
+
+        <div class="field place-field">
+          <span>Birth place</span>
+          <input id="place" type="text" placeholder="City ya town likho, jaise Delhi" role="combobox" aria-expanded="false" aria-controls="places" />
+          <ul id="places" class="places" role="listbox" hidden></ul>
+          <small id="placePicked" class="picked" hidden></small>
+        </div>
+
+        <div class="row">
+          <label class="field">
+            <span>Report focus</span>
+            <select id="topic">
+              <option value="general">General life</option>
+              <option value="career">Career &amp; money</option>
+              <option value="marriage">Marriage &amp; relationships</option>
+            </select>
+          </label>
+          <div class="field">
+            <span>Report language</span>
+            <div class="seg" role="radiogroup" aria-label="Report language">
+              <label><input type="radio" name="lang" value="hi" checked /><span>हिंदी</span></label>
+              <label><input type="radio" name="lang" value="en" /><span>English</span></label>
+            </div>
+          </div>
+        </div>
+
+        <p id="formError" class="error" role="alert" hidden></p>
+        <button id="go" class="btn" type="submit">Get my kundli</button>
+      </form>
+
+      <section id="result" class="result" hidden>
+        <div class="card">
+          <div class="who">
+            <h2 id="resName"></h2>
+            <p id="resMeta" class="muted"></p>
+          </div>
+          <div id="chips" class="chips"></div>
+          <p id="unknownNote" class="note" hidden>Exact birth time pata nahi hai, isliye lagna aur houses sirf andaza hain.</p>
+
+          <div class="chart-wrap">
+            <div id="chart" aria-label="North Indian style kundli chart"></div>
+            <p class="legend" id="legend"></p>
+          </div>
+
+          <div class="table-wrap">
+            <table id="planetTable">
+              <thead>
+                <tr><th>Graha</th><th>Rashi</th><th>Degree</th><th>House</th><th>Nakshatra</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <div id="dashaBox" class="dasha" hidden></div>
+        </div>
+
+        <div class="card report-card">
+          <h2>Shubhly AI Jyotish Guide</h2>
+          <p class="muted">Aapki chart ke hisaab se ek personal report. Chart exact astronomy se calculate hota hai, AI sirf usse samjhata hai.</p>
+          <button id="reportBtn" class="btn" type="button">Get my AI report</button>
+          <p id="reportError" class="error" role="alert" hidden></p>
+          <div id="reportOut" class="report" hidden></div>
+          <button id="printBtn" class="btn ghost" type="button" hidden>Save or print</button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <p><strong>Shubhly Jyotish Guide is AI.</strong> It is meant for reflection and guidance, not certainty. For big decisions in life, health or money, please also talk to people you trust.</p>
+      <p class="muted">© Shubhly</p>
+    </div>
+  </footer>
+
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "shubhly",
+  "version": "0.1.0",
+  "description": "Shubhly: AI-guided kundli reports, built on exact astronomy calculations",
+  "private": true,
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "dev": "node --env-file-if-exists=.env --watch server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@google/genai": "^2.31.0",
+    "express": "^5.3.0",
+    "luxon": "^3.7.2",
+    "sweph": "^2.10.3-8",
+    "tz-lookup": "^6.1.25"
+  }
+}
