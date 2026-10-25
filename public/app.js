@@ -5,6 +5,7 @@ import {
 import { makeShareCard } from "/card.js";
 import { initFx, fillMarquee } from "/fx.js";
 import { SIGN_EN, planetName, signName, nakName, dayName, pickName, DATE_LOCALE } from "/names.js";
+import { initGuides } from "/chat.js";
 import { t, getLang, setLang, applyStatic, LANGS, LANG_NAMES } from "/i18n.js";
 
 const $ = (id) => document.getElementById(id);
@@ -637,6 +638,7 @@ $("form").addEventListener("submit", async (e) => {
     lastResult = data;
     saveProfile(payload);
     renderResult(data, payload);
+    guides?.refresh();
   } catch (ex) {
     err.textContent = ex.message;
     show(err);
@@ -756,6 +758,7 @@ $("premiumBtn").addEventListener("click", () => {
 });
 
 // ---------- language ----------
+let guides = null;
 function setLanguage(l, { first = false } = {}) {
   setLang(l);
   const lang = getLang();
@@ -771,6 +774,7 @@ function setLanguage(l, { first = false } = {}) {
   renderPremium();
   renderStreak();
   renderSaved();
+  guides?.refresh();
   if (selectedPlace) picked.textContent = t("f_selected", { label: selectedPlace.label });
   if (first) return;
   refreshSky();
@@ -827,13 +831,14 @@ function watchSections() {
       links.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === `#${en.target.id}`));
     }
   }, { rootMargin: "-45% 0px -50% 0px" });
-  ["aaj", "rashifal", "kundli", "premium", "store", "faq"].forEach((id) => io.observe($(id)));
+  ["aaj", "rashifal", "kundli", "guides", "premium", "store", "faq"].forEach((id) => io.observe($(id)));
 }
 
 // ---------- start ----------
 (async function init() {
   const saved = store.get("shubhly.lang", "en");
   setLanguage(LANGS.includes(saved) ? saved : "en", { first: true });
+  guides = initGuides({ t, getLang, store, toast, getBirth: () => lastPayload || profiles[0] || null });
   initFx();
   touchStreak();
   watchSections();

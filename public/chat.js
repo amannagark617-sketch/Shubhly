@@ -1,0 +1,238 @@
+// The AI guides: the cards in the page and the chat panel.
+
+import { GUIDES, GUIDE_BY_ID, gtext, isResting, backAt, avatarSvg } from "/guides.js";
+import { esc, renderMarkdown } from "/lib.js";
+
+const $ = (id) => document.getElementById(id);
+const HISTORY_KEEP = 30;
+
+export function initGuides({ t, getLang, store, toast, getBirth }) {
+  const cid = (() => {
+    let id = store.get("shubhly.cid", null);
+    if (!id) {
+      id = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now()).replace(/[^\w-]/g, "");
+      store.set("shubhly.cid", id);
+    }
+    return id;
+  })();
+
+  let left = store.get("shubhly.chatLeft", 5);
+  let open = null; // the guide in the panel
+  let history = [];
+  let busy = false;
+  let opener = null;
+
+  const hist = (id) => store.get(`shubhly.chat.${id}`, []);
+  const save = () => store.set(`shubhly.chat.${open.id}`, history.slice(-HISTORY_KEEP));
+  const setLeft = (n) => { left = n; store.set("shubhly.chatLeft", n); };
+  const avatar = (g, cls = "") => `<div class="avatar ${cls}">${avatarSvg(g.look)}</div>`;
+  const role = (g) => gtext(g.role, getLang());
+
+  // ---------- cards ----------
+  function renderCards() {
+    const lang = getLang();
+    $("guideGrid").innerHTML = GUIDES.map((g) => {
+      const rest = isResting(g);
+      return `<article class="guide${rest ? " guide--rest" : ""}">
+        <div class="guide-top">${avatar(g)}
+          <div><h3>${esc(g.name)}</h3>
+          <span class="badge-ai">${esc(t("g_ai"))}</span></div>
+        </div>
+        <p class="guide-role">${esc(role(g))}</p>
+        <p class="guide-blurb">${esc(gtext(g.blurb, lang))}</p>
+        <p class="guide-state"><i class="dot${rest ? "" : " dot--on"}"></i>${esc(rest ? t("g_rest", { time: backAt(g) }) : t("g_on"))}</p>
+        <button type="button" class="btn ${rest ? "btn-outline" : "btn-primary"} btn-wide" data-guide="${g.id}"${rest ? " disabled" : ""}>${esc(t("g_chat"))}</button>
+      </article>`;
+    }).join("");
+  }
+
+  // ---------- panel ----------
+  function bubble(m) {
+    return m.role === "user"
+      ? `<div class="msg msg--me"><p>${esc(m.text)}</p></div>`
+      : `<div class="msg msg--guide">${renderMarkdown(m.text)}</div>`;
+  }
+
+  function renderLog() {
+    const intro = `<div class="msg msg--guide"><p>${esc(t("g_intro", { name: open.name, role: role(open).toLowerCase() }))}</p></div>`;
+    $("chatLog").innerHTML = intro + history.map(bubble).join("");
+    scrollDown();
+    const starters = gtext(open.starters, getLang());
+    $("chatStarters").innerHTML = history.length || left <= 0 ? "" :
+      starters.map((s) => `<button type="button" class="chip-btn">${esc(s)}</button>`).join("");
+  }
+
+  function scrollDown() {
+    const log = $("chatLog");
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function renderMeta() {
+    const has = Boolean(getBirth());
+    $("chatChart").innerHTML = has
+      ? `<span class="meta-on">${esc(t("g_chart_on"))}</span>`
+      : `<button type="button" class="link-btn" id="chatMake">${esc(t("g_chart_off"))}</button>`;
+    $("chatLeft").textContent = t("g_free_left", { n: left });
+    const wall = left <= 0;
+    $("chatWall").hidden = !wall;
+    $("chatForm").hidden = wall;
+    scrollDown();
+  }
+
+  function openChat(g, from) {
+    open = g;
+    opener = from || null;
+    history = hist(g.id);
+    $("chatAvatar").innerHTML = avatarSvg(g.look);
+    $("chatName").textContent = g.name;
+    $("chatRole").textContent = role(g);
+    $("chatNote").textContent = t("g_note", { name: g.name });
+    renderLog();
+    renderMeta();
+    $("chat").hidden = false;
+    document.documentElement.classList.add("chat-open");
+    if (left > 0) setTimeout(() => $("chatInput").focus(), 50);
+  }
+
+  function closeChat() {
+    $("chat").hidden = true;
+    document.documentElement.classList.remove("chat-open");
+    open = null;
+    if (opener && document.contains(opener)) opener.focus();
+  }
+
+  function typing(on) {
+    const el = $("chatLog").querySelector(".msg--typing");
+    if (!on) { el?.remove(); return; }
+    if (el) return;
+    $("chatLog").insertAdjacentHTML("beforeend",
+      `<div class="msg msg--guide msg--typing" role="status"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="sr">${esc(t("g_typing"))}</span></div>`);
+    scrollDown();
+  }
+
+  async function send(text) {
+    text = text.trim();
+    if (!text || busy || !open || left <= 0) return;
+    busy = true;
+    const g = open;
+    history.push({ role: "user", text });
+    save();
+    $("chatLog").insertAdjacentHTML("beforeend", bubble({ role: "user", text }));
+    $("chatStarters").innerHTML = "";
+    $("chatInput").value = "";
+    fit();
+    typing(true);
+    $("chatSend").disabled = true;
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ guide: g.id, cid, messages: history, language: getLang(), birth: getBirth() || undefined }),
+      });
+      let data = null;
+      try { data = await res.json(); } catch { /* ignore */ }
+      if (open?.id !== g.id) return; // closed or switched meanwhile
+      typing(false);
+      if (res.status === 402) {
+        history.pop(); save();
+        setLeft(0);
+        $("chatLog").lastElementChild?.remove();
+        renderMeta();
+        return;
+      }
+      if (res.status === 409) {
+        history.pop(); save();
+        $("chatLog").lastElementChild?.remove();
+        $("chatInput").value = text;
+        toast(t("g_rest_msg", { name: g.name }));
+        renderCards();
+        return;
+      }
+      if (!res.ok) throw new Error(data?.error || t("err_generic"));
+      history.push({ role: "model", text: data.reply });
+      save();
+      setLeft(data.left);
+      $("chatLog").insertAdjacentHTML("beforeend", bubble({ role: "model", text: data.reply }));
+      scrollDown();
+      renderMeta();
+    } catch (e) {
+      typing(false);
+      history.pop(); save();
+      $("chatLog").lastElementChild?.remove();
+      $("chatInput").value = text;
+      fit();
+      toast(e.message);
+    } finally {
+      busy = false;
+      $("chatSend").disabled = false;
+      if (open && left > 0) $("chatInput").focus();
+    }
+  }
+
+  function fit() {
+    const el = $("chatInput");
+    el.style.height = "auto";
+    el.style.height = Math.min(el.scrollHeight, 120) + "px";
+  }
+
+  // ---------- events ----------
+  $("guideGrid").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-guide]");
+    if (b && !b.disabled) openChat(GUIDE_BY_ID[b.dataset.guide], b);
+  });
+  $("chatClose").addEventListener("click", closeChat);
+  $("chatBack").addEventListener("click", closeChat);
+  $("chatNew").addEventListener("click", () => {
+    if (!open || busy) return;
+    history = [];
+    save();
+    renderLog();
+  });
+  $("chatStarters").addEventListener("click", (e) => {
+    const b = e.target.closest(".chip-btn");
+    if (b) send(b.textContent);
+  });
+  $("chatForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    send($("chatInput").value);
+  });
+  $("chatInput").addEventListener("input", fit);
+  $("chatInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey && !e.isComposing && !matchMedia("(pointer: coarse)").matches) {
+      e.preventDefault();
+      send($("chatInput").value);
+    }
+  });
+  $("chat").addEventListener("click", (e) => {
+    if (e.target.closest("#chatMake")) { closeChat(); document.getElementById("kundli").scrollIntoView({ behavior: "smooth" }); }
+    if (e.target.closest("#chatPremium")) { closeChat(); document.getElementById("premium").scrollIntoView({ behavior: "smooth" }); }
+  });
+  document.addEventListener("keydown", (e) => {
+    if ($("chat").hidden) return;
+    if (e.key === "Escape") { closeChat(); return; }
+    if (e.key === "Tab") { // keep focus inside the panel
+      const items = [...$("chat").querySelectorAll("button:not([disabled]), textarea, a[href]")].filter((x) => x.offsetParent);
+      if (!items.length) return;
+      const first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+
+  // The server is the source of truth for free messages.
+  fetch(`/api/chat/status?cid=${encodeURIComponent(cid)}`)
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => { if (d && Number.isInteger(d.left)) { setLeft(d.left); if (open) renderMeta(); } })
+    .catch(() => {});
+
+  renderCards();
+  setInterval(renderCards, 60_000); // availability changes with the hour
+
+  return {
+    // Called when the language changes or a kundli is made.
+    refresh() {
+      renderCards();
+      if (open) { $("chatNote").textContent = t("g_note", { name: open.name }); $("chatRole").textContent = role(open); renderLog(); renderMeta(); }
+    },
+  };
+}

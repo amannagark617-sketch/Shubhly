@@ -10,6 +10,10 @@ import { buildDailyHoroscope } from "./src/horoscope.js";
 import { quickInsights } from "./src/insights.js";
 import { buildPdf } from "./src/pdf.js";
 import { DATE_LOCALE } from "./public/names.js";
+import {
+  FreeChats, FREE_MESSAGES, guideReply, parseClientId, parseGuide, parseMessages,
+} from "./src/chat.js";
+import { isResting, backAt } from "./public/guides.js";
 import { sadeSati, saturnWindow, slowPlanets } from "./src/transits.js";
 import {
   InputError,
@@ -67,6 +71,11 @@ const reportLimit = rateLimit({
   windowMs: 3_600_000,
   max: 8,
   message: "You have reached the hourly limit for reports. Please try later.",
+});
+const chatLimit = rateLimit({
+  windowMs: 3_600_000,
+  max: 60,
+  message: "Too many messages. Please try again in a while.",
 });
 const dailyLimit = rateLimit({
   windowMs: 60_000,
@@ -216,6 +225,68 @@ app.post("/api/report", reportLimit, async (req, res, next) => {
       timeUnknown: birth.timeUnknown,
     });
     res.json({ name, topic, language, chart, report });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// ---- AI guides ------------------------------------------------------------
+const freeChats = new FreeChats();
+const guidesAlwaysOn = process.env.GUIDES_ALWAYS_ON === "1";
+
+app.get("/api/chat/status", dailyLimit, (req, res, next) => {
+  try {
+    const cid = parseClientId(req.query.cid);
+    res.json({ left: freeChats.left(cid), free: FREE_MESSAGES });
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.post("/api/chat", chatLimit, async (req, res, next) => {
+  try {
+    const guide = parseGuide(req.body?.guide);
+    const cid = parseClientId(req.body?.cid);
+    const turns = parseMessages(req.body?.messages);
+    const language = parseLanguage(req.body?.language);
+
+    if (!guidesAlwaysOn && isResting(guide)) {
+      return res.status(409).json({
+        code: "REST",
+        error: `${guide.name} is resting right now and is back at ${backAt(guide)} (India time). Another guide is available.`,
+      });
+    }
+    if (freeChats.left(cid) <= 0) {
+      return res.status(402).json({
+        code: "LIMIT",
+        left: 0,
+        error: "You have used your free messages.",
+      });
+    }
+    if (!aiConfigured()) {
+      return res.status(503).json({
+        error: "The AI guides are not switched on yet. Please try again soon.",
+      });
+    }
+
+    let chart = null;
+    let birth = null;
+    if (req.body?.birth) {
+      birth = parseBirthInput(req.body.birth);
+      chart = computeKundli(birth);
+    }
+    const reply = await guideReply({
+      guide,
+      language,
+      turns,
+      chart,
+      name: cleanName(req.body?.birth?.name),
+      timeUnknown: birth?.timeUnknown === true,
+      tradition: birth?.tradition || "vedic",
+      today: new Date().toISOString().slice(0, 10),
+    });
+    const left = freeChats.use(cid);
+    res.json({ reply, left, free: FREE_MESSAGES });
   } catch (e) {
     next(e);
   }

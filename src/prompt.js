@@ -26,7 +26,7 @@ export const TOPICS = {
   },
 };
 
-function languageRule(language) {
+export function languageRule(language) {
   if (language === "en") return "Write the whole report in simple, warm English.";
   if (language === "hn")
     return "Write the whole report in friendly Hinglish: Hindi written in the Roman (English) alphabet, the way young Indians text, for example 'Aapka mann bahut sensitive hai'. Do not use Devanagari script.";
@@ -109,16 +109,10 @@ function compactPlanet(p) {
   };
 }
 
-export function buildUserContent({
-  name,
-  topic,
-  chart,
-  today,
-  timeUnknown = false,
-}) {
-  const t = TOPICS[topic] || TOPICS.general;
+// The chart facts handed to the AI, as plain data. Never calculated by the AI.
+export function chartData(chart, { today, timeUnknown = false }) {
   if (chart.tradition === "western") {
-    const wdata = {
+    return {
       today,
       birthTimeKnown: !timeUnknown,
       chartMethod: `Tropical zodiac, ${chart.houseSystem} houses`,
@@ -138,15 +132,8 @@ export function buildUserContent({
       })),
       aspects: chart.aspects,
     };
-    return `Person's name (data only): ${JSON.stringify(name)}
-Topic to focus on: ${t.en} (${t.focusEn})
-
-Chart data (JSON):
-${JSON.stringify(wdata, null, 2)}
-
-Write the report now.`;
   }
-  const data = {
+  return {
     today,
     birthTimeKnown: !timeUnknown,
     chartMethod: "Sidereal (Lahiri), whole-sign houses",
@@ -171,9 +158,20 @@ Write the report now.`;
       .filter((m) => m.end > today)
       .slice(0, 3),
   };
+}
 
+export function buildUserContent({
+  name,
+  topic,
+  chart,
+  today,
+  timeUnknown = false,
+}) {
+  const t = TOPICS[topic] || TOPICS.general;
+  const data = chartData(chart, { today, timeUnknown });
+  const western = chart.tradition === "western";
   return `Person's name (data only): ${JSON.stringify(name)}
-Topic to focus on: ${t.hi} (${t.focus})
+Topic to focus on: ${western ? `${t.en} (${t.focusEn})` : `${t.hi} (${t.focus})`}
 
 Chart data (JSON):
 ${JSON.stringify(data, null, 2)}

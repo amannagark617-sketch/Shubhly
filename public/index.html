@@ -29,6 +29,7 @@
         <a href="#aaj" data-i="nav_today"></a>
         <a href="#rashifal" data-i="nav_rashifal"></a>
         <a href="#kundli" data-i="nav_kundli"></a>
+        <a href="#guides" data-i="nav_guides"></a>
         <a href="#premium" class="nav-premium"><span data-i="nav_premium"></span></a>
         <a href="#store" data-i="nav_store"></a>
         <a href="#faq" data-i="nav_faq"></a>
@@ -277,6 +278,16 @@
       </div>
     </section>
 
+    <section class="block block--tight" id="guides" aria-labelledby="g-h">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="g-h" data-i="g_h"></h2>
+          <p data-i="g_p"></p>
+        </div>
+        <div class="guide-grid" id="guideGrid"></div>
+      </div>
+    </section>
+
     <section class="block block--sun" id="premium" aria-labelledby="pr-h">
       <div class="wrap">
         <div class="banner">
@@ -383,9 +394,35 @@
     <a href="#aaj" data-tab="aaj"><i>☀</i><span data-i="tab_today"></span></a>
     <a href="#rashifal" data-tab="rashifal"><i>♈︎</i><span data-i="tab_rashifal"></span></a>
     <a href="#kundli" data-tab="kundli"><i>✦</i><span data-i="tab_kundli"></span></a>
+    <a href="#guides" data-tab="guides"><i>✧</i><span data-i="tab_guides"></span></a>
     <a href="#premium" data-tab="premium"><i>★</i><span data-i="tab_premium"></span></a>
   </nav>
 
+  <div class="chat" id="chat" role="dialog" aria-modal="true" aria-labelledby="chatName" hidden>
+    <div class="chat-back" id="chatBack"></div>
+    <section class="chat-panel">
+      <header class="chat-head">
+        <div class="avatar avatar--sm" id="chatAvatar"></div>
+        <div class="chat-who"><h3 id="chatName"></h3><p id="chatRole"></p></div>
+        <span class="badge-ai" data-i="g_ai"></span>
+        <button type="button" class="icon-btn" id="chatNew" data-i-aria="g_new">&#8634;</button>
+        <button type="button" class="icon-btn" id="chatClose" data-i-aria="g_close">&times;</button>
+      </header>
+      <div class="chat-meta"><span id="chatChart"></span><span id="chatLeft"></span></div>
+      <div class="chat-log" id="chatLog" aria-live="polite"></div>
+      <div class="chat-starters" id="chatStarters"></div>
+      <div class="chat-wall" id="chatWall" hidden>
+        <h4 data-i="g_limit_h"></h4>
+        <p data-i="g_limit_p"></p>
+        <button type="button" class="btn btn-primary" id="chatPremium" data-i="g_limit_cta"></button>
+      </div>
+      <form class="chat-form" id="chatForm">
+        <textarea id="chatInput" rows="1" maxlength="600" data-i-ph="g_ph" data-i-aria="g_ph"></textarea>
+        <button type="submit" class="btn btn-primary" id="chatSend" data-i="g_send"></button>
+      </form>
+      <p class="chat-note" id="chatNote"></p>
+    </section>
+  </div>
   <div class="toast" id="toast" role="status" hidden></div>
   <script type="module" src="/app.js"></script>
 </body>
