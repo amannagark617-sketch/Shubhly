@@ -87,25 +87,26 @@ main, .footer { position: relative; z-index: 1; }
 
 /* ---------- nav ---------- */
 .nav { position: sticky; top: 0; z-index: 50; background: var(--ink); border-bottom: 3px solid var(--haldi); }
-.nav-in { display: flex; align-items: center; gap: 12px; min-height: 66px; }
-.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-size: 1.7rem; color: var(--haldi); }
+.nav .nav-in { display: flex; align-items: center; gap: 18px; min-height: 72px; max-width: 1320px; }
+.brand { flex: none; display: flex; align-items: center; gap: 10px; line-height: 1; text-decoration: none; font-family: var(--display); font-size: 1.7rem; color: var(--haldi); }
 .brand svg { width: 36px; height: 36px; animation: spin 24s linear infinite; }
-.nav-links { display: none; margin-left: auto; gap: 18px; }
-.nav-links a { white-space: nowrap; text-decoration: none; font-weight: 700; color: #fff; padding: 6px 2px; position: relative; }
-.nav-links a:hover { color: var(--haldi); }
+.nav-links { display: none; flex: 1; justify-content: center; align-items: center; gap: 6px; }
+.nav-links a { white-space: nowrap; text-decoration: none; font-weight: 700; font-size: 1rem; line-height: 1; color: #fff; padding: 13px 14px 10px; border-radius: 999px; position: relative; display: inline-flex; align-items: center; transition: background-color 0.15s, color 0.15s; }
+.nav-links a:hover { color: var(--haldi); background: rgba(255, 255, 255, 0.08); }
 .nav-links a.active { color: var(--haldi); }
-.nav-links a.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 3px; background: var(--haldi); border-radius: 3px; }
-.nav-premium span { background: var(--red); color: #fff; padding: 4px 14px; border-radius: 999px; display: inline-block; }
-.nav-links a.nav-premium:hover span { background: var(--red-2); }
-.nav-links a.nav-premium:hover { color: #fff; }
-.nav-links a.nav-premium.active::after { display: none; }
-.nav-end { margin-left: auto; display: flex; align-items: center; gap: 10px; }
-.streak { font-weight: 700; font-size: 0.9rem; padding: 3px 12px; border-radius: 999px; background: var(--haldi); border: 2px solid var(--ink); white-space: nowrap; }
-.nav .btn { min-height: 42px; padding: 6px 18px; font-size: 0.95rem; box-shadow: none; border-color: var(--haldi); }
+.nav-links a.active { background: rgba(246, 184, 28, 0.16); }
+.nav-links a.active::after { display: none; }
+.nav-premium span { display: inline-block; line-height: 1; }
+.nav-links a.nav-premium { background: var(--red); color: #fff; padding: 13px 18px 10px; margin: 0 8px; }
+.nav-links a.nav-premium:hover { background: var(--red-2); color: #fff; }
+
+.nav-end { flex: none; margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.streak { font-weight: 700; font-size: 0.9rem; line-height: 1; padding: 9px 13px 6px; border-radius: 999px; background: var(--haldi); border: 2px solid var(--ink); white-space: nowrap; }
+.nav .btn { min-height: 44px; padding: 10px 20px 7px; line-height: 1; font-size: 0.98rem; box-shadow: none; border-color: var(--haldi); }
 .nav .btn-primary { background: var(--haldi); color: var(--ink); }
 .nav .btn-primary:hover { background: var(--haldi-2); }
 .lang { display: inline-flex; background: transparent; border: 2px solid rgba(255, 255, 255, 0.5); border-radius: 999px; padding: 2px; }
-.lang button { border: 0; background: transparent; color: #fff; cursor: pointer; padding: 5px 12px; border-radius: 999px; font-weight: 700; font-size: 0.9rem; min-height: 32px; transition: background-color 0.15s; }
+.lang button { border: 0; background: transparent; color: #fff; cursor: pointer; line-height: 1; padding: 9px 14px 6px; border-radius: 999px; font-weight: 700; font-size: 0.9rem; min-height: 36px; transition: background-color 0.15s; }
 .lang button:hover { background: rgba(255, 255, 255, 0.15); }
 .lang button[aria-pressed="true"] { background: var(--haldi); color: var(--ink); }
 .lang .short { display: none; }
