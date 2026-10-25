@@ -10,7 +10,7 @@ const FONT = path.join(__dirname, "..", "public", "fonts", "yatra-one-latin-400-
 const FONT_DEV = path.join(__dirname, "..", "public", "fonts", "yatra-one-devanagari-400-normal.woff2");
 
 const C = {
-  night: "#4e1220", wine: "#7a1f2b", deep: "#2b0a14", saffron: "#ff9f1c", burnt: "#c2561c",
+  night: "#1b0a33", wine: "#4b1a73", deep: "#0c0516", saffron: "#ff9f1c", burnt: "#c2561c",
   gold: "#ffd166", cream: "#ffe8b0", ivory: "#fff8ee", rose: "#e0527a",
 };
 
@@ -64,7 +64,7 @@ const diya = (x, y, s = 1) => `
   <g transform="translate(${x} ${y}) scale(${s})">
     <circle cx="0" cy="-26" r="46" fill="${C.saffron}" opacity="0.28"/>
     <path d="M-34 0 Q0 46 34 0 Q0 10 -34 0 Z" fill="#c2561c"/>
-    <path d="M-34 0 Q0 10 34 0 Q0 -6 -34 0 Z" fill="#e8892b"/>
+    <path d="M-34 0 Q0 10 34 0 Q0 -6 -34 0 Z" fill="#ff8a1f"/>
     <path d="M0 -6 Q-13 -26 0 -54 Q13 -26 0 -6 Z" fill="${C.gold}"/>
     <path d="M0 -8 Q-6 -22 0 -38 Q6 -22 0 -8 Z" fill="#fff4cf"/>
   </g>`;
@@ -108,24 +108,22 @@ const skyGrad = (id, w, h, stops) =>
 const scenes = {};
 
 scenes["hero-banner.jpg"] = { w: 1920, h: 1080, svg: () => `
-  ${skyGrad("sky", 1920, 1080, [[0, "#2b0a14"], [0.45, "#5a1526"], [0.78, "#a8401c"], [1, "#e8892b"]])}
+  ${skyGrad("sky", 1920, 1080, [[0, "#0c0516"], [0.45, "#2a0b4a"], [0.78, "#c2306a"], [1, "#ff8a1f"]])}
   ${stars(1920, 1080, 220, 11, 640)}
   ${mandala(1400, 430, 520, { op: 0.22 })}
   <ellipse cx="960" cy="1010" rx="1100" ry="120" fill="#ff9f1c" opacity="0.18"/>
-  ${temple(1500, 1010, 1.25, "#3a0e1a", 0.55)}
-  ${temple(430, 1030, 0.8, "#2b0a14", 0.6)}
-  <rect y="990" width="1920" height="90" fill="#2b0a14"/>
-  ${[120, 330, 560, 790, 1020, 1250, 1480, 1710].map((x, i) => diya(x, 1010 + (i % 2) * 10, 0.9)).join("")}
-  ${garland(0, 1920, 90, 38, 60)}`};
+  ${temple(1500, 1010, 1.25, "#14072a", 0.55)}
+  ${temple(430, 1030, 0.8, "#0c0516", 0.6)}
+  <rect y="990" width="1920" height="90" fill="#0c0516"/>
+  ${[120, 330, 560, 790, 1020, 1250, 1480, 1710].map((x, i) => diya(x, 1010 + (i % 2) * 10, 0.9)).join("")}`};
 
 scenes["hero-banner-mobile.jpg"] = { w: 900, h: 1200, svg: () => `
-  ${skyGrad("sky", 900, 1200, [[0, "#2b0a14"], [0.5, "#5a1526"], [0.82, "#a8401c"], [1, "#e8892b"]])}
+  ${skyGrad("sky", 900, 1200, [[0, "#0c0516"], [0.5, "#2a0b4a"], [0.82, "#c2306a"], [1, "#ff8a1f"]])}
   ${stars(900, 1200, 160, 21, 700)}
   ${mandala(450, 330, 380, { op: 0.22 })}
-  ${temple(450, 1130, 1.1, "#3a0e1a", 0.6)}
-  <rect y="1110" width="900" height="90" fill="#2b0a14"/>
-  ${[90, 270, 450, 630, 810].map((x) => diya(x, 1135, 0.85)).join("")}
-  ${garland(0, 900, 60, 20, 40)}`};
+  ${temple(450, 1130, 1.1, "#14072a", 0.6)}
+  <rect y="1110" width="900" height="90" fill="#0c0516"/>
+  ${[90, 270, 450, 630, 810].map((x) => diya(x, 1135, 0.85)).join("")}`};
 
 scenes["rashifal-banner.jpg"] = { w: 1600, h: 500, svg: () => {
   const glyphs = ["♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓"];
@@ -135,14 +133,14 @@ scenes["rashifal-banner.jpg"] = { w: 1600, h: 500, svg: () => {
     const a = (Math.PI * 2 * i) / 12 - Math.PI / 2;
     g += `<text x="${(cx + Math.cos(a) * R).toFixed(1)}" y="${(cy + Math.sin(a) * R + 14).toFixed(1)}" text-anchor="middle" font-size="40" fill="${C.cream}" opacity="0.85" font-family="serif">${s}&#xFE0E;</text>`;
   });
-  return `${skyGrad("sky", 1600, 500, [[0, "#3a0e1a"], [1, "#7a1f2b"]])}${stars(1600, 500, 110, 5)}
+  return `${skyGrad("sky", 1600, 500, [[0, "#14072a"], [1, "#4b1a73"]])}${stars(1600, 500, 110, 5)}
     ${mandala(cx, cy, 300, { op: 0.2 })}<circle cx="${cx}" cy="${cy}" r="250" fill="none" stroke="${C.gold}" stroke-opacity="0.45"/>
     <circle cx="${cx}" cy="${cy}" r="170" fill="none" stroke="${C.gold}" stroke-opacity="0.3"/>${g}${moon(cx, cy, 70, "rm")}`; } };
 
 scenes["kundli-banner.jpg"] = { w: 1600, h: 500, svg: () => {
   const cx = 1230, cy = 250, s = 190;
   const planets = [[0, -1.0, C.gold], [0.95, 0.05, C.rose], [0.3, 0.75, C.cream], [-0.8, -0.3, C.saffron], [-0.4, 0.8, C.gold]];
-  return `${skyGrad("sky", 1600, 500, [[0, "#4e1220"], [1, "#8f2330"]])}${stars(1600, 500, 100, 8)}
+  return `${skyGrad("sky", 1600, 500, [[0, "#1b0a33"], [1, "#7a2a8f"]])}${stars(1600, 500, 100, 8)}
     ${mandala(cx, cy, 300, { op: 0.15 })}
     <g fill="none" stroke="${C.gold}" stroke-opacity="0.8" stroke-width="2.5">
       <rect x="${cx - s}" y="${cy - s}" width="${s * 2}" height="${s * 2}"/>
@@ -152,7 +150,7 @@ scenes["kundli-banner.jpg"] = { w: 1600, h: 500, svg: () => {
     ${planets.map(([x, y, c]) => `<circle cx="${cx + x * s * 0.7}" cy="${cy + y * s * 0.7}" r="14" fill="${c}"/><circle cx="${cx + x * s * 0.7}" cy="${cy + y * s * 0.7}" r="26" fill="${c}" opacity="0.18"/>`).join("")}`; } };
 
 scenes["store-banner.jpg"] = { w: 1600, h: 600, svg: () => `
-  ${skyGrad("sky", 1600, 600, [[0, "#3a0e1a"], [1, "#8a2a22"]])}${stars(1600, 600, 60, 3, 300)}
+  ${skyGrad("sky", 1600, 600, [[0, "#14072a"], [1, "#b3265f"]])}${stars(1600, 600, 60, 3, 300)}
   ${mandala(1230, 330, 330, { op: 0.16 })}
   <ellipse cx="1230" cy="520" rx="330" ry="38" fill="#c2561c"/><ellipse cx="1230" cy="510" rx="330" ry="34" fill="#e8a53a"/><ellipse cx="1230" cy="506" rx="270" ry="26" fill="#f3c15c"/>
   ${lotus(1230, 500, 1.35)}
@@ -160,21 +158,21 @@ scenes["store-banner.jpg"] = { w: 1600, h: 600, svg: () => `
   <g opacity="0.5" fill="${C.gold}">${Array.from({ length: 14 }, (_, i) => `<circle cx="${900 + i * 60}" cy="${560 + (i % 2) * 8}" r="9"/>`).join("")}</g>`};
 
 scenes["cta-banner.jpg"] = { w: 1600, h: 600, svg: () => `
-  ${skyGrad("sky", 1600, 600, [[0, "#4e1220"], [0.45, "#a8401c"], [0.62, "#ffb347"], [0.621, "#6b1a22"], [1, "#2b0a14"]])}
+  ${skyGrad("sky", 1600, 600, [[0, "#1b0a33"], [0.45, "#c2306a"], [0.62, "#ffb347"], [0.621, "#3a1450"], [1, "#0c0516"]])}
   <circle cx="1180" cy="372" r="150" fill="${C.gold}" opacity="0.28"/><circle cx="1180" cy="372" r="95" fill="${C.cream}"/>
-  ${temple(1400, 372, 0.55, "#3a0e1a", 0.8)}
+  ${temple(1400, 372, 0.55, "#14072a", 0.8)}
   <g stroke="${C.gold}" stroke-opacity="0.35" stroke-width="3" fill="none">${Array.from({ length: 9 }, (_, i) => `<path d="M${700 + i * 60} ${390 + i * 20} h${400 - i * 22}"/>`).join("")}</g>
   ${[860, 1010, 1180, 1330].map((x, i) => diya(x, 470 + (i % 2) * 50, 0.7)).join("")}
   ${lotus(1100, 560, 0.5)}${lotus(1300, 580, 0.42)}`};
 
 scenes["og-image.jpg"] = { w: 1200, h: 630, svg: () => `
-  ${skyGrad("sky", 1200, 630, [[0, "#2b0a14"], [0.6, "#7a1f2b"], [1, "#c2561c"]])}${stars(1200, 630, 120, 4, 400)}
+  ${skyGrad("sky", 1200, 630, [[0, "#0c0516"], [0.6, "#4b1a73"], [1, "#c2561c"]])}${stars(1200, 630, 120, 4, 400)}
   ${mandala(930, 300, 330, { op: 0.2 })}${moon(930, 300, 100, "om")}
   <text x="80" y="300" font-family="Yatra One" font-size="150" fill="${C.cream}">Shubhly</text>
   <text x="84" y="375" font-family="Yatra One" font-size="42" fill="${C.gold}">Your kundli, your puja, your vibe.</text>
-  ${temple(600, 640, 0.6, "#2b0a14", 0.7)}`};
+  ${temple(600, 640, 0.6, "#0c0516", 0.7)}`};
 
-const goldBg = (id) => `${skyGrad(id, 640, 640, [[0, "#fff1c9"], [1, "#ffb347"]])}<circle cx="320" cy="320" r="270" fill="#fff8ee" opacity="0.4"/>`;
+const goldBg = (id) => `${skyGrad(id, 640, 640, [[0, "#8b5cf6"], [1, "#ff2e7e"]])}<circle cx="320" cy="320" r="270" fill="#ffffff" opacity="0.14"/>`;
 
 scenes["step-1.png"] = { w: 640, h: 640, svg: () => `${goldBg("g")}
   <rect x="150" y="140" width="300" height="320" rx="26" fill="#fff8ee" stroke="${C.night}" stroke-width="8"/>
@@ -199,7 +197,7 @@ scenes["step-3.png"] = { w: 640, h: 640, svg: () => `${goldBg("g")}
   <rect x="236" y="470" width="168" height="40" rx="20" fill="${C.saffron}"/>
   ${lotus(500, 520, 0.6)}`};
 
-const prodBg = (id) => `${skyGrad(id, 800, 800, [[0, "#7a1f2b"], [1, "#2b0a14"]])}${mandala(400, 400, 360, { op: 0.16 })}`;
+const prodBg = (id) => `${skyGrad(id, 800, 800, [[0, "#4b1a73"], [1, "#0c0516"]])}${mandala(400, 400, 360, { op: 0.16 })}`;
 
 scenes["product-ganesha.jpg"] = { w: 800, h: 800, svg: () => `${prodBg("p")}
   <circle cx="400" cy="400" r="230" fill="none" stroke="${C.gold}" stroke-width="5"/><circle cx="400" cy="400" r="214" fill="${C.deep}" opacity="0.6"/>
@@ -216,7 +214,7 @@ scenes["product-puja-kit.jpg"] = { w: 800, h: 800, svg: () => {
   let d = "";
   for (let i = 0; i < 8; i++) {
     const a = (Math.PI * 2 * i) / 8;
-    d += `<g transform="translate(${400 + Math.cos(a) * 220} ${420 + Math.sin(a) * 220})"><circle r="40" fill="#c2561c"/><circle r="30" fill="#e8892b"/><path d="M0 -4 Q-9 -22 0 -42 Q9 -22 0 -4Z" fill="${C.gold}"/></g>`;
+    d += `<g transform="translate(${400 + Math.cos(a) * 220} ${420 + Math.sin(a) * 220})"><circle r="40" fill="#c2561c"/><circle r="30" fill="#ff8a1f"/><path d="M0 -4 Q-9 -22 0 -42 Q9 -22 0 -4Z" fill="${C.gold}"/></g>`;
   }
   return `${prodBg("p")}<circle cx="400" cy="420" r="320" fill="#e8a53a"/><circle cx="400" cy="420" r="300" fill="#f3c15c"/><circle cx="400" cy="420" r="280" fill="none" stroke="#b86e00" stroke-width="4"/>${d}
     ${lotus(400, 470, 0.9)}<circle cx="400" cy="420" r="16" fill="#b4531c"/>`; } };

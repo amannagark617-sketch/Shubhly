@@ -3,6 +3,7 @@ import {
   inSlot, dots, moonSvg, chartSvg, renderMarkdown,
 } from "/lib.js";
 import { makeShareCard } from "/card.js";
+import { initFx, fillMarquee } from "/fx.js";
 import { t, getLang, setLang, applyStatic, LANGS } from "/i18n.js";
 
 const $ = (id) => document.getElementById(id);
@@ -257,10 +258,23 @@ async function loadToday() {
     renderPanchang(data.panchang);
     renderVrat(data.panchang.upcoming || []);
     renderNow();
+    buildTicker(data.panchang);
   } catch (e) {
     $("panchang").innerHTML = `<div class="fail">${esc(e.message)}</div>`;
     $("moonBox").innerHTML = "";
   }
+}
+
+function buildTicker(p) {
+  const tn = L(`${p.tithi.paksha.en} ${p.tithi.name}`, `${p.tithi.paksha.hi} ${p.tithi.nameHi}`);
+  fillMarquee([
+    `${t("p_tithi")}: ${tn}`,
+    `${t("m_nak")}: ${L(p.nakshatra.name, p.nakshatra.nameHi)}`,
+    `${t("m_moon")}: ${sn(p.moonSign.sign, p.moonSign.signHi)}`,
+    `${t("p_rahu")}: ${rng(p.kaal.rahu)}`,
+    p.abhijit ? `${t("p_abhijit")}: ${rng(p.abhijit)}` : `${t("m_rise")}: ${fmt12(p.sunrise)}`,
+    `${t("hero_h")}`,
+  ]);
 }
 
 // ---------- location change ----------
@@ -723,6 +737,7 @@ function watchSections() {
 (async function init() {
   const saved = store.get("shubhly.lang", "hn");
   setLanguage(LANGS.includes(saved) ? saved : "hn", { first: true });
+  initFx();
   touchStreak();
   watchSections();
   try { config = await api("/api/config"); } catch { /* optional */ }
