@@ -64,6 +64,7 @@
         <div>
           <h1 id="hero-h" data-i="hero_h"></h1>
           <p class="hero-lead" data-i="hero_lead"></p>
+          <p class="live-pill" id="livePill" hidden></p>
           <div class="hero-cta">
             <a class="btn btn-primary" href="/kundli" data-i="hero_cta1"></a>
             <a class="btn btn-line" href="/rashifal" data-i="hero_cta2"></a>
@@ -77,6 +78,13 @@
         </div>
         <aside class="moon-card" aria-live="polite">
           <div class="orbit" id="orbit"><div id="moonBox"></div></div>
+          <div class="sky-scrub">
+            <label for="skyRange" class="sr" data-i="sk_scrub"></label>
+            <input type="range" id="skyRange" min="-60" max="60" value="0" step="1" />
+            <output id="skyDate" for="skyRange"></output>
+            <button type="button" class="link-btn" id="skyReset" data-i="d_today"></button>
+          </div>
+          <p class="sky-note" id="skyNote" aria-live="polite"></p>
           <p class="moon-day" id="moonDay"></p>
           <div class="moon-tithi" id="moonTithi"></div>
           <p class="moon-sub" id="moonSub"></p>

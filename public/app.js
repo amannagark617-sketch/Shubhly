@@ -5,6 +5,7 @@ import {
 import { makeShareCard } from "/card.js";
 import { initFx, fillMarquee } from "/fx.js";
 import { SIGN_EN, planetName, signName, nakName, dayName, pickName, DATE_LOCALE } from "/names.js";
+import { initLiveSky } from "/livesky.js";
 import { initGuides } from "/chat.js";
 import { t, getLang, setLang, applyStatic, LANGS, LANG_NAMES } from "/i18n.js";
 
@@ -721,6 +722,7 @@ $("form").addEventListener("submit", async (e) => {
     saveProfile(payload);
     renderResult(data, payload);
     guides?.refresh();
+  liveSky?.refresh();
   } catch (ex) {
     err.textContent = ex.message;
     show(err);
@@ -1031,6 +1033,7 @@ $("premiumBtn").addEventListener("click", () => {
 
 // ---------- language ----------
 let guides = null;
+let liveSky = null;
 function setLanguage(l, { first = false } = {}) {
   setLang(l);
   const lang = getLang();
@@ -1038,6 +1041,7 @@ function setLanguage(l, { first = false } = {}) {
   document.documentElement.lang = lang === "hn" ? "en" : lang;
   setDateLocale(DATE_LOCALE[lang] || "en-IN");
   applyStatic();
+  decorateHero();
   renderLangMenu();
   fillRepLang(lang);
   setTradition(tradition());
@@ -1093,6 +1097,15 @@ $("langList").addEventListener("keydown", (e) => {
 });
 document.addEventListener("click", (e) => { if (!e.target.closest("#langMenu")) toggleLangMenu(false); });
 
+// ---------- animated headline: each phrase is lit in turn ----------
+function decorateHero() {
+  const h = document.getElementById("hero-h");
+  if (!h) return;
+  const parts = h.textContent.split(/(?<=[,،、।])\s*/).filter(Boolean);
+  if (parts.length !== 3) return;
+  h.innerHTML = parts.map((p, i) => `<span class="ph ph${i + 1}">${esc(p)}</span>`).join(" ");
+}
+
 // ---------- install as an app ----------
 let installEvent = null;
 const standalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
@@ -1121,6 +1134,7 @@ if ("serviceWorker" in navigator) window.addEventListener("load", () => navigato
   guides = initGuides({ t, getLang, store, toast, getBirth: () => lastPayload || profiles[0] || null, getBrief: chartBrief, share: shareKundli });
   openSharedKundli();
   initFx();
+  liveSky = initLiveSky({ t, getLang });
   touchStreak();
   try { config = await api("/api/config"); } catch { /* optional */ }
   if (config.whatsappUrl) {

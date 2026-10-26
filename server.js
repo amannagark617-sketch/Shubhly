@@ -19,6 +19,7 @@ import { buildReading } from "./src/reading.js";
 import { buildAbout } from "./src/about.js";
 import { aiProblem } from "./src/aierror.js";
 import { buildMatch } from "./src/match.js";
+import { skyRange, MEANING } from "./src/sky.js";
 import { PAGES, SLUGS, signPage, loadShell, renderPage, sitemap } from "./src/pages.js";
 import {
   InputError,
@@ -134,6 +135,20 @@ app.get("/api/today", dailyLimit, (req, res, next) => {
             saturn: saturnWindow(date, place.tz),
           };
     res.json({ place, panchang, slow, personal });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// Where the planets are, day by day, for the live sky on the home page.
+app.get("/api/sky", dailyLimit, (req, res, next) => {
+  try {
+    const today = DateTime.now().setZone("Asia/Kolkata").toISODate();
+    const from = /^\d{4}-\d{2}-\d{2}$/.test(String(req.query.from || "")) ? String(req.query.from) : today;
+    const days = Math.min(181, Math.max(1, Number(req.query.days) || 1));
+    const lang = req.query.lang === "hn" ? "hn" : parseLang(req.query.lang);
+    res.setHeader("Cache-Control", "public, max-age=3600");
+    res.json({ ...skyRange(from, days), today, meaning: MEANING[lang] || MEANING.en });
   } catch (e) {
     next(e);
   }

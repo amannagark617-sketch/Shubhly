@@ -200,7 +200,6 @@ function kundli3d() {
 export function initFx() {
   document.documentElement.classList.add("js");
   starfield();
-  wheel();
   kundli3d();
   progress();
   cursorGlow();
