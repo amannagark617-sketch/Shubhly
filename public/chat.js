@@ -32,7 +32,7 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
   const avatar = (g, cls = "") => `<div class="avatar ${cls}">${avatarSvg(g.look)}</div>`;
   const role = (g) => gtext(g.role, getLang());
   // "Meera AI": the AI label is part of the name, not a tag under it.
-  const named = (g) => `${esc(g.name)} <span class="ai-suffix">AI</span>`;
+  const named = (g) => `${esc(g.name)} <span class="ai-suffix">x</span>`;
 
   // ---------- who the chat is about (one person, or two or three together) ----------
   const WHO = "shubhly.chatWho";
