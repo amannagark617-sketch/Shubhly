@@ -869,3 +869,9 @@ button.install-btn:not(.btn) { font: inherit; font-weight: 700; color: inherit; 
 #reportPdf { justify-self: start; }
 @media (max-width: 640px) { .rc-grid { grid-template-columns: 1fr; } }
 .rc-close { margin-inline: auto; }
+
+/* sky mode switch */
+.sky-mode { max-width: 340px; min-height: 0; margin: 0 0 10px; }
+.sky-mode button { border: 0; background: transparent; font: inherit; font-weight: 700; padding: 8px 10px; border-radius: 10px; cursor: pointer; }
+.sky-mode button.is-on { background: var(--haldi); box-shadow: 0 2px 0 var(--ink); }
+.sky-mode button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }

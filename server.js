@@ -146,6 +146,25 @@ app.get("/api/today", dailyLimit, (req, res, next) => {
 });
 
 // Where the planets are, day by day, for the live sky on the home page.
+// The sky right now over a place: planets and the rising sign at this moment.
+app.get("/api/sky/now", dailyLimit, (req, res, next) => {
+  try {
+    const lat = Number(req.query.lat), lon = Number(req.query.lon);
+    const tz = String(req.query.tz || "");
+    if (!(Math.abs(lat) <= 90) || !(Math.abs(lon) <= 180) || !tz || !DateTime.now().setZone(tz).isValid) throw new InputError("Please choose a place.");
+    const now = DateTime.now().setZone(tz);
+    const chart = computeKundli({ year: now.year, month: now.month, day: now.day, hour: now.hour, minute: now.minute, lat, lon, tz, tradition: "vedic" });
+    res.setHeader("Cache-Control", "no-store");
+    res.json({
+      at: now.toISO(),
+      ascLon: chart.ascendant.lon,
+      planets: chart.planets.map((p) => ({ key: p.key, lon: p.lon, house: p.house })),
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+
 app.get("/api/sky", dailyLimit, (req, res, next) => {
   try {
     const today = DateTime.now().setZone("Asia/Kolkata").toISODate();

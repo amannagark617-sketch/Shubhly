@@ -110,8 +110,8 @@
             <div class="s3d-sky" id="s3dSky" role="img" data-i-aria="s3d_h"></div>
             <div class="s3d-obj" id="s3dObj" aria-hidden="true"></div>
             <div class="s3d-badge" id="s3dBadge" hidden>
-              <span data-i="s3d_sample"></span>
-              <a class="btn btn-primary" href="/kundli" data-i="s3d_mine"></a>
+              <span id="s3dLabel"></span>
+              <button type="button" class="btn btn-primary" id="s3dMode"></button>
             </div>
           </div>
         </div>
@@ -253,6 +253,10 @@
 
           <div class="card sky-card" id="skyCard">
             <h3 class="card-h" data-i="sky_h"></h3>
+            <div class="seg sky-mode" id="skyMode" role="group" data-i-aria="sky_h">
+              <button type="button" data-skymode="birth" class="is-on" data-i="sky_birth"></button>
+              <button type="button" data-skymode="now" data-i="sky_now"></button>
+            </div>
             <div class="sky" id="sky3d" role="img" data-i-aria="sky_h"></div>
             <p class="sky-info" id="skyInfo" aria-live="polite"></p>
           </div>

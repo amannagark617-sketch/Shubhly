@@ -281,7 +281,7 @@ placeSearch({
   list: $("locList"),
   onPick: (p) => {
     loc = { name: p.label.split(",")[0], lat: p.lat, lon: p.lon, tz: p.tz };
-    store.set("shubhly.loc", loc);
+    store.set("shubhly.loc", loc); liveSky3d = null;
     show($("locEdit"), false);
     $("locInput").value = "";
     horoDate = todayIn(loc.tz);
@@ -1195,12 +1195,6 @@ if ("serviceWorker" in navigator) window.addEventListener("load", () => navigato
 
 
 // ---------- real 3D sky ----------
-// Sample positions (a made-up birth) shown until the visitor makes their own chart.
-const SAMPLE_SKY = {
-  sample: true, tradition: "vedic", ascLon: 178.45,
-  planets: [["Sun", 118.1, 11], ["Moon", 354.9, 7], ["Mars", 171.3, 1], ["Mercury", 135.3, 12], ["Jupiter", 222, 3], ["Venus", 116.5, 11], ["Saturn", 329.7, 6], ["Rahu", 186, 2], ["Ketu", 6, 8]]
-    .map(([key, lon, house]) => ({ key, lon, house })),
-};
 let skyMod = null, s3dCtl = null, skyCtl = null, s3dWanted = false;
 
 function skyFromChart(chart, timeUnknown) {
@@ -1210,7 +1204,18 @@ function skyFromChart(chart, timeUnknown) {
     planets: chart.planets.map((p) => ({ key: p.key, lon: p.lon, house: timeUnknown ? null : p.house })),
   };
 }
-const currentSky = () => store.get("shubhly.sky", null) || SAMPLE_SKY;
+const mySky = () => { const k = store.get("shubhly.sky", null); return k && !k.sample ? k : null; };
+
+// The sky right now over the visitor's place, from the server's ephemeris.
+let liveSky3d = null;
+async function getLiveSky() {
+  if (liveSky3d && Date.now() - liveSky3d.fetched < 5 * 60_000) return liveSky3d;
+  const q = new URLSearchParams({ lat: loc.lat, lon: loc.lon, tz: loc.tz || "Asia/Kolkata" });
+  const d = await api(`/api/sky/now?${q}`);
+  liveSky3d = { sample: false, live: true, tradition: "vedic", ascLon: d.ascLon, planets: d.planets, at: d.at, place: loc.name || "", fetched: Date.now() };
+  return liveSky3d;
+}
+const liveTime = (src) => new Date(src.at).toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", timeZone: loc.tz || "Asia/Kolkata" });
 
 function skyOpts(src, extra = {}) {
   return {
@@ -1225,21 +1230,31 @@ async function loadSkyModule() {
   return skyMod;
 }
 
+let s3dMode = store.get("shubhly.s3dMode", "live"); // "live" or "mine"
 async function mountSection() {
   const host = $("s3dSky");
   if (!host) return;
   try {
     const mod = await loadSkyModule();
+    const mine = s3dMode === "mine" ? mySky() : null;
+    const src = mine || await getLiveSky();
     s3dCtl?.destroy();
-    const src = currentSky();
     host.classList.add("on");
     s3dCtl = mod.mountSky(host, skyOpts(src, { scrollDriven: true }));
-    show($("s3dBadge"), src.sample);
+    $("s3dLabel").textContent = mine ? t("sky_birth") : t("s3d_live_at", { place: src.place || "India", time: liveTime(src) });
+    $("s3dMode").textContent = mine ? t("sky_now") : t("s3d_mine");
+    show($("s3dBadge"), true);
     updateSectionProgress();
   } catch {
     host.classList.remove("on"); // no WebGL: the flat version stays
   }
 }
+$("s3dMode")?.addEventListener("click", () => {
+  if (s3dMode === "live" && !mySky()) { location.href = "/kundli"; return; }
+  s3dMode = s3dMode === "live" ? "mine" : "live";
+  store.set("shubhly.s3dMode", s3dMode);
+  mountSection();
+});
 function updateSectionProgress() {
   if (!s3dCtl) return;
   const sec = $("s3d"), r = sec.getBoundingClientRect();
@@ -1248,13 +1263,15 @@ function updateSectionProgress() {
 }
 window.addEventListener("scroll", () => { if (s3dCtl) requestAnimationFrame(updateSectionProgress); }, { passive: true });
 
+let resultSkyMode = "birth";
 async function mountResultSky() {
   const host = $("sky3d");
   if (!host || !lastResult) return;
   try {
     const mod = await loadSkyModule();
+    document.querySelectorAll("[data-skymode]").forEach((b) => b.classList.toggle("is-on", b.dataset.skymode === resultSkyMode));
+    const src = resultSkyMode === "now" ? await getLiveSky() : skyFromChart(lastResult.chart, lastPayload?.timeUnknown);
     skyCtl?.destroy();
-    const src = skyFromChart(lastResult.chart, lastPayload?.timeUnknown);
     const info = $("skyInfo");
     info.textContent = "";
     skyCtl = mod.mountSky(host, skyOpts(src, {
@@ -1271,6 +1288,13 @@ async function mountResultSky() {
     show($("skyCard"), false);
   }
 }
+
+$("skyMode")?.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-skymode]");
+  if (!b || b.dataset.skymode === resultSkyMode) return;
+  resultSkyMode = b.dataset.skymode;
+  mountResultSky();
+});
 
 function refreshSky() {
   if (s3dWanted) mountSection();
