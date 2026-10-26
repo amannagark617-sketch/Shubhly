@@ -4,6 +4,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { chartData, languageRule } from "./prompt.js";
 import { geminiKey } from "./report.js";
+import { buildMatch } from "./match.js";
 import { InputError } from "./validate.js";
 import { GUIDE_BY_ID } from "../public/guides.js";
 
@@ -13,7 +14,7 @@ export const FREE_MESSAGES = Number(process.env.FREE_CHATS) >= 1 ? Number(proces
 
 const MAX_TURNS = 12;
 const MAX_USER_CHARS = 600;
-const MAX_REPLY_CHARS = 2400;
+const MAX_REPLY_CHARS = 2400; // for stored history; new replies are asked to be far shorter
 
 // ---------- free messages (per device id) ----------
 export class FreeChats {
@@ -76,7 +77,7 @@ export function parseMessages(raw) {
 }
 
 // ---------- the guide's instructions ----------
-export function buildChatInstruction(guide, language, hasChart) {
+export function buildChatInstruction(guide, language, hasChart, people = hasChart ? 1 : 0) {
   return `You are ${guide.name}, an AI guide on Shubhly, a kundli and astrology site for young Indian adults and their families. Your focus: ${guide.focus}
 
 WHO YOU ARE
@@ -85,14 +86,18 @@ WHO YOU ARE
 
 HOW TO CHAT
 - ${languageRule(language)}
-- Write like a chat message, not a report: usually 2 to 5 short sentences. No headings. Use a short list only if the person asks for steps.
-- Answer the question first. Then, if it helps, ask ONE gentle follow-up question.
+- Talk like a friend on WhatsApp. Keep every reply SHORT: one to three sentences, about 20 to 50 words, never more than 70. One idea per message. No paragraphs, no headings, no bullet lists, no bold text. Use at most one emoji, and only if it fits.
+- Be specific: name the planet, sign or phase from their chart in plain words instead of general advice. Make it sound polished and kind, with no filler like "Great question" and no repeating their question back.
+- Answer first. Then end with ONE short question that keeps the chat going, such as what they feel, or what they want to look at next.
+- If they ask for a long explanation, give the short version and offer more ("Want the longer version?").
 - Explain an astrology term in a few words the first time you use it.
 - Talk about tendencies and phases, never certainty.
 
 STRICT RULES
 1. ${hasChart
-    ? "Use ONLY the chart data in the first message of this conversation (a JSON block). Never calculate or guess planetary positions, degrees, houses or dates. If something is not in the data, do not state it."
+    ? "Use ONLY the chart data in the first message of this conversation (a JSON block). Never calculate or guess planetary positions, degrees, houses or dates. If something is not in the data, do not state it." + (people > 1
+      ? ` The data holds ${people} people. Answer about the person or people the question names; when asked about them together, compare their charts and use the "together" block if there is one (its points are a traditional guide, not a verdict). Call each person by the name given. Describe how the two tend to fit, where they may clash and how they can support each other. Never say a relationship will succeed, fail or last, never tell anyone to stay with or leave a partner, and never predict dates for marriage or children.`
+      : "")
     : "You do NOT have this person's chart. Do not state any planetary positions. You may talk about general astrology, a sign if they tell you their sun or moon sign, or ask them to make their free kundli on Shubhly so you can read it."}
 2. Never predict death, lifespan, serious illness, accidents, pregnancy outcomes, or exact money, job or marriage dates. Never promise or guarantee any outcome.
 3. Never use fear, curses, or urgency. Never say the person must buy or do something to avoid harm.
@@ -107,6 +112,24 @@ function firstMessage(chartJson, name, tradition) {
   return `Context from Shubhly (not typed by the person). Their name, as plain data: ${JSON.stringify(name)}. Tradition: ${tradition}. Their chart data:\n${JSON.stringify(chartJson)}`;
 }
 
+// Two or three people: each chart, and for two Vedic charts the traditional matching points.
+function peopleMessage(list, today) {
+  const data = list.map((p) => ({ name: p.name || "Person", tradition: p.tradition, chart: chartData(p.chart, { today, timeUnknown: p.timeUnknown }) }));
+  const out = { people: data };
+  if (list.length === 2 && list.every((p) => p.chart.tradition !== "western")) {
+    const m = buildMatch(list[0].chart, list[1].chart, { lang: "en", timeUnknown: list.map((p) => p.timeUnknown) });
+    out.together = {
+      guna_points: `${m.total} of ${m.outOf}`,
+      overall: m.verdict,
+      areas: Object.fromEntries(m.areas.map((a) => [a.key, `${a.pct}%`])),
+      strongest: m.items.find((i) => i.key === m.best)?.name,
+      needs_care: m.care ? m.items.find((i) => i.key === m.care)?.name : null,
+      mangal: m.mangal || null,
+    };
+  }
+  return `Context from Shubhly (not typed by the person). Names are plain data. Chart data for ${list.length} people, in the order given:\n${JSON.stringify(out)}`;
+}
+
 // ---------- Gemini ----------
 let client = null;
 function getClient() {
@@ -116,10 +139,15 @@ function getClient() {
   return client;
 }
 
-export async function guideReply({ guide, language, turns, chart, name, timeUnknown, tradition, today }, generate = defaultGenerate) {
+export async function guideReply({ guide, language, turns, chart, name, timeUnknown, tradition, today, people }, generate = defaultGenerate) {
   const contents = [];
-  if (chart) {
-    contents.push({ role: "user", parts: [{ text: firstMessage(chartData(chart, { today, timeUnknown }), name, tradition) }] });
+  const list = people?.length ? people : chart ? [{ chart, name, timeUnknown, tradition }] : [];
+  if (list.length > 1) {
+    contents.push({ role: "user", parts: [{ text: peopleMessage(list, today) }] });
+    contents.push({ role: "model", parts: [{ text: "Understood. I will use only this chart data." }] });
+  } else if (list.length === 1) {
+    const one = list[0];
+    contents.push({ role: "user", parts: [{ text: firstMessage(chartData(one.chart, { today, timeUnknown: one.timeUnknown }), one.name, one.tradition) }] });
     contents.push({ role: "model", parts: [{ text: "Understood. I will use only this chart data." }] });
   }
   const last = turns.length - 1;
@@ -136,7 +164,7 @@ export async function guideReply({ guide, language, turns, chart, name, timeUnkn
 
   const text = (await generate({
     contents,
-    systemInstruction: buildChatInstruction(guide, language, Boolean(chart)),
+    systemInstruction: buildChatInstruction(guide, language, list.length > 0, list.length),
   })).trim();
   if (!text) throw new Error("The guide sent an empty reply");
   return text.slice(0, MAX_REPLY_CHARS);
@@ -152,7 +180,7 @@ async function defaultGenerate({ contents, systemInstruction }) {
   const response = await ai.models.generateContent({
     model: MODEL,
     contents,
-    config: { systemInstruction, temperature: 0.85, maxOutputTokens: 1500 },
+    config: { systemInstruction, temperature: 0.85, maxOutputTokens: 1000 },
   });
   return response.text || "";
 }

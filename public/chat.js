@@ -6,7 +6,7 @@ import { esc, renderMarkdown } from "/lib.js";
 const $ = (id) => document.getElementById(id);
 const HISTORY_KEEP = 30;
 
-export function initGuides({ t, getLang, store, toast, getBirth, getBrief, share }) {
+export function initGuides({ t, getLang, store, toast, getPeople, getBrief, share }) {
   const cid = (() => {
     let id = store.get("shubhly.cid", null);
     if (!id) {
@@ -31,6 +31,36 @@ export function initGuides({ t, getLang, store, toast, getBirth, getBrief, share
   const out = () => limited() && left <= 0;
   const avatar = (g, cls = "") => `<div class="avatar ${cls}">${avatarSvg(g.look)}</div>`;
   const role = (g) => gtext(g.role, getLang());
+
+  // ---------- who the chat is about (one person, or two or three together) ----------
+  const WHO = "shubhly.chatWho";
+  function selected() {
+    const all = getPeople();
+    const keys = store.get(WHO, []);
+    const picked = all.filter((p) => keys.includes(p.key));
+    return (picked.length ? picked : all.slice(0, 1)).slice(0, 3);
+  }
+  function toggle(key) {
+    let keys = selected().map((p) => p.key);
+    if (keys.includes(key)) { if (keys.length > 1) keys = keys.filter((k) => k !== key); }
+    else keys = [...keys, key].slice(-3);
+    store.set(WHO, keys);
+    brief = cached = null;
+    loadBrief();
+    renderLog();
+    renderMeta();
+  }
+  function loadBrief() {
+    const first = selected()[0];
+    if (!first) return;
+    getBrief(first.payload).then((b) => {
+      if (!b || !open) return;
+      brief = cached = b;
+      if (!history.length) renderLog();
+      renderMeta();
+    }).catch(() => {});
+  }
+  const names = () => selected().map((p) => p.label).join(" & ");
 
   // ---------- cards ----------
   function renderCards() {
@@ -58,14 +88,18 @@ export function initGuides({ t, getLang, store, toast, getBirth, getBrief, share
   }
 
   function renderLog() {
-    const hello = brief
+    const together = selected().length > 1;
+    const hello = together
+      ? t("g_pair_intro", { names: names() })
+      : brief
       ? t("g_intro_chart", { user: brief.user, name: open.name, summary: brief.summary }).replace(/\s+,/g, ",")
       : t("g_intro", { name: open.name, role: role(open).toLowerCase() });
     const intro = `<div class="msg msg--guide"><p>${esc(hello)}</p></div>`;
     $("chatLog").innerHTML = intro + history.map(bubble).join("");
     scrollDown();
     const starters = [...gtext(open.starters, getLang())];
-    if (brief?.moon) starters.unshift(t("g_ask_moon", { sign: brief.moon }));
+    if (together) starters.unshift(t("g_pair_q1"), t("g_pair_q2"), t("g_pair_q3"));
+    else if (brief?.moon) starters.unshift(t("g_ask_moon", { sign: brief.moon }));
     $("chatStarters").innerHTML = history.length || out() ? "" :
       starters.slice(0, 3).map((s) => `<button type="button" class="chip-btn">${esc(s)}</button>`).join("");
   }
@@ -92,14 +126,21 @@ export function initGuides({ t, getLang, store, toast, getBirth, getBrief, share
   }
 
   function renderMeta() {
-    const chips = brief
+    const all = getPeople();
+    const sel = selected();
+    const keys = sel.map((p) => p.key);
+    const together = sel.length > 1;
+    const people = all.length
+      ? `<span class="ctx-who">${esc(t("g_who"))}</span>` + all.map((p) =>
+          `<button type="button" class="who-chip${keys.includes(p.key) ? " is-on" : ""}" data-who="${esc(p.key)}" aria-pressed="${keys.includes(p.key)}">${esc(p.label)}</button>`).join("") +
+        `<button type="button" class="link-btn" id="chatMake">${esc(t("g_add"))}</button>`
+      : `<button type="button" class="link-btn" id="chatMake">${esc(t("g_chart_off"))}</button>`;
+    const chips = !together && brief
       ? brief.chips.map(([k, v]) => `<span class="ctx-chip"><small>${esc(k)}</small>${esc(v)}</span>`).join("")
-      : getBirth()
-        ? `<span class="meta-on">${esc(t("g_chart_on"))}</span>`
-        : `<button type="button" class="link-btn" id="chatMake">${esc(t("g_chart_off"))}</button>`;
-    const shareBtn = getBirth() ? `<button type="button" class="ctx-share" id="chatShare">${esc(t("g_share_k"))}</button>` : "";
+      : "";
+    const shareBtn = sel.length ? `<button type="button" class="ctx-share" id="chatShare">${esc(t("g_share_k"))}</button>` : "";
     const lft = limited() ? `<span class="chat-left">${esc(t("g_free_left", { n: left }))}</span>` : "";
-    $("chatCtx").innerHTML = `<div class="ctx-chips">${chips}</div>${shareBtn}${lft}`;
+    $("chatCtx").innerHTML = `<div class="ctx-who-row">${people}</div>${chips ? `<div class="ctx-chips">${chips}</div>` : ""}${shareBtn}${lft}`;
     const wall = out();
     $("chatWall").hidden = !wall;
     $("chatForm").hidden = wall;
@@ -122,14 +163,7 @@ export function initGuides({ t, getLang, store, toast, getBirth, getBrief, share
     document.documentElement.classList.add("chat-open");
     if (!out() && matchMedia("(pointer: fine)").matches) setTimeout(() => $("chatInput").focus(), 50);
     // Read the visitor's kundli so the guide can greet them by it.
-    if (getBirth()) {
-      getBrief().then((b) => {
-        if (!b || open?.id !== g.id) return;
-        brief = cached = b;
-        if (!history.length) renderLog();
-        renderMeta();
-      }).catch(() => {});
-    }
+    if (!brief) loadBrief();
   }
 
   function closeChat() {
@@ -166,7 +200,7 @@ export function initGuides({ t, getLang, store, toast, getBirth, getBrief, share
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ guide: g.id, cid, messages: history, language: getLang(), birth: getBirth() || undefined }),
+        body: JSON.stringify({ guide: g.id, cid, messages: history, language: getLang(), people: selected().map((p) => p.payload) }),
       });
       let data = null;
       try { data = await res.json(); } catch { /* ignore */ }
@@ -248,7 +282,9 @@ export function initGuides({ t, getLang, store, toast, getBirth, getBrief, share
   });
   $("chat").addEventListener("click", (e) => {
     if (e.target.closest("#chatMake")) { closeChat(); if (document.body.dataset.page === "kundli") document.getElementById("kundli").scrollIntoView({ behavior: "smooth" }); else location.href = "/kundli"; }
-    if (e.target.closest("#chatShare")) share();
+    if (e.target.closest("#chatShare")) share(selected()[0]?.payload);
+    const w = e.target.closest("[data-who]");
+    if (w && !busy) toggle(w.dataset.who);
     if (e.target.closest("#chatPremium")) { closeChat(); location.href = "/premium"; }
   });
   document.addEventListener("keydown", (e) => {
@@ -279,7 +315,7 @@ export function initGuides({ t, getLang, store, toast, getBirth, getBrief, share
       renderCards();
       if (open) {
         brief = null;
-        if (getBirth()) getBrief().then((b) => { if (b && open) { brief = cached = b; renderLog(); renderMeta(); } }).catch(() => {});
+        loadBrief();
         $("chatNote").textContent = t("g_note", { name: open.name }); $("chatRole").textContent = role(open); renderLog(); renderMeta(); }
     },
   };

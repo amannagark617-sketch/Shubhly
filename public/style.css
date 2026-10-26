@@ -846,3 +846,10 @@ button.install-btn:not(.btn) { font: inherit; font-weight: 700; color: inherit; 
 @keyframes lit { 0% { background-size: 0 42%; } 7%, 30% { background-size: 100% 42%; } 40%, 100% { background-size: 0 42%; } }
 .hero h1 .ph:hover { transform: rotate(-2.5deg) scale(1.04); background-size: 100% 42%; animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .hero h1 .ph { animation: none; background-size: 100% 42%; } }
+
+/* chat: who is it about */
+.ctx-who-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; flex-basis: 100%; }
+.ctx-who { font-size: 0.78rem; font-weight: 600; color: var(--muted); margin-right: 2px; }
+.who-chip { border: 2px solid var(--ink); background: var(--paper); border-radius: 999px; padding: 4px 12px; font: inherit; font-weight: 700; font-size: 0.84rem; cursor: pointer; }
+.who-chip.is-on { background: var(--haldi); box-shadow: 0 2px 0 var(--ink); }
+.who-chip:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }

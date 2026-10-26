@@ -486,7 +486,7 @@ $("saved").addEventListener("click", (e) => {
 function saveProfile(payload) {
   if (!$("remember").checked) return;
   const key = (p) => `${p.name}|${p.date}|${p.time}|${p.place.label}`;
-  profiles = [payload, ...profiles.filter((p) => key(p) !== key(payload))].slice(0, 4);
+  profiles = [payload, ...profiles.filter((p) => key(p) !== key(payload))].slice(0, 8);
   store.set("shubhly.profiles", profiles);
   renderSaved();
 }
@@ -798,13 +798,13 @@ async function cardFile() {
 
 // Sends the visitor's own kundli straight to a chat app: a picture and a link
 // that opens the same kundli, so nobody has to save and upload anything.
-async function shareKundli() {
-  const birth = lastPayload || profiles[0];
+async function shareKundli(who) {
+  const birth = who || lastPayload || profiles[0];
   if (!birth) return;
   const url = kundliLink(birth);
   const text = t("g_share_text");
   try {
-    const file = await cardFile().catch(() => null);
+    const file = who && who !== lastPayload ? null : await cardFile().catch(() => null);
     if (file && navigator.canShare?.({ files: [file] })) {
       await navigator.share({ files: [file], text: `${text} ${url}` });
       return;
@@ -821,12 +821,23 @@ async function shareKundli() {
     toast(url);
   }
 }
-$("shareBtn").addEventListener("click", shareKundli);
+$("shareBtn").addEventListener("click", () => shareKundli());
+
+// Everyone the visitor has made a kundli for, for the chat to choose from.
+const personKey = (p) => `${p.name}|${p.date}|${p.time}|${p.place?.label}`;
+function chatPeople() {
+  const seen = new Set();
+  return [lastPayload, ...profiles].filter(Boolean).filter((p) => {
+    const k = personKey(p);
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  }).map((p) => ({ key: personKey(p), label: p.name || p.date, payload: p }));
+}
 
 // What the guides need to greet the visitor by their own chart.
 let briefFor = "", briefData = null;
-async function chartBrief() {
-  const birth = lastPayload || profiles[0];
+async function chartBrief(birth = lastPayload || profiles[0]) {
   if (!birth) return null;
   const key = JSON.stringify([birth, getLang()]);
   if (key === briefFor && briefData) return briefData;
@@ -1131,7 +1142,7 @@ if ("serviceWorker" in navigator) window.addEventListener("load", () => navigato
 (async function init() {
   const saved = store.get("shubhly.lang", "en");
   setLanguage(LANGS.includes(saved) ? saved : "en", { first: true });
-  guides = initGuides({ t, getLang, store, toast, getBirth: () => lastPayload || profiles[0] || null, getBrief: chartBrief, share: shareKundli });
+  guides = initGuides({ t, getLang, store, toast, getPeople: chatPeople, getBrief: chartBrief, share: shareKundli });
   openSharedKundli();
   initFx();
   liveSky = initLiveSky({ t, getLang });

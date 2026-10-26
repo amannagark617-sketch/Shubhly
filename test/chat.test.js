@@ -97,3 +97,22 @@ test("a reply is built from the chart and the conversation, and tarot gets cards
   assert.equal(seen.contents.length, 1);
   await assert.rejects(guideReply({ ...base, guide: GUIDES[0] }, async () => "  "));
 });
+
+test("two people are read together, with their matching points", async () => {
+  const mk = (day, hour) => computeKundli({ year: 1995, month: 8, day, hour, minute: 30, lat: 28.6, lon: 77.2, tz: "Asia/Kolkata", tradition: "vedic" });
+  let seen;
+  const generate = async (req) => { seen = req; return "Short reply."; };
+  const people = [
+    { name: "Aman", chart: mk(15, 10), timeUnknown: false, tradition: "vedic" },
+    { name: "Geetika", chart: mk(3, 14), timeUnknown: false, tradition: "vedic" },
+  ];
+  await guideReply({ guide: GUIDES[0], language: "en", turns: [{ role: "user", text: "How do we fit?" }], people, today: "2026-10-26" }, generate);
+  const first = seen.contents[0].parts[0].text;
+  assert.match(first, /2 people/);
+  assert.match(first, /Aman/);
+  assert.match(first, /Geetika/);
+  assert.match(first, /"together"/);
+  assert.match(first, /guna_points/);
+  assert.match(seen.systemInstruction, /holds 2 people/);
+  assert.match(seen.systemInstruction, /one to three sentences/);
+});

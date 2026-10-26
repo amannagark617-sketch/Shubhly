@@ -326,20 +326,16 @@ app.post("/api/chat", chatLimit, async (req, res, next) => {
       });
     }
 
-    let chart = null;
-    let birth = null;
-    if (req.body?.birth) {
-      birth = parseBirthInput(req.body.birth);
-      chart = computeKundli(birth);
-    }
+    const raw = Array.isArray(req.body?.people) ? req.body.people : req.body?.birth ? [req.body.birth] : [];
+    const people = raw.slice(0, 3).map((x) => {
+      const birth = parseBirthInput(x);
+      return { name: cleanName(x?.name), chart: computeKundli(birth), timeUnknown: birth.timeUnknown === true, tradition: birth.tradition || "vedic" };
+    });
     const reply = await guideReply({
       guide,
       language,
       turns,
-      chart,
-      name: cleanName(req.body?.birth?.name),
-      timeUnknown: birth?.timeUnknown === true,
-      tradition: birth?.tradition || "vedic",
+      people,
       today: new Date().toISOString().slice(0, 10),
     });
     const left = freeChats.use(cid);
