@@ -96,7 +96,7 @@ const whatsappUrl = WHATSAPP_RE.test(process.env.WHATSAPP_URL || "")
 
 // ---- API -----------------------------------------------------------------
 app.get("/api/health", (_req, res) => {
-  res.json({ ok: true, ai: aiConfigured() });
+  res.json({ ok: true, ai: aiConfigured(), model: process.env.GEMINI_MODEL || "gemini-2.5-flash" });
 });
 
 app.get("/api/config", (_req, res) => {

@@ -70,6 +70,13 @@ export function initGuides({ t, getLang, store, toast, getBirth, getBrief, share
       starters.slice(0, 3).map((s) => `<button type="button" class="chip-btn">${esc(s)}</button>`).join("");
   }
 
+  // Errors show inside the chat; a toast would sit behind the open chat.
+  function problem(text) {
+    $("chatLog").querySelector(".msg--error")?.remove();
+    $("chatLog").insertAdjacentHTML("beforeend", `<div class="msg msg--error" role="alert"><p>${esc(text)}</p></div>`);
+    scrollDown();
+  }
+
   function scrollDown() {
     const log = $("chatLog");
     log.scrollTop = log.scrollHeight;
@@ -149,6 +156,7 @@ export function initGuides({ t, getLang, store, toast, getBirth, getBrief, share
     history.push({ role: "user", text });
     save();
     $("chatLog").insertAdjacentHTML("beforeend", bubble({ role: "user", text }));
+    $("chatLog").querySelector(".msg--error")?.remove();
     $("chatStarters").innerHTML = "";
     $("chatInput").value = "";
     fit();
@@ -175,7 +183,7 @@ export function initGuides({ t, getLang, store, toast, getBirth, getBrief, share
         history.pop(); save();
         $("chatLog").lastElementChild?.remove();
         $("chatInput").value = text;
-        toast(t("g_rest_msg", { name: g.name }));
+        problem(t("g_rest_msg", { name: g.name }));
         renderCards();
         return;
       }
@@ -192,7 +200,7 @@ export function initGuides({ t, getLang, store, toast, getBirth, getBrief, share
       $("chatLog").lastElementChild?.remove();
       $("chatInput").value = text;
       fit();
-      toast(e.message);
+      problem(e.message || t("err_generic"));
     } finally {
       busy = false;
       $("chatSend").disabled = false;

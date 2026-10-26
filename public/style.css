@@ -453,7 +453,7 @@ tbody tr { transition: background-color 0.15s; } tbody tr:hover { background: va
 .footer .brand { margin-bottom: 12px; font-size: 1.4rem; color: var(--haldi); }
 @media (min-width: 1040px) { .footer { padding-bottom: 40px; } }
 
-.toast { position: fixed; left: 50%; bottom: 84px; transform: translateX(-50%); z-index: 70; background: var(--ink); color: var(--haldi); padding: 11px 20px; border: 2.5px solid var(--haldi); border-radius: 999px; font-weight: 700; box-shadow: 0 8px 22px rgba(216, 50, 26, 0.5); max-width: calc(100% - 32px); animation: pop-in 0.25s ease-out; }
+.toast { position: fixed; left: 50%; bottom: 84px; transform: translateX(-50%); z-index: 120; background: var(--ink); color: var(--haldi); padding: 11px 20px; border: 2.5px solid var(--haldi); border-radius: 999px; font-weight: 700; box-shadow: 0 8px 22px rgba(216, 50, 26, 0.5); max-width: calc(100% - 32px); animation: pop-in 0.25s ease-out; }
 @media (min-width: 1040px) { .toast { bottom: 22px; } }
 .skeleton { background: linear-gradient(90deg, var(--haldi-pale) 25%, var(--haldi-2) 50%, var(--haldi-pale) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border: var(--b); border-radius: 16px; min-height: 80px; }
 @keyframes shimmer { to { background-position: -200% 0; } }
@@ -794,3 +794,6 @@ body:not([data-page="home"]) main { padding-top: 84px; }
 
 .install-btn[hidden] { display: none !important; }
 button.install-btn:not(.btn) { font: inherit; font-weight: 700; color: inherit; background: none; border: 1.5px solid currentColor; border-radius: 999px; padding: 8px 16px; cursor: pointer; }
+
+.msg--error { align-self: stretch; max-width: none; background: #fde8e4; border: 1.5px solid var(--red); color: var(--ink); border-radius: 14px; padding: 10px 14px; }
+.msg--error p { margin: 0; font-weight: 600; }
