@@ -1065,6 +1065,27 @@ $("langList").addEventListener("keydown", (e) => {
 });
 document.addEventListener("click", (e) => { if (!e.target.closest("#langMenu")) toggleLangMenu(false); });
 
+// ---------- install as an app ----------
+let installEvent = null;
+const standalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const isIos = () => /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+function showInstall(on) {
+  document.querySelectorAll("[data-install]").forEach((b) => show(b, on));
+}
+window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); installEvent = e; showInstall(!standalone()); });
+window.addEventListener("appinstalled", () => { installEvent = null; showInstall(false); toast(t("pwa_done")); });
+document.addEventListener("click", async (e) => {
+  if (!e.target.closest("[data-install]")) return;
+  if (installEvent) {
+    installEvent.prompt();
+    await installEvent.userChoice.catch(() => {});
+    installEvent = null;
+    showInstall(false);
+  } else toast(t("pwa_ios"));
+});
+if (isIos() && !standalone()) showInstall(true); // iPhone has no install prompt, so we show the steps
+if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+
 // ---------- start ----------
 (async function init() {
   const saved = store.get("shubhly.lang", "en");

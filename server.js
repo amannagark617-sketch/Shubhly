@@ -359,7 +359,7 @@ app.use(
       // Code and pages are always revalidated so updates show up at once;
       // images too, so a replaced picture shows up at once (304 when unchanged);
       // only fonts are kept for a day.
-      if (/\.(html|css|js|jpg|jpeg|png|svg|webp)$/.test(file)) res.setHeader("Cache-Control", "no-cache");
+      if (/\.(html|css|js|jpg|jpeg|png|svg|webp|webmanifest)$/.test(file)) res.setHeader("Cache-Control", "no-cache");
       else res.setHeader("Cache-Control", "public, max-age=86400");
     },
   })
