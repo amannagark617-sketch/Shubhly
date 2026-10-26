@@ -99,13 +99,15 @@ const whatsappUrl = WHATSAPP_RE.test(process.env.WHATSAPP_URL || "")
   ? process.env.WHATSAPP_URL
   : null;
 
+const STARTED = new Date().toISOString();
+
 // ---- API -----------------------------------------------------------------
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, ai: aiConfigured(), model: process.env.GEMINI_MODEL || "gemini-2.5-flash" });
 });
 
 app.get("/api/config", (_req, res) => {
-  res.json({ whatsappUrl });
+  res.json({ built: STARTED, whatsappUrl });
 });
 
 // Today's panchang, plus a personal Moon-transit note when `moon` is given.

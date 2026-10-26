@@ -993,6 +993,11 @@ function renderPremium() {
 $("premiumBtn").addEventListener("click", () => {
   store.set("shubhly.premium", true);
   renderPremium();
+  if (config.built) {
+    const tag = $("buildTag");
+    tag.textContent = "Version " + new Date(config.built).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
+    show(tag, true);
+  }
   if (config.whatsappUrl) {
     const u = config.whatsappUrl;
     window.open(`${u}${u.includes("?") ? "&" : "?"}text=${encodeURIComponent(t("pr_wa_text"))}`, "_blank", "noopener");

@@ -797,3 +797,4 @@ button.install-btn:not(.btn) { font: inherit; font-weight: 700; color: inherit; 
 
 .msg--error { align-self: stretch; max-width: none; background: #fde8e4; border: 1.5px solid var(--red); color: var(--ink); border-radius: 14px; padding: 10px 14px; }
 .msg--error p { margin: 0; font-weight: 600; }
+.build-tag { font-size: 0.8rem; opacity: 0.6; margin: 8px 0 0; }
