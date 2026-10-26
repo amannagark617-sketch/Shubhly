@@ -11,7 +11,7 @@ test("planets are placed on the zodiac and the nodes sit opposite each other", (
   }
   const rahu = r.planets.find((p) => p.key === "Rahu").lon[0];
   const ketu = r.planets.find((p) => p.key === "Ketu").lon[0];
-  assert.ok(Math.abs(((rahu - ketu + 540) % 360) - 180) < 0.02);
+  assert.ok(Math.abs((((rahu - ketu) % 360) + 360) % 360 - 180) < 0.02);
 });
 
 test("known positions: Moon in Aries on 26 Oct 2026 and Saturn in Pisces going backward", () => {
