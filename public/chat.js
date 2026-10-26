@@ -31,6 +31,8 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
   const out = () => limited() && left <= 0;
   const avatar = (g, cls = "") => `<div class="avatar ${cls}">${avatarSvg(g.look)}</div>`;
   const role = (g) => gtext(g.role, getLang());
+  // "Meera AI": the AI label is part of the name, not a tag under it.
+  const named = (g) => `${esc(g.name)} <span class="ai-suffix">AI</span>`;
 
   // ---------- who the chat is about (one person, or two or three together) ----------
   const WHO = "shubhly.chatWho";
@@ -69,8 +71,7 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
       const rest = isResting(g);
       return `<article class="guide${rest ? " guide--rest" : ""}">
         <div class="guide-top">${avatar(g)}
-          <div><h3>${esc(g.name)}</h3>
-          <span class="badge-ai">${esc(t("g_ai"))}</span></div>
+          <div><h3>${named(g)}</h3></div>
         </div>
         <p class="guide-role">${esc(role(g))}</p>
         <p class="guide-blurb">${esc(gtext(g.blurb, lang))}</p>
@@ -121,7 +122,7 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
       const rest = isResting(g);
       return `<button type="button" class="chat-pick${open?.id === g.id ? " is-on" : ""}" data-pick="${g.id}"${rest ? " disabled" : ""}>
         ${avatar(g, "avatar--sm")}
-        <span><b>${esc(g.name)}</b><small>${esc(role(g))}</small></span><i class="dot${rest ? "" : " dot--on"}"></i></button>`;
+        <span><b>${named(g)}</b><small>${esc(role(g))}</small></span><i class="dot${rest ? "" : " dot--on"}"></i></button>`;
     }).join("");
   }
 
@@ -153,7 +154,7 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     opener = from || null;
     history = hist(g.id);
     $("chatAvatar").innerHTML = avatarSvg(g.look);
-    $("chatName").textContent = g.name;
+    $("chatName").innerHTML = named(g);
     $("chatRole").textContent = role(g);
     $("chatNote").textContent = t("g_note", { name: g.name });
     brief = cached;

@@ -923,3 +923,6 @@ button.install-btn:not(.btn) { font: inherit; font-weight: 700; color: inherit; 
   .live-pill { display: flex; flex-wrap: wrap; font-size: 0.88rem; }
   .trust li { font-size: 0.95rem; }
 }
+
+.ai-suffix { color: var(--red); }
+.chat-head .ai-suffix, .chat-pick .ai-suffix { color: var(--haldi); }
