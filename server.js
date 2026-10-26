@@ -283,7 +283,7 @@ app.post("/api/report", reportLimit, async (req, res, next) => {
     if (!aiConfigured()) {
       return res.status(503).json({
         error:
-          "The AI guide is not switched on yet. Your kundli chart is ready, the written report will be available soon." + noKeyNote(req),
+          "The AI astrologer is not switched on yet. Your kundli chart is ready, the written report will be available soon." + noKeyNote(req),
       });
     }
     const birth = parseBirthInput(req.body);
@@ -307,7 +307,7 @@ app.post("/api/report", reportLimit, async (req, res, next) => {
   }
 });
 
-// ---- AI guides ------------------------------------------------------------
+// ---- AI astrologers ------------------------------------------------------------
 const freeChats = new FreeChats();
 const guidesAlwaysOn = process.env.GUIDES_ALWAYS_ON === "1";
 
@@ -342,7 +342,7 @@ app.post("/api/chat", chatLimit, async (req, res, next) => {
     }
     if (!aiConfigured()) {
       return res.status(503).json({
-        error: "The AI guides are not switched on yet. Please try again soon." + noKeyNote(req),
+        error: "The AI astrologers are not switched on yet. Please try again soon." + noKeyNote(req),
       });
     }
 

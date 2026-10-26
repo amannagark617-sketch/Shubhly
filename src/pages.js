@@ -48,8 +48,8 @@ export const PAGES = {
   guides: {
     path: "/guides",
     on: ["guides", "final"],
-    title: "Chat With AI Astrology Guides, Free | Shubhly",
-    desc: "Ten AI guides for love, career, money, tarot and more. They read your real kundli and talk like a friend. Free, and clearly AI.",
+    title: "Chat With AI Astrologers, Free | Shubhly",
+    desc: "Ten AI astrologers for love, career, money, tarot and more. They read your real kundli and talk like a friend. Free, and clearly AI.",
     main: "guides",
   },
   premium: {

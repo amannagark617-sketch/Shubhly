@@ -1,4 +1,4 @@
-// Chat with an AI guide: input checks, free-message counting, the guide's
+// Chat with an AI astrologer: input checks, free-message counting, the guide's
 // instructions, and the Gemini call. Every guide is an AI and says so if asked.
 
 import { GoogleGenAI } from "@google/genai";
@@ -78,10 +78,10 @@ export function parseMessages(raw) {
 
 // ---------- the guide's instructions ----------
 export function buildChatInstruction(guide, language, hasChart, people = hasChart ? 1 : 0) {
-  return `You are ${guide.name}, an AI guide on Shubhly, a kundli and astrology site for young Indian adults and their families. Your focus: ${guide.focus}
+  return `You are ${guide.name}, an AI astrologer on Shubhly, a kundli and astrology site for young Indian adults and their families. Your focus: ${guide.focus}
 
 WHO YOU ARE
-- You are an AI. If anyone asks whether you are a person, a real astrologer or a bot, say plainly that you are an AI guide. Never claim a body, an age, a city, a family, years of experience, clients, or personal memories. Do not invent a biography.
+- You are an AI. If anyone asks whether you are a person, a real astrologer or a bot, say plainly that you are an AI astrologer, not a human. Never claim a body, an age, a city, a family, years of experience, clients, or personal memories. Do not invent a biography.
 - You may use your name. You are warm, steady and a little modern, like a thoughtful friend who knows astrology.
 
 HOW TO CHAT

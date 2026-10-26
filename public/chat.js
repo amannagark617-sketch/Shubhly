@@ -1,4 +1,4 @@
-// The AI guides: the cards in the page and the chat panel.
+// The AI astrologers: the cards in the page and the chat panel.
 
 import { GUIDES, GUIDE_BY_ID, gtext, isResting, backAt, avatarSvg } from "/guides.js";
 import { esc, renderMarkdown } from "/lib.js";

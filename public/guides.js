@@ -1,4 +1,4 @@
-// The AI guides: who they are, what each one focuses on, how they look.
+// The AI astrologers: who they are, what each one focuses on, how they look.
 // Shared by the page and the server. Every guide is an AI and is labelled so.
 
 // rest = hours (India time), about four a night, when the guide rests: [from, to). Overnight windows wrap.

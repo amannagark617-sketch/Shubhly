@@ -670,6 +670,7 @@ function renderResult(data, payload, { scroll = true } = {}) {
   } else show(sb, false);
 
   show($("result"), true);
+  if (scroll) setTimeout(askInstall, 6000);
   store.set("shubhly.sky", skyFromChart(chart, payload.timeUnknown));
   mountResultSky();
   if (s3dWanted) mountSection();
@@ -1154,9 +1155,21 @@ function decorateHero() {
 let installEvent = null;
 const standalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
 const isIos = () => /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+let installable = false;
 function showInstall(on) {
+  installable = on;
   document.querySelectorAll("[data-install]").forEach((b) => show(b, on));
+  if (!on) show($("installBar"), false);
 }
+// A gentle, dismissible ask to keep the app: after a few seconds on the site, and right after a kundli is made.
+const DAY = 86_400_000;
+function askInstall() {
+  if (!installable || standalone()) return;
+  if (Date.now() - store.get("shubhly.installNo", 0) < 10 * DAY) return;
+  show($("installBar"), true);
+}
+$("installNo")?.addEventListener("click", () => { store.set("shubhly.installNo", Date.now()); show($("installBar"), false); });
+setTimeout(askInstall, 15_000);
 window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); installEvent = e; showInstall(!standalone()); });
 window.addEventListener("appinstalled", () => { installEvent = null; showInstall(false); toast(t("pwa_done")); });
 document.addEventListener("click", async (e) => {
@@ -1166,7 +1179,7 @@ document.addEventListener("click", async (e) => {
     await installEvent.userChoice.catch(() => {});
     installEvent = null;
     showInstall(false);
-  } else toast(t("pwa_ios"));
+  } else { toast(t("pwa_ios")); show($("installBar"), false); store.set("shubhly.installNo", Date.now()); }
 });
 if (isIos() && !standalone()) showInstall(true); // iPhone has no install prompt, so we show the steps
 if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
