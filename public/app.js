@@ -647,6 +647,34 @@ $("form").addEventListener("submit", async (e) => {
   }
 });
 
+
+// Gives the visitor a file in a way that works on desktop, Android, iPhone and
+// the browsers inside WhatsApp or Instagram (which ignore normal downloads).
+async function deliverFile(blob, name) {
+  const file = new File([blob], name, { type: blob.type });
+  const touch = matchMedia("(pointer: coarse)").matches;
+  if (touch && navigator.canShare?.({ files: [file] })) {
+    try { await navigator.share({ files: [file] }); return "shared"; }
+    catch (e) { if (e.name === "AbortError") return "cancelled"; }
+  }
+  const url = URL.createObjectURL(blob);
+  const ua = navigator.userAgent;
+  const ios = /iP(hone|ad|od)/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const inApp = /FBAN|FBAV|Instagram|WhatsApp|Line\/|Snapchat|; wv\)/i.test(ua);
+  if (ios || inApp) {
+    if (!window.open(url, "_blank")) location.href = url;
+  } else {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+  setTimeout(() => URL.revokeObjectURL(url), 120000);
+  return "saved";
+}
+
 // ---------- share card ----------
 $("shareBtn").addEventListener("click", async () => {
   if (!lastResult) return;
@@ -672,11 +700,7 @@ $("shareBtn").addEventListener("click", async () => {
       return;
     }
   } catch (e) { if (e.name === "AbortError") return; }
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "shubhly-kundli.png";
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  await deliverFile(blob, "shubhly-kundli.png");
   toast(t("card_done"));
 });
 
@@ -725,13 +749,7 @@ $("pdfBtn").addEventListener("click", async () => {
       throw new Error(msg);
     }
     const blob = await res.blob();
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "shubhly-kundli.pdf";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    if (await deliverFile(blob, "shubhly-kundli.pdf") === "cancelled") return;
     toast(t("pdf_done"));
   } catch (ex) {
     toast(ex.message);
