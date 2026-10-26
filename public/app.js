@@ -7,6 +7,7 @@ import { initFx, fillMarquee } from "/fx.js";
 import { SIGN_EN, planetName, signName, nakName, dayName, pickName, DATE_LOCALE } from "/names.js";
 import { initLiveSky } from "/livesky.js";
 import { initGuides } from "/chat.js";
+import { GUIDES, isResting, avatarSvg } from "/guides.js";
 import { t, getLang, setLang, applyStatic, LANGS, LANG_NAMES } from "/i18n.js";
 
 const $ = (id) => document.getElementById(id);
@@ -1087,6 +1088,7 @@ function setLanguage(l, { first = false } = {}) {
   setDateLocale(DATE_LOCALE[lang] || "en-IN");
   applyStatic();
   decorateHero();
+  renderOnline();
   renderLangMenu();
   fillRepLang(lang);
   setTradition(tradition());
@@ -1150,6 +1152,36 @@ function decorateHero() {
   if (parts.length !== 3) return;
   h.innerHTML = parts.map((p, i) => `<span class="ph ph${i + 1}">${esc(p)}</span>`).join(" ");
 }
+
+// ---------- astrologers online now, and the welcome offer ----------
+function renderOnline() {
+  const pill = $("onlinePill");
+  if (!pill) return;
+  const up = GUIDES.filter((g) => !isResting(g));
+  show(pill, up.length > 0);
+  $("onlineText").textContent = t("on_now", { n: up.length });
+  $("onlineFaces").innerHTML = up.slice(0, 3).map((g) => `<span class="face">${avatarSvg(g.look)}</span>`).join("");
+}
+setInterval(renderOnline, 60_000);
+
+const welcomeEl = $("welcome");
+function closeWelcome() {
+  if (welcomeEl.hidden) return;
+  store.set("shubhly.welcomeNo", Date.now());
+  show(welcomeEl, false);
+}
+function openWelcome() {
+  if (!welcomeEl || document.body.dataset.page !== "home") return;
+  if (Date.now() - store.get("shubhly.welcomeNo", 0) < 3 * 86_400_000) return;
+  if (!$("chat").hidden || !$("installBar").hidden) return;
+  show(welcomeEl, true);
+  $("welcomeX").focus();
+}
+$("welcomeX")?.addEventListener("click", closeWelcome);
+$("welcomeBack")?.addEventListener("click", closeWelcome);
+$("welcomeGo")?.addEventListener("click", () => store.set("shubhly.welcomeNo", Date.now()));
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeWelcome(); });
+setTimeout(openWelcome, 8_000);
 
 // ---------- install as an app ----------
 let installEvent = null;
