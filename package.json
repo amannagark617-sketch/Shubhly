@@ -6,8 +6,9 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "start": "node --env-file-if-exists=.env server.js",
-    "dev": "node --env-file-if-exists=.env --watch server.js",
+    "build": "node --test test/*.test.js",
+    "start": "node server.js",
+    "dev": "node --env-file-if-exists=.env server.js",
     "test": "node --test test/*.test.js",
     "build:sky": "esbuild tools/sky3d.src.js --bundle --minify --format=esm --outfile=public/sky3d.js"
   },

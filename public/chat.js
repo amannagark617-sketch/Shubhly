@@ -156,7 +156,7 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     $("chatAvatar").innerHTML = avatarSvg(g.look);
     $("chatName").innerHTML = named(g);
     $("chatRole").textContent = role(g);
-    $("chatNote").textContent = t("g_note", { name: g.name });
+    $("chatNote").textContent = "";
     brief = cached;
     renderLog();
     renderMeta();
@@ -317,7 +317,7 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
       if (open) {
         brief = null;
         loadBrief();
-        $("chatNote").textContent = t("g_note", { name: open.name }); $("chatRole").textContent = role(open); renderLog(); renderMeta(); }
+        $("chatNote").textContent = ""; $("chatRole").textContent = role(open); renderLog(); renderMeta(); }
     },
   };
 }

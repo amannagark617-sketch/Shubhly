@@ -651,9 +651,7 @@ html.chat-open, html.chat-open body { overflow: hidden; }
 .chat-form .btn { padding: 11px 18px; }
 .chat-wall { margin: 0 16px 14px; padding: 18px; border-radius: 20px; background: var(--haldi-pale); border: 2px solid var(--ink); text-align: center; }
 .chat-wall h4 { margin: 0 0 6px; font-size: 1.15rem; }
-.chat-wall p { margin: 0 0 14px; font-weight: 500; }
-.chat-note { margin: 0; padding: 8px 16px calc(10px + env(safe-area-inset-bottom)); font-size: 0.8rem; color: var(--muted); text-align: center; background: #fff; }
-@media (max-width: 560px) { .chat-panel { max-width: none; border-left: 0; } }
+.chat-note { display: none; }
 @media (prefers-reduced-motion: reduce) { .chat-panel { animation: none; } .dots i { animation: none; opacity: 0.6; } }
 html:is([lang="ta"], [lang="te"], [lang="bn"], [lang="gu"]) .nav-links a { padding-inline: 8px; }
 .tabbar { grid-template-columns: repeat(5, minmax(0, 1fr)); }

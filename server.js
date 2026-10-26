@@ -283,7 +283,7 @@ app.post("/api/report", reportLimit, async (req, res, next) => {
     if (!aiConfigured()) {
       return res.status(503).json({
         error:
-          "The AI astrologer is not switched on yet. Your kundli chart is ready, the written report will be available soon." + noKeyNote(req),
+          "The astrologer is not switched on yet. Your kundli chart is ready, the written report will be available soon." + noKeyNote(req),
       });
     }
     const birth = parseBirthInput(req.body);
@@ -342,7 +342,7 @@ app.post("/api/chat", chatLimit, async (req, res, next) => {
     }
     if (!aiConfigured()) {
       return res.status(503).json({
-        error: "The AI astrologers are not switched on yet. Please try again soon." + noKeyNote(req),
+        error: "The astrologers are not switched on yet. Please try again soon." + noKeyNote(req),
       });
     }
 
@@ -436,7 +436,7 @@ app.use((err, _req, res, _next) => {
   });
 });
 
-const port = Number(process.env.PORT) || 8080;
-app.listen(port, () => {
-  console.log(`Shubhly is running on port ${port}`);
+const port = Number(process.env.PORT) || 3000;
+app.listen(port, "0.0.0.0", () => {
+  console.log(`Shubhly is running on http://0.0.0.0:${port}`);
 });
