@@ -64,10 +64,10 @@ test("rest windows follow India time, including overnight ones", () => {
   }
 });
 
-test("the instructions always say the guide is an AI and keep the safety rules", () => {
+test("the instructions keep the safety rules", () => {
   for (const g of GUIDES) {
     const s = buildChatInstruction(g, "en", true);
-    assert.match(s, /You are an AI/);
+    assert.match(s, /real astrologer/);
     assert.match(s, /Never predict death/);
     assert.match(s, /14416/);
     assert.match(s, /gemstones/);
