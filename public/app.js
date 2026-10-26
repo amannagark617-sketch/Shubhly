@@ -313,8 +313,9 @@ function renderGrid() {
     </button>`).join("");
 }
 
-function meter(label, n) {
-  return `<li><span>${esc(label)}</span><span class="dots" role="img" aria-label="${esc(t("rf_out_of", { n }))}">${dots(n)}</span></li>`;
+function meter(label, n, kind) {
+  const lvl = Math.min(5, Math.max(1, Math.round(n)));
+  return `<li class="bar-${kind}"><div class="bar-top"><span>${esc(label)}</span><b>${esc(t("rf_l" + lvl))}</b></div><div class="bar-track" role="img" aria-label="${esc(t("rf_out_of", { n: lvl }))}"><i style="width:${lvl * 20}%"></i></div></li>`;
 }
 
 function readingText(r) {
@@ -349,8 +350,8 @@ function renderReading() {
       </div>
       <div class="reading-aside">
         <ul class="meters">
-          ${meter(t("rf_love"), r.stars.love)}${meter(t("rf_career"), r.stars.career)}
-          ${meter(t("rf_money"), r.stars.money)}${meter(t("rf_health"), r.stars.health)}
+          ${meter(t("rf_love"), r.stars.love, "love")}${meter(t("rf_career"), r.stars.career, "career")}
+          ${meter(t("rf_money"), r.stars.money, "money")}${meter(t("rf_health"), r.stars.health, "health")}
         </ul>
         <div class="lucky">
           <div><span class="swatch" style="background:${esc(r.lucky.colour.hex)}"></span><span>${esc(r.lucky.colour.name)}</span></div>

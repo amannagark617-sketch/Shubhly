@@ -986,3 +986,18 @@ button.install-btn:not(.btn) { font: inherit; font-weight: 700; color: inherit; 
 .report-list li::before, .report-trust li::before { content: "✓"; position: absolute; left: 0; top: 1px; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: var(--haldi); border: 2px solid var(--ink); font-size: 0.8rem; font-weight: 800; }
 .report-trust li { font-weight: 600; }
 @media (max-width: 760px) { .report { grid-template-columns: 1fr; gap: 28px; } .report-cover { max-width: 300px; margin: 0 auto; width: 100%; } .report-info .btn { width: 100%; } }
+
+/* rashifal score bars */
+.meters { list-style: none; margin: 0; padding: 18px 20px; display: grid; gap: 16px; background: #fff; border: 2.5px solid var(--ink); border-radius: 20px; box-shadow: 4px 4px 0 var(--ink); }
+.meters li { display: grid; grid-template-columns: 100%; justify-content: stretch; align-items: stretch; gap: 7px; }
+.bar-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.bar-top span { font-size: 0.8rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #7a6a4a; }
+.bar-top b { font-size: 1.05rem; color: var(--ink); }
+.bar-track { height: 10px; border-radius: 999px; background: rgba(27, 27, 58, 0.08); overflow: hidden; }
+.bar-track i { display: block; height: 100%; border-radius: 999px; transform-origin: left; animation: bar-in 0.7s ease-out both; }
+.bar-love .bar-track i { background: linear-gradient(90deg, #f6b5b0, #e8503f); }
+.bar-career .bar-track i { background: linear-gradient(90deg, #ffe7a6, #ffcf4d); }
+.bar-health .bar-track i { background: linear-gradient(90deg, #b5ebc8, #3fc57a); }
+.bar-money .bar-track i { background: linear-gradient(90deg, #f9d2a8, #f08a24); }
+@keyframes bar-in { from { transform: scaleX(0); } }
+@media (prefers-reduced-motion: reduce) { .bar-track i { animation: none; } }
