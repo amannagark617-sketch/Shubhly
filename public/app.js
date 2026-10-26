@@ -1,6 +1,6 @@
 import {
   esc, fmt12, todayIn, nowIn, addDays, dateLabel, setDateLocale,
-  inSlot, dots, moonSvg, chartSvg, westernSvg, renderMarkdown, SHORT,
+  inSlot, dots, moonSvg, chartSvg, westernSvg, renderMarkdown, SHORT, elementBalance, elementsSvg, timelineSvg,
 } from "/lib.js";
 import { makeShareCard } from "/card.js";
 import { initFx, fillMarquee } from "/fx.js";
@@ -971,6 +971,39 @@ $("matchOut").addEventListener("click", async (e) => {
 });
 
 // ---------- AI report ----------
+const REP_DEFAULT = {
+  strengths: "Your strengths", watch: "Room to grow", now: "The time you are in", tips: "Simple tips",
+  elements: "Your elements", timeline: "Your life periods", fire: "Fire", earth: "Earth", air: "Air", water: "Water",
+};
+function renderReport(r, chart, timeUnknown) {
+  if (!r || typeof r === "string") return renderMarkdown(r || "");
+  if (r.markdown) return renderMarkdown(r.markdown);
+  const L = (k) => r.labels?.[k] || REP_DEFAULT[k];
+  const li = (a) => a.map((x) => `<li>${esc(x)}</li>`).join("");
+  const west = chart.tradition === "western";
+  const names = ["fire", "earth", "air", "water"].map(L);
+  const dasha = !west && !timeUnknown ? timelineSvg(chart) : "";
+  const card = (cls, h, body) => body ? `<section class="rc ${cls}"><h4>${esc(h)}</h4>${body}</section>` : "";
+  return `<div class="rcards">
+    ${r.headline ? `<p class="rc-head">${esc(r.headline)}</p>` : ""}
+    ${r.glance ? `<p class="rc-glance">${esc(r.glance)}</p>` : ""}
+    <div class="rc-grid">
+      ${card("rc--good", L("strengths"), r.strengths.length ? `<ul>${li(r.strengths)}</ul>` : "")}
+      ${card("rc--grow", L("watch"), r.watch.length ? `<ul>${li(r.watch)}</ul>` : "")}
+    </div>
+    ${card("rc--focus", r.focusTitle || t("rep_focus"), r.focus.length ? `<ul>${li(r.focus)}</ul>` : "")}
+    <div class="rc-grid">
+      ${card("rc--viz", L("elements"), elementsSvg(elementBalance(chart, { timeUnknown }), names))}
+      ${dasha ? card("rc--viz", L("timeline"), dasha + (r.now ? `<p class="rc-now">${esc(r.now)}</p>` : "")) : ""}
+    </div>
+    ${!dasha && r.now ? card("rc--now", L("now"), `<p>${esc(r.now)}</p>`) : ""}
+    ${card("rc--tips", L("tips"), r.tips.length ? `<ul>${li(r.tips)}</ul>` : "")}
+    ${r.closing ? `<p class="rc-close">${esc(r.closing)}</p>` : ""}
+    <button type="button" class="btn btn-primary" id="reportPdf">${esc(t("rep_pdf"))}</button>
+  </div>`;
+}
+$("reportOut").addEventListener("click", (e) => { if (e.target.closest("#reportPdf")) $("pdfBtn").click(); });
+
 $("reportBtn").addEventListener("click", async () => {
   if (!lastPayload) return;
   const btn = $("reportBtn"), err = $("reportError");
@@ -983,7 +1016,7 @@ $("reportBtn").addEventListener("click", async () => {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ ...lastPayload, topic: $("topic").value, language: lang }),
     });
-    $("reportOut").innerHTML = renderMarkdown(data.report);
+    $("reportOut").innerHTML = renderReport(data.report, data.chart, lastPayload?.timeUnknown);
     show($("reportOut"), true);
     reportText = data.report;
     reportLang = lang;

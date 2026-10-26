@@ -853,3 +853,19 @@ button.install-btn:not(.btn) { font: inherit; font-weight: 700; color: inherit; 
 .who-chip { border: 2px solid var(--ink); background: var(--paper); border-radius: 999px; padding: 4px 12px; font: inherit; font-weight: 700; font-size: 0.84rem; cursor: pointer; }
 .who-chip.is-on { background: var(--haldi); box-shadow: 0 2px 0 var(--ink); }
 .who-chip:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+/* AI report cards */
+.rcards { display: grid; gap: 14px; }
+.rc-head { font-family: var(--display, inherit); font-size: 1.45rem; font-weight: 700; line-height: 1.25; margin: 0; }
+.rc-glance { margin: 0; font-size: 1.02rem; color: var(--muted); }
+.rc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.rc { border: 2px solid var(--ink); border-radius: 18px; padding: 14px 16px 12px; background: #fff; box-shadow: 0 3px 0 var(--ink); }
+.rc h4 { margin: 0 0 8px; font-size: 1.02rem; }
+.rc ul { margin: 0; padding-left: 18px; } .rc li { margin-bottom: 6px; }
+.rc svg { width: 100%; height: auto; display: block; }
+.rc--good { background: #eef8e8; } .rc--grow { background: #fff2dc; } .rc--focus { background: var(--haldi-pale, #fff2c8); } .rc--tips { background: #eaf1ff; }
+.rc-now { margin: 6px 0 0; font-size: 0.95rem; }
+.rc-close { margin: 0; text-align: center; font-weight: 700; }
+#reportPdf { justify-self: start; }
+@media (max-width: 640px) { .rc-grid { grid-template-columns: 1fr; } }
+.rc-close { margin-inline: auto; }

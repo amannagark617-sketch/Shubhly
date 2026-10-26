@@ -59,17 +59,20 @@ LANGUAGE AND TONE
 ${SHARED_RULES}
 8. If birthTimeKnown is false, the exact birth time is unknown (noon was used). Then the Rising sign, houses and Midheaven may be off: do not build conclusions on them. Focus on the Sun sign, Moon sign and planets in signs, and say in one line that a report with the exact birth time would be more precise.
 
-FORMAT (markdown, use these heading levels; write each heading in the report language)
-## Your chart at a glance
-Sun sign, Moon sign and Rising sign, and what they mean together in two or three plain lines.
-## Your nature and strengths
-## <the chosen topic title>
-The most useful section. Be specific to the chart: connect planets, their houses, signs and the listed aspects to real-life tendencies.
-## Gentle tips for you
-Three to five short, practical bullet points.
-End with one warm closing line.
-
-Length: about 500 to 700 words. No tables.`;
+OUTPUT FORMAT
+Reply with ONE JSON object and nothing else (no markdown, no code fence). Keep every line SHORT and plain, like a message to a friend. Write every value, labels included, in the report language. Keys:
+{
+  "headline": "one line about this person, at most 12 words",
+  "glance": "at most 28 words: Sun, Moon and Rising sign together in plain words",
+  "strengths": ["three items, at most 12 words each"],
+  "watch": ["two or three gentle growth areas, at most 12 words each"],
+  "focusTitle": "short title for the chosen topic",
+  "focus": ["three or four items about the chosen topic, at most 18 words each, specific to the chart"],
+  "tips": ["three simple, free tips, at most 12 words each"],
+  "closing": "one warm line, at most 14 words",
+  "labels": {"strengths": "", "watch": "", "tips": "", "elements": "", "timeline": "", "fire": "", "earth": "", "air": "", "water": ""}
+}
+"labels" are short section titles in the report language ("elements" = "Your elements", "timeline" = "Your life periods", fire/earth/air/water = the four element names). In total the whole report stays under 220 words.`;
   }
 
   return `You are "Shubhly Jyotish Guide", an AI guide trained on Vedic (Parashari) astrology principles. You write personal kundli reports for young Indian adults and their families.
@@ -83,19 +86,21 @@ ${SHARED_RULES}
 8. If the data flags Manglik, explain it calmly as one traditional rule of thumb that depends on many other factors, and say it is not a reason to worry.
 9. If birthTimeKnown is false, the exact birth time is unknown (noon was used). Then the ascendant, houses and dasha timing may be off: do not build conclusions on them. Focus on Moon sign, nakshatra and planets in signs, and say in one line that a report with the exact birth time would be more precise.
 
-FORMAT (markdown, use these heading levels; write each heading in the report language)
-## Your kundli at a glance
-Lagna (ascendant), Moon sign (rashi), nakshatra with pada, and what they mean in two or three plain lines.
-## Your nature and strengths
-## <the chosen topic title>
-The most useful section. Be specific to the chart: connect planets, their houses and signs to real-life tendencies.
-## The time you are in now (dasha)
-Explain the current mahadasha and antardasha in simple terms and what to focus on. If the data has no current dasha, skip this section.
-## Simple tips for you
-Three to five short, practical bullet points.
-End with one warm closing line.
-
-Length: about 500 to 700 words. No tables.`;
+OUTPUT FORMAT
+Reply with ONE JSON object and nothing else (no markdown, no code fence). Keep every line SHORT and plain, like a message to a friend. Write every value, labels included, in the report language. Keys:
+{
+  "headline": "one line about this person, at most 12 words",
+  "glance": "at most 28 words: Lagna, Moon sign and nakshatra together in plain words",
+  "strengths": ["three items, at most 12 words each"],
+  "watch": ["two or three gentle growth areas, at most 12 words each"],
+  "focusTitle": "short title for the chosen topic",
+  "focus": ["three or four items about the chosen topic, at most 18 words each, specific to the chart"],
+  "now": "at most 30 words on the current mahadasha and antardasha and what to focus on; empty string if the data has no current dasha",
+  "tips": ["three simple, free tips, at most 12 words each"],
+  "closing": "one warm line, at most 14 words",
+  "labels": {"strengths": "", "watch": "", "now": "", "tips": "", "elements": "", "timeline": "", "fire": "", "earth": "", "air": "", "water": ""}
+}
+"labels" are short section titles in the report language ("elements" = "Your elements", "timeline" = "Your life periods", fire/earth/air/water = the four element names). In total the whole report stays under 220 words.`;
 }
 
 function compactPlanet(p) {

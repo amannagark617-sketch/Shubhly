@@ -235,3 +235,63 @@ export function renderMarkdown(md) {
   closeList();
   return out.join("\n");
 }
+
+// ---- report graphics (the same drawings are used on the page and in the PDF) ----
+
+export const ELEMENT_COLOR = ["#d8321a", "#5f8a3a", "#4a9bd0", "#2f4fb0"]; // fire, earth, air, water
+const ELEMENT_KEYS = ["fire", "earth", "air", "water"];
+const BALANCE_PLANETS = ["Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn"];
+export const PLANET_COLOR = {
+  Sun: "#f08a1c", Moon: "#8da2c9", Mars: "#d8321a", Mercury: "#4f9d6b", Jupiter: "#f6b81c",
+  Venus: "#d96aa7", Saturn: "#5b5b7a", Rahu: "#6d4c9f", Ketu: "#a07a4f",
+};
+
+// How many of the seven main planets (and the ascendant, when the time is known)
+// sit in a fire, earth, air or water sign.
+export function elementBalance(chart, { timeUnknown = false } = {}) {
+  const counts = [0, 0, 0, 0];
+  for (const p of chart.planets) if (BALANCE_PLANETS.includes(p.key)) counts[p.signIndex % 4]++;
+  if (!timeUnknown && chart.ascendant) counts[chart.ascendant.signIndex % 4]++;
+  return counts;
+}
+
+const xmlEsc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+// Four bars. `names` are the element names in the reader's language.
+export function elementsSvg(counts, names) {
+  const max = Math.max(1, ...counts);
+  const W = 360, rowH = 34;
+  let o = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${rowH * 4 + 6}" role="img" aria-label="${xmlEsc(names.join(", "))}">`;
+  counts.forEach((n, i) => {
+    const y = i * rowH + 4, w = Math.round((n / max) * 190);
+    o += `<rect x="96" y="${y}" width="${w || 3}" height="22" rx="6" fill="${ELEMENT_COLOR[i]}" stroke="#1b1b3a" stroke-width="1.6"/>`;
+    o += `<text x="88" y="${y + 16}" text-anchor="end" font-size="13" font-weight="700" fill="#1b1b3a">${xmlEsc(names[i])}</text>`;
+    o += `<text x="${96 + (w || 3) + 8}" y="${y + 16}" font-size="13" font-weight="700" fill="#1b1b3a">${n}</text>`;
+  });
+  return o + "</svg>";
+}
+
+// The nine dasha periods as one bar from birth, with a marker for today.
+export function timelineSvg(chart, nowMs = Date.now()) {
+  const list = chart.dasha?.mahadashas || [];
+  if (!list.length) return "";
+  const t0 = new Date(list[0].start).getTime(), t1 = new Date(list[list.length - 1].end).getTime();
+  const W = 360, x0 = 6, span = W - 12;
+  const px = (ms) => x0 + ((ms - t0) / (t1 - t0)) * span;
+  let o = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} 92" role="img" aria-label="Dasha timeline">`;
+  for (const m of list) {
+    const a = px(new Date(m.start).getTime()), b = px(new Date(m.end).getTime());
+    o += `<rect x="${a.toFixed(1)}" y="30" width="${(b - a).toFixed(1)}" height="30" fill="${PLANET_COLOR[m.lord] || "#999"}" stroke="#1b1b3a" stroke-width="1.4"/>`;
+    if (b - a > 22) o += `<text x="${((a + b) / 2).toFixed(1)}" y="50" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" stroke="#1b1b3a" stroke-width="0.4" paint-order="stroke">${SHORT[m.lord] || ""}</text>`;
+  }
+  const first = new Date(list[0].start).getUTCFullYear();
+  for (let y = Math.ceil(first / 20) * 20; y < new Date(t1).getUTCFullYear(); y += 20) {
+    const x = px(Date.UTC(y, 0, 1));
+    if (x > 20 && x < W - 20) o += `<text x="${x.toFixed(1)}" y="78" text-anchor="middle" font-size="10" fill="#55537a">${y}</text><path d="M${x.toFixed(1)} 62v5" stroke="#55537a" stroke-width="1"/>`;
+  }
+  if (nowMs >= t0 && nowMs <= t1) {
+    const x = px(nowMs);
+    o += `<path d="M${x.toFixed(1)} 16V64" stroke="#d8321a" stroke-width="3"/><circle cx="${x.toFixed(1)}" cy="14" r="5" fill="#d8321a" stroke="#1b1b3a" stroke-width="1.4"/>`;
+  }
+  return o + "</svg>";
+}

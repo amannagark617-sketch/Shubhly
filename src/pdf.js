@@ -6,8 +6,9 @@ import { createRequire } from "node:module";
 import PDFDocument from "pdfkit";
 import SVGtoPDF from "svg-to-pdfkit";
 import { STR } from "../public/i18n.js";
-import { chartSvg, westernSvg, SHORT } from "../public/lib.js";
-import { planetName, signName, nakName, DATE_LOCALE } from "../public/names.js";
+import { chartSvg, westernSvg, SHORT, elementBalance, timelineSvg, ELEMENT_COLOR } from "../public/lib.js";
+import { buildAbout } from "./about.js";
+import { planetName, signName, nakName, DATE_LOCALE, SIGN_EN } from "../public/names.js";
 
 const require = createRequire(import.meta.url);
 const FONTSOURCE = require.resolve("@fontsource/noto-sans/package.json").replace(/noto-sans[\\/]package\.json$/, "");
@@ -237,7 +238,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
   });
 
   const tx = L + chartW + 18, tw = W - chartW - 18;
-  const cols = western ? [0.34, 0.34, 0.14, 0.18] : [0.24, 0.26, 0.12, 0.1, 0.28];
+  const cols = western ? [0.34, 0.34, 0.14, 0.18] : [0.2, 0.2, 0.12, 0.1, 0.38];
   const heads = western
     ? [T("t_graha"), T("t_rashi"), T("t_deg"), T("t_house")]
     : [T("t_graha"), T("t_rashi"), T("t_deg"), T("t_house"), T("t_nak")];
@@ -296,28 +297,144 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     y += hh + 26;
   }
 
-  // ---- written report
-  const blocks = plainMarkdown(report);
-  if (blocks.length) {
-    if (y > doc.page.height - 200) { doc.addPage(); y = 50; }
-    else y += 6;
-    rich(doc, T("pdf_report"), L, y, { size: 16, bold: true, width: W, });
-    y += 30;
-    for (const b of blocks) {
-      const size = b.type === "h" ? 12 : 10;
-      const indent = b.type === "li" ? 14 : 0;
-      const hh = heightOf(doc, b.text, size, W - indent, b.type === "h");
-      if (y + hh > doc.page.height - 64) { doc.addPage(); y = 50; }
-      if (b.type === "h") {
-        y += 6;
-        rich(doc, b.text, L, y, { size, bold: true, color: RED, width: W });
-      } else if (b.type === "li") {
-        doc.circle(L + 4, y + 6, 2).fill(GOLD);
-        rich(doc, b.text, L + indent, y, { size, width: W - indent });
-      } else {
-        rich(doc, b.text, L, y, { size, width: W });
+  // ---- helpers for the sections below
+  const bottomEdge = () => doc.page.height - 64;
+  const ensure = (h) => { if (y + h > bottomEdge()) { doc.addPage(); y = 50; } };
+  const section = (title) => {
+    ensure(46);
+    rich(doc, title, L, y, { size: 14, bold: true, width: W });
+    y += 24;
+    doc.moveTo(L, y - 4).lineTo(L + W, y - 4).lineWidth(1.2).stroke(GOLD);
+  };
+  const note = (head, txt) => {
+    const hh = heightOf(doc, txt, 9.5, W - 14);
+    ensure(hh + 34);
+    doc.rect(L, y, 3, hh + 14).fill(GOLD);
+    rich(doc, head, L + 12, y, { size: 9.5, bold: true, color: RED, width: W - 14 });
+    rich(doc, txt, L + 12, y + 13, { size: 9.5, width: W - 14 });
+    y += hh + 22;
+  };
+  // A rounded box with a title and short lines; measured first so two can sit side by side.
+  const card = (x, w, title, items, fill) => {
+    const inner = w - 22;
+    let h = 12 + heightOf(doc, title, 10, inner, true) + 6;
+    for (const it of items) h += heightOf(doc, it, 9.5, inner - 12) + 4;
+    h += 6;
+    return {
+      h,
+      draw(y0) {
+        doc.roundedRect(x, y0, w, h, 8).fillAndStroke(fill, NAVY);
+        let cy = y0 + 12;
+        rich(doc, title, x + 11, cy, { size: 10, bold: true, color: RED, width: inner });
+        cy += heightOf(doc, title, 10, inner, true) + 6;
+        for (const it of items) {
+          doc.circle(x + 15, cy + 6, 2).fill(GOLD);
+          rich(doc, it, x + 24, cy, { size: 9.5, width: inner - 12 });
+          cy += heightOf(doc, it, 9.5, inner - 12) + 4;
+        }
+      },
+    };
+  };
+  const row = (a, b) => {
+    const h = Math.max(a?.h || 0, b?.h || 0);
+    ensure(h + 8);
+    a?.draw(y);
+    b?.draw(y);
+    y += h + 12;
+  };
+  const half = (W - 14) / 2;
+
+  const rep = report && typeof report === "object" && !report.markdown ? report : null;
+  const ELNAMES = {
+    en: ["Fire", "Earth", "Air", "Water"], hn: ["Agni", "Prithvi", "Vayu", "Jal"], hi: ["अग्नि", "पृथ्वी", "वायु", "जल"],
+    mr: ["अग्नि", "पृथ्वी", "वायू", "जल"], bn: ["অগ্নি", "মাটি", "বায়ু", "জল"], ta: ["நெருப்பு", "நிலம்", "காற்று", "நீர்"],
+    te: ["అగ్ని", "భూమి", "వాయువు", "నీరు"], gu: ["અગ્નિ", "પૃથ્વી", "વાયુ", "જળ"],
+  };
+  const elNames = rep?.labels?.fire ? ["fire", "earth", "air", "water"].map((k) => rep.labels[k] || "") : ELNAMES[lang] || ELNAMES.en;
+  const lab = (k, def) => rep?.labels?.[k] || def;
+
+  // ---- graphics: element balance and the life periods
+  {
+    const counts = elementBalance(chart, { timeUnknown });
+    const showTimeline = !western && !timeUnknown && chart.dasha?.mahadashas?.length;
+    ensure(120);
+    rich(doc, lab("elements", T("pdf_elements")), L, y, { size: 11, bold: true, color: RED, width: half });
+    if (showTimeline) rich(doc, lab("timeline", T("pdf_timeline")), L + half + 14, y, { size: 11, bold: true, color: RED, width: half });
+    y += 22;
+    const max = Math.max(1, ...counts);
+    counts.forEach((n, i) => {
+      const ry = y + i * 24;
+      rich(doc, elNames[i] || "", L, ry + 4, { size: 9, bold: true, width: 60 });
+      const bw = Math.max(4, (n / max) * (half - 100));
+      doc.roundedRect(L + 62, ry, bw, 16, 4).fillAndStroke(ELEMENT_COLOR[i], NAVY);
+      rich(doc, String(n), L + 62 + bw + 6, ry + 4, { size: 9, bold: true });
+    });
+    let vh = 4 * 24;
+    if (showTimeline) {
+      const svgW = half;
+      SVGtoPDF(doc, timelineSvg(chart), L + half + 14, y - 6, { width: svgW, height: svgW * 92 / 360, assumePt: true, fontCallback: (_f, bold) => (bold ? "latin-b" : "latin") });
+      vh = Math.max(vh, svgW * 92 / 360);
+    }
+    y += vh + 14;
+  }
+
+  // ---- about you (Vedic)
+  const about = western ? null : buildAbout(chart, { lang: lang === "hi" || lang === "hn" ? lang : "en", timeUnknown });
+  if (about) {
+    section(T("ab_h"));
+    if (about.big3) {
+      const b = about.big3;
+      for (const k of ["sun", "moon", "rising"]) {
+        if (!b[k]) continue;
+        const label = b.labels[k].split("{text}")[0].replace("{sign}", sg(SIGN_EN[b[k].signIndex], "")).trim();
+        note(label, b[k].text);
       }
-      y += hh + (b.type === "h" ? 8 : 7);
+    }
+    if (about.sub) note(T("ab_sub"), about.sub.text);
+    if (about.focus) note(T("ab_focus"), about.focus.text);
+    if (about.money) note(T("ab_money"), about.money.text);
+    if (about.love) note(T("ab_love"), about.love.text);
+    if (about.career) note(T("ab_career"), about.career.text);
+    const good = about.strong.map((x) => x.text);
+    const care = [...about.tested.map((x) => x.text), ...(about.mars ? [about.mars.text] : [])];
+    if (good.length || care.length) {
+      row(good.length ? card(L, half, T("rd_shine"), good, "#eef8e8") : null, care.length ? card(L + half + 14, half, T("rd_grow"), care, "#fff2dc") : null);
+    }
+  }
+
+  // ---- AI report
+  if (rep) {
+    section(T("pdf_report"));
+    if (rep.headline) { const hh = heightOf(doc, rep.headline, 13, W, true); ensure(hh + 10); rich(doc, rep.headline, L, y, { size: 13, bold: true, width: W }); y += hh + 8; }
+    if (rep.glance) { const hh = heightOf(doc, rep.glance, 10, W); ensure(hh + 10); rich(doc, rep.glance, L, y, { size: 10, color: MUTED, width: W }); y += hh + 12; }
+    row(rep.strengths.length ? card(L, half, lab("strengths", T("rd_shine")), rep.strengths, "#eef8e8") : null, rep.watch.length ? card(L + half + 14, half, lab("watch", T("rd_grow")), rep.watch, "#fff2dc") : null);
+    if (rep.focus.length) row(card(L, W, rep.focusTitle || T("rep_focus"), rep.focus, CREAM));
+    if (rep.now) note(lab("now", T("ab_sub")), rep.now);
+    if (rep.tips.length) row(card(L, W, lab("tips", T("rd_ahead")), rep.tips, "#eaf1ff"));
+    if (rep.closing) { const hh = heightOf(doc, rep.closing, 10.5, W, true); ensure(hh + 10); rich(doc, rep.closing, L, y, { size: 10.5, bold: true, width: W, align: "center" }); y += hh + 8; }
+  } else {
+    const blocks = plainMarkdown(typeof report === "string" ? report : report?.markdown);
+    if (blocks.length) {
+      if (y > doc.page.height - 200) { doc.addPage(); y = 50; }
+      else y += 6;
+      rich(doc, T("pdf_report"), L, y, { size: 16, bold: true, width: W, });
+      y += 30;
+      for (const b of blocks) {
+        const size = b.type === "h" ? 12 : 10;
+        const indent = b.type === "li" ? 14 : 0;
+        const hh = heightOf(doc, b.text, size, W - indent, b.type === "h");
+        if (y + hh > doc.page.height - 64) { doc.addPage(); y = 50; }
+        if (b.type === "h") {
+          y += 6;
+          rich(doc, b.text, L, y, { size, bold: true, color: RED, width: W });
+        } else if (b.type === "li") {
+          doc.circle(L + 4, y + 6, 2).fill(GOLD);
+          rich(doc, b.text, L + indent, y, { size, width: W - indent });
+        } else {
+          rich(doc, b.text, L, y, { size, width: W });
+        }
+        y += hh + (b.type === "h" ? 8 : 7);
+      }
     }
   }
 

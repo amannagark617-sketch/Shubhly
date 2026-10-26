@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { computeKundli } from "./src/kundli.js";
 import { searchPlaces } from "./src/geocode.js";
-import { generateReport, aiConfigured, geminiKeyName } from "./src/report.js";
+import { generateReport, aiConfigured, geminiKeyName, parseReport } from "./src/report.js";
 import { DateTime } from "luxon";
 import { computePanchang } from "./src/panchang.js";
 import { buildDailyHoroscope } from "./src/horoscope.js";
@@ -232,7 +232,8 @@ app.post("/api/pdf", kundliLimit, async (req, res, next) => {
     const birth = parseBirthInput(req.body);
     const language = parseLanguage(req.body?.lang);
     const chart = computeKundli(birth);
-    const report = typeof req.body?.report === "string" ? req.body.report.slice(0, 14000) : "";
+    const rb = req.body?.report;
+    const report = typeof rb === "string" ? rb.slice(0, 14000) : rb && typeof rb === "object" ? parseReport(JSON.stringify(rb)) : "";
     const locale = DATE_LOCALE[language] || "en-IN";
     const when = DateTime.fromObject({ year: birth.year, month: birth.month, day: birth.day }, { zone: "utc" });
     const h12 = birth.hour % 12 || 12;

@@ -56,10 +56,40 @@ export async function generateReport({
       systemInstruction: buildSystemInstruction(language, tradition),
       temperature: 0.7,
       maxOutputTokens: 4096,
+      responseMimeType: "application/json",
     },
   });
 
   const text = (response.text || "").trim();
   if (!text) throw new Error("The AI returned an empty report");
-  return text;
+  return parseReport(text);
+}
+
+// The report comes back as short pieces so it can be shown as cards and in the PDF.
+// Anything the AI sends outside that shape is dropped; plain text still works as a fallback.
+const LABELS = ["strengths", "watch", "now", "tips", "elements", "timeline", "fire", "earth", "air", "water"];
+const str = (v, n) => (typeof v === "string" ? v.replace(/\s+/g, " ").trim().slice(0, n) : "");
+const list = (v, n, each) => (Array.isArray(v) ? v.map((x) => str(x, each)).filter(Boolean).slice(0, n) : []);
+
+export function parseReport(raw) {
+  const cleaned = String(raw).trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
+  let o = null;
+  try { o = JSON.parse(cleaned); } catch { /* fall through */ }
+  if (!o || typeof o !== "object" || Array.isArray(o)) return { markdown: String(raw).slice(0, 6000) };
+  const labels = {};
+  for (const k of LABELS) labels[k] = str(o.labels?.[k], 40);
+  const out = {
+    headline: str(o.headline, 140),
+    glance: str(o.glance, 300),
+    strengths: list(o.strengths, 4, 140),
+    watch: list(o.watch, 4, 140),
+    focusTitle: str(o.focusTitle, 60),
+    focus: list(o.focus, 5, 220),
+    now: str(o.now, 320),
+    tips: list(o.tips, 5, 140),
+    closing: str(o.closing, 160),
+    labels,
+  };
+  if (!out.glance && !out.strengths.length && !out.focus.length) return { markdown: String(raw).slice(0, 6000) };
+  return out;
 }
