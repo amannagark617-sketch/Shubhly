@@ -110,6 +110,9 @@ app.get("/api/health", (_req, res) => {
   const out = { ok: true, ai: aiConfigured(), model: process.env.GEMINI_MODEL || "gemini-2.5-flash" };
   if (out.ai) out.keyFrom = geminiKeyName();
   else out.settingsSeen = Object.keys(process.env).filter((n) => /key|gemini|google|secret|api|genai/i.test(n) && !/^npm_|^PATH$/i.test(n)).sort();
+  // Which Cloud Run revision answered, and the names (never values) of its settings.
+  if (process.env.K_REVISION) out.revision = process.env.K_REVISION;
+  if (!out.ai) out.allNames = Object.keys(process.env).filter((n) => !/^npm_/i.test(n)).sort();
   res.json(out);
 });
 
