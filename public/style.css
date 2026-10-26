@@ -671,7 +671,7 @@ html:is([lang="ta"], [lang="te"], [lang="bn"], [lang="gu"]) .nav-links a { paddi
 /* ---------- phones ---------- */
 @media (max-width: 699px) {
   .banner { display: block; min-height: 0; }
-  .banner img { position: static; z-index: auto; display: block; width: 100%; height: 150px; object-position: right center; }
+  .banner img { position: static; z-index: auto; display: block; width: 100%; height: auto; }
   .banner:hover img { transform: none; }
   .banner-in { padding: 18px 20px 22px; }
   .banner h2 { font-size: clamp(1.7rem, 7.5vw, 2.2rem); }
@@ -687,12 +687,11 @@ html:is([lang="ta"], [lang="te"], [lang="bn"], [lang="gu"]) .nav-links a { paddi
 @media (max-width: 699px) {
   .banner::before, .store-banner::before, .final::before { display: none; }
   .store-banner { padding: 0 0 22px; background: var(--ink); }
-  .store-banner > img { position: static; z-index: auto; display: block; width: 100%; height: 150px; object-position: right center; margin-bottom: 18px; }
+  .store-banner > img { position: static; z-index: auto; display: block; width: 100%; height: auto; margin-bottom: 18px; }
   .store-banner > :not(img) { margin-left: 20px; margin-right: 20px; }
   .final { background: var(--ink); }
-  .final > img { position: static; z-index: auto; display: block; width: 100%; height: 170px; object-position: right center; }
+  .final > img { position: static; z-index: auto; display: block; width: 100%; height: auto; }
   .final-in { padding: 24px 20px 44px; }
-  .step img { aspect-ratio: 16 / 10; }
 }
 
 /* ---------- chat: a full, open space ---------- */
@@ -724,3 +723,6 @@ html:is([lang="ta"], [lang="te"], [lang="bn"], [lang="gu"]) .nav-links a { paddi
   .msg { max-width: 76%; font-size: 1.02rem; }
 }
 .chat-pick .dot { flex: none; }
+
+#stars { opacity: 0.55; }
+@media (max-width: 699px) { #stars { opacity: 0.3; } }
