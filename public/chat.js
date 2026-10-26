@@ -312,7 +312,7 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
   return {
     // Opens the first astrologer who is up, with a question ready to send.
     ask(text, topic) {
-      const pick = { love: "meera", money: "kavya", job: "arjun", marriage: "vikram", family: "sunita", health: "dev" }[topic];
+      const pick = { love: "meera", money: "kavya", job: "arjun", marriage: "vikram", family: "sunita", health: "dev", tarot: "anaya" }[topic];
       const g = (GUIDE_BY_ID[pick] && !isResting(GUIDE_BY_ID[pick]) && GUIDE_BY_ID[pick]) || GUIDES.find((x) => !isResting(x)) || GUIDES[0];
       openChat(g, null);
       $("chatInput").value = text;

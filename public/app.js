@@ -8,6 +8,7 @@ import { SIGN_EN, planetName, signName, nakName, dayName, pickName, DATE_LOCALE 
 import { initLiveSky } from "/livesky.js";
 import { initGuides } from "/chat.js";
 import { GUIDES, isResting, avatarSvg } from "/guides.js";
+import { cardSvg, drawThree, cardText } from "/tarot.js";
 import { t, getLang, setLang, applyStatic, LANGS, LANG_NAMES } from "/i18n.js";
 
 const $ = (id) => document.getElementById(id);
@@ -1090,6 +1091,7 @@ function setLanguage(l, { first = false } = {}) {
   applyStatic();
   decorateHero();
   renderOnline();
+  renderTarot();
   renderLangMenu();
   fillRepLang(lang);
   setTradition(tradition());
@@ -1153,6 +1155,87 @@ function decorateHero() {
   if (parts.length !== 3) return;
   h.innerHTML = parts.map((p, i) => `<span class="ph ph${i + 1}">${esc(p)}</span>`).join(" ");
 }
+
+// ---------- tarot ----------
+let tarotTopic = "love";
+let tarotHand = [];
+const tarotOpened = new Set();
+let tarotShuffling = false;
+const tarotLang = () => (["hi", "hn"].includes(getLang()) ? getLang() : "en");
+const backSvg = `<svg viewBox="0 0 100 140" aria-hidden="true"><rect x="6" y="6" width="88" height="128" rx="8" fill="none" stroke="#f6b81c" stroke-width="2.5"/><circle cx="50" cy="70" r="26" fill="#f6b81c" stroke="#fff6e2" stroke-width="3"/><path d="M50 44a26 26 0 0 1 0 52a16 26 0 0 0 0-52z" fill="#d8321a"/><path d="M50 14v14M50 112v14M20 70H8M92 70H80" stroke="#f6b81c" stroke-width="3" stroke-linecap="round"/></svg>`;
+function renderTarot() {
+  const table = $("tarotTable");
+  if (!table) return;
+  const slots = [t("tr_past"), t("tr_now"), t("tr_next")];
+  table.className = "tarot-table" + (tarotShuffling ? " shuffling" : "");
+  table.innerHTML = slots.map((label, i) => {
+    const h = tarotHand[i];
+    const open = h && tarotOpened.has(i);
+    const info = h ? cardText(h.id, h.reversed, tarotLang()) : null;
+    return `<div class="tslot"><span class="tlabel">${esc(label)}</span>
+      <button type="button" class="tcard${open ? " flipped" : ""}${h ? " dealt" : ""}" data-i="${i}" ${h ? "" : "disabled"} aria-label="${esc(h ? (open ? info.name : label) : label)}" style="--d:${i * 0.12}s">
+        <span class="tinner">
+          <span class="tface tback">${backSvg}</span>
+          <span class="tface tfront${h?.reversed ? " rev" : ""}">${h ? `<em class="tnum">${esc(info.numeral)}</em>${cardSvg(h.id)}<strong>${esc(info.name)}</strong>` : ""}</span>
+        </span>
+      </button></div>`;
+  }).join("");
+  const done = tarotHand.length && tarotOpened.size === 3;
+  $("tarotHint").textContent = tarotHand.length && !done ? t("tr_tap") : "";
+  $("tarotMeanings").innerHTML = tarotHand.map((h, i) => {
+    if (!tarotOpened.has(i)) return "";
+    const c = cardText(h.id, h.reversed, tarotLang());
+    return `<article class="tmean"><small>${esc(slots[i])}</small><h3>${esc(c.name)}${h.reversed ? ` <span class="trev">${esc(t("tr_rev"))}</span>` : ""}</h3><p>${esc(c.body)}</p></article>`;
+  }).join("");
+  show($("tarotAsk"), !!done);
+  $("tarotDraw").textContent = tarotHand.length ? t("tr_again") : t("tr_draw");
+}
+$("tarotTopics")?.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-topic]");
+  if (!b) return;
+  tarotTopic = b.dataset.topic;
+  document.querySelectorAll("#tarotTopics [data-topic]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+});
+$("tarotDraw")?.addEventListener("click", () => {
+  if (tarotShuffling) return;
+  tarotHand = []; tarotOpened.clear();
+  tarotShuffling = true;
+  renderTarot();
+  setTimeout(() => { tarotShuffling = false; tarotHand = drawThree(3); renderTarot(); }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 50 : 1300);
+});
+$("tarotTable")?.addEventListener("click", (e) => {
+  const b = e.target.closest(".tcard.dealt");
+  if (!b) return;
+  const i = Number(b.dataset.i);
+  if (tarotOpened.has(i)) return;
+  tarotOpened.add(i);
+  b.classList.add("flipped");
+  setTimeout(renderTarotKeep, 700);
+});
+function renderTarotKeep() { // refresh text only, so the flip is not interrupted
+  const done = tarotOpened.size === 3;
+  const slots = [t("tr_past"), t("tr_now"), t("tr_next")];
+  $("tarotHint").textContent = done ? "" : t("tr_tap");
+  $("tarotMeanings").innerHTML = tarotHand.map((h, i) => {
+    if (!tarotOpened.has(i)) return "";
+    const c = cardText(h.id, h.reversed, tarotLang());
+    return `<article class="tmean"><small>${esc(slots[i])}</small><h3>${esc(c.name)}${h.reversed ? ` <span class="trev">${esc(t("tr_rev"))}</span>` : ""}</h3><p>${esc(c.body)}</p></article>`;
+  }).join("");
+  show($("tarotAsk"), done);
+}
+$("tarotTable")?.addEventListener("pointermove", (e) => {
+  const c = e.target.closest(".tcard.flipped");
+  if (!c || e.pointerType !== "mouse") return;
+  const r = c.getBoundingClientRect();
+  c.style.setProperty("--ry", `${(((e.clientX - r.left) / r.width) - 0.5) * 22}deg`);
+  c.style.setProperty("--rx", `${(0.5 - ((e.clientY - r.top) / r.height)) * 16}deg`);
+});
+$("tarotTable")?.addEventListener("pointerleave", () => document.querySelectorAll(".tcard").forEach((c) => { c.style.removeProperty("--rx"); c.style.removeProperty("--ry"); }));
+$("tarotAsk")?.addEventListener("click", () => {
+  const names = tarotHand.map((h) => { const c = cardText(h.id, h.reversed, tarotLang()); return h.reversed ? `${c.name} (${t("tr_rev")})` : c.name; }).join(", ");
+  const label = document.querySelector(`#tarotTopics [data-topic="${tarotTopic}"]`)?.textContent || tarotTopic;
+  guides.ask(t("tr_ask_q", { cards: names, topic: label }), "tarot");
+});
 
 // ---------- astrologers online now, and the welcome offer ----------
 function renderOnline() {
