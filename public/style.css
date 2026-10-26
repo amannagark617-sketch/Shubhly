@@ -187,9 +187,9 @@ main, .footer { position: relative; z-index: 1; }
 #rashifal { padding-top: 64px; }
 #aaj { padding-bottom: 72px; }
 .sec-head { max-width: 680px; margin-bottom: 28px; }
-.sec-head h2 { font-size: clamp(2.1rem, 6vw, 3.5rem); margin-bottom: 12px; position: relative; display: inline-block; }
-.sec-head h2::after { content: ""; display: block; height: 10px; margin-top: 6px; background: var(--haldi); border: 2px solid var(--ink); border-radius: 6px; transform-origin: left; animation: grow 0.9s cubic-bezier(.2, 1, .3, 1) both; }
-#rashifal .sec-head h2::after { background: var(--red); }
+.sec-head :is(h1, h2) { font-size: clamp(2.1rem, 6vw, 3.5rem); margin-bottom: 12px; position: relative; display: inline-block; }
+.sec-head :is(h1, h2)::after { content: ""; display: block; height: 10px; margin-top: 6px; background: var(--haldi); border: 2px solid var(--ink); border-radius: 6px; transform-origin: left; animation: grow 0.9s cubic-bezier(.2, 1, .3, 1) both; }
+#rashifal .sec-head :is(h1, h2)::after { background: var(--red); }
 @keyframes grow { from { transform: scaleX(0); } }
 .sec-head p { color: var(--muted); margin: 0; font-weight: 500; }
 .loc-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 12px; font-weight: 700; }
@@ -200,7 +200,7 @@ main, .footer { position: relative; z-index: 1; }
 .banner img { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; object-position: right center; transition: transform 6s ease-out; }
 .banner:hover img { transform: scale(1.05); }
 .banner-in { padding: 26px; color: var(--cream); }
-.banner h2 { font-size: clamp(1.9rem, 5vw, 3rem); margin-bottom: 6px; color: var(--haldi); }
+.banner :is(h1, h2) { font-size: clamp(1.9rem, 5vw, 3rem); margin-bottom: 6px; color: var(--haldi); }
 .banner p { margin: 0; max-width: 40ch; color: var(--cream); font-weight: 500; }
 
 /* panchang */
@@ -409,8 +409,8 @@ tbody tr { transition: background-color 0.15s; } tbody tr:hover { background: va
 
 /* ---------- how, store, faq, final ---------- */
 .block--night { background: transparent; color: var(--ink); }
-.block--night .sec-head h2 { color: var(--ink); }
-.block--night .sec-head h2::after { background: var(--red); }
+.block--night .sec-head :is(h1, h2) { color: var(--ink); }
+.block--night .sec-head :is(h1, h2)::after { background: var(--red); }
 .steps { display: grid; gap: 26px; list-style: none; margin: 0; padding: 0; }
 .step { position: relative; }
 .step img { width: 100%; height: auto; border-radius: 24px; display: block; aspect-ratio: 1 / 1; object-fit: cover; border: 3px solid var(--ink); box-shadow: 0 14px 30px rgba(216, 50, 26, 0.35); transition: transform 0.2s, box-shadow 0.2s; }
@@ -420,7 +420,7 @@ tbody tr { transition: background-color 0.15s; } tbody tr:hover { background: va
 @media (min-width: 800px) { .steps { grid-template-columns: repeat(3, 1fr); gap: 32px; } }
 .store-banner { position: relative; isolation: isolate; border-radius: 26px; overflow: hidden; padding: 38px 28px; margin-bottom: 26px; border: 3px solid var(--ink); box-shadow: var(--sh); background: var(--red); }
 .store-banner > img { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; object-position: right center; }
-.store-banner h2 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 8px; max-width: 16ch; color: var(--haldi); }
+.store-banner :is(h1, h2) { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 8px; max-width: 16ch; color: var(--haldi); }
 .store-banner p { max-width: 44ch; color: var(--cream); font-weight: 500; margin-bottom: 18px; }
 .products { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
 .product { position: relative; }
@@ -444,7 +444,7 @@ tbody tr { transition: background-color 0.15s; } tbody tr:hover { background: va
 .final { position: relative; isolation: isolate; overflow: hidden; background: var(--red); border-block: 3px solid var(--ink); }
 .final > img { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; object-position: right center; }
 .final-in { padding: 88px 20px; }
-.final h2 { font-size: clamp(2.2rem, 7vw, 4rem); max-width: 13ch; margin-bottom: 12px; color: var(--haldi); }
+.final :is(h1, h2) { font-size: clamp(2.2rem, 7vw, 4rem); max-width: 13ch; margin-bottom: 12px; color: var(--haldi); }
 .final p { max-width: 40ch; color: var(--cream); font-weight: 500; margin-bottom: 22px; }
 .final .btn-primary { background: var(--haldi); color: var(--ink); }
 .final .btn-primary:hover { background: var(--haldi-2); }
@@ -468,7 +468,7 @@ tbody tr { transition: background-color 0.15s; } tbody tr:hover { background: va
 .s3d { position: relative; height: 320vh; background: var(--ink); color: #fff; border-block: 3px solid var(--haldi); }
 .s3d-stick { position: sticky; top: 66px; height: calc(100vh - 66px); display: grid; align-items: center; overflow: hidden; background-image: radial-gradient(circle at 1px 1px, rgba(246, 184, 28, 0.2) 1.4px, transparent 1.6px); background-size: 24px 24px; }
 .s3d-in { display: grid; gap: 10px; align-items: center; }
-.s3d h2 { font-size: clamp(2rem, 6vw, 3.6rem); color: var(--haldi); margin-bottom: 8px; }
+.s3d :is(h1, h2) { font-size: clamp(2rem, 6vw, 3.6rem); color: var(--haldi); margin-bottom: 8px; }
 .s3d-copy > p { color: var(--cream); font-weight: 500; max-width: 34ch; }
 .s3d-steps { list-style: none; margin: 18px 0 0; padding: 0; display: grid; }
 .s3d-steps li { grid-area: 1 / 1; opacity: 0; transform: translateY(24px); transition: opacity 0.4s, transform 0.5s cubic-bezier(.2, 1.3, .4, 1); background: var(--haldi); color: var(--ink); border: 3px solid #fff; border-radius: 18px; padding: 14px 18px; box-shadow: 0 12px 28px rgba(216, 50, 26, 0.4); max-width: 380px; }
@@ -530,7 +530,7 @@ input[type="text"], input[type="date"], input[type="time"], select { background:
 .vrat li { border-bottom: 1px solid rgba(27, 27, 58, 0.15); }
 .vrat { border-top: 1px solid rgba(27, 27, 58, 0.15); }
 .faq summary::after { border-width: 1.5px; box-shadow: var(--sh-s); }
-.sec-head h2::after { height: 6px; border: 0; width: 90px; }
+.sec-head :is(h1, h2)::after { height: 6px; border: 0; width: 90px; }
 .mantra { background: rgba(27, 27, 58, 0.88); }
 
 /* floating glass header */
@@ -590,14 +590,14 @@ html { scroll-padding-top: 100px; }
 @media (max-width: 899px) { .s3d-sky { height: min(56vh, 420px); } .s3d-badge { white-space: normal; } }
 
 /* longer words in the Indian-script languages */
-html:is([lang="ta"], [lang="te"], [lang="bn"], [lang="gu"], [lang="mr"]) .banner-in h2 { font-size: clamp(1.5rem, 3.6vw, 2.3rem); line-height: 1.3; }
+html:is([lang="ta"], [lang="te"], [lang="bn"], [lang="gu"], [lang="mr"]) .banner-in :is(h1, h2) { font-size: clamp(1.5rem, 3.6vw, 2.3rem); line-height: 1.3; }
 html:is([lang="ta"], [lang="te"], [lang="bn"], [lang="gu"]) .nav-links a { font-size: 0.88rem; padding-inline: 10px; }
 html:is([lang="ta"], [lang="te"], [lang="bn"], [lang="gu"]) .nav .nav-cta { display: none; }
 html:is([lang="ta"], [lang="te"], [lang="bn"], [lang="gu"], [lang="mr"]) h1, html:is([lang="ta"], [lang="te"], [lang="bn"], [lang="gu"], [lang="mr"]) h2 { line-height: 1.3; }
 
 /* ---------- AI guides ---------- */
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-#guides .sec-head h2::after { background: var(--red); }
+#guides .sec-head :is(h1, h2)::after { background: var(--red); }
 .guide-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
 .guide { display: flex; flex-direction: column; gap: 8px; padding: 20px; border-radius: 24px; background: var(--glass-2); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); border: var(--edge); box-shadow: var(--soft); }
 .guide-top { display: flex; align-items: center; gap: 14px; }
@@ -674,7 +674,7 @@ html:is([lang="ta"], [lang="te"], [lang="bn"], [lang="gu"]) .nav-links a { paddi
   .banner img { position: static; z-index: auto; display: block; width: 100%; height: auto; }
   .banner:hover img { transform: none; }
   .banner-in { padding: 18px 20px 22px; }
-  .banner h2 { font-size: clamp(1.7rem, 7.5vw, 2.2rem); }
+  .banner :is(h1, h2) { font-size: clamp(1.7rem, 7.5vw, 2.2rem); }
   .banner p { max-width: none; }
   .rashi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .rashi-btn .hi { font-size: 1rem; }
@@ -683,7 +683,7 @@ html:is([lang="ta"], [lang="te"], [lang="bn"], [lang="gu"]) .nav-links a { paddi
 /* ---------- readable text on pictures ---------- */
 .banner::before, .store-banner::before, .final::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: linear-gradient(90deg, rgba(27, 27, 58, 0.9) 0%, rgba(27, 27, 58, 0.72) 40%, rgba(27, 27, 58, 0) 75%); }
 .banner-in, .final-in, .store-banner > :not(img) { position: relative; z-index: 1; }
-.banner h2, .store-banner h2, .final h2 { text-shadow: 0 2px 0 rgba(27, 27, 58, 0.5); }
+.banner :is(h1, h2), .store-banner :is(h1, h2), .final :is(h1, h2) { text-shadow: 0 2px 0 rgba(27, 27, 58, 0.5); }
 @media (max-width: 699px) {
   .banner::before, .store-banner::before, .final::before { display: none; }
   .store-banner { padding: 0 0 22px; background: var(--ink); }
@@ -749,3 +749,12 @@ html:is([lang="ta"], [lang="te"], [lang="bn"], [lang="gu"]) .nav-links a { paddi
 .read-when em { font-style: normal; font-family: inherit; font-size: 0.8rem; font-weight: 700; padding: 1px 10px; border-radius: 999px; background: var(--red); color: #fff; }
 .read-time h4 { margin: 0 0 4px; font-size: 1.1rem; }
 .read-time p { margin: 0 0 4px; }
+
+
+/* ---------- separate pages ---------- */
+[data-off] { display: none !important; }
+body:not([data-page="home"]) main { padding-top: 84px; }
+.foot-links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 14px 0 0; }
+.foot-links a { color: inherit; opacity: 0.85; text-decoration: none; font-weight: 600; }
+.foot-links a:hover, .foot-links a:focus-visible { opacity: 1; text-decoration: underline; }
+.foot-signs a { font-weight: 400; font-size: 0.92rem; }

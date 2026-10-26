@@ -16,6 +16,7 @@ import {
 import { isResting, backAt } from "./public/guides.js";
 import { sadeSati, saturnWindow, jupiterWindow, slowPlanets } from "./src/transits.js";
 import { buildReading } from "./src/reading.js";
+import { PAGES, SLUGS, signPage, loadShell, renderPage, sitemap } from "./src/pages.js";
 import {
   InputError,
   cleanName,
@@ -296,9 +297,41 @@ app.post("/api/chat", chatLimit, async (req, res, next) => {
   }
 });
 
+// ---- pages ---------------------------------------------------------------
+const originOf = (req) => (process.env.PUBLIC_URL || `${req.protocol}://${req.get("host")}`).replace(/\/+$/, "");
+const SHELL = path.join(__dirname, "public", "index.html");
+function sendPage(req, res, page, extra = {}) {
+  res.setHeader("Cache-Control", "no-cache");
+  res.type("html").send(renderPage(loadShell(SHELL), page, { origin: originOf(req), ...extra }));
+}
+for (const page of Object.values(PAGES)) app.get(page.path, (req, res) => sendPage(req, res, page));
+app.get("/index.html", (_req, res) => res.redirect(301, "/"));
+
+// Each sign has its own address, with today's reading in the page itself.
+app.get("/rashifal/:sign", (req, res, next) => {
+  const slug = String(req.params.sign).toLowerCase();
+  const page = signPage(slug);
+  if (!page) return next();
+  let reading = "";
+  try {
+    const today = DateTime.now().setZone("Asia/Kolkata").toISODate();
+    const h = buildDailyHoroscope({ date: today, lat: 28.6139, lon: 77.209, tz: "Asia/Kolkata", lang: "en" });
+    const r = h.rashis[page.sign];
+    const e = (x) => String(x).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+    reading = `<article class="reading"><h2>${e(r.sign)} ${e(r.theme || "")}</h2><p>${e(r.text)}</p></article>`;
+  } catch { /* the page still works without it */ }
+  sendPage(req, res, page, { reading });
+});
+
+app.get("/robots.txt", (req, res) => {
+  res.type("text/plain").send(`User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${originOf(req)}/sitemap.xml\n`);
+});
+app.get("/sitemap.xml", (req, res) => res.type("application/xml").send(sitemap(originOf(req))));
+
 // ---- static site ---------------------------------------------------------
 app.use(
   express.static(path.join(__dirname, "public"), {
+    index: false,
     setHeaders(res, file) {
       // Code and pages are always revalidated so updates show up at once;
       // images too, so a replaced picture shows up at once (304 when unchanged);
@@ -308,6 +341,13 @@ app.use(
     },
   })
 );
+
+// Anything else: a friendly home page with a 404 status, kept out of search.
+app.use((req, res, next) => {
+  if (req.method !== "GET" || req.path.startsWith("/api/") || /\.\w+$/.test(req.path)) return next();
+  res.status(404);
+  sendPage(req, res, { ...PAGES.home, path: "/" }, { noindex: true });
+});
 
 // ---- errors --------------------------------------------------------------
 app.use((err, _req, res, _next) => {

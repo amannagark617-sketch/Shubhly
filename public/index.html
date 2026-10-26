@@ -26,13 +26,13 @@
         Shubhly
       </a>
       <nav class="nav-links" aria-label="Main">
-        <a href="#aaj" data-i="nav_today"></a>
-        <a href="#rashifal" data-i="nav_rashifal"></a>
-        <a href="#kundli" data-i="nav_kundli"></a>
-        <a href="#guides" data-i="nav_guides"></a>
-        <a href="#premium" class="nav-premium"><span data-i="nav_premium"></span></a>
-        <a href="#store" data-i="nav_store"></a>
-        <a href="#faq" data-i="nav_faq"></a>
+        <a href="/panchang" data-i="nav_today"></a>
+        <a href="/rashifal" data-i="nav_rashifal"></a>
+        <a href="/kundli" data-i="nav_kundli"></a>
+        <a href="/guides" data-i="nav_guides"></a>
+        <a href="/premium" class="nav-premium"><span data-i="nav_premium"></span></a>
+        <a href="/store" data-i="nav_store"></a>
+        <a href="/#faq" data-i="nav_faq"></a>
       </nav>
       <div class="nav-end">
         <span class="streak" id="streak" hidden></span>
@@ -44,13 +44,13 @@
           </button>
           <ul class="lang-list" id="langList" role="listbox" tabindex="-1" hidden></ul>
         </div>
-        <a class="btn btn-primary nav-cta" href="#kundli" data-i="nav_cta"></a>
+        <a class="btn btn-primary nav-cta" href="/kundli" data-i="nav_cta"></a>
       </div>
     </div>
   </header>
 
   <main id="top">
-    <section class="hero" aria-labelledby="hero-h">
+    <section class="hero" id="hero" aria-labelledby="hero-h">
       <img class="hero-strip" src="/img/hero-bg.jpg" alt="" width="1920" height="1080" fetchpriority="high" />
       <canvas id="stars" aria-hidden="true"></canvas>
       <div class="wrap hero-in">
@@ -58,8 +58,8 @@
           <h1 id="hero-h" data-i="hero_h"></h1>
           <p class="hero-lead" data-i="hero_lead"></p>
           <div class="hero-cta">
-            <a class="btn btn-primary" href="#kundli" data-i="hero_cta1"></a>
-            <a class="btn btn-line" href="#rashifal" data-i="hero_cta2"></a>
+            <a class="btn btn-primary" href="/kundli" data-i="hero_cta1"></a>
+            <a class="btn btn-line" href="/rashifal" data-i="hero_cta2"></a>
           </div>
           <ul class="trust">
             <li data-i="trust1"></li>
@@ -77,7 +77,7 @@
       </div>
     </section>
 
-    <div class="marquee" aria-hidden="true"><div class="track" id="marqueeTrack"></div></div>
+    <div class="marquee" id="marquee" aria-hidden="true"><div class="track" id="marqueeTrack"></div></div>
 
     <section class="s3d" id="s3d" aria-labelledby="s3d-h">
       <div class="s3d-stick">
@@ -95,7 +95,7 @@
             <div class="s3d-obj" id="s3dObj" aria-hidden="true"></div>
             <div class="s3d-badge" id="s3dBadge" hidden>
               <span data-i="s3d_sample"></span>
-              <a class="btn btn-primary" href="#kundli" data-i="s3d_mine"></a>
+              <a class="btn btn-primary" href="/kundli" data-i="s3d_mine"></a>
             </div>
           </div>
         </div>
@@ -247,7 +247,7 @@
               <button type="button" class="btn btn-outline" id="pdfBtn" data-i="rep_pdf"></button>
               <a class="btn btn-outline" id="waBtn" href="#" target="_blank" rel="noopener" hidden data-i="next_wa"></a>
             </div>
-            <a class="upsell" href="#premium">
+            <a class="upsell" href="/premium">
               <b data-i="up_h"></b>
               <span data-i="up_p"></span>
             </a>
@@ -306,7 +306,7 @@
             <ul>
               <li data-i="pr_f1"></li><li data-i="pr_f2"></li><li data-i="pr_f3"></li><li data-i="pr_f4"></li>
             </ul>
-            <a class="btn btn-outline btn-wide" href="#kundli" data-i="pr_free_cta"></a>
+            <a class="btn btn-outline btn-wide" href="/kundli" data-i="pr_free_cta"></a>
           </article>
           <article class="plan plan--premium">
             <span class="plan-tag" data-i="pr_tag"></span>
@@ -342,7 +342,7 @@
           <img src="/img/store-banner.jpg" alt="" width="1600" height="600" loading="lazy" />
           <h2 id="store-h" data-i="store_h"></h2>
           <p data-i="store_p"></p>
-          <a class="btn btn-primary" id="storeWa" href="#kundli" data-i="store_cta"></a>
+          <a class="btn btn-primary" id="storeWa" href="/kundli" data-i="store_cta"></a>
         </div>
         <div class="products">
           <div class="product"><img src="/img/product-ganesha.jpg" alt="" width="800" height="800" loading="lazy" /><h3 data-i="p_ganesha"></h3><span data-i="p_soon"></span></div>
@@ -374,12 +374,12 @@
       </div>
     </section>
 
-    <section class="final">
+    <section class="final" id="final">
       <img src="/img/cta-banner.jpg" alt="" width="1600" height="600" loading="lazy" />
       <div class="wrap final-in">
         <h2 data-i="final_h"></h2>
         <p data-i="final_p"></p>
-        <a class="btn btn-primary" href="#kundli" data-i="hero_cta1"></a>
+        <a class="btn btn-primary" href="/kundli" data-i="hero_cta1"></a>
       </div>
     </section>
   </main>
@@ -389,15 +389,37 @@
       <div class="brand"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f6b81c" stroke="#1b1b3a" stroke-width="5"/><path d="M32 3a29 29 0 0 1 0 58a18 29 0 0 0 0-58z" fill="#d8321a"/></svg>Shubhly</div>
       <p data-i="foot1"></p>
       <p data-i="foot2"></p>
+      <nav class="foot-links" aria-label="Pages">
+        <a href="/kundli" data-i="nav_kundli"></a>
+        <a href="/rashifal" data-i="nav_rashifal"></a>
+        <a href="/panchang" data-i="nav_today"></a>
+        <a href="/guides" data-i="nav_guides"></a>
+        <a href="/premium" data-i="nav_premium"></a>
+        <a href="/store" data-i="nav_store"></a>
+      </nav>
+      <nav class="foot-links foot-signs" aria-label="Rashifal">
+        <a href="/rashifal/aries">Aries</a>
+        <a href="/rashifal/taurus">Taurus</a>
+        <a href="/rashifal/gemini">Gemini</a>
+        <a href="/rashifal/cancer">Cancer</a>
+        <a href="/rashifal/leo">Leo</a>
+        <a href="/rashifal/virgo">Virgo</a>
+        <a href="/rashifal/libra">Libra</a>
+        <a href="/rashifal/scorpio">Scorpio</a>
+        <a href="/rashifal/sagittarius">Sagittarius</a>
+        <a href="/rashifal/capricorn">Capricorn</a>
+        <a href="/rashifal/aquarius">Aquarius</a>
+        <a href="/rashifal/pisces">Pisces</a>
+      </nav>
     </div>
   </footer>
 
   <nav class="tabbar" aria-label="Quick">
-    <a href="#aaj" data-tab="aaj"><i>☀</i><span data-i="tab_today"></span></a>
-    <a href="#rashifal" data-tab="rashifal"><i>♈︎</i><span data-i="tab_rashifal"></span></a>
-    <a href="#kundli" data-tab="kundli"><i>✦</i><span data-i="tab_kundli"></span></a>
-    <a href="#guides" data-tab="guides"><i>✧</i><span data-i="tab_guides"></span></a>
-    <a href="#premium" data-tab="premium"><i>★</i><span data-i="tab_premium"></span></a>
+    <a href="/panchang" data-tab="aaj"><i>☀</i><span data-i="tab_today"></span></a>
+    <a href="/rashifal" data-tab="rashifal"><i>♈︎</i><span data-i="tab_rashifal"></span></a>
+    <a href="/kundli" data-tab="kundli"><i>✦</i><span data-i="tab_kundli"></span></a>
+    <a href="/guides" data-tab="guides"><i>✧</i><span data-i="tab_guides"></span></a>
+    <a href="/premium" data-tab="premium"><i>★</i><span data-i="tab_premium"></span></a>
   </nav>
 
   <div class="chat" id="chat" role="dialog" aria-modal="true" aria-labelledby="chatName" hidden>

@@ -239,9 +239,9 @@ export function initGuides({ t, getLang, store, toast, getBirth, getBrief, share
     }
   });
   $("chat").addEventListener("click", (e) => {
-    if (e.target.closest("#chatMake")) { closeChat(); document.getElementById("kundli").scrollIntoView({ behavior: "smooth" }); }
+    if (e.target.closest("#chatMake")) { closeChat(); if (document.body.dataset.page === "kundli") document.getElementById("kundli").scrollIntoView({ behavior: "smooth" }); else location.href = "/kundli"; }
     if (e.target.closest("#chatShare")) share();
-    if (e.target.closest("#chatPremium")) { closeChat(); document.getElementById("premium").scrollIntoView({ behavior: "smooth" }); }
+    if (e.target.closest("#chatPremium")) { closeChat(); location.href = "/premium"; }
   });
   document.addEventListener("keydown", (e) => {
     if ($("chat").hidden) return;

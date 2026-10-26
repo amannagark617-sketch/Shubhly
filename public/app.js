@@ -299,7 +299,7 @@ $("locChange").addEventListener("click", () => {
 // ---------- rashifal ----------
 let horoDate = todayIn(loc.tz);
 let horo = null;
-let shownRashi = myRashi;
+let shownRashi = document.body.dataset.sign != null ? Number(document.body.dataset.sign) : myRashi;
 const horoCache = new Map();
 
 function renderGrid() {
@@ -723,7 +723,7 @@ async function deliverFile(blob, name) {
 function kundliLink(p) {
   const o = { n: p.name || "", d: p.date, t: p.time, u: p.timeUnknown ? 1 : 0, r: p.tradition, p: [p.place.label, p.place.lat, p.place.lon, p.place.tz] };
   const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-  return `${location.origin}/#k=${b64}`;
+  return `${location.origin}/kundli#k=${b64}`;
 }
 function readKundliLink() {
   const m = /^#k=([\w-]+)$/.exec(location.hash);
@@ -815,6 +815,7 @@ async function chartBrief() {
 function openSharedKundli() {
   const p = readKundliLink();
   if (!p) return;
+  if (document.body.dataset.page !== "kundli") { location.replace("/kundli" + location.hash); return; }
   history.replaceState(null, "", location.pathname + location.search);
   $("name").value = p.name;
   $("date").value = p.date;
@@ -962,19 +963,6 @@ $("langList").addEventListener("keydown", (e) => {
 });
 document.addEventListener("click", (e) => { if (!e.target.closest("#langMenu")) toggleLangMenu(false); });
 
-// ---------- section highlight in nav ----------
-function watchSections() {
-  if (!("IntersectionObserver" in window)) return;
-  const links = [...document.querySelectorAll(".tabbar a, .nav-links a")];
-  const io = new IntersectionObserver((entries) => {
-    for (const en of entries) {
-      if (!en.isIntersecting) continue;
-      links.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === `#${en.target.id}`));
-    }
-  }, { rootMargin: "-45% 0px -50% 0px" });
-  ["aaj", "rashifal", "kundli", "guides", "premium", "store", "faq"].forEach((id) => io.observe($(id)));
-}
-
 // ---------- start ----------
 (async function init() {
   const saved = store.get("shubhly.lang", "en");
@@ -983,7 +971,6 @@ function watchSections() {
   openSharedKundli();
   initFx();
   touchStreak();
-  watchSections();
   try { config = await api("/api/config"); } catch { /* optional */ }
   if (config.whatsappUrl) {
     const wa = $("waBtn");

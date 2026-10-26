@@ -71,7 +71,8 @@ Payments (UPI and Razorpay), marriage matching, the WhatsApp flow, and the puja 
 
 ## Website and daily features
 
-- Pages: landing, today's panchang and choghadiya, daily rashifal for all 12 rashis, vrat calendar, kundli form and result, share card, saved profiles, streak, puja store teaser.
+- Pages, each with its own address: `/` (home), `/kundli`, `/rashifal` and `/rashifal/<sign>` for all 12 signs, `/panchang`, `/guides`, `/premium`, `/store`. They share one HTML shell (`public/index.html`); `src/pages.js` sets each page's title, description, canonical link, visible sections and heading. `/sitemap.xml` and `/robots.txt` are generated. Set `PUBLIC_URL` (for example `https://shubhly.in`) so links in the sitemap use your real domain.
+- Features: today's panchang and choghadiya, daily rashifal, vrat calendar, kundli with a free life reading, share card, saved profiles, streak, AI guides, puja store teaser.
 - Daily content is computed in code (no AI): `src/panchang.js`, `src/horoscope.js`, `src/transits.js`, with text tables in `src/content.js`.
 - Endpoints: `GET /api/config`, `GET /api/today?date&lat&lon&tz&moon`, `GET /api/horoscope?date&lat&lon&tz`, plus the existing `/api/places`, `/api/kundli`, `/api/report`.
 - Optional env var `WHATSAPP_URL` (an https wa.me / chat.whatsapp.com link) shows a WhatsApp button.
