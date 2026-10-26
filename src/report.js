@@ -14,8 +14,19 @@ function getClient() {
 }
 
 // AI Studio and Google Cloud name the key differently; accept the usual names.
+const KEY_NAMES = ["GEMINI_API_KEY", "GOOGLE_API_KEY", "GOOGLE_GENAI_API_KEY", "GENAI_API_KEY", "API_KEY"];
+const looksLikeKey = (v) => /^AIza[\w-]{30,}$/.test(String(v || "").trim());
+
+// Which setting holds the key: the usual names first, then any setting whose
+// value looks like a Google API key, whatever it was called.
+export function geminiKeyName() {
+  for (const n of KEY_NAMES) if (String(process.env[n] || "").trim()) return n;
+  return Object.keys(process.env).find((n) => looksLikeKey(process.env[n])) || "";
+}
+
 export function geminiKey() {
-  return process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.API_KEY || "";
+  const n = geminiKeyName();
+  return n ? String(process.env[n]).trim() : "";
 }
 
 export function aiConfigured() {

@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { computeKundli } from "./src/kundli.js";
 import { searchPlaces } from "./src/geocode.js";
-import { generateReport, aiConfigured } from "./src/report.js";
+import { generateReport, aiConfigured, geminiKeyName } from "./src/report.js";
 import { DateTime } from "luxon";
 import { computePanchang } from "./src/panchang.js";
 import { buildDailyHoroscope } from "./src/horoscope.js";
@@ -103,7 +103,11 @@ const STARTED = new Date().toISOString();
 
 // ---- API -----------------------------------------------------------------
 app.get("/api/health", (_req, res) => {
-  res.json({ ok: true, ai: aiConfigured(), model: process.env.GEMINI_MODEL || "gemini-2.5-flash" });
+  // Only setting names are shown, never values.
+  const out = { ok: true, ai: aiConfigured(), model: process.env.GEMINI_MODEL || "gemini-2.5-flash" };
+  if (out.ai) out.keyFrom = geminiKeyName();
+  else out.settingsSeen = Object.keys(process.env).filter((n) => /key|gemini|google|secret|api|genai/i.test(n) && !/^npm_|^PATH$/i.test(n)).sort();
+  res.json(out);
 });
 
 app.get("/api/config", (_req, res) => {
