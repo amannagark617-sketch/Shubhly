@@ -3,6 +3,7 @@
 
 import { GoogleGenAI } from "@google/genai";
 import { chartData, languageRule } from "./prompt.js";
+import { geminiKey } from "./report.js";
 import { InputError } from "./validate.js";
 import { GUIDE_BY_ID } from "../public/guides.js";
 
@@ -109,7 +110,7 @@ function firstMessage(chartJson, name, tradition) {
 // ---------- Gemini ----------
 let client = null;
 function getClient() {
-  const key = process.env.GEMINI_API_KEY;
+  const key = geminiKey();
   if (!key) return null;
   if (!client) client = new GoogleGenAI({ apiKey: key });
   return client;

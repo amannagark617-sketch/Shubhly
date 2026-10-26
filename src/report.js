@@ -7,14 +7,19 @@ const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
 let client = null;
 function getClient() {
-  const key = process.env.GEMINI_API_KEY;
+  const key = geminiKey();
   if (!key) return null;
   if (!client) client = new GoogleGenAI({ apiKey: key });
   return client;
 }
 
+// AI Studio and Google Cloud name the key differently; accept the usual names.
+export function geminiKey() {
+  return process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.API_KEY || "";
+}
+
 export function aiConfigured() {
-  return Boolean(process.env.GEMINI_API_KEY);
+  return Boolean(geminiKey());
 }
 
 export async function generateReport({
