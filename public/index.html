@@ -384,7 +384,32 @@
             </ul>
             <button type="button" class="btn btn-primary btn-wide" id="premiumBtn" data-i="pr_cta"></button>
             <p class="plan-note" id="premiumNote" data-i="pr_note"></p>
+            <a class="link-btn" href="/report" data-i="nav_report"></a>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="block block--sun" id="report" aria-labelledby="rp-h">
+      <div class="wrap report">
+        <div class="report-cover" aria-hidden="true">
+          <span class="rc-tag" data-i="rp_tag"></span>
+          <svg viewBox="0 0 64 64" width="84" height="84"><circle cx="32" cy="32" r="29" fill="#f6b81c" stroke="#1b1b3a" stroke-width="5"/><path d="M32 3a29 29 0 0 1 0 58a18 29 0 0 0 0-58z" fill="#d8321a"/></svg>
+          <b data-i="rp_cover"></b>
+          <i>Shubhly</i>
+        </div>
+        <div class="report-info">
+          <h2 id="rp-h" data-i="rp_h"></h2>
+          <p class="report-lead" data-i="rp_p"></p>
+          <h3 data-i="rp_in"></h3>
+          <ul class="report-list">
+            <li data-i="rp_i1"></li><li data-i="rp_i2"></li><li data-i="rp_i3"></li><li data-i="rp_i4"></li><li data-i="rp_i5"></li>
+          </ul>
+          <ul class="report-trust">
+            <li data-i="rp_t1"></li><li data-i="rp_t2"></li><li data-i="rp_t3"></li>
+          </ul>
+          <a class="btn btn-primary" href="/kundli" data-i="rp_cta"></a>
+          <p class="plan-note" data-i="rp_note"></p>
         </div>
       </div>
     </section>
@@ -502,17 +527,24 @@
   <div class="welcome" id="welcome" role="dialog" aria-modal="true" aria-labelledby="welcomeH" hidden>
     <div class="welcome-back" id="welcomeBack"></div>
     <div class="welcome-card">
-      <button type="button" class="welcome-x" id="welcomeX" data-i-aria="wl_close">&times;</button>
-      <div class="welcome-main">
-        <span class="welcome-brand"><svg viewBox="0 0 64 64" width="34" height="34" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f6b81c" stroke="#1b1b3a" stroke-width="5"/><path d="M32 3a29 29 0 0 1 0 58a18 29 0 0 0 0-58z" fill="#d8321a"/></svg>Shubhly</span>
-        <h2 id="welcomeH" data-i="wl_h"></h2>
-        <p data-i="wl_p"></p>
-        <a class="btn btn-primary" id="welcomeGo" href="/guides" data-i="wl_cta"></a>
+      <div class="wc-head">
+        <div class="wc-av" id="welcomeAv" aria-hidden="true"></div>
+        <div class="wc-who"><b id="welcomeName"></b><span><i class="dot" aria-hidden="true"></i><span data-i="chat_online"></span></span></div>
+        <button type="button" class="welcome-x" id="welcomeX" data-i-aria="wl_close">&times;</button>
       </div>
-      <div class="welcome-chat" aria-hidden="true">
-        <p class="wb wb-q" data-i="trust1"></p>
-        <p class="wb wb-a" data-i="wl_a"></p>
+      <div class="wc-body">
+        <p class="wc-ribbon" id="welcomeH" data-i="wl_h"></p>
+        <p class="wb wb-a" data-i="wl_greet"></p>
+        <div class="wc-topics" id="welcomeTopics">
+          <button type="button" class="topic" data-topic="love"><span aria-hidden="true">❤</span><b data-i="wl_t_love"></b></button>
+          <button type="button" class="topic" data-topic="money"><span aria-hidden="true">₹</span><b data-i="wl_t_money"></b></button>
+          <button type="button" class="topic" data-topic="job"><span aria-hidden="true">✦</span><b data-i="wl_t_job"></b></button>
+          <button type="button" class="topic" data-topic="marriage"><span aria-hidden="true">☸</span><b data-i="wl_t_marriage"></b></button>
+          <button type="button" class="topic" data-topic="family"><span aria-hidden="true">⌂</span><b data-i="wl_t_family"></b></button>
+          <button type="button" class="topic" data-topic="health"><span aria-hidden="true">☘</span><b data-i="wl_t_health"></b></button>
+        </div>
       </div>
+      <div class="wc-foot"><a class="btn btn-primary" id="welcomeGo" href="/guides" data-i="wl_cta"></a></div>
     </div>
   </div>
 

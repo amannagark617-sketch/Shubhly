@@ -1160,6 +1160,8 @@ function renderOnline() {
   const up = GUIDES.filter((g) => !isResting(g));
   show(pill, up.length > 0);
   $("onlineText").textContent = t("on_now", { n: up.length });
+  const first = up[0];
+  if (first && $("welcomeAv")) { $("welcomeAv").innerHTML = avatarSvg(first.look); $("welcomeName").textContent = first.name; }
   $("onlineFaces").innerHTML = up.slice(0, 3).map((g) => `<span class="face">${avatarSvg(g.look)}</span>`).join("");
 }
 setInterval(renderOnline, 60_000);
@@ -1179,6 +1181,10 @@ function openWelcome() {
 }
 $("welcomeX")?.addEventListener("click", closeWelcome);
 $("welcomeBack")?.addEventListener("click", closeWelcome);
+document.querySelectorAll("#welcomeTopics [data-topic]").forEach((b) => b.addEventListener("click", () => {
+  store.set("shubhly.welcomeNo", Date.now());
+  location.href = "/guides#ask=" + b.dataset.topic;
+}));
 $("welcomeGo")?.addEventListener("click", () => store.set("shubhly.welcomeNo", Date.now()));
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeWelcome(); });
 setTimeout(openWelcome, 8_000);
@@ -1222,6 +1228,8 @@ if ("serviceWorker" in navigator) window.addEventListener("load", () => navigato
   setLanguage(LANGS.includes(saved) ? saved : "en", { first: true });
   guides = initGuides({ t, getLang, store, toast, getPeople: chatPeople, getBrief: chartBrief, share: shareKundli });
   openSharedKundli();
+  const askHash = location.hash.match(/^#ask=(love|money|job|marriage|family|health)$/);
+  if (askHash) { history.replaceState(null, "", location.pathname + location.search); guides.ask(t("wl_q_" + askHash[1]), askHash[1]); }
   initFx();
   liveSky = initLiveSky({ t, getLang });
   touchStreak();

@@ -7,7 +7,7 @@ import { STR } from "../public/i18n.js";
 
 export const SLUGS = SIGNS.map((s) => s.en.toLowerCase());
 
-const ALL = ["hero", "marquee", "s3d", "aaj", "rashifal", "kundli", "match", "guides", "premium", "how", "store", "faq", "final"];
+const ALL = ["hero", "marquee", "s3d", "aaj", "rashifal", "kundli", "match", "guides", "premium", "report", "how", "store", "faq", "final"];
 
 export const PAGES = {
   home: {
@@ -51,6 +51,13 @@ export const PAGES = {
     title: "Chat With Astrologers, Free | Shubhly",
     desc: "Ten astrologers for love, career, money, tarot and more. They read your real kundli and talk like a friend. Free, and always here to guide.",
     main: "guides",
+  },
+  report: {
+    path: "/report",
+    on: ["report", "faq"],
+    title: "Kundli Report: Career, Money, Love & Life Periods | Shubhly",
+    desc: "A personal kundli report made from your own chart: career, money, love, health and the periods of your life, in one PDF. Opening soon.",
+    main: "report",
   },
   premium: {
     path: "/premium",
@@ -141,7 +148,7 @@ export function renderPage(html, page, { origin, reading = "", noindex = false }
 }
 
 function headingId(main) {
-  return { aaj: "aaj-h", rashifal: "rf-h", kundli: "k-h", match: "m-h", guides: "g-h", premium: "pr-h", store: "store-h" }[main];
+  return { aaj: "aaj-h", rashifal: "rf-h", kundli: "k-h", match: "m-h", guides: "g-h", premium: "pr-h", report: "rp-h", store: "store-h" }[main];
 }
 
 export function sitemap(origin) {
