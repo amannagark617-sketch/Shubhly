@@ -163,6 +163,11 @@ const hn = {
   g_close: "Band karo",
   g_new: "Nayi chat",
   g_rest_msg: "{name} abhi aaraam mein hai. Koi aur guide chuno.",
+  g_intro_chart: "Namaste {user}, main {name} hoon, ek AI guide. Maine aapki kundli padh li hai ({summary}). Batao, mann mein kya hai?",
+  g_ask_moon: "Meri {sign} Moon mere baare mein kya kehti hai?",
+  g_share_k: "Meri kundli share karo",
+  g_link_copied: "Link copy ho gaya. Kisi bhi chat mein paste karo.",
+  g_share_text: "Shubhly par meri kundli dekho",
 };
 
 const en = {
@@ -316,6 +321,11 @@ const en = {
   g_close: "Close",
   g_new: "New chat",
   g_rest_msg: "{name} is resting right now. Pick another guide.",
+  g_intro_chart: "Hi {user}, I'm {name}, an AI guide. I've read your kundli ({summary}). What's on your mind?",
+  g_ask_moon: "What does my {sign} Moon say about me?",
+  g_share_k: "Share my kundli",
+  g_link_copied: "Link copied. Paste it in any chat.",
+  g_share_text: "See my kundli on Shubhly",
 };
 
 const hi = {
@@ -469,6 +479,11 @@ const hi = {
   g_close: "बंद करें",
   g_new: "नई चैट",
   g_rest_msg: "{name} अभी आराम में है। कोई और गाइड चुनिए।",
+  g_intro_chart: "नमस्ते {user}, मैं {name} हूँ, एक AI गाइड। मैंने आपकी कुंडली पढ़ ली है ({summary})। बताइए, मन में क्या है?",
+  g_ask_moon: "मेरा {sign} चंद्रमा मेरे बारे में क्या कहता है?",
+  g_share_k: "मेरी कुंडली शेयर करें",
+  g_link_copied: "लिंक कॉपी हो गया। किसी भी चैट में पेस्ट करें।",
+  g_share_text: "Shubhly पर मेरी कुंडली देखें",
 };
 
 export const STR = { hn, en, hi, mr, bn, ta, te, gu };

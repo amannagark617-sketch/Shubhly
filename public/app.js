@@ -675,10 +675,26 @@ async function deliverFile(blob, name) {
   return "saved";
 }
 
-// ---------- share card ----------
-$("shareBtn").addEventListener("click", async () => {
-  if (!lastResult) return;
-  const c = lastResult.chart;
+// ---------- share ----------
+function kundliLink(p) {
+  const o = { n: p.name || "", d: p.date, t: p.time, u: p.timeUnknown ? 1 : 0, r: p.tradition, p: [p.place.label, p.place.lat, p.place.lon, p.place.tz] };
+  const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  return `${location.origin}/#k=${b64}`;
+}
+function readKundliLink() {
+  const m = /^#k=([\w-]+)$/.exec(location.hash);
+  if (!m) return null;
+  try {
+    const o = JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g, "+").replace(/_/g, "/")))));
+    const [label, lat, lon, tz] = o.p;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(o.d) || !/^\d{2}:\d{2}$/.test(o.t) || !Number.isFinite(lat) || !Number.isFinite(lon) || typeof tz !== "string") return null;
+    return { name: String(o.n || "").slice(0, 40), date: o.d, time: o.t, timeUnknown: o.u === 1, tradition: o.r === "western" ? "western" : "vedic", place: { label: String(label).slice(0, 120), lat, lon, tz } };
+  } catch { return null; }
+}
+
+async function cardFile() {
+  const c = lastResult?.chart;
+  if (!c) return null;
   const rows = c.tradition === "western" ? [
     [t("r_sun"), sn(c.sunSign.sign, c.sunSign.signHi)],
     [t("r_moon"), sn(c.moonSign.sign, c.moonSign.signHi)],
@@ -693,16 +709,79 @@ $("shareBtn").addEventListener("click", async () => {
     rows,
     footer: t("card_footer"),
   });
-  const file = new File([blob], "shubhly-kundli.png", { type: "image/png" });
+  return new File([blob], "shubhly-kundli.png", { type: "image/png" });
+}
+
+// Sends the visitor's own kundli straight to a chat app: a picture and a link
+// that opens the same kundli, so nobody has to save and upload anything.
+async function shareKundli() {
+  const birth = lastPayload || profiles[0];
+  if (!birth) return;
+  const url = kundliLink(birth);
+  const text = t("g_share_text");
   try {
-    if (navigator.canShare?.({ files: [file] })) {
-      await navigator.share({ files: [file], text: t("card_text") });
+    const file = await cardFile().catch(() => null);
+    if (file && navigator.canShare?.({ files: [file] })) {
+      await navigator.share({ files: [file], text: `${text} ${url}` });
+      return;
+    }
+    if (navigator.share) {
+      await navigator.share({ title: "Shubhly", text, url });
       return;
     }
   } catch (e) { if (e.name === "AbortError") return; }
-  await deliverFile(blob, "shubhly-kundli.png");
-  toast(t("card_done"));
-});
+  try {
+    await navigator.clipboard.writeText(url);
+    toast(t("g_link_copied"));
+  } catch {
+    toast(url);
+  }
+}
+$("shareBtn").addEventListener("click", shareKundli);
+
+// What the guides need to greet the visitor by their own chart.
+let briefFor = "", briefData = null;
+async function chartBrief() {
+  const birth = lastPayload || profiles[0];
+  if (!birth) return null;
+  const key = JSON.stringify([birth, getLang()]);
+  if (key === briefFor && briefData) return briefData;
+  const data = lastResult && lastPayload === birth ? lastResult : await fetchKundli(birth);
+  const c = data.chart, asc = c.ascendant, west = c.tradition === "western";
+  const chips = [];
+  if (west) {
+    chips.push([t("r_sun"), sn(c.sunSign.sign, c.sunSign.signHi)], [t("r_moon"), sn(c.moonSign.sign, c.moonSign.signHi)]);
+    if (!birth.timeUnknown) chips.push([t("r_rising"), sn(asc.sign, asc.signHi)]);
+  } else {
+    if (!birth.timeUnknown) chips.push([t("r_lagna"), sn(asc.sign, asc.signHi)]);
+    chips.push([t("r_rashi"), sn(c.moonSign.sign, c.moonSign.signHi)],
+      [t("r_nak"), nak(c.nakshatra.name, c.planets.find((x) => x.key === "Moon")?.nakshatraHi || c.nakshatra.name)]);
+  }
+  briefFor = key;
+  briefData = {
+    user: birth.name || "",
+    chips,
+    moon: sn(c.moonSign.sign, c.moonSign.signHi),
+    summary: chips.map(([k, v]) => `${k} ${v}`).join(", "),
+  };
+  return briefData;
+}
+
+// Opening a shared link shows that kundli at once, without saving it here.
+function openSharedKundli() {
+  const p = readKundliLink();
+  if (!p) return;
+  history.replaceState(null, "", location.pathname + location.search);
+  $("name").value = p.name;
+  $("date").value = p.date;
+  $("timeUnknown").checked = p.timeUnknown;
+  $("time").disabled = p.timeUnknown;
+  $("time").value = p.time;
+  $("remember").checked = false;
+  setTradition(p.tradition);
+  pickBirthPlace(p.place);
+  $("form").requestSubmit();
+}
 
 $("scrollReport").addEventListener("click", () => {
   $("reportCard").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -856,7 +935,8 @@ function watchSections() {
 (async function init() {
   const saved = store.get("shubhly.lang", "en");
   setLanguage(LANGS.includes(saved) ? saved : "en", { first: true });
-  guides = initGuides({ t, getLang, store, toast, getBirth: () => lastPayload || profiles[0] || null });
+  guides = initGuides({ t, getLang, store, toast, getBirth: () => lastPayload || profiles[0] || null, getBrief: chartBrief, share: shareKundli });
+  openSharedKundli();
   initFx();
   touchStreak();
   watchSections();

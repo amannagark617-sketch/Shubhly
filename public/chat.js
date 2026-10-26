@@ -6,7 +6,7 @@ import { esc, renderMarkdown } from "/lib.js";
 const $ = (id) => document.getElementById(id);
 const HISTORY_KEEP = 30;
 
-export function initGuides({ t, getLang, store, toast, getBirth }) {
+export function initGuides({ t, getLang, store, toast, getBirth, getBrief, share }) {
   const cid = (() => {
     let id = store.get("shubhly.cid", null);
     if (!id) {
@@ -21,6 +21,8 @@ export function initGuides({ t, getLang, store, toast, getBirth }) {
   let history = [];
   let busy = false;
   let opener = null;
+  let cached = null; // last brief, kept while switching guides
+  let brief = null; // what we know about the visitor's kundli, for the open chat
 
   const hist = (id) => store.get(`shubhly.chat.${id}`, []);
   const save = () => store.set(`shubhly.chat.${open.id}`, history.slice(-HISTORY_KEEP));
@@ -56,12 +58,16 @@ export function initGuides({ t, getLang, store, toast, getBirth }) {
   }
 
   function renderLog() {
-    const intro = `<div class="msg msg--guide"><p>${esc(t("g_intro", { name: open.name, role: role(open).toLowerCase() }))}</p></div>`;
+    const hello = brief
+      ? t("g_intro_chart", { user: brief.user, name: open.name, summary: brief.summary }).replace(/\s+,/g, ",")
+      : t("g_intro", { name: open.name, role: role(open).toLowerCase() });
+    const intro = `<div class="msg msg--guide"><p>${esc(hello)}</p></div>`;
     $("chatLog").innerHTML = intro + history.map(bubble).join("");
     scrollDown();
-    const starters = gtext(open.starters, getLang());
+    const starters = [...gtext(open.starters, getLang())];
+    if (brief?.moon) starters.unshift(t("g_ask_moon", { sign: brief.moon }));
     $("chatStarters").innerHTML = history.length || out() ? "" :
-      starters.map((s) => `<button type="button" class="chip-btn">${esc(s)}</button>`).join("");
+      starters.slice(0, 3).map((s) => `<button type="button" class="chip-btn">${esc(s)}</button>`).join("");
   }
 
   function scrollDown() {
@@ -69,15 +75,28 @@ export function initGuides({ t, getLang, store, toast, getBirth }) {
     log.scrollTop = log.scrollHeight;
   }
 
+  function renderList() {
+    $("chatList").innerHTML = GUIDES.map((g) => {
+      const rest = isResting(g);
+      return `<button type="button" class="chat-pick${open?.id === g.id ? " is-on" : ""}" data-pick="${g.id}"${rest ? " disabled" : ""}>
+        ${avatar(g, "avatar--sm")}
+        <span><b>${esc(g.name)}</b><small>${esc(role(g))}</small></span><i class="dot${rest ? "" : " dot--on"}"></i></button>`;
+    }).join("");
+  }
+
   function renderMeta() {
-    const has = Boolean(getBirth());
-    $("chatChart").innerHTML = has
-      ? `<span class="meta-on">${esc(t("g_chart_on"))}</span>`
-      : `<button type="button" class="link-btn" id="chatMake">${esc(t("g_chart_off"))}</button>`;
-    $("chatLeft").textContent = limited() ? t("g_free_left", { n: left }) : "";
+    const chips = brief
+      ? brief.chips.map(([k, v]) => `<span class="ctx-chip"><small>${esc(k)}</small>${esc(v)}</span>`).join("")
+      : getBirth()
+        ? `<span class="meta-on">${esc(t("g_chart_on"))}</span>`
+        : `<button type="button" class="link-btn" id="chatMake">${esc(t("g_chart_off"))}</button>`;
+    const shareBtn = getBirth() ? `<button type="button" class="ctx-share" id="chatShare">${esc(t("g_share_k"))}</button>` : "";
+    const lft = limited() ? `<span class="chat-left">${esc(t("g_free_left", { n: left }))}</span>` : "";
+    $("chatCtx").innerHTML = `<div class="ctx-chips">${chips}</div>${shareBtn}${lft}`;
     const wall = out();
     $("chatWall").hidden = !wall;
     $("chatForm").hidden = wall;
+    renderList();
     scrollDown();
   }
 
@@ -89,11 +108,21 @@ export function initGuides({ t, getLang, store, toast, getBirth }) {
     $("chatName").textContent = g.name;
     $("chatRole").textContent = role(g);
     $("chatNote").textContent = t("g_note", { name: g.name });
+    brief = cached;
     renderLog();
     renderMeta();
     $("chat").hidden = false;
     document.documentElement.classList.add("chat-open");
-    if (!out()) setTimeout(() => $("chatInput").focus(), 50);
+    if (!out() && matchMedia("(pointer: fine)").matches) setTimeout(() => $("chatInput").focus(), 50);
+    // Read the visitor's kundli so the guide can greet them by it.
+    if (getBirth()) {
+      getBrief().then((b) => {
+        if (!b || open?.id !== g.id) return;
+        brief = cached = b;
+        if (!history.length) renderLog();
+        renderMeta();
+      }).catch(() => {});
+    }
   }
 
   function closeChat() {
@@ -184,6 +213,10 @@ export function initGuides({ t, getLang, store, toast, getBirth }) {
   });
   $("chatClose").addEventListener("click", closeChat);
   $("chatBack").addEventListener("click", closeChat);
+  $("chatList").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-pick]");
+    if (b && !b.disabled && open && b.dataset.pick !== open.id && !busy) openChat(GUIDE_BY_ID[b.dataset.pick], opener);
+  });
   $("chatNew").addEventListener("click", () => {
     if (!open || busy) return;
     history = [];
@@ -207,6 +240,7 @@ export function initGuides({ t, getLang, store, toast, getBirth }) {
   });
   $("chat").addEventListener("click", (e) => {
     if (e.target.closest("#chatMake")) { closeChat(); document.getElementById("kundli").scrollIntoView({ behavior: "smooth" }); }
+    if (e.target.closest("#chatShare")) share();
     if (e.target.closest("#chatPremium")) { closeChat(); document.getElementById("premium").scrollIntoView({ behavior: "smooth" }); }
   });
   document.addEventListener("keydown", (e) => {
@@ -233,8 +267,12 @@ export function initGuides({ t, getLang, store, toast, getBirth }) {
   return {
     // Called when the language changes or a kundli is made.
     refresh() {
+      cached = null;
       renderCards();
-      if (open) { $("chatNote").textContent = t("g_note", { name: open.name }); $("chatRole").textContent = role(open); renderLog(); renderMeta(); }
+      if (open) {
+        brief = null;
+        if (getBirth()) getBrief().then((b) => { if (b && open) { brief = cached = b; renderLog(); renderMeta(); } }).catch(() => {});
+        $("chatNote").textContent = t("g_note", { name: open.name }); $("chatRole").textContent = role(open); renderLog(); renderMeta(); }
     },
   };
 }
