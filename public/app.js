@@ -554,6 +554,34 @@ function renderLifeReading(data, payload, western) {
   show(box, true);
 }
 
+function renderAbout(data, western) {
+  const box = $("aboutCard");
+  const a = data.about;
+  if (western || !a) { show(box, false); return; }
+  const moon = data.chart.planets.find((p) => p.key === "Moon");
+  const SIGN = (i) => sn(SIGN_EN[i], "");
+  const li = (x) => `<li>${esc(x)}</li>`;
+  let html = `<h2 class="read-h">${esc(t("ab_h"))}</h2><div class="read-cols">`;
+  if (a.rising) {
+    html += `<section class="read-good"><h3>${esc(t("ab_rising", { sign: SIGN(a.rising.signIndex) }))}</h3><ul>${li(a.rising.good)}</ul></section>
+      <section class="read-grow"><h3>${esc(t("rd_grow"))}</h3><ul>${li(a.rising.grow)}</ul></section>`;
+  }
+  html += `</div>`;
+  html += `<section class="about-block"><h3>${esc(t("ab_star", { star: nak(moon.nakshatra, moon.nakshatraHi || moon.nakshatra) }))}</h3><p>${esc(a.star.text)}</p></section>`;
+  if (a.love) html += `<section class="about-block"><h3>${esc(t("ab_love"))}</h3><p>${esc(a.love.text)}</p></section>`;
+  if (a.career) html += `<section class="about-block"><h3>${esc(t("ab_career"))}</h3><p>${esc(a.career.text)}</p></section>`;
+  const good = a.strong.map((x) => x.text);
+  const care = [...a.tested.map((x) => x.text), ...(a.mars ? [a.mars.text] : []), ...(a.retro ? [a.retro.text.replace("{planets}", a.retro.planets.map((k) => planet(k)).join(", "))] : [])];
+  if (good.length || care.length) {
+    html += `<h3 class="read-sub">${esc(t("ab_chart"))}</h3><div class="read-cols">`;
+    if (good.length) html += `<section class="read-good"><h3>${esc(t("rd_shine"))}</h3><ul>${good.map(li).join("")}</ul></section>`;
+    if (care.length) html += `<section class="read-grow"><h3>${esc(t("rd_grow"))}</h3><ul>${care.map(li).join("")}</ul></section>`;
+    html += `</div>`;
+  }
+  box.innerHTML = html;
+  show(box, true);
+}
+
 function renderResult(data, payload, { scroll = true } = {}) {
   const chart = data.chart;
   $("resName").textContent = data.name || t("r_title_none");
@@ -620,6 +648,7 @@ function renderResult(data, payload, { scroll = true } = {}) {
   } else show(box, false);
 
   renderLifeReading(data, payload, western);
+  renderAbout(data, western);
 
   const s = data.sadeSati;
   const sb = $("satiBox");

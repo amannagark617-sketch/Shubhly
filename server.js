@@ -16,6 +16,8 @@ import {
 import { isResting, backAt } from "./public/guides.js";
 import { sadeSati, saturnWindow, jupiterWindow, slowPlanets } from "./src/transits.js";
 import { buildReading } from "./src/reading.js";
+import { buildAbout } from "./src/about.js";
+import { aiProblem } from "./src/aierror.js";
 import { PAGES, SLUGS, signPage, loadShell, renderPage, sitemap } from "./src/pages.js";
 import {
   InputError,
@@ -170,7 +172,8 @@ app.post("/api/kundli", kundliLimit, (req, res, next) => {
       };
       jupiter = jupiterWindow(today, "Asia/Kolkata");
     }
-    out.reading = buildReading(chart, { lang: req.body?.lang === "hn" ? "hn" : lang, timeUnknown: birth.timeUnknown, jupiter, today });
+    out.about = buildAbout(chart, { lang: req.body?.lang === "hn" ? "hn" : lang, timeUnknown: birth.timeUnknown });
+  out.reading = buildReading(chart, { lang: req.body?.lang === "hn" ? "hn" : lang, timeUnknown: birth.timeUnknown, jupiter, today });
     res.json(out);
   } catch (e) {
     next(e);
@@ -231,6 +234,8 @@ app.post("/api/report", reportLimit, async (req, res, next) => {
     });
     res.json({ name, topic, language, chart, report });
   } catch (e) {
+    const m = aiProblem(e);
+    if (m) return res.status(m[0]).json({ error: m[1] });
     next(e);
   }
 });
@@ -293,6 +298,8 @@ app.post("/api/chat", chatLimit, async (req, res, next) => {
     const left = freeChats.use(cid);
     res.json({ reply, left: Number.isFinite(left) ? left : null, free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null });
   } catch (e) {
+    const m = aiProblem(e);
+    if (m) return res.status(m[0]).json({ error: m[1] });
     next(e);
   }
 });
