@@ -7,7 +7,7 @@ import { STR } from "../public/i18n.js";
 
 export const SLUGS = SIGNS.map((s) => s.en.toLowerCase());
 
-const ALL = ["hero", "marquee", "s3d", "aaj", "rashifal", "kundli", "guides", "premium", "how", "store", "faq", "final"];
+const ALL = ["hero", "marquee", "s3d", "aaj", "rashifal", "kundli", "match", "guides", "premium", "how", "store", "faq", "final"];
 
 export const PAGES = {
   home: {
@@ -23,6 +23,13 @@ export const PAGES = {
     title: "Free Kundli Online: Birth Chart, Dasha & Life Reading | Shubhly",
     desc: "Make your free kundli in a minute. Get your birth chart, current dasha, Jupiter this year and a free reading of your strengths and what is ahead, in English, Hindi or Hinglish.",
     main: "kundli",
+  },
+  match: {
+    path: "/match",
+    on: ["match", "faq"],
+    title: "Kundli Milan: Free Ashtakoot Match for Two People | Shubhly",
+    desc: "Check how well two people match with the traditional 36-point Ashtakoot Kundli Milan, worked out from the real Moon positions. Free, in English, Hindi or Hinglish.",
+    main: "match",
   },
   rashifal: {
     path: "/rashifal",
@@ -134,7 +141,7 @@ export function renderPage(html, page, { origin, reading = "", noindex = false }
 }
 
 function headingId(main) {
-  return { aaj: "aaj-h", rashifal: "rf-h", kundli: "k-h", guides: "g-h", premium: "pr-h", store: "store-h" }[main];
+  return { aaj: "aaj-h", rashifal: "rf-h", kundli: "k-h", match: "m-h", guides: "g-h", premium: "pr-h", store: "store-h" }[main];
 }
 
 export function sitemap(origin) {

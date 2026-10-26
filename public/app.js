@@ -861,6 +861,79 @@ $("scrollReport").addEventListener("click", () => {
   $("reportCard").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
+// ---------- Kundli Milan ----------
+const matchPlace = { a: null, b: null };
+for (const k of ["a", "b"]) {
+  const input = $(`m${k}Place`), picked = $(`m${k}Picked`);
+  placeSearch({
+    input, list: $(`m${k}Places`),
+    onPick: (p) => { matchPlace[k] = p; input.value = p.label; picked.textContent = t("f_selected", { label: p.label }); show(picked, true); },
+  });
+  input.addEventListener("input", () => { matchPlace[k] = null; show(picked, false); });
+  $(`m${k}Unknown`).addEventListener("change", (e) => {
+    const tm = $(`m${k}Time`);
+    if (e.target.checked) { tm.value = "12:00"; tm.disabled = true; } else tm.disabled = false;
+  });
+}
+function matchPerson(k) {
+  const unknown = $(`m${k}Unknown`).checked;
+  return { name: $(`m${k}Name`).value.trim(), date: $(`m${k}Date`).value, time: unknown ? "12:00" : $(`m${k}Time`).value, timeUnknown: unknown, place: matchPlace[k] };
+}
+$("mUseMine").addEventListener("click", () => {
+  const p = lastPayload || profiles[0];
+  if (!p) { toast(t("g_chart_off")); return; }
+  $("maName").value = p.name || "";
+  $("maDate").value = p.date;
+  $("maUnknown").checked = !!p.timeUnknown;
+  $("maTime").disabled = !!p.timeUnknown;
+  $("maTime").value = p.time;
+  matchPlace.a = p.place;
+  $("maPlace").value = p.place.label;
+  $("maPicked").textContent = t("f_selected", { label: p.place.label });
+  show($("maPicked"), true);
+});
+let matchText = "";
+$("matchForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const err = $("matchError"), btn = $("matchGo");
+  show(err, false);
+  const a = matchPerson("a"), b = matchPerson("b");
+  if (![a, b].every((x) => x.date && x.time && x.place)) { err.textContent = t("m_err"); show(err, true); return; }
+  setBusy(btn, true, t("m_busy"));
+  try {
+    const lang = getLang();
+    const r = await api("/api/match", {
+      method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ a, b, lang }),
+    });
+    const n1 = r.names[0] || t("m_p1"), n2 = r.names[1] || t("m_p2");
+    const num = (x) => String(Number.isInteger(x) ? x : x.toFixed(1));
+    const out = $("matchOut");
+    out.innerHTML = `<div class="match-score"><div class="ring" style="--p:${(r.total / r.outOf * 100).toFixed(1)}"><b>${esc(num(r.total))}</b><small>/ ${r.outOf}</small></div>
+      <div><h3>${esc(n1)} &amp; ${esc(n2)}</h3><p class="match-verdict">${esc(r.verdict)}</p>
+      <p class="muted">${esc(t("m_of", { n: num(r.total) }))}</p></div></div>
+      <h3 class="read-sub">${esc(t("m_rows"))}</h3>
+      <ul class="koota">${r.items.map((i) => `<li class="koota--${i.level}">
+        <div class="koota-top"><b>${esc(i.name)}</b><span>${esc(num(i.score))} / ${i.max}</span></div>
+        <div class="bar" aria-hidden="true"><i style="width:${(i.score / i.max * 100).toFixed(0)}%"></i></div>
+        <small>${esc(i.measures)}</small><p>${esc(i.text)}</p></li>`).join("")}</ul>
+      <p class="fine">${esc(r.summary)}</p>
+      <button type="button" class="btn btn-outline" id="matchShare">${esc(t("m_share"))}</button>`;
+    matchText = `${n1} & ${n2}: ${num(r.total)}/36 (${r.verdict})\nShubhly Kundli Milan: ${location.origin}/match`;
+    show(out, true);
+    out.scrollIntoView({ behavior: "smooth", block: "start" });
+  } catch (ex) {
+    err.textContent = ex.message; show(err, true);
+  } finally {
+    setBusy(btn, false, t("m_go"));
+  }
+});
+$("matchOut").addEventListener("click", async (e) => {
+  if (!e.target.closest("#matchShare")) return;
+  if (navigator.share) { try { await navigator.share({ text: matchText }); return; } catch { /* cancelled */ } }
+  try { await navigator.clipboard.writeText(matchText); toast(t("rf_copy_ok")); } catch { toast(t("rf_copy_fail")); }
+});
+
 // ---------- AI report ----------
 $("reportBtn").addEventListener("click", async () => {
   if (!lastPayload) return;

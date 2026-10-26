@@ -18,6 +18,7 @@ import { sadeSati, saturnWindow, jupiterWindow, slowPlanets } from "./src/transi
 import { buildReading } from "./src/reading.js";
 import { buildAbout } from "./src/about.js";
 import { aiProblem } from "./src/aierror.js";
+import { buildMatch } from "./src/match.js";
 import { PAGES, SLUGS, signPage, loadShell, renderPage, sitemap } from "./src/pages.js";
 import {
   InputError,
@@ -148,6 +149,21 @@ app.get("/api/places", placesLimit, async (req, res, next) => {
     res.status(502).json({
       error: "Place search is not available right now. Please try again in a moment.",
     });
+  }
+});
+
+app.post("/api/match", kundliLimit, (req, res, next) => {
+  try {
+    const person = (x) => {
+      const birth = parseBirthInput({ ...x, tradition: "vedic" });
+      return { name: cleanName(x?.name), chart: computeKundli(birth) };
+    };
+    const a = person(req.body?.a);
+    const b = person(req.body?.b);
+    const lang = req.body?.lang === "hn" ? "hn" : parseLang(req.body?.lang);
+    res.json({ names: [a.name, b.name], ...buildMatch(a.chart, b.chart, { lang }) });
+  } catch (e) {
+    next(e);
   }
 });
 

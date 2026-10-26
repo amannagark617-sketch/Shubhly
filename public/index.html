@@ -29,6 +29,7 @@
         <a href="/panchang" data-i="nav_today"></a>
         <a href="/rashifal" data-i="nav_rashifal"></a>
         <a href="/kundli" data-i="nav_kundli"></a>
+        <a href="/match" data-i="nav_match"></a>
         <a href="/guides" data-i="nav_guides"></a>
         <a href="/premium" class="nav-premium"><span data-i="nav_premium"></span></a>
         <a href="/store" data-i="nav_store"></a>
@@ -282,6 +283,50 @@
       </div>
     </section>
 
+    <section class="block block--tight" id="match" aria-labelledby="m-h">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="m-h" data-i="m_h"></h2>
+          <p data-i="m_p"></p>
+        </div>
+        <form id="matchForm" novalidate>
+          <div class="match-grid">
+          <div class="card match-p" id="ma">
+            <h3 class="card-h" data-i="m_p1"></h3>
+            <button type="button" class="link-btn" id="mUseMine" data-i="m_mine"></button>
+            <label class="field"><span data-i="f_name"></span><input type="text" id="maName" maxlength="60" autocomplete="off" /></label>
+            <div class="row">
+              <label class="field"><span data-i="f_date"></span><input type="date" id="maDate" min="1900-01-01" /></label>
+              <label class="field"><span data-i="f_time"></span><input type="time" id="maTime" value="10:00" /></label>
+            </div>
+            <label class="check"><input type="checkbox" id="maUnknown" /> <span data-i="f_time_unknown"></span></label>
+            <label class="field"><span data-i="f_place"></span>
+              <input type="text" id="maPlace" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="maPlaces" data-i-ph="f_place_ph" />
+              <ul class="places" id="maPlaces" role="listbox" hidden></ul>
+              <span class="picked" id="maPicked" hidden></span></label>
+          </div>
+          <div class="card match-p" id="mb">
+            <h3 class="card-h" data-i="m_p2"></h3>
+            
+            <label class="field"><span data-i="f_name"></span><input type="text" id="mbName" maxlength="60" autocomplete="off" /></label>
+            <div class="row">
+              <label class="field"><span data-i="f_date"></span><input type="date" id="mbDate" min="1900-01-01" /></label>
+              <label class="field"><span data-i="f_time"></span><input type="time" id="mbTime" value="10:00" /></label>
+            </div>
+            <label class="check"><input type="checkbox" id="mbUnknown" /> <span data-i="f_time_unknown"></span></label>
+            <label class="field"><span data-i="f_place"></span>
+              <input type="text" id="mbPlace" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="mbPlaces" data-i-ph="f_place_ph" />
+              <ul class="places" id="mbPlaces" role="listbox" hidden></ul>
+              <span class="picked" id="mbPicked" hidden></span></label>
+          </div>
+          </div>
+          <p class="error" id="matchError" role="alert" hidden></p>
+          <button type="submit" class="btn btn-primary btn-wide" id="matchGo" data-i="m_go"></button>
+        </form>
+        <div class="card match-out" id="matchOut" hidden aria-live="polite"></div>
+      </div>
+    </section>
+
     <section class="block block--tight" id="guides" aria-labelledby="g-h">
       <div class="wrap">
         <div class="sec-head">
@@ -394,6 +439,7 @@
       <nav class="foot-links" aria-label="Pages">
         <a href="/kundli" data-i="nav_kundli"></a>
         <a href="/rashifal" data-i="nav_rashifal"></a>
+        <a href="/match" data-i="nav_match"></a>
         <a href="/panchang" data-i="nav_today"></a>
         <a href="/guides" data-i="nav_guides"></a>
         <a href="/premium" data-i="nav_premium"></a>

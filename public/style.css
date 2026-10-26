@@ -761,3 +761,33 @@ body:not([data-page="home"]) main { padding-top: 84px; }
 .about-block { margin-top: 14px; padding: 14px 18px; border-radius: 18px; background: #fff; border: 1.5px solid rgba(27, 27, 58, 0.2); }
 .about-block h3 { margin: 0 0 6px; font-size: 1.2rem; }
 .about-block p { margin: 0; }
+
+/* ---------- kundli milan ---------- */
+.match-grid { display: grid; gap: 16px; margin-bottom: 16px; }
+@media (min-width: 820px) { .match-grid { grid-template-columns: 1fr 1fr; } }
+.match-p .card-h { margin-bottom: 6px; }
+.match-p .link-btn { margin-bottom: 8px; }
+.match-out { margin-top: 18px; }
+.match-score { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.match-score h3 { font-size: 1.5rem; overflow-wrap: anywhere; }
+.match-verdict { margin: 4px 0; font-weight: 700; }
+.ring { --p: 50; width: 120px; height: 120px; border-radius: 50%; display: grid; place-content: center; text-align: center;
+  background: radial-gradient(closest-side, var(--bg) 74%, transparent 76% 100%), conic-gradient(var(--red) calc(var(--p) * 1%), rgba(27, 27, 58, 0.12) 0); border: 3px solid var(--ink); flex: none; }
+.ring b { font-family: var(--display); font-size: 2rem; line-height: 1; }
+.ring small { font-weight: 700; }
+.koota { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 10px; }
+.koota li { padding: 12px 14px; border-radius: 16px; background: #fff; border: 1.5px solid rgba(27, 27, 58, 0.2); }
+.koota-top { display: flex; justify-content: space-between; gap: 10px; }
+.koota .bar { height: 8px; border-radius: 6px; background: rgba(27, 27, 58, 0.12); margin: 6px 0; overflow: hidden; }
+.koota .bar i { display: block; height: 100%; background: var(--haldi); border-radius: 6px; }
+.koota--good .bar i { background: #17803f; }
+.koota--low .bar i { background: var(--red); min-width: 4px; }
+.koota small { color: var(--muted); display: block; }
+.koota p { margin: 4px 0 0; }
+
+/* eight menu links: tighter until the screen is wide */
+@media (min-width: 1040px) and (max-width: 1399px) {
+  .nav-links { gap: 0; }
+  .nav-links a { font-size: 0.92rem; padding: 12px 9px 9px; }
+  .nav-links a.nav-premium { padding: 12px 13px 9px; margin: 0 4px; }
+}
