@@ -3,7 +3,8 @@
 // both ways and take the average, so the result is the same whoever goes first.
 
 import { SIGNS } from "./astro-data.js";
-import { KOOTAS, VERDICTS, SUMMARY } from "./match-text.js";
+import { KOOTAS, VERDICTS, SUMMARY, AREAS, MANGAL } from "./match-text.js";
+import { SIGN_TEXT } from "./reading.js";
 
 const textLang = (lang) => (lang === "hi" || lang === "hn" ? lang : "en");
 
@@ -108,7 +109,8 @@ export function ashtakoot(a, b) {
   ].map(([key, score, max]) => ({ key, score, max, extra: key === "bhakoot" && cancelled ? "cancelled" : null }));
 }
 
-export function buildMatch(chartA, chartB, { lang = "en" } = {}) {
+export function buildMatch(chartA, chartB, opts = {}) {
+  const { lang = "en" } = opts;
   const L = textLang(lang);
   const pos = (c) => {
     const m = c.planets.find((p) => p.key === "Moon");
@@ -127,7 +129,34 @@ export function buildMatch(chartA, chartB, { lang = "en" } = {}) {
       text: r.extra === "cancelled" ? k.cancelled : k[level],
     };
   });
+  // Four plain areas, each made from the points that belong to it.
+  const by = Object.fromEntries(rows.map((r) => [r.key, r]));
+  const share = (keys) => keys.reduce((s, k) => s + by[k].score, 0) / keys.reduce((s, k) => s + by[k].max, 0);
+  const areaData = [
+    ["mind", share(["maitri", "varna", "vashya"])],
+    ["chemistry", share(["yoni", "gana"])],
+    ["family", share(["bhakoot"])],
+    ["health", share(["nadi", "tara"])],
+  ].map(([key, pct]) => {
+    const level = pct >= 0.75 ? "good" : pct >= 0.45 ? "ok" : "low";
+    return { key, name: AREAS[L][key].name, pct: Math.round(pct * 100), level, text: AREAS[L][key][level] };
+  });
+
+  const rank = [...items].sort((x, y) => y.score / y.max - x.score / x.max);
+  const person = (pp) => ({ signIndex: pp.signIndex, nakshatraIndex: pp.nakshatraIndex, strength: SIGN_TEXT[L][pp.signIndex].s[0], grow: SIGN_TEXT[L][pp.signIndex].g });
+
+  let mangal = null;
+  if (chartA.manglikFromLagna !== undefined && chartB.manglikFromLagna !== undefined && !opts.timeUnknown?.some(Boolean)) {
+    const n = Number(Boolean(chartA.manglikFromLagna)) + Number(Boolean(chartB.manglikFromLagna));
+    mangal = MANGAL[L][n === 2 ? "both" : n === 0 ? "none" : "one"];
+  }
+
   return {
+    areas: areaData,
+    best: rank[0].key,
+    care: rank[rank.length - 1].score / rank[rank.length - 1].max < 0.75 ? rank[rank.length - 1].key : null,
+    people: [person(pa), person(pb)],
+    mangal,
     total,
     outOf: 36,
     verdict: VERDICTS[L][band],

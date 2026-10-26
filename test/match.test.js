@@ -54,3 +54,15 @@ test("a full match has text in every language", () => {
     assert.ok(r.verdict && r.summary && r.items.every((i) => i.name && i.text && i.measures));
   }
 });
+
+test("areas, people and Mars check are filled", () => {
+  const chart = (sign, nak, mars) => ({ manglikFromLagna: mars, planets: [{ key: "Moon", signIndex: sign, degInSign: 8, nakshatraIndex: nak }] });
+  for (const lang of ["en", "hi", "hn"]) {
+    const r = buildMatch(chart(0, 0, true), chart(6, 15, false), { lang });
+    assert.equal(r.areas.length, 4);
+    assert.ok(r.areas.every((a) => a.pct >= 0 && a.pct <= 100 && a.text));
+    assert.equal(r.people.length, 2);
+    assert.ok(r.mangal && r.best);
+    assert.equal(buildMatch(chart(0, 0, true), chart(6, 15, false), { lang, timeUnknown: [true, false] }).mangal, null);
+  }
+});

@@ -46,3 +46,44 @@ export const SUMMARY = {
   hi: "अष्टकूट दो चंद्र स्थितियों की तुलना का पारंपरिक तरीक़ा है। यह दो लोगों के साथ में अनुभव का एक नज़रिया है, भविष्य का फ़ैसला नहीं। किसी भी अंक से ज़्यादा समझ, सम्मान और कोशिश मायने रखती है।",
   hn: "Ashtakoot do Moon positions ko compare karne ka traditional tareeka hai. Yeh do logon ke saath ke anubhav ka ek nazariya hai, future ka faisla nahi. Kisi bhi score se zyada samajh, respect aur koshish matter karti hai.",
 };
+
+const area = (name, good, ok, low) => ({ name, good, ok, low });
+
+export const AREAS = {
+  en: {
+    mind: area("Mind and understanding", "You think alike and talk easily.", "You understand each other with a little effort.", "You think differently; explain, do not assume."),
+    chemistry: area("Chemistry and temperament", "Natural spark and a similar pace of life.", "A fair spark that grows with time together.", "Different natures; patience and humour keep it warm."),
+    family: area("Family and money", "A steady base for home, family and finances.", "A fair base; talk about money early.", "Plan family and money together before big steps."),
+    health: area("Health and luck together", "Your energies support each other.", "Mostly supportive energies.", "Look after routines and health together."),
+  },
+  hi: {
+    mind: area("मन और समझ", "आप एक जैसा सोचते हैं और आसानी से बात करते हैं।", "थोड़ी कोशिश से आप एक-दूसरे को समझते हैं।", "आप अलग सोचते हैं; समझाइए, मान मत लीजिए।"),
+    chemistry: area("केमिस्ट्री और स्वभाव", "स्वाभाविक चिंगारी और जीवन की एक जैसी रफ़्तार।", "ठीक-ठाक चिंगारी जो साथ में बढ़ती है।", "स्वभाव अलग हैं; धैर्य और हँसी रिश्ते को गर्म रखते हैं।"),
+    family: area("परिवार और पैसा", "घर, परिवार और धन के लिए स्थिर आधार।", "ठीक-ठाक आधार; पैसों पर जल्दी बात कीजिए।", "बड़े क़दम से पहले परिवार और पैसे की योजना साथ बनाइए।"),
+    health: area("साथ में सेहत और भाग्य", "आपकी ऊर्जाएँ एक-दूसरे का साथ देती हैं।", "ज़्यादातर सहयोगी ऊर्जाएँ।", "दिनचर्या और सेहत का साथ में ध्यान रखिए।"),
+  },
+  hn: {
+    mind: area("Mann aur samajh", "Aap ek jaisa sochte ho aur aasaani se baat karte ho.", "Thodi koshish se aap ek-doosre ko samajhte ho.", "Aap alag sochte ho; samjhao, maan mat lo."),
+    chemistry: area("Chemistry aur nature", "Natural spark aur zindagi ki ek jaisi raftaar.", "Theek-thaak spark jo saath mein badhti hai.", "Nature alag hain; patience aur humour rishte ko warm rakhte hain."),
+    family: area("Family aur paisa", "Ghar, family aur paise ke liye stable base.", "Theek-thaak base; paise par jaldi baat karo.", "Bade kadam se pehle family aur paise ka plan saath banao."),
+    health: area("Saath mein health aur luck", "Aapki energies ek-doosre ka saath deti hain.", "Zyadatar supportive energies.", "Routine aur health ka saath mein dhyan rakho."),
+  },
+};
+
+export const MANGAL = {
+  en: {
+    both: "Both charts have Mars in a house that tradition watches. Many pandits treat that as balanced when both do.",
+    none: "Neither chart has Mars in a house that tradition watches. Nothing to check here.",
+    one: "One chart has Mars in a house that tradition watches and the other does not. Families often ask a pandit about this; it is one factor among many.",
+  },
+  hi: {
+    both: "दोनों कुंडलियों में मंगल ऐसे भाव में है जिसे परंपरा देखती है। जब दोनों में हो तो कई पंडित इसे संतुलित मानते हैं।",
+    none: "किसी भी कुंडली में मंगल ऐसे भाव में नहीं है जिसे परंपरा देखती है। यहाँ कुछ जाँचने को नहीं है।",
+    one: "एक कुंडली में मंगल ऐसे भाव में है जिसे परंपरा देखती है और दूसरी में नहीं। परिवार अक्सर पंडित से पूछते हैं; यह कई बातों में से एक है।",
+  },
+  hn: {
+    both: "Dono kundliyon mein Mangal aise bhav mein hai jise parampara dekhti hai. Jab dono mein ho to kai pandit ise balanced maante hain.",
+    none: "Kisi bhi kundli mein Mangal aise bhav mein nahi hai jise parampara dekhti hai. Yahan kuch check karne ko nahi hai.",
+    one: "Ek kundli mein Mangal aise bhav mein hai jise parampara dekhti hai aur doosri mein nahi. Families aksar pandit se poochti hain; yeh kai baaton mein se ek hai.",
+  },
+};

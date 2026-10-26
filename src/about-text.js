@@ -271,3 +271,119 @@ export const RETRO = {
   hi: "आपकी कुंडली में वक्री: {planets}। इन क्षेत्रों में ध्यान भीतर मुड़ता है; नतीजे देर से आ सकते हैं, पर गहराई के साथ।",
   hn: "Aapki kundli mein vakri: {planets}. In areas mein dhyan andar mudta hai; results der se aa sakte hain, par gehraai ke saath.",
 };
+
+// Money style: the sign in the 2nd house (income, savings, spending habits).
+export const MONEY = {
+  en: [
+    "You earn best when you act fast and take the lead. Watch impulse spending.",
+    "You like to save and build slowly, and you are good at it. Do not hold on too tightly out of fear.",
+    "You earn through ideas, words and several sources at once. Keep track, because money can scatter.",
+    "You save for security and family, and money comes through care and home. Watch comfort spending.",
+    "You like to spend generously and earn through confidence. Set a limit before showing off.",
+    "You are careful and plan every rupee. Allow yourself small joys.",
+    "You enjoy beautiful things and earn through people and partnerships. Beware of spending to impress.",
+    "You are private and shrewd with money, and good at managing shared funds. Avoid secrecy about debts.",
+    "You are optimistic about money and earn through knowledge or luck. Do not over-promise or over-invest.",
+    "You build wealth slowly and last long. Discipline pays; do not skimp on rest.",
+    "You earn through networks, technology or unusual routes. Income may come in waves; keep a buffer.",
+    "You are generous and sometimes careless with money. A fixed monthly saving habit protects you.",
+  ],
+  hi: [
+    "आप तेज़ी से क़दम उठाने और नेतृत्व करने पर सबसे अच्छा कमाते हैं। आवेग में ख़र्च से बचिए।",
+    "आप बचाना और धीरे बनाना पसंद करते हैं, और इसमें अच्छे हैं। डर से बहुत कसकर मत पकड़िए।",
+    "आप विचारों, शब्दों और एक साथ कई स्रोतों से कमाते हैं। हिसाब रखिए, पैसा बिखर सकता है।",
+    "आप सुरक्षा और परिवार के लिए बचाते हैं; पैसा देखभाल और घर से आता है। आराम पर ख़र्च का ध्यान रखिए।",
+    "आप खुलकर ख़र्च करना पसंद करते हैं और आत्मविश्वास से कमाते हैं। दिखावे से पहले सीमा तय कीजिए।",
+    "आप सावधान हैं और हर रुपये की योजना बनाते हैं। छोटी ख़ुशियों की भी इजाज़त दीजिए।",
+    "आपको सुंदर चीज़ें पसंद हैं और लोगों व साझेदारी से कमाते हैं। प्रभावित करने के लिए ख़र्च से बचिए।",
+    "आप पैसे में निजी और चतुर हैं और साझा धन सँभालने में अच्छे हैं। क़र्ज़ों पर छिपाव मत कीजिए।",
+    "आप पैसे को लेकर आशावादी हैं और ज्ञान या क़िस्मत से कमाते हैं। ज़्यादा वादे या निवेश मत कीजिए।",
+    "आप धीरे संपत्ति बनाते हैं जो लंबी चलती है। अनुशासन फल देता है; आराम में कंजूसी मत कीजिए।",
+    "आप नेटवर्क, तकनीक या अलग रास्तों से कमाते हैं। आमदनी लहरों में आ सकती है; बफ़र रखिए।",
+    "आप उदार हैं और कभी-कभी पैसे में लापरवाह। हर महीने तय बचत की आदत आपकी रक्षा करती है।",
+  ],
+  hn: [
+    "Aap tezi se kadam uthane aur lead karne par sabse achha kamate ho. Impulse kharch se bacho.",
+    "Aap bachana aur dheere banana pasand karte ho, aur isme achhe ho. Darr se zyada kaske mat pakdo.",
+    "Aap ideas, words aur ek saath kai sources se kamate ho. Hisaab rakho, paisa bikhar sakta hai.",
+    "Aap security aur family ke liye bachate ho; paisa care aur ghar se aata hai. Comfort kharch ka dhyan rakho.",
+    "Aap khulkar kharch karna pasand karte ho aur confidence se kamate ho. Dikhave se pehle limit tay karo.",
+    "Aap careful ho aur har rupaye ka plan banate ho. Chhoti khushiyon ki bhi ijaazat do.",
+    "Aapko sundar cheezein pasand hain aur logon va partnership se kamate ho. Impress karne ke liye kharch se bacho.",
+    "Aap paise mein private aur chatur ho aur shared funds sambhalne mein achhe ho. Karzon par chhupav mat karo.",
+    "Aap paise ko lekar optimistic ho aur knowledge ya kismat se kamate ho. Zyada promise ya invest mat karo.",
+    "Aap dheere wealth banate ho jo lambi chalti hai. Discipline phal deta hai; rest mein kanjoosi mat karo.",
+    "Aap network, technology ya alag raaston se kamate ho. Income lehron mein aa sakti hai; buffer rakho.",
+    "Aap generous ho aur kabhi-kabhi paise mein laparwah. Har mahine fixed saving ki aadat aapko bachati hai.",
+  ],
+};
+
+// Where your energy goes: the house that holds the most planets.
+export const HOUSE_FOCUS = {
+  en: [
+    "yourself: identity, health, how you come across",
+    "money, family and what you say",
+    "courage, siblings, skills and short journeys",
+    "home, mother, inner peace and property",
+    "creativity, children, study and romance",
+    "work routines, service, health habits and overcoming obstacles",
+    "partnership, marriage and close relationships",
+    "change, shared money, research and hidden things",
+    "luck, higher learning, teachers and long journeys",
+    "career, status and public life",
+    "gains, friends, networks and goals",
+    "rest, solitude, foreign lands and letting go",
+  ],
+  hi: [
+    "आप ख़ुद: पहचान, सेहत और आप कैसे दिखते हैं",
+    "धन, परिवार और आपकी वाणी",
+    "साहस, भाई-बहन, हुनर और छोटी यात्राएँ",
+    "घर, माँ, मन की शांति और संपत्ति",
+    "रचनात्मकता, संतान, पढ़ाई और प्रेम",
+    "काम की दिनचर्या, सेवा, सेहत की आदतें और बाधाओं पर जीत",
+    "साझेदारी, विवाह और क़रीबी रिश्ते",
+    "बदलाव, साझा धन, शोध और छुपी बातें",
+    "भाग्य, उच्च शिक्षा, गुरु और लंबी यात्राएँ",
+    "करियर, प्रतिष्ठा और सार्वजनिक जीवन",
+    "लाभ, मित्र, नेटवर्क और लक्ष्य",
+    "आराम, एकांत, विदेश और छोड़ना",
+  ],
+  hn: [
+    "aap khud: identity, health aur aap kaise dikhte ho",
+    "paisa, family aur aapki baat",
+    "courage, bhai-behen, skills aur chhoti yatraayein",
+    "ghar, maa, mann ki shaanti aur property",
+    "creativity, bachche, padhai aur romance",
+    "kaam ki routine, seva, health habits aur rukawaton par jeet",
+    "partnership, shaadi aur kareebi rishte",
+    "badlaav, shared paisa, research aur chhupi baatein",
+    "kismat, higher studies, guru aur lambi yatraayein",
+    "career, status aur public life",
+    "laabh, dost, network aur goals",
+    "rest, ekaant, videsh aur chhodna",
+  ],
+};
+
+export const FOCUS_LINE = {
+  en: "Your chart holds {n} planets in your {house} house, so a lot of your life energy goes into {theme}.",
+  hi: "आपकी कुंडली के {house} भाव में {n} ग्रह हैं, इसलिए आपकी जीवन-ऊर्जा का बड़ा हिस्सा {theme} में जाता है।",
+  hn: "Aapki kundli ke {house} bhav mein {n} grah hain, isliye aapki life energy ka bada hissa {theme} mein jaata hai.",
+};
+
+export const BIG3 = {
+  en: { sun: "Sun sign {sign}: how you shine and what you stand for. {text}", moon: "Moon sign {sign}: your feelings and what you need. {text}", rising: "Rising sign {sign}: how others first see you. {text}" },
+  hi: { sun: "सूर्य राशि {sign}: आप कैसे चमकते हैं और किस बात पर खड़े हैं। {text}", moon: "चंद्र राशि {sign}: आपकी भावनाएँ और आपकी ज़रूरतें। {text}", rising: "लग्न {sign}: दूसरे आपको पहले कैसे देखते हैं। {text}" },
+  hn: { sun: "Surya rashi {sign}: aap kaise chamakte ho aur kis baat par khade ho. {text}", moon: "Chandra rashi {sign}: aapki feelings aur aapki zaroorat. {text}", rising: "Lagna {sign}: doosre aapko pehle kaise dekhte hain. {text}" },
+};
+
+export const SUBPERIOD = {
+  en: "Right now you are in the {sub} sub-period of {main}, until {until}.",
+  hi: "अभी आप {main} की {sub} उप-अवधि में हैं, {until} तक।",
+  hn: "Abhi aap {main} ki {sub} sub-period mein ho, {until} tak.",
+};
+
+export const ORD = {
+  en: ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th"],
+  hi: ["पहले", "दूसरे", "तीसरे", "चौथे", "पाँचवें", "छठे", "सातवें", "आठवें", "नौवें", "दसवें", "ग्यारहवें", "बारहवें"],
+  hn: ["pehle", "doosre", "teesre", "chauthe", "paanchve", "chhathe", "saatve", "aathve", "nauve", "daswe", "gyarahve", "baarahve"],
+};

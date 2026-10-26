@@ -5,7 +5,7 @@ import { SIGNS } from "./astro-data.js";
 import { getContent } from "./content.js";
 
 // Per sign: two strengths and one thing to grow, in English, Hindi and Hinglish.
-const SIGN_TEXT = {
+export const SIGN_TEXT = {
   en: [
     { s: ["Brave and quick to start things", "Honest and direct, so people know where they stand with you"], g: "Slow down before reacting; a little patience saves a lot of energy" },
     { s: ["Steady and dependable, you finish what you start", "You build comfort and security around you"], g: "Learn to adapt faster when plans change" },
@@ -51,7 +51,7 @@ const SIGN_TEXT = {
 };
 
 // What each planet's long period (mahadasha) tends to bring, and what to watch.
-const PERIOD_TEXT = {
+export const PERIOD_TEXT = {
   en: {
     Sun: { bring: "Confidence, recognition and chances to lead", watch: "Ego clashes, especially with seniors or father figures" },
     Moon: { bring: "Emotional growth, family closeness and care", watch: "Mood swings and overthinking; protect your sleep" },
@@ -133,6 +133,8 @@ const JUPITER_TEXT = {
   ],
 };
 
+const LUCKY_NUMBER = { Sun: 1, Moon: 2, Jupiter: 3, Rahu: 4, Mercury: 5, Venus: 6, Ketu: 7, Saturn: 8, Mars: 9 };
+
 const textLang = (lang) => (lang === "hi" || lang === "hn" ? lang : "en");
 
 // Which tendency list applies: Moon sign for Vedic, Sun sign for Western.
@@ -154,7 +156,7 @@ export function buildReading(chart, { lang = "en", timeUnknown = false, jupiter 
   const C = getContent(L);
   const lord = SIGNS[moon.signIndex].lord;
   const wd = Object.entries(C.WEEKDAY_INFO).find(([, v]) => v.lord === lord);
-  if (wd) out.lucky = { lord, weekday: Number(wd[0]), colour: wd[1].colour.name, hex: wd[1].colour.hex, mantra: wd[1].mantra };
+  if (wd) out.lucky = { lord, weekday: Number(wd[0]), colour: wd[1].colour.name, hex: wd[1].colour.hex, mantra: wd[1].mantra, number: LUCKY_NUMBER[lord] };
 
   if (!timeUnknown && chart.dasha?.mahadashas) {
     out.periods = chart.dasha.mahadashas

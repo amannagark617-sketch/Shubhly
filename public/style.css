@@ -798,3 +798,10 @@ button.install-btn:not(.btn) { font: inherit; font-weight: 700; color: inherit; 
 .msg--error { align-self: stretch; max-width: none; background: #fde8e4; border: 1.5px solid var(--red); color: var(--ink); border-radius: 14px; padding: 10px 14px; }
 .msg--error p { margin: 0; font-weight: 600; }
 .build-tag { font-size: 0.8rem; opacity: 0.6; margin: 8px 0 0; }
+.big3 { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.big3 li { padding: 8px 0; border-bottom: 1px dashed rgba(27, 27, 58, 0.2); }
+.big3 li:last-child { border: 0; }
+.read-one { margin-top: 14px; }
+.read-one section { padding: 16px 18px; border-radius: 18px; border: 1.5px solid rgba(27, 27, 58, 0.25); background: var(--haldi-pale); }
+.read-one h3 { margin: 0 0 8px; font-size: 1.2rem; }
+.read-one ul { margin: 0; padding-left: 1.15em; }

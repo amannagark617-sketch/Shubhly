@@ -530,6 +530,7 @@ function renderLifeReading(data, payload, western) {
       <span class="chip"><b>${esc(t("rd_lord"))}:</b> ${esc(planet(l.lord))}</span>
       <span class="chip"><b>${esc(t("rd_day"))}:</b> ${esc(day(["","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"][l.weekday]))}</span>
       <span class="chip"><b>${esc(t("rd_colour"))}:</b> <i class="swatch" style="background:${esc(l.hex)}"></i>${esc(l.colour)}</span>
+      <span class="chip"><b>${esc(t("rd_number"))}:</b> ${esc(l.number)}</span>
       <span class="chip"><b>${esc(t("rd_mantra"))}:</b> ${esc(l.mantra)}</span></div>`;
   }
   html += `<div class="read-cols">
@@ -561,13 +562,21 @@ function renderAbout(data, western) {
   const moon = data.chart.planets.find((p) => p.key === "Moon");
   const SIGN = (i) => sn(SIGN_EN[i], "");
   const li = (x) => `<li>${esc(x)}</li>`;
-  let html = `<h2 class="read-h">${esc(t("ab_h"))}</h2><div class="read-cols">`;
+  let html = `<h2 class="read-h">${esc(t("ab_h"))}</h2>`;
+  if (a.big3) {
+    const b = a.big3;
+    const row = (k) => b[k] ? `<li><b>${esc(b.labels[k].split("{text}")[0].replace("{sign}", SIGN(b[k].signIndex)).trim())}</b> ${esc(b[k].text)}</li>` : "";
+    html += `<section class="about-block"><h3>${esc(t("ab_big3"))}</h3><ul class="big3">${row("sun")}${row("moon")}${row("rising")}</ul></section>`;
+  }
+  html += `<div class="read-one">`;
   if (a.rising) {
-    html += `<section class="read-good"><h3>${esc(t("ab_rising", { sign: SIGN(a.rising.signIndex) }))}</h3><ul>${li(a.rising.good)}</ul></section>
-      <section class="read-grow"><h3>${esc(t("rd_grow"))}</h3><ul>${li(a.rising.grow)}</ul></section>`;
+    html += `<section class="read-grow"><h3>${esc(t("ab_rising", { sign: SIGN(a.rising.signIndex) }))}: ${esc(t("rd_grow"))}</h3><ul>${li(a.rising.grow)}</ul></section>`;
   }
   html += `</div>`;
   html += `<section class="about-block"><h3>${esc(t("ab_star", { star: nak(moon.nakshatra, moon.nakshatraHi || moon.nakshatra) }))}</h3><p>${esc(a.star.text)}</p></section>`;
+  if (a.sub) html += `<section class="about-block"><h3>${esc(t("ab_sub"))}</h3><p>${esc(a.sub.text)}</p><p><b>${esc(t("rd_bring"))}:</b> ${esc(a.sub.bring)}</p><p><b>${esc(t("rd_watch"))}:</b> ${esc(a.sub.watch)}</p></section>`;
+  if (a.focus) html += `<section class="about-block"><h3>${esc(t("ab_focus"))}</h3><p>${esc(a.focus.text)}</p></section>`;
+  if (a.money) html += `<section class="about-block"><h3>${esc(t("ab_money"))}</h3><p>${esc(a.money.text)}</p></section>`;
   if (a.love) html += `<section class="about-block"><h3>${esc(t("ab_love"))}</h3><p>${esc(a.love.text)}</p></section>`;
   if (a.career) html += `<section class="about-block"><h3>${esc(t("ab_career"))}</h3><p>${esc(a.career.text)}</p></section>`;
   const good = a.strong.map((x) => x.text);
@@ -908,10 +917,24 @@ $("matchForm").addEventListener("submit", async (e) => {
     });
     const n1 = r.names[0] || t("m_p1"), n2 = r.names[1] || t("m_p2");
     const num = (x) => String(Number.isInteger(x) ? x : x.toFixed(1));
+    const best = r.items.find((i) => i.key === r.best);
+    const care = r.care ? r.items.find((i) => i.key === r.care) : null;
     const out = $("matchOut");
     out.innerHTML = `<div class="match-score"><div class="ring" style="--p:${(r.total / r.outOf * 100).toFixed(1)}"><b>${esc(num(r.total))}</b><small>/ ${r.outOf}</small></div>
       <div><h3>${esc(n1)} &amp; ${esc(n2)}</h3><p class="match-verdict">${esc(r.verdict)}</p>
       <p class="muted">${esc(t("m_of", { n: num(r.total) }))}</p></div></div>
+      <h3 class="read-sub">${esc(t("m_areas"))}</h3>
+      <ul class="koota">${r.areas.map((i) => `<li class="koota--${i.level}">
+        <div class="koota-top"><b>${esc(i.name)}</b><span>${i.pct}%</span></div>
+        <div class="bar" aria-hidden="true"><i style="width:${i.pct}%"></i></div><p>${esc(i.text)}</p></li>`).join("")}</ul>
+      <div class="read-cols">
+        <section class="read-good"><h3>${esc(t("m_best"))}</h3><ul><li>${esc(best.name)}: ${esc(best.text)}</li></ul></section>
+        ${care ? `<section class="read-grow"><h3>${esc(t("m_care"))}</h3><ul><li>${esc(care.name)}: ${esc(care.text)}</li></ul></section>` : ""}
+      </div>
+      <h3 class="read-sub">${esc(t("m_people"))}</h3>
+      <div class="read-cols">${r.people.map((pp, idx) => `<section class="about-block"><h3>${esc(idx ? n2 : n1)}</h3>
+        <p><b>${esc(sn(SIGN_EN[pp.signIndex], ""))}</b></p><ul><li>${esc(pp.strength)}</li><li>${esc(pp.grow)}</li></ul></section>`).join("")}</div>
+      ${r.mangal ? `<section class="about-block"><h3>${esc(t("m_mangal"))}</h3><p>${esc(r.mangal)}</p></section>` : ""}
       <h3 class="read-sub">${esc(t("m_rows"))}</h3>
       <ul class="koota">${r.items.map((i) => `<li class="koota--${i.level}">
         <div class="koota-top"><b>${esc(i.name)}</b><span>${esc(num(i.score))} / ${i.max}</span></div>

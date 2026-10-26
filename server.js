@@ -167,12 +167,12 @@ app.post("/api/match", kundliLimit, (req, res, next) => {
   try {
     const person = (x) => {
       const birth = parseBirthInput({ ...x, tradition: "vedic" });
-      return { name: cleanName(x?.name), chart: computeKundli(birth) };
+      return { name: cleanName(x?.name), chart: computeKundli(birth), timeUnknown: birth.timeUnknown };
     };
     const a = person(req.body?.a);
     const b = person(req.body?.b);
     const lang = req.body?.lang === "hn" ? "hn" : parseLang(req.body?.lang);
-    res.json({ names: [a.name, b.name], ...buildMatch(a.chart, b.chart, { lang }) });
+    res.json({ names: [a.name, b.name], ...buildMatch(a.chart, b.chart, { lang, timeUnknown: [a.timeUnknown, b.timeUnknown] }) });
   } catch (e) {
     next(e);
   }

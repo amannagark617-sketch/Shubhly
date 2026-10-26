@@ -57,3 +57,27 @@ test("every sign, star ruler and Mars house has text in all three languages", ()
   for (let n = 0; n < 27; n++) assert.ok(buildAbout(chart({ planets: [{ key: "Moon", signIndex: 0, house: 1, nakshatraIndex: n }, { key: "Mars", signIndex: 0, house: 3 }] })).star.text);
   assert.equal(buildAbout(chart({ tradition: "western" })), null);
 });
+
+test("big three, money, focus and the current sub-period are filled from the chart", () => {
+  const c = chart({
+    ascendant: { signIndex: 5 },
+    planets: [
+      { key: "Sun", signIndex: 3, house: 11, nakshatraIndex: 8 },
+      { key: "Moon", signIndex: 11, house: 7, nakshatraIndex: 25 },
+      { key: "Mars", signIndex: 5, house: 1 },
+      { key: "Mercury", signIndex: 5, house: 1 },
+      { key: "Venus", signIndex: 5, house: 1 },
+    ],
+    dasha: { current: { mahadasha: { lord: "Venus" }, antardasha: { lord: "Mercury", end: "2029-09-15" } } },
+  });
+  for (const lang of ["en", "hi", "hn"]) {
+    const a = buildAbout(c, { lang });
+    assert.equal(a.big3.sun.signIndex, 3);
+    assert.equal(a.big3.moon.signIndex, 11);
+    assert.equal(a.big3.rising.signIndex, 5);
+    assert.equal(a.money.signIndex, 6); // 2nd from Virgo is Libra
+    assert.equal(a.focus.house, 1);
+    assert.equal(a.focus.n, 3);
+    assert.ok(a.sub.text.includes("2029") && a.sub.bring);
+  }
+});
