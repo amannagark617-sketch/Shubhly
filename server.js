@@ -20,6 +20,7 @@ import { buildAbout } from "./src/about.js";
 import { aiProblem } from "./src/aierror.js";
 import { buildMatch } from "./src/match.js";
 import { skyRange, MEANING } from "./src/sky.js";
+import { POSTS, POST_BY_SLUG, renderBlogIndex, renderPost } from "./src/blog.js";
 import { PAGES, SLUGS, signPage, loadShell, renderPage, sitemap } from "./src/pages.js";
 import {
   InputError,
@@ -375,6 +376,12 @@ function sendPage(req, res, page, extra = {}) {
   res.type("html").send(renderPage(loadShell(SHELL), page, { origin: originOf(req), ...extra }));
 }
 for (const page of Object.values(PAGES)) app.get(page.path, (req, res) => sendPage(req, res, page));
+app.get("/blog", (req, res) => res.type("html").send(renderBlogIndex(originOf(req))));
+app.get("/blog/:slug", (req, res, next) => {
+  const post = Object.hasOwn(POST_BY_SLUG, req.params.slug) ? POST_BY_SLUG[req.params.slug] : null;
+  if (!post) return next();
+  res.type("html").send(renderPost(post, originOf(req)));
+});
 app.get("/index.html", (_req, res) => res.redirect(301, "/"));
 
 // Each sign has its own address, with today's reading in the page itself.
@@ -396,7 +403,7 @@ app.get("/rashifal/:sign", (req, res, next) => {
 app.get("/robots.txt", (req, res) => {
   res.type("text/plain").send(`User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${originOf(req)}/sitemap.xml\n`);
 });
-app.get("/sitemap.xml", (req, res) => res.type("application/xml").send(sitemap(originOf(req))));
+app.get("/sitemap.xml", (req, res) => res.type("application/xml").send(sitemap(originOf(req), POSTS)));
 
 // ---- static site ---------------------------------------------------------
 app.use(
