@@ -101,6 +101,8 @@ const whatsappUrl = WHATSAPP_RE.test(process.env.WHATSAPP_URL || "")
   : null;
 
 const STARTED = new Date().toISOString();
+// Added to the "AI is off" message so it is clear which server answered and what it can see.
+const noKeyNote = (req) => ` [server ${req.get("host")}, started ${STARTED.slice(0, 16)}Z, key not found]`;
 
 // ---- API -----------------------------------------------------------------
 app.get("/api/health", (_req, res) => {
@@ -258,7 +260,7 @@ app.post("/api/report", reportLimit, async (req, res, next) => {
     if (!aiConfigured()) {
       return res.status(503).json({
         error:
-          "The AI guide is not switched on yet. Your kundli chart is ready, the written report will be available soon.",
+          "The AI guide is not switched on yet. Your kundli chart is ready, the written report will be available soon." + noKeyNote(req),
       });
     }
     const birth = parseBirthInput(req.body);
@@ -317,7 +319,7 @@ app.post("/api/chat", chatLimit, async (req, res, next) => {
     }
     if (!aiConfigured()) {
       return res.status(503).json({
-        error: "The AI guides are not switched on yet. Please try again soon.",
+        error: "The AI guides are not switched on yet. Please try again soon." + noKeyNote(req),
       });
     }
 
