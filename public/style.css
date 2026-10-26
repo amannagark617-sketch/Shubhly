@@ -1064,3 +1064,9 @@ button.install-btn:not(.btn) { font: inherit; font-weight: 700; color: inherit; 
 .tarot-note { margin: 0; color: #4a4a62; font-size: 0.92rem; }
 @media (max-width: 520px) { .tarot-actions .btn { width: 100%; } .tarot-actions { width: 100%; } }
 @media (prefers-reduced-motion: reduce) { .tinner { transition: none; } .tcard.dealt:not(.flipped), .tarot-table.shuffling .tcard { animation: none; } }
+
+.post-cover, .post-card img { display: block; width: 100%; height: auto; border: 3px solid var(--ink); border-radius: 18px; background: #fff6e2; }
+.post-cover { margin: 0 0 22px; }
+.post-fig { margin: 26px 0; display: grid; gap: 10px; justify-items: center; padding: 18px; background: #fff; border: 2.5px solid var(--ink); border-radius: 18px; box-shadow: 4px 4px 0 var(--ink); }
+.post-fig svg { width: min(100%, 380px); height: auto; }
+.post-fig figcaption { font-size: 0.95rem; color: #4a4a62; text-align: center; }

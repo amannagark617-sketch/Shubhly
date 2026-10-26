@@ -52,6 +52,7 @@ export const POSTS = [
 <p>Most sources count Mars in the <b>1st, 4th, 7th, 8th and 12th</b> houses from the Ascendant. Some also add the 2nd. Some traditions check from the Moon and from Venus too, which is why one chart can be called Manglik by one person and not by another.</p>
 <h2>How common is it?</h2>
 <p>If Mars falls in 5 of the 12 houses, then on paper roughly 4 in 10 charts are Manglik. That is not a rare condition. It is a very common one, which is a good reason to take it calmly.</p>
+<figure class="post-fig"><svg viewBox="0 0 320 240" role="img" aria-label="A kundli chart with houses 1, 4, 7, 8 and 12 highlighted, the houses where Mars makes a chart Manglik"><g fill="none" stroke="#1b1b3a" stroke-width="3" stroke-linejoin="round"><rect x="40" y="10" width="240" height="220" fill="#fff6e2"/><polygon points="160,10 100,65 160,120 220,65" fill="#f6b81c"/><polygon points="40,120 100,65 160,120 100,175" fill="#f6b81c"/><polygon points="160,230 100,175 160,120 220,175" fill="#f6b81c"/><polygon points="160,230 220,175 280,230" fill="#f6b81c"/><polygon points="280,10 220,65 160,10" fill="#f6b81c"/><path d="M40 10L280 230M280 10L40 230M160 10L280 120L160 230L40 120Z"/></g><g font-family="Hind, sans-serif" font-size="15" font-weight="700" fill="#1b1b3a" text-anchor="middle"><text x="160" y="57">1</text><text x="100" y="33">2</text><text x="60" y="70">3</text><text x="100" y="125">4</text><text x="60" y="180">5</text><text x="100" y="217">6</text><text x="160" y="193">7</text><text x="220" y="217">8</text><text x="260" y="180">9</text><text x="220" y="125">10</text><text x="260" y="70">11</text><text x="220" y="33">12</text></g></svg><figcaption>Mars in the highlighted houses (1, 4, 7, 8 and 12) is what most traditions call Manglik. Lists vary by tradition.</figcaption></figure>
 <h2>How it is cancelled</h2>
 <p>Traditions list many cancellations, called Manglik Dosh Bhanga. Common ones include:</p>
 <ul>
@@ -93,6 +94,7 @@ export const POSTS = [
 <li><b>Bhakoot (7 points):</b> how the two Moon signs sit relative to each other, linked with shared life, family and finances.</li>
 <li><b>Nadi (8 points):</b> the biggest check. Traditionally tied to health and family line, and the reason same-Nadi matches get extra attention.</li>
 </ul>
+<figure class="post-fig"><svg viewBox="0 0 360 280" role="img" aria-label="The eight Ashtakoot checks and their maximum points: 1, 2, 3, 4, 5, 6, 7 and 8"><g font-family="Hind, sans-serif" fill="#1b1b3a" transform="translate(10 4)"><g transform="translate(0 0)"><text x="0" y="20" font-size="15" font-weight="700">Varna</text><rect x="120" y="4" width="22" height="22" rx="11" fill="#f6b81c" stroke="#1b1b3a" stroke-width="2.5"/><text x="150" y="21" font-size="14">1</text></g><g transform="translate(0 34)"><text x="0" y="20" font-size="15" font-weight="700">Vashya</text><rect x="120" y="4" width="44" height="22" rx="11" fill="#f6b81c" stroke="#1b1b3a" stroke-width="2.5"/><text x="172" y="21" font-size="14">2</text></g><g transform="translate(0 68)"><text x="0" y="20" font-size="15" font-weight="700">Tara</text><rect x="120" y="4" width="66" height="22" rx="11" fill="#f6b81c" stroke="#1b1b3a" stroke-width="2.5"/><text x="194" y="21" font-size="14">3</text></g><g transform="translate(0 102)"><text x="0" y="20" font-size="15" font-weight="700">Yoni</text><rect x="120" y="4" width="88" height="22" rx="11" fill="#f6b81c" stroke="#1b1b3a" stroke-width="2.5"/><text x="216" y="21" font-size="14">4</text></g><g transform="translate(0 136)"><text x="0" y="20" font-size="15" font-weight="700">Graha Maitri</text><rect x="120" y="4" width="110" height="22" rx="11" fill="#f6b81c" stroke="#1b1b3a" stroke-width="2.5"/><text x="238" y="21" font-size="14">5</text></g><g transform="translate(0 170)"><text x="0" y="20" font-size="15" font-weight="700">Gana</text><rect x="120" y="4" width="132" height="22" rx="11" fill="#f6b81c" stroke="#1b1b3a" stroke-width="2.5"/><text x="260" y="21" font-size="14">6</text></g><g transform="translate(0 204)"><text x="0" y="20" font-size="15" font-weight="700">Bhakoot</text><rect x="120" y="4" width="154" height="22" rx="11" fill="#f6b81c" stroke="#1b1b3a" stroke-width="2.5"/><text x="282" y="21" font-size="14">7</text></g><g transform="translate(0 238)"><text x="0" y="20" font-size="15" font-weight="700">Nadi</text><rect x="120" y="4" width="176" height="22" rx="11" fill="#f6b81c" stroke="#1b1b3a" stroke-width="2.5"/><text x="304" y="21" font-size="14">8</text></g></g></svg><figcaption>Maximum points for each check. They add up to 36.</figcaption></figure>
 <h2>What score is "good"?</h2>
 <p>Most sources treat <b>18 out of 36</b> as the minimum for a match to be considered acceptable. Higher scores, around 25 and above, are described as strong. These are traditional rules of thumb, not laws.</p>
 <h2>What the score can't tell you</h2>
@@ -138,9 +140,10 @@ export const POSTS = [
 `,
   },
 ];
+POSTS.forEach((p) => { p.img = `/img/blog/${p.slug}.svg`; });
 export const POST_BY_SLUG = Object.fromEntries(POSTS.map((p) => [p.slug, p]));
 
-const HEAD = (title, desc, url, extra = "") => `<!doctype html>
+const HEAD = (title, desc, url, extra = "", img = "/img/og-image.jpg") => `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -155,7 +158,7 @@ const HEAD = (title, desc, url, extra = "") => `<!doctype html>
   <meta property="og:description" content="${esc(desc)}" />
   <meta property="og:url" content="${esc(url)}" />
   <meta property="og:site_name" content="Shubhly" />
-  <meta property="og:image" content="/img/og-image.jpg" />
+  <meta property="og:image" content="${esc(img)}" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="/icons/icon-192.png" />
@@ -177,7 +180,7 @@ const fmt = (d) => new Date(d + "T00:00:00Z").toLocaleDateString("en-IN", { day:
 
 export function renderBlogIndex(origin) {
   const url = origin + "/blog";
-  const cards = POSTS.map((p) => `<a class="post-card" href="/blog/${p.slug}"><span class="post-meta">${fmt(p.date)} · ${p.read} min read</span><h2>${esc(p.title)}</h2><p>${esc(p.desc)}</p></a>`).join("\n");
+  const cards = POSTS.map((p) => `<a class="post-card" href="/blog/${p.slug}"><img src="${p.img}" width="1200" height="630" alt="" loading="lazy" /><span class="post-meta">${fmt(p.date)} · ${p.read} min read</span><h2>${esc(p.title)}</h2><p>${esc(p.desc)}</p></a>`).join("\n");
   return HEAD("Shubhly Blog: Kundli, Rashifal and Vedic Astrology Explained", "Plain-language articles on Sade Sati, Manglik Dosh, Kundli Milan, Moon sign and more from Shubhly.", url) +
     TOP + `<main class="wrap post-wrap"><h1>Astrology, explained simply</h1><p class="post-lead">Plain answers to the questions people actually ask about their kundli.</p><div class="post-cards">${cards}</div></main>` + FOOT;
 }
@@ -190,8 +193,8 @@ export function renderPost(p, origin) {
     author: { "@type": "Organization", name: "Shubhly" }, publisher: { "@type": "Organization", name: "Shubhly" },
   })}</script>\n`;
   const more = POSTS.filter((x) => x.slug !== p.slug).map((x) => `<li><a href="/blog/${x.slug}">${esc(x.title)}</a></li>`).join("");
-  return HEAD(`${p.title} | Shubhly`, p.desc, url, ld) + TOP +
-    `<main class="wrap post-wrap"><article class="post"><p class="post-meta">${fmt(p.date)} · ${p.read} min read</p><h1>${esc(p.title)}</h1><p class="post-lead">${esc(p.lead)}</p>${p.body}
+  return HEAD(`${p.title} | Shubhly`, p.desc, url, ld, origin + p.img) + TOP +
+    `<main class="wrap post-wrap"><article class="post"><p class="post-meta">${fmt(p.date)} · ${p.read} min read</p><h1>${esc(p.title)}</h1><img class="post-cover" src="${p.img}" width="1200" height="630" alt="" /><p class="post-lead">${esc(p.lead)}</p>${p.body}
 <aside class="post-cta"><h2>See your own chart</h2><p>Make your free kundli in two minutes and read your Moon sign, dasha and more, worked out from the real sky.</p><a class="btn btn-primary" href="/kundli">Make my free kundli</a></aside>
 <section class="post-more"><h2>Keep reading</h2><ul>${more}</ul></section></article></main>` + FOOT;
 }
