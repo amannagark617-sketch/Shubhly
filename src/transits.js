@@ -39,21 +39,21 @@ function jdToIso(jd) {
 }
 
 // When did Saturn enter its current sign, and when does it leave?
-export function saturnWindow(date, tz) {
+export function planetWindow(date, tz, body = C.SE_SATURN) {
   const jd = noonJd(date, tz);
-  const cur = signOf(jd, C.SE_SATURN);
+  const cur = signOf(jd, body);
 
   function scan(direction) {
     let prev = jd;
     for (let d = 5; d <= 4000; d += 5) {
       const next = jd + direction * d;
-      if (signOf(next, C.SE_SATURN) !== cur) {
+      if (signOf(next, body) !== cur) {
         let lo = direction > 0 ? prev : next;
         let hi = direction > 0 ? next : prev;
         // lo is inside the current sign when going forward, hi when going back
         for (let i = 0; i < 30; i++) {
           const mid = (lo + hi) / 2;
-          const inside = signOf(mid, C.SE_SATURN) === cur;
+          const inside = signOf(mid, body) === cur;
           if (direction > 0) { if (inside) lo = mid; else hi = mid; }
           else { if (inside) hi = mid; else lo = mid; }
         }
@@ -68,6 +68,9 @@ export function saturnWindow(date, tz) {
 
   return { ...signInfo(cur), entered: scan(-1), leaves: scan(1) };
 }
+
+export const saturnWindow = (date, tz) => planetWindow(date, tz, C.SE_SATURN);
+export const jupiterWindow = (date, tz) => planetWindow(date, tz, C.SE_JUPITER);
 
 // Saturn's place from the person's Moon sign.
 export function sadeSati(natalMoonSignIndex, saturnSignIndex, lang = "hn") {

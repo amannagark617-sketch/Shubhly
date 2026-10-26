@@ -512,6 +512,48 @@ document.querySelectorAll('input[name="tradition"]').forEach((r) => r.addEventLi
 
 const monthYear = (iso) => dateLabel(iso, { month: "short", year: "numeric" });
 
+function renderLifeReading(data, payload, western) {
+  const box = $("readCard");
+  const r = data.reading;
+  if (!r) { show(box, false); return; }
+  const chart = data.chart;
+  const moon = chart.planets.find((p) => p.key === "Moon");
+  const signBase = western ? chart.sunSign : chart.moonSign;
+  const basis = t(western ? "rd_basis_sun" : "rd_basis_moon", { sign: sn(signBase.sign, signBase.signHi) });
+  const fmtDay = (iso) => monthYear(iso);
+  const li = (a) => a.map((x) => `<li>${esc(x)}</li>`).join("");
+
+  let html = `<h2 class="read-h">${esc(t("rd_h"))}</h2><p class="muted">${esc(basis)}</p>`;
+  if (r.lucky) {
+    const l = r.lucky;
+    html += `<div class="chips read-lucky" aria-label="${esc(t("rd_lucky"))}">
+      <span class="chip"><b>${esc(t("rd_lord"))}:</b> ${esc(planet(l.lord))}</span>
+      <span class="chip"><b>${esc(t("rd_day"))}:</b> ${esc(day(["","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"][l.weekday]))}</span>
+      <span class="chip"><b>${esc(t("rd_colour"))}:</b> <i class="swatch" style="background:${esc(l.hex)}"></i>${esc(l.colour)}</span>
+      <span class="chip"><b>${esc(t("rd_mantra"))}:</b> ${esc(l.mantra)}</span></div>`;
+  }
+  html += `<div class="read-cols">
+    <section class="read-good"><h3>${esc(t("rd_shine"))}</h3><ul>${li(r.strengths)}</ul></section>
+    <section class="read-grow"><h3>${esc(t("rd_grow"))}</h3><ul>${li([r.growth])}</ul></section></div>`;
+
+  if (!western) {
+    if (r.periods.length || r.jupiter) html += `<h3 class="read-sub">${esc(t("rd_ahead"))}</h3>`;
+    if (r.jupiter) {
+      html += `<div class="read-jup"><b>${esc(t("rd_jup"))}</b> ${esc(r.jupiter.text)}${r.jupiter.leaves ? ` <small>${esc(t("rd_until", { date: fmtDay(r.jupiter.leaves) }))}</small>` : ""}</div>`;
+    }
+    if (r.periods.length) {
+      html += `<ol class="read-time">` + r.periods.map((p) => `<li${p.current ? ' class="is-now"' : ""}>
+        <div class="read-when">${p.current ? `<em>${esc(t("rd_now"))}</em>` : ""}${esc(String(p.from).slice(0, 4))} – ${esc(String(p.to).slice(0, 4))}</div>
+        <div><h4>${esc(t("rd_period", { planet: planet(p.lord) }))}</h4>
+        <p><b>${esc(t("rd_bring"))}:</b> ${esc(p.bring)}</p><p><b>${esc(t("rd_watch"))}:</b> ${esc(p.watch)}</p></div></li>`).join("") + `</ol>`;
+    } else if (payload.timeUnknown) {
+      html += `<p class="note">${esc(t("rd_notime"))}</p>`;
+    }
+  }
+  box.innerHTML = html;
+  show(box, true);
+}
+
 function renderResult(data, payload, { scroll = true } = {}) {
   const chart = data.chart;
   $("resName").textContent = data.name || t("r_title_none");
@@ -576,6 +618,8 @@ function renderResult(data, payload, { scroll = true } = {}) {
       (ad ? t("r_dasha_ad", { ad: planet(ad.lord), c: monthYear(ad.end) }) : "");
     show(box, true);
   } else show(box, false);
+
+  renderLifeReading(data, payload, western);
 
   const s = data.sadeSati;
   const sb = $("satiBox");

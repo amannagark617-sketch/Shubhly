@@ -14,7 +14,8 @@ import {
   FreeChats, FREE_MESSAGES, guideReply, parseClientId, parseGuide, parseMessages,
 } from "./src/chat.js";
 import { isResting, backAt } from "./public/guides.js";
-import { sadeSati, saturnWindow, slowPlanets } from "./src/transits.js";
+import { sadeSati, saturnWindow, jupiterWindow, slowPlanets } from "./src/transits.js";
+import { buildReading } from "./src/reading.js";
 import {
   InputError,
   cleanName,
@@ -157,15 +158,18 @@ app.post("/api/kundli", kundliLimit, (req, res, next) => {
       chart,
       insights: quickInsights(chart, { timeUnknown: birth.timeUnknown, lang }),
     };
+    const today = DateTime.now().setZone("Asia/Kolkata").toISODate();
+    let jupiter = null;
     if (chart.tradition !== "western") {
       const moon = chart.planets.find((p) => p.key === "Moon");
-      const today = DateTime.now().setZone("Asia/Kolkata").toISODate();
       const saturn = slowPlanets(today, "Asia/Kolkata").Saturn;
       out.sadeSati = {
         ...sadeSati(moon.signIndex, saturn.index, lang),
         saturn: saturnWindow(today, "Asia/Kolkata"),
       };
+      jupiter = jupiterWindow(today, "Asia/Kolkata");
     }
+    out.reading = buildReading(chart, { lang: req.body?.lang === "hn" ? "hn" : lang, timeUnknown: birth.timeUnknown, jupiter, today });
     res.json(out);
   } catch (e) {
     next(e);
