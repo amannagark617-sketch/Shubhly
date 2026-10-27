@@ -1224,7 +1224,7 @@ function renderTarot() {
       <button type="button" class="tcard${open ? " flipped" : ""}${h ? " dealt" : ""}" data-i="${i}" ${h ? "" : "disabled"} aria-label="${esc(h ? (open ? info.name : label) : label)}" style="--d:${i * 0.12}s">
         <span class="tinner">
           <span class="tface tback">${backSvg}</span>
-          <span class="tface tfront${h?.reversed ? " rev" : ""}">${h ? `<em class="tnum">${esc(info.numeral)}</em>${cardSvg(h.id)}<strong>${esc(info.name)}</strong>` : ""}</span>
+          <span class="tface tfront${h?.reversed ? " rev" : ""}">${h ? `${cardSvg(h.id)}<em class="tnum">${esc(info.numeral)}</em><strong>${esc(info.name)}</strong>` : ""}</span>
         </span>
       </button></div>`;
   }).join("");

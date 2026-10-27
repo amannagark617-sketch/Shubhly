@@ -1085,16 +1085,16 @@ button.install-btn:not(.btn) { font: inherit; font-weight: 700; color: inherit; 
 .tface { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 10px; border: 0; overflow: hidden; display: grid; }
 .tback { background: radial-gradient(circle at 50% 42%, #2a2060, #0b0b24 72%); box-shadow: 0 6px 18px rgba(0,0,0,.55); }
 .tback svg { width: 100%; height: 100%; }
-.tfront { transform: rotateY(180deg); background: radial-gradient(circle at 50% 38%, #251c58, #0b0b24 75%); grid-template-rows: 1fr; justify-items: stretch; padding: 0; text-align: center; color: #ecdcb0; position: absolute; }
+.tfront { transform: rotateY(180deg); background: radial-gradient(circle at 50% 38%, #251c58, #0b0b24 75%); grid-template-rows: 1fr; justify-items: stretch; padding: 0; text-align: center; color: #ecdcb0; position: absolute; inset: 0; }
 .tfront .tnum, .tfront strong { position: absolute; left: 0; right: 0; z-index: 1; }
 .tfront .tnum { top: 2.2%; }
 .tfront strong { bottom: 2%; }
 .tfront svg { width: 100%; height: 100%; min-height: 0; }
 .tfront .art { filter: drop-shadow(0 0 2px rgba(212,166,74,.35)); }
 .tfront.rev svg { transform: rotate(180deg); }
-.card-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card-img { width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; z-index: 2; }
 .tfront.rev .card-img { transform: rotate(180deg); }
-.tfront .card-img ~ .tnum, .tfront .card-img ~ strong { visibility: hidden; }  /* Hide text overlay for real card images */
+.tfront .card-img + .tnum, .tfront .card-img + strong { display: none !important; }  /* Hide text overlay for real card images */
 .tfront strong { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 700; letter-spacing: .08em; color: #ecdcb0; font-size: clamp(0.62rem, 2.2vw, 0.82rem); line-height: 1.1; }
 .tnum { font-style: normal; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 700; font-size: clamp(.6rem,2vw,.78rem); letter-spacing: .12em; color: var(--haldi); }
 .tcard.dealt:not(.flipped) { animation: deal 0.55s calc(var(--d)) ease-out both, bob 2.6s calc(0.6s + var(--d)) ease-in-out infinite; }
