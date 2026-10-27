@@ -1160,8 +1160,8 @@ if (menuBtn) {
   $("navDrawer").addEventListener("click", (e) => {
     const link = e.target.closest("a");
     if (link) {
+      // Close drawer and let link navigate naturally
       toggleNavDrawer(false);
-      setTimeout(() => { window.location.href = link.href; }, 50);
     }
   });
   document.addEventListener("click", (e) => { if (!e.target.closest(".nav")) toggleNavDrawer(false); });
