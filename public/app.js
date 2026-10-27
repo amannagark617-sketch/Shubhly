@@ -1156,9 +1156,13 @@ function toggleNavDrawer(open) {
 }
 const menuBtn = $("menuBtn");
 if (menuBtn) {
-  menuBtn.addEventListener("click", () => toggleNavDrawer());
+  menuBtn.addEventListener("click", (e) => { e.stopPropagation(); toggleNavDrawer(); });
   $("navDrawer").addEventListener("click", (e) => {
-    if (e.target.closest("a")) toggleNavDrawer(false);
+    const link = e.target.closest("a");
+    if (link) {
+      toggleNavDrawer(false);
+      setTimeout(() => { window.location.href = link.href; }, 50);
+    }
   });
   document.addEventListener("click", (e) => { if (!e.target.closest(".nav")) toggleNavDrawer(false); });
 }

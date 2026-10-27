@@ -121,7 +121,19 @@ export const ART = [
 // Card frame: a double gold border with small corner stars, drawn once for every card.
 const FRAME = `<rect x="2.5" y="2.5" width="95" height="135" rx="6" fill="none" stroke="${G}" stroke-width="0.9"/><rect x="6" y="6" width="88" height="128" rx="3" fill="none" stroke="${G}" stroke-opacity=".55" stroke-width="0.5"/><path d="M6 22H94M6 118H94" stroke="${G}" stroke-opacity=".45" stroke-width="0.5"/>${[[6, 6], [94, 6], [6, 134], [94, 134]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.2" fill="${K}" stroke="${G}" stroke-width=".6"/>`).join("")}`;
 
-export const cardSvg = (i) => `<svg viewBox="0 0 100 140" aria-hidden="true">${FRAME}<g transform="translate(0 4)"><g class="art">${ART[i]}</g></g></svg>`;
+// Card slugs for image mapping (all 78 cards)
+const CARD_SLUGS = [
+  "the-fool", "the-magician", "the-high-priestess", "the-empress", "the-emperor", "the-hierophant", "the-lovers", "the-chariot", "strength", "the-hermit", "wheel-of-fortune", "justice", "the-hanged-man", "death", "temperance", "the-devil", "the-tower", "the-star", "the-moon", "the-sun", "judgement", "the-world",
+  "ace-of-wands", "two-of-wands", "three-of-wands", "four-of-wands", "five-of-wands", "six-of-wands", "seven-of-wands", "eight-of-wands", "nine-of-wands", "ten-of-wands", "page-of-wands", "knight-of-wands", "queen-of-wands", "king-of-wands",
+  "ace-of-cups", "two-of-cups", "three-of-cups", "four-of-cups", "five-of-cups", "six-of-cups", "seven-of-cups", "eight-of-cups", "nine-of-cups", "ten-of-cups", "page-of-cups", "knight-of-cups", "queen-of-cups", "king-of-cups",
+  "ace-of-swords", "two-of-swords", "three-of-swords", "four-of-swords", "five-of-swords", "six-of-swords", "seven-of-swords", "eight-of-swords", "nine-of-swords", "ten-of-swords", "page-of-swords", "knight-of-swords", "queen-of-swords", "king-of-swords",
+  "ace-of-pentacles", "two-of-pentacles", "three-of-pentacles", "four-of-pentacles", "five-of-pentacles", "six-of-pentacles", "seven-of-pentacles", "eight-of-pentacles", "nine-of-pentacles", "ten-of-pentacles", "page-of-pentacles", "knight-of-pentacles", "queen-of-pentacles", "king-of-pentacles",
+];
+
+export const cardSvg = (i) => {
+  const slug = CARD_SLUGS[i];
+  return `<img src="/img/tarot/${slug}.webp" alt="" loading="lazy" class="card-img">`;
+};
 
 // The back of every card: a moon and sun inside a field of stars and sacred geometry.
 export const backSvg = `<svg viewBox="0 0 100 140" aria-hidden="true">
@@ -140,19 +152,30 @@ export const backSvg = `<svg viewBox="0 0 100 140" aria-hidden="true">
   ${[[16, 20], [84, 20], [16, 120], [84, 120], [14, 70], [86, 70], [30, 34], [70, 34], [30, 106], [70, 106]].map(([x, y]) => sparkle(x, y, 2)).join("")}
 </svg>`;
 
-// Draws n different cards using the browser's secure random numbers.
+// Draws n different cards using the browser's secure random numbers (all 78 cards).
 export function drawThree(n = 3) {
-  const deck = CARDS.map((_, i) => i);
+  const deck = CARD_SLUGS.map((_, i) => i); // Use all 78 cards
   const buf = new Uint32Array(deck.length * 2);
   crypto.getRandomValues(buf);
   for (let i = deck.length - 1; i > 0; i--) { const j = buf[i] % (i + 1); [deck[i], deck[j]] = [deck[j], deck[i]]; }
   return deck.slice(0, n).map((id, k) => ({ id, reversed: buf[deck.length + k] % 4 === 0 }));
 }
 
+function slugToName(slug) {
+  return slug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+}
+
 export function cardText(id, reversed, lang) {
-  const c = CARDS[id];
-  const li = lang === "hi" ? 1 : lang === "hn" ? 2 : 0;
-  const body = (reversed ? c.rv : c.up)[li];
-  const name = lang === "hi" ? c.hi : lang === "hn" ? c.hn : c.n;
-  return { name, body, numeral: ROMAN[id] };
+  // Major Arcana (0-21)
+  if (id < CARDS.length) {
+    const c = CARDS[id];
+    const li = lang === "hi" ? 1 : lang === "hn" ? 2 : 0;
+    const body = (reversed ? c.rv : c.up)[li];
+    const name = lang === "hi" ? c.hi : lang === "hn" ? c.hn : c.n;
+    return { name, body, numeral: ROMAN[id] };
+  }
+  // Minor Arcana (22-77): use card slug as name
+  const slug = CARD_SLUGS[id];
+  const name = slugToName(slug);
+  return { name, body: "", numeral: "" };
 }
