@@ -36,6 +36,26 @@ const store = {
   },
 };
 
+// ---------- nav dropdown menus ----------
+document.querySelectorAll(".nav-dropdown").forEach((dropdown) => {
+  const btn = dropdown.querySelector(".nav-btn");
+  const menu = dropdown.querySelector(".nav-menu");
+  if (!btn || !menu) return;
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.toggleAttribute("open");
+  });
+
+  menu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => dropdown.removeAttribute("open"));
+  });
+});
+
+document.addEventListener("click", () => {
+  document.querySelectorAll(".nav-dropdown[open]").forEach((d) => d.removeAttribute("open"));
+});
+
 const DEFAULT_LOC = { name: "Delhi", lat: 28.6139, lon: 77.209, tz: "Asia/Kolkata" };
 let loc = store.get("shubhly.loc", DEFAULT_LOC);
 let myRashi = store.get("shubhly.rashi", null); // 0..11
