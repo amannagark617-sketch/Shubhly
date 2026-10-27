@@ -7,7 +7,16 @@ import { initFx, fillMarquee } from "/fx.js";
 import { SIGN_EN, planetName, signName, nakName, dayName, pickName, DATE_LOCALE } from "/names.js";
 import { initLiveSky } from "/livesky.js";
 import { initGuides } from "/chat.js";
-import { GUIDES, isResting, avatarSvg } from "/guides.js";
+import { GUIDES, isResting } from "/guides.js";
+
+// Display guide image or SVG avatar
+function guideAvatar(guide) {
+  if (guide.image) {
+    return `<img src="${guide.image}" alt="${guide.name}" loading="lazy" class="guide-avatar">`;
+  }
+  // Fallback (shouldn't be needed)
+  return `<span class="avatar-placeholder">${guide.name.charAt(0)}</span>`;
+}
 import { cardSvg, backSvg, drawThree, cardText } from "/tarot.js";
 import { t, getLang, setLang, applyStatic, LANGS, LANG_NAMES } from "/i18n.js";
 
@@ -1264,8 +1273,8 @@ function renderOnline() {
   show(pill, up.length > 0);
   $("onlineText").textContent = t("on_now", { n: up.length });
   const first = up[0];
-  if (first && $("welcomeAv")) { $("welcomeAv").innerHTML = avatarSvg(first.look); $("welcomeName").textContent = first.name; }
-  $("onlineFaces").innerHTML = up.slice(0, 3).map((g) => `<span class="face">${avatarSvg(g.look)}</span>`).join("");
+  if (first && $("welcomeAv")) { $("welcomeAv").innerHTML = guideAvatar(first); $("welcomeName").textContent = first.name; }
+  $("onlineFaces").innerHTML = up.slice(0, 3).map((g) => `<span class="face">${guideAvatar(g)}</span>`).join("");
 }
 setInterval(renderOnline, 60_000);
 

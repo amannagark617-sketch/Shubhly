@@ -5,6 +5,7 @@
 export const GUIDES = [
   {
     id: "meera", name: "Meera", tradition: "vedic", rest: [23, 3],
+    image: "/img/astrologers/Meera.png",
     look: { bg: "#ffd1d6", skin: "#c98a5e", hair: "#2a1a14", shirt: "#d8321a", style: "long", extra: "bindi" },
     role: { en: "Love and marriage", hi: "प्यार और शादी", hn: "Pyaar aur shaadi" },
     blurb: {
@@ -21,6 +22,7 @@ export const GUIDES = [
   },
   {
     id: "arjun", name: "Arjun", tradition: "vedic", rest: [0, 4],
+    image: "/img/astrologers/Arjun.png",
     look: { bg: "#cfe3ff", skin: "#b9784f", hair: "#1c1410", shirt: "#1b1b3a", style: "short", extra: "glasses" },
     role: { en: "Career and work", hi: "करियर और काम", hn: "Career aur kaam" },
     blurb: {
@@ -37,6 +39,7 @@ export const GUIDES = [
   },
   {
     id: "kavya", name: "Kavya", tradition: "vedic", rest: [1, 5],
+    image: "/img/astrologers/Kavya.png",
     look: { bg: "#ffe9a8", skin: "#d39a6a", hair: "#3a2418", shirt: "#17803f", style: "bun", extra: "none" },
     role: { en: "Money and savings", hi: "पैसा और बचत", hn: "Paisa aur bachat" },
     blurb: {
@@ -53,6 +56,7 @@ export const GUIDES = [
   },
   {
     id: "rohan", name: "Rohan", tradition: "western", rest: [2, 6],
+    image: "/img/astrologers/Rohan.png",
     look: { bg: "#d9f0d4", skin: "#e0b48a", hair: "#7a4a22", shirt: "#f6b81c", style: "short", extra: "none" },
     role: { en: "Confidence and direction", hi: "आत्मविश्वास और दिशा", hn: "Confidence aur disha" },
     blurb: {
@@ -69,6 +73,7 @@ export const GUIDES = [
   },
   {
     id: "sunita", name: "Sunita", tradition: "vedic", rest: [3, 7],
+    image: "/img/astrologers/Sunita.png",
     look: { bg: "#e8dcff", skin: "#c58759", hair: "#8a8a8a", shirt: "#7a3b9a", style: "bun", extra: "tilak-f" },
     role: { en: "Family and home", hi: "परिवार और घर", hn: "Parivaar aur ghar" },
     blurb: {
@@ -85,6 +90,7 @@ export const GUIDES = [
   },
   {
     id: "vikram", name: "Vikram", tradition: "vedic", rest: [22, 2],
+    image: "/img/astrologers/Vikram.png",
     look: { bg: "#ffd9b8", skin: "#a9694a", hair: "#15110e", shirt: "#8a3b12", style: "short", extra: "beard" },
     role: { en: "Compatibility", hi: "रिश्तों की अनुकूलता", hn: "Rishton ki compatibility" },
     blurb: {
@@ -101,6 +107,7 @@ export const GUIDES = [
   },
   {
     id: "anaya", name: "Anaya", tradition: "western", rest: [4, 8],
+    image: "/img/astrologers/Anaya.png",
     look: { bg: "#dff3f0", skin: "#d8a47a", hair: "#4a1f3a", shirt: "#2a6f6a", style: "long", extra: "none" },
     role: { en: "Tarot and daily card", hi: "टैरो और आज का कार्ड", hn: "Tarot aur aaj ka card" },
     blurb: {
@@ -117,6 +124,7 @@ export const GUIDES = [
   },
   {
     id: "dev", name: "Dev", tradition: "vedic", rest: [21, 1],
+    image: "/img/astrologers/Dev.png",
     look: { bg: "#fff0c2", skin: "#b57a52", hair: "#2a2018", shirt: "#e07b1a", style: "cap", extra: "tilak" },
     role: { en: "Simple remedies and habits", hi: "आसान उपाय और आदतें", hn: "Aasaan upaay aur aadatein" },
     blurb: {
@@ -133,6 +141,7 @@ export const GUIDES = [
   },
   {
     id: "tara", name: "Tara", tradition: "vedic", rest: [5, 9],
+    image: "/img/astrologers/Tara.png",
     look: { bg: "#ffd6ec", skin: "#cf9468", hair: "#1f1612", shirt: "#c2306a", style: "short", extra: "glasses" },
     role: { en: "Study and focus", hi: "पढ़ाई और ध्यान", hn: "Padhai aur focus" },
     blurb: {
@@ -149,6 +158,7 @@ export const GUIDES = [
   },
   {
     id: "hari", name: "Hari", tradition: "vedic", rest: [20, 0],
+    image: "/img/astrologers/Hari.png",
     look: { bg: "#ffe0b2", skin: "#a8734d", hair: "#d9d9d9", shirt: "#f4f0e6", style: "topknot", extra: "beard-tilak" },
     role: { en: "Festivals, vrat and puja", hi: "त्योहार, व्रत और पूजा", hn: "Tyohaar, vrat aur puja" },
     blurb: {
