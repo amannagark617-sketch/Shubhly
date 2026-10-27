@@ -158,6 +158,7 @@ main, .footer { position: relative; z-index: 1; }
 @media (max-width: 1039px) {
   .nav .nav-in { flex-wrap: nowrap; gap: 8px; min-height: 64px; }
   .nav-links { display: none; }
+  .streak { display: none; }
   .menu-btn { display: block; }
   .brand { font-size: 1.45rem; gap: 8px; }
   .brand svg { width: 32px; height: 32px; }
