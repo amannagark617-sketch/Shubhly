@@ -9,8 +9,8 @@ import { InputError } from "./validate.js";
 import { GUIDE_BY_ID } from "../public/guides.js";
 
 const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
-// Unlimited unless FREE_CHATS is set to a number.
-export const FREE_MESSAGES = Number(process.env.FREE_CHATS) >= 1 ? Number(process.env.FREE_CHATS) : Infinity;
+// Limit free messages to 5 per device to manage API credits (unless FREE_CHATS env var overrides)
+export const FREE_MESSAGES = Number(process.env.FREE_CHATS) >= 1 ? Number(process.env.FREE_CHATS) : 5;
 
 const MAX_TURNS = 12;
 const MAX_USER_CHARS = 600;
