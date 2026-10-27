@@ -29,8 +29,9 @@
     <div class="wrap nav-in">
       <a class="brand" href="/" aria-label="Shubhly home">
         <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f6b81c" stroke="#1b1b3a" stroke-width="5"/><path d="M32 3a29 29 0 0 1 0 58a18 29 0 0 0 0-58z" fill="#d8321a"/></svg>
-        Shubhly
+        <span class="brand-text">Shubhly</span>
       </a>
+      <span class="streak" id="streak" hidden></span>
       <nav class="nav-links" aria-label="Main">
         <a href="/panchang" data-i="nav_today"></a>
         <a href="/rashifal" data-i="nav_rashifal"></a>
@@ -43,7 +44,6 @@
         <a href="/#faq" data-i="nav_faq"></a>
       </nav>
       <div class="nav-end">
-        <span class="streak" id="streak" hidden></span>
         <div class="lang" id="langMenu">
           <button type="button" class="lang-btn" id="langBtn" aria-haspopup="listbox" aria-expanded="false" aria-controls="langList" data-i-aria="lang_label">
             <svg class="lang-globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
@@ -52,8 +52,36 @@
           </button>
           <ul class="lang-list" id="langList" role="listbox" tabindex="-1" hidden></ul>
         </div>
+        <button type="button" class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="navDrawer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
         <a class="btn btn-primary nav-cta" href="/kundli" data-i="nav_cta"></a>
       </div>
+    </div>
+    <div class="nav-drawer" id="navDrawer" hidden>
+      <nav class="drawer-nav" aria-label="Navigation">
+        <div class="drawer-section">
+          <h3 class="drawer-heading" data-i="nav_today">Today's Vibe</h3>
+          <a href="/panchang" data-i="nav_today"></a>
+          <a href="/rashifal" data-i="nav_rashifal"></a>
+        </div>
+        <div class="drawer-section">
+          <h3 class="drawer-heading" data-i="nav_kundli">Your Readings</h3>
+          <a href="/kundli" data-i="nav_kundli"></a>
+          <a href="/match" data-i="nav_match"></a>
+          <a href="/tarot" data-i="nav_tarot"></a>
+        </div>
+        <div class="drawer-section">
+          <h3 class="drawer-heading">Explore</h3>
+          <a href="/guides" data-i="nav_guides"></a>
+          <a href="/store" data-i="nav_store"></a>
+        </div>
+        <div class="drawer-section">
+          <h3 class="drawer-heading">Account</h3>
+          <a href="/premium" class="nav-premium" data-i="nav_premium"></a>
+          <a href="/#faq" data-i="nav_faq"></a>
+        </div>
+      </nav>
     </div>
   </header>
 

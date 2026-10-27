@@ -1147,6 +1147,22 @@ $("langList").addEventListener("keydown", (e) => {
 });
 document.addEventListener("click", (e) => { if (!e.target.closest("#langMenu")) toggleLangMenu(false); });
 
+// Menu drawer
+function toggleNavDrawer(open) {
+  const drawer = $("navDrawer"), btn = $("menuBtn");
+  const want = open ?? drawer.hidden;
+  drawer.hidden = !want;
+  btn.setAttribute("aria-expanded", String(want));
+}
+const menuBtn = $("menuBtn");
+if (menuBtn) {
+  menuBtn.addEventListener("click", () => toggleNavDrawer());
+  $("navDrawer").addEventListener("click", (e) => {
+    if (e.target.closest("a")) toggleNavDrawer(false);
+  });
+  document.addEventListener("click", (e) => { if (!e.target.closest(".nav")) toggleNavDrawer(false); });
+}
+
 // ---------- animated headline: each phrase is lit in turn ----------
 function decorateHero() {
   const h = document.getElementById("hero-h");
