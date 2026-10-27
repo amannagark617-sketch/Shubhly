@@ -146,6 +146,7 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     $("chatCtx").innerHTML = `<div class="ctx-who-row">${people}</div>${chips ? `<div class="ctx-chips">${chips}</div>` : ""}${shareBtn}${lft}`;
     const wall = out();
     $("chatWall").hidden = !wall;
+    if (wall && !window.__wallSeen) { window.__wallSeen = true; window.track?.("chat_limit_reached"); }
     $("chatForm").hidden = wall;
     renderList();
     scrollDown();
@@ -290,7 +291,7 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     if (e.target.closest("#chatShare")) share(selected()[0]?.payload);
     const w = e.target.closest("[data-who]");
     if (w && !busy) toggle(w.dataset.who);
-    if (e.target.closest("#chatPremium")) { closeChat(); location.href = "/premium"; }
+    if (e.target.closest("#chatPremium")) { window.track?.("premium_from_chat_limit"); closeChat(); location.href = "/premium"; }
   });
   document.addEventListener("keydown", (e) => {
     if ($("chat").hidden) return;

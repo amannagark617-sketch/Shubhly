@@ -1086,6 +1086,20 @@ $("pdfBtn").addEventListener("click", async () => {
   }
 });
 
+// ---------- analytics (Google Analytics, only when GA_ID is set) ----------
+window.track = (name, params = {}) => { try { if (window.gtag) window.gtag("event", name, params); } catch { /* ignore */ } };
+function startAnalytics(id) {
+  if (!id || window.gtag) return;
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  window.gtag("js", new Date());
+  window.gtag("config", id);
+  const s = document.createElement("script");
+  s.async = true;
+  s.src = "https://www.googletagmanager.com/gtag/js?id=" + id;
+  document.head.appendChild(s);
+}
+
 // ---------- premium ----------
 function renderPremium() {
   const joined = store.get("shubhly.premium", false);
@@ -1093,6 +1107,7 @@ function renderPremium() {
   $("premiumNote").classList.toggle("ok", !!joined);
 }
 $("premiumBtn").addEventListener("click", () => {
+  window.track("premium_interest");
   store.set("shubhly.premium", true);
   renderPremium();
   if (config.built) {
@@ -1341,9 +1356,10 @@ function askInstall() {
 $("installNo")?.addEventListener("click", () => { store.set("shubhly.installNo", Date.now()); show($("installBar"), false); });
 setTimeout(askInstall, 15_000);
 window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); installEvent = e; showInstall(!standalone()); });
-window.addEventListener("appinstalled", () => { installEvent = null; showInstall(false); toast(t("pwa_done")); });
+window.addEventListener("appinstalled", () => { window.track("app_installed"); installEvent = null; showInstall(false); toast(t("pwa_done")); });
 document.addEventListener("click", async (e) => {
   if (!e.target.closest("[data-install]")) return;
+  window.track("install_click");
   if (installEvent) {
     installEvent.prompt();
     await installEvent.userChoice.catch(() => {});
@@ -1366,6 +1382,7 @@ if ("serviceWorker" in navigator) window.addEventListener("load", () => navigato
   liveSky = initLiveSky({ t, getLang });
   touchStreak();
   try { config = await api("/api/config"); } catch { /* optional */ }
+  startAnalytics(config.gaId);
   if (config.whatsappUrl) {
     const wa = $("waBtn");
     wa.href = config.whatsappUrl;

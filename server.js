@@ -101,6 +101,9 @@ const whatsappUrl = WHATSAPP_RE.test(process.env.WHATSAPP_URL || "")
   ? process.env.WHATSAPP_URL
   : null;
 
+// Google Analytics measurement ID (GA4), set as the GA_ID setting. Only a well-formed ID is passed on.
+const gaId = /^G-[A-Z0-9]{4,20}$/.test(process.env.GA_ID || "") ? process.env.GA_ID : null;
+
 const STARTED = new Date().toISOString();
 // Added to the "AI is off" message so it is clear which server answered and what it can see.
 const noKeyNote = (req) => ` [server ${req.get("host")}, started ${STARTED.slice(0, 16)}Z, key not found]`;
@@ -118,7 +121,7 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.get("/api/config", (_req, res) => {
-  res.json({ built: STARTED, whatsappUrl });
+  res.json({ built: STARTED, whatsappUrl, gaId });
 });
 
 // Today's panchang, plus a personal Moon-transit note when `moon` is given.
