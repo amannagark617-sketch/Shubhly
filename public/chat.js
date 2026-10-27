@@ -1,6 +1,6 @@
 // The AI astrologers: the cards in the page and the chat panel.
 
-import { GUIDES, GUIDE_BY_ID, gtext, isResting, backAt, avatarSvg } from "/guides.js";
+import { GUIDES, GUIDE_BY_ID, gtext, isResting, backAt } from "/guides.js";
 import { esc, renderMarkdown } from "/lib.js";
 
 const $ = (id) => document.getElementById(id);
@@ -29,7 +29,9 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
   const setLeft = (n) => { left = Number.isInteger(n) ? n : null; store.set("shubhly.chatLeft", left); };
   const limited = () => left !== null;
   const out = () => limited() && left <= 0;
-  const avatar = (g, cls = "") => `<div class="avatar ${cls}">${avatarSvg(g.look)}</div>`;
+  const avatar = (g, cls = "") => g.image
+    ? `<div class="avatar ${cls}"><img src="${g.image}" alt="${g.name}" loading="lazy" class="guide-avatar-img"></div>`
+    : `<div class="avatar ${cls}"><span class="avatar-placeholder">${g.name.charAt(0)}</span></div>`;
   const role = (g) => gtext(g.role, getLang());
   // "Meera AI": the AI label is part of the name, not a tag under it.
   const named = (g) => `${esc(g.name)} <span class="ai-suffix"></span>`;
@@ -153,7 +155,9 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     open = g;
     opener = from || null;
     history = hist(g.id);
-    $("chatAvatar").innerHTML = avatarSvg(g.look);
+    $("chatAvatar").innerHTML = g.image
+      ? `<img src="${g.image}" alt="${g.name}" loading="lazy" class="guide-avatar-img">`
+      : `<span class="avatar-placeholder">${g.name.charAt(0)}</span>`;
     $("chatName").innerHTML = named(g);
     $("chatRole").textContent = role(g);
     $("chatNote").textContent = "";
