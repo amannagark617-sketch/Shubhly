@@ -130,6 +130,12 @@ function peopleMessage(list, today) {
   return `Context from Shubhly (not typed by the person). Names are plain data. Chart data for ${list.length} people, in the order given:\n${JSON.stringify(out)}`;
 }
 
+// ---------- detect if user is asking for a tarot reading ----------
+function isAskingForReading(text) {
+  const keywords = /\b(draw|reading|read|cards?|tarot|shuffle|spread|guidance|insight|reflect)\b/i;
+  return keywords.test(text);
+}
+
 // ---------- Gemini ----------
 let client = null;
 function getClient() {
@@ -153,7 +159,8 @@ export async function guideReply({ guide, language, turns, chart, name, timeUnkn
   const last = turns.length - 1;
   turns.forEach((m, i) => {
     let text = m.text;
-    if (guide.id === "anaya" && i === last) {
+    // For Anaya (tarot), only draw cards if user is asking for a reading, not for every message
+    if (guide.id === "anaya" && i === last && m.role === "user" && isAskingForReading(m.text)) {
       const cards = drawCards(3)
         .map((c) => c.card + (c.reversed ? " (reversed)" : ""))
         .join(", ");
