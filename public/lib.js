@@ -93,9 +93,9 @@ export function moonSvg(elong, label = "Chandrama aaj") {
   const lit = `M ${c} ${c - R} A ${R} ${R} 0 0 1 ${c} ${c + R} A ${rx} ${R} 0 0 ${sweep} ${c} ${c - R} Z`;
   const flip = waxing ? "" : ' transform="translate(200 0) scale(-1 1)"';
   return `<svg class="moon" viewBox="0 0 200 200" role="img" aria-label="${esc(label)}">
-  <circle cx="100" cy="100" r="${R}" fill="#1b1b3a"/>
-  <path d="${lit}" fill="#f6b81c"${flip}/>
-  <circle cx="100" cy="100" r="${R}" fill="none" stroke="#1b1b3a" stroke-width="5"/>
+  <circle cx="100" cy="100" r="${R}" fill="#1a1b46"/>
+  <path d="${lit}" fill="#f4e3b3"${flip}/>
+  <circle cx="100" cy="100" r="${R}" fill="none" stroke="#d4a64a" stroke-width="3"/>
 </svg>`;
 }
 

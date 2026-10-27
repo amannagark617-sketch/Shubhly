@@ -8,7 +8,7 @@ import { SIGN_EN, planetName, signName, nakName, dayName, pickName, DATE_LOCALE 
 import { initLiveSky } from "/livesky.js";
 import { initGuides } from "/chat.js";
 import { GUIDES, isResting, avatarSvg } from "/guides.js";
-import { cardSvg, drawThree, cardText } from "/tarot.js";
+import { cardSvg, backSvg, drawThree, cardText } from "/tarot.js";
 import { t, getLang, setLang, applyStatic, LANGS, LANG_NAMES } from "/i18n.js";
 
 const $ = (id) => document.getElementById(id);
@@ -1162,7 +1162,6 @@ let tarotHand = [];
 const tarotOpened = new Set();
 let tarotShuffling = false;
 const tarotLang = () => (["hi", "hn"].includes(getLang()) ? getLang() : "en");
-const backSvg = `<svg viewBox="0 0 100 140" aria-hidden="true"><rect x="6" y="6" width="88" height="128" rx="8" fill="none" stroke="#f6b81c" stroke-width="2.5"/><circle cx="50" cy="70" r="26" fill="#f6b81c" stroke="#fff6e2" stroke-width="3"/><path d="M50 44a26 26 0 0 1 0 52a16 26 0 0 0 0-52z" fill="#d8321a"/><path d="M50 14v14M50 112v14M20 70H8M92 70H80" stroke="#f6b81c" stroke-width="3" stroke-linecap="round"/></svg>`;
 function renderTarot() {
   const table = $("tarotTable");
   if (!table) return;
