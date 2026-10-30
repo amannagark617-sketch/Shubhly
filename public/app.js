@@ -349,7 +349,7 @@ function meter(label, n, kind) {
 }
 
 function readingText(r) {
-  return `${sn(r.sign, r.signHi)}, ${dateLabel(horo.date)}\n${r.moodLabel}: ${r.theme}\n${r.text}\n\nShubhly: ${location.origin}`;
+  return `${sn(r.sign, r.signHi)}, ${dateLabel(horo.date)}\n${r.moodLabel}: ${r.theme}\n${r.text}\n\nKundli Kaka: ${location.origin}`;
 }
 
 function renderReading() {
@@ -826,7 +826,7 @@ async function cardFile() {
     rows,
     footer: t("card_footer"),
   });
-  return new File([blob], "shubhly-kundli.png", { type: "image/png" });
+  return new File([blob], "kundlikaka-kundli.png", { type: "image/png" });
 }
 
 // Sends the visitor's own kundli straight to a chat app: a picture and a link
@@ -843,7 +843,7 @@ async function shareKundli(who) {
       return;
     }
     if (navigator.share) {
-      await navigator.share({ title: "Shubhly", text, url });
+      await navigator.share({ title: "Kundli Kaka", text, url });
       return;
     }
   } catch (e) { if (e.name === "AbortError") return; }
@@ -988,7 +988,7 @@ $("matchForm").addEventListener("submit", async (e) => {
         <small>${esc(i.measures)}</small><p>${esc(i.text)}</p></li>`).join("")}</ul>
       <p class="fine">${esc(r.summary)}</p>
       <button type="button" class="btn btn-outline" id="matchShare">${esc(t("m_share"))}</button>`;
-    matchText = `${n1} & ${n2}: ${num(r.total)}/36 (${r.verdict})\nShubhly Kundli Milan: ${location.origin}/match`;
+    matchText = `${n1} & ${n2}: ${num(r.total)}/36 (${r.verdict})\nKundli Kaka Kundli Milan: ${location.origin}/match`;
     show(out, true);
     out.scrollIntoView({ behavior: "smooth", block: "start" });
   } catch (ex) {
@@ -1077,7 +1077,7 @@ $("pdfBtn").addEventListener("click", async () => {
       throw new Error(msg);
     }
     const blob = await res.blob();
-    if (await deliverFile(blob, "shubhly-kundli.pdf") === "cancelled") return;
+    if (await deliverFile(blob, "kundlikaka-kundli.pdf") === "cancelled") return;
     toast(t("pdf_done"));
   } catch (ex) {
     toast(ex.message);

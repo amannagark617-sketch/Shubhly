@@ -1,7 +1,7 @@
 {
-  "name": "shubhly",
+  "name": "kundlikaka",
   "version": "0.1.0",
-  "description": "Shubhly: AI-guided kundli reports, built on exact astronomy calculations",
+  "description": "Kundli Kaka: AI-guided kundli reports, built on exact astronomy calculations",
   "private": true,
   "type": "module",
   "main": "server.js",

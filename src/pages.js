@@ -13,71 +13,71 @@ export const PAGES = {
   home: {
     path: "/",
     on: ["hero", "marquee", "s3d", "aaj", "rashifal", "how", "faq", "final"],
-    title: "Shubhly: Free Kundli, Daily Rashifal & Panchang",
-    desc: "Free daily rashifal, panchang and choghadiya, plus your kundli in minutes. Shubhly: your kundli, your puja, your vibe.",
+    title: "Kundli Kaka: Free Kundli, Daily Rashifal & Panchang",
+    desc: "Free daily rashifal, panchang and choghadiya, plus your kundli in minutes. Kundli Kaka: your kundli, your puja, your vibe.",
     main: "hero",
   },
   kundli: {
     path: "/kundli",
     on: ["kundli", "how", "faq"],
-    title: "Free Kundli Online: Birth Chart, Dasha & Life Reading | Shubhly",
+    title: "Free Kundli Online: Birth Chart, Dasha & Life Reading | Kundli Kaka",
     desc: "Make your free kundli in a minute. Get your birth chart, current dasha, Jupiter this year and a free reading of your strengths and what is ahead, in English, Hindi or Hinglish.",
     main: "kundli",
   },
   match: {
     path: "/match",
     on: ["match", "faq"],
-    title: "Kundli Milan: Free Ashtakoot Match for Two People | Shubhly",
+    title: "Kundli Milan: Free Ashtakoot Match for Two People | Kundli Kaka",
     desc: "Check how well two people match with the traditional 36-point Ashtakoot Kundli Milan, worked out from the real Moon positions. Free, in English, Hindi or Hinglish.",
     main: "match",
   },
   rashifal: {
     path: "/rashifal",
     on: ["rashifal", "final"],
-    title: "Today's Rashifal: Daily Horoscope for All 12 Rashis | Shubhly",
+    title: "Today's Rashifal: Daily Horoscope for All 12 Rashis | Kundli Kaka",
     desc: "Honest daily rashifal for all twelve rashis, worked out from today's real Moon position. Check yesterday, today and tomorrow, in English, Hindi or Hinglish.",
     main: "rashifal",
   },
   panchang: {
     path: "/panchang",
     on: ["aaj", "final"],
-    title: "Today's Panchang, Tithi, Nakshatra & Choghadiya | Shubhly",
+    title: "Today's Panchang, Tithi, Nakshatra & Choghadiya | Kundli Kaka",
     desc: "Today's panchang for your city: tithi, nakshatra, yoga, karana, sunrise and sunset, Rahu Kaal and the choghadiya, calculated from the real sky.",
     main: "aaj",
   },
   guides: {
     path: "/guides",
     on: ["guides", "final"],
-    title: "Chat With Astrologers, Free | Shubhly",
+    title: "Chat With Astrologers, Free | Kundli Kaka",
     desc: "Ten astrologers for love, career, money, tarot and more. They read your real kundli and talk like a friend. Free, and always here to guide.",
     main: "guides",
   },
   tarot: {
     path: "/tarot",
     on: ["tarot", "faq"],
-    title: "Free Tarot Reading Online: 3-Card Past, Present, Next | Shubhly",
+    title: "Free Tarot Reading Online: 3-Card Past, Present, Next | Kundli Kaka",
     desc: "Draw a free three-card tarot reading with animated cards. Choose love, career or money, turn each card and read what it may be telling you.",
     main: "tarot",
   },
   report: {
     path: "/report",
     on: ["report", "faq"],
-    title: "Kundli Report: Career, Money, Love & Life Periods | Shubhly",
+    title: "Kundli Report: Career, Money, Love & Life Periods | Kundli Kaka",
     desc: "A personal kundli report made from your own chart: career, money, love, health and the periods of your life, in one PDF. Opening soon.",
     main: "report",
   },
   premium: {
     path: "/premium",
     on: ["premium", "faq"],
-    title: "Shubhly Premium: Deeper Kundli Reports | Shubhly",
+    title: "Kundli Kaka Premium: Deeper Kundli Reports | Kundli Kaka",
     desc: "Join the waiting list for deeper kundli reports and more. Free kundli, rashifal and panchang stay free.",
     main: "premium",
   },
   store: {
     path: "/store",
     on: ["store", "final"],
-    title: "Puja Store: Murtis, Diyas, Rudraksha & More, Coming Soon | Shubhly",
-    desc: "Murtis, puja kits, diyas, incense and more are coming to Shubhly. Tell us what you want first.",
+    title: "Puja Store: Murtis, Diyas, Rudraksha & More, Coming Soon | Kundli Kaka",
+    desc: "Murtis, puja kits, diyas, incense and more are coming to Kundli Kaka. Tell us what you want first.",
     main: "store",
   },
 };
@@ -89,8 +89,8 @@ export const signPage = (slug) => {
   return {
     path: `/rashifal/${slug}`,
     on: ["rashifal", "final"],
-    title: `${s.en} (${s.hi}) Rashifal Today: Daily ${s.en} Horoscope | Shubhly`,
-    desc: `Today's ${s.en} (${s.hi}) rashifal, worked out from the real Moon position: mood, love, work and a simple tip for the day. Free on Shubhly.`,
+    title: `${s.en} (${s.hi}) Rashifal Today: Daily ${s.en} Horoscope | Kundli Kaka`,
+    desc: `Today's ${s.en} (${s.hi}) rashifal, worked out from the real Moon position: mood, love, work and a simple tip for the day. Free on Kundli Kaka.`,
     main: "rashifal",
     sign: i,
     navPath: "/rashifal",
@@ -117,12 +117,12 @@ export function renderPage(html, page, { origin, reading = "", noindex = false }
   out = out.replace(/<meta property="og:description"[^>]*>/, `<meta property="og:description" content="${esc(page.desc)}" />`);
   out = out.replace(
     "</head>",
-    `  <link rel="canonical" href="${esc(url)}" />\n  <meta property="og:url" content="${esc(url)}" />\n  <meta property="og:site_name" content="Shubhly" />\n` +
+    `  <link rel="canonical" href="${esc(url)}" />\n  <meta property="og:url" content="${esc(url)}" />\n  <meta property="og:site_name" content="Kundli Kaka" />\n` +
       (noindex ? `  <meta name="robots" content="noindex" />\n` : "") +
       `  <script type="application/ld+json">${JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebSite",
-        name: "Shubhly",
+        name: "Kundli Kaka",
         url: origin + "/",
       })}</script>\n</head>`
   );

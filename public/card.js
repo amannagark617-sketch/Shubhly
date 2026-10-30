@@ -49,7 +49,7 @@ export async function makeShareCard({ title, subtitle, rows, footer }) {
   ctx.textBaseline = "alphabetic";
   ctx.fillStyle = "#1b1b3a";
   ctx.font = '56px "Yatra One", Georgia, serif';
-  ctx.fillText("Shubhly", 80, 130);
+  ctx.fillText("Kundli Kaka", 80, 130);
 
   ctx.fillStyle = "#1b1b3a";
   ctx.font = '104px "Yatra One", Georgia, serif';

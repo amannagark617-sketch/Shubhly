@@ -1,8 +1,8 @@
-# Shubhly
+# Kundli Kaka
 
 Your kundli, your puja, your vibe.
 
-Shubhly turns birth details into a kundli chart and an AI-written report in Hindi or English.
+Kundli Kaka turns birth details into a kundli chart and an AI-written report in Hindi or English.
 
 **How it works**
 

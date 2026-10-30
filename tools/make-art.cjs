@@ -122,7 +122,7 @@ scenes["cta-banner.jpg"] = { w: 1600, h: 600, svg: () => `
 scenes["og-image.jpg"] = { w: 1200, h: 630, svg: () => `
   ${flat(1200, 630, C.haldi)}${dots(1200, 630)}${mandala(930, 310, 330, { stroke: C.ink, sw: 2.5 })}${moonF(930, 310, 120)}
   <rect x="14" y="14" width="1172" height="602" fill="none" stroke="${C.ink}" stroke-width="10"/>
-  <text x="70" y="300" font-family="Yatra One" font-size="160" fill="${C.ink}">Shubhly</text>
+  <text x="70" y="300" font-family="Yatra One" font-size="160" fill="${C.ink}">Kundli Kaka</text>
   <text x="74" y="385" font-family="Yatra One" font-size="44" fill="${C.red}">Your kundli, your puja, your vibe.</text>`};
 
 const tile = (bg) => `${flat(640, 640, bg)}${dots(640, 640)}`;

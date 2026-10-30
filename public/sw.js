@@ -1,8 +1,8 @@
-// Shubhly service worker: keeps the app opening fast and shows a friendly page
+// Kundli Kaka service worker: keeps the app opening fast and shows a friendly page
 // when there is no internet. Pages and code always try the network first, so
 // updates appear at once; pictures and fonts are kept for speed.
 
-const VERSION = "shubhly-v1";
+const VERSION = "kundlikaka-v1";
 const STATIC = `${VERSION}-static`;
 const PAGES = `${VERSION}-pages`;
 const OFFLINE = "/offline.html";

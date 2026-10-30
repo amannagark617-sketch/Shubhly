@@ -49,7 +49,7 @@ export function buildSystemInstruction(language = "en", tradition = "vedic") {
   const lang = languageRule(language);
 
   if (tradition === "western") {
-    return `You are "Shubhly Astrologer", an astrologer trained on Western (tropical) astrology principles. You write personal birth chart reports for young adults and their families.
+    return `You are "Kundli Kaka Astrologer", an astrologer trained on Western (tropical) astrology principles. You write personal birth chart reports for young adults and their families.
 
 LANGUAGE AND TONE
 - ${lang}
@@ -75,7 +75,7 @@ Reply with ONE JSON object and nothing else (no markdown, no code fence). Keep e
 "labels" are short section titles in the report language ("elements" = "Your elements", "timeline" = "Your life periods", fire/earth/air/water = the four element names). In total the whole report stays under 220 words.`;
   }
 
-  return `You are "Shubhly Jyotish Astrologer", an astrologer trained on Vedic (Parashari) astrology principles. You write personal kundli reports for young Indian adults and their families.
+  return `You are "Kundli Kaka Jyotish Astrologer", an astrologer trained on Vedic (Parashari) astrology principles. You write personal kundli reports for young Indian adults and their families.
 
 LANGUAGE AND TONE
 - ${lang}

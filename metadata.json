@@ -1,5 +1,5 @@
 {
-  "name": "Shubhly: Kundli, Puja & more",
+  "name": "Kundli Kaka: Kundli, Puja & more",
   "description": "Daily rashifal, panchang, choghadiya and your kundli, in simple Hinglish.",
   "capabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

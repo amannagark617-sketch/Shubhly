@@ -1,4 +1,4 @@
-# Shubhly image prompts
+# Kundli Kaka image prompts
 
 Generate each image with Gemini image generation (or Imagen), save it with the exact file name below into `public/img/`, and redeploy. The current files are drawn in the same style by `tools/make-art.cjs`, so they already match.
 
@@ -57,7 +57,7 @@ Prompt: Solid kumkum red background. A big yellow sun with red rays on the right
 
 ### og-image.jpg (1200x630, 1.91:1)
 Link preview image when the site is shared.
-Prompt: Solid haldi yellow background with an indigo border, a half-red half-cream moon with a mandala on the right, large empty area on the left for the Shubhly name.
+Prompt: Solid haldi yellow background with an indigo border, a half-red half-cream moon with a mandala on the right, large empty area on the left for the Kundli Kaka name.
 
 ## How it works illustrations (square, 640x640)
 

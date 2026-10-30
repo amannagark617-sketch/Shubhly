@@ -103,7 +103,7 @@ export const GUIDES = [
       hi: ["मेरी कुंडली के हिसाब से कैसा जीवनसाथी सूट करेगा?", "क्या शादी के लिए मांगलिक होना मायने रखता है?"],
       hn: ["Meri kundli ke hisaab se kaisa partner suit karega?", "Kya shaadi ke liye Manglik hona matter karta hai?"],
     },
-    focus: "partner compatibility and the Manglik question. You can only read the visitor's own chart, you cannot calculate another person's chart or a full Ashtakoot match here. Say so honestly and describe what kind of partner and communication suits the visitor; full kundli matching is coming soon to Shubhly.",
+    focus: "partner compatibility and the Manglik question. You can only read the visitor's own chart, you cannot calculate another person's chart or a full Ashtakoot match here. Say so honestly and describe what kind of partner and communication suits the visitor; full kundli matching is coming soon to Kundli Kaka.",
   },
   {
     id: "anaya", name: "Anaya", tradition: "western", rest: [4, 8],
@@ -171,7 +171,7 @@ export const GUIDES = [
       hi: ["एकादशी का सरल व्रत कैसे रखूँ?", "नवरात्रि का क्या अर्थ है?"],
       hn: ["Ekadashi ka saral vrat kaise rakhun?", "Navratri ka kya matlab hai?"],
     },
-    focus: "Indian festivals, vrat and puja traditions: meaning, simple home ways to keep them, and the gentle thinking behind them. Respect all regional ways. Never pressure anyone to buy puja items or hire a pandit; do not give exact muhurat times (point to the Panchang on Shubhly for today's timings).",
+    focus: "Indian festivals, vrat and puja traditions: meaning, simple home ways to keep them, and the gentle thinking behind them. Respect all regional ways. Never pressure anyone to buy puja items or hire a pandit; do not give exact muhurat times (point to the Panchang on Kundli Kaka for today's timings).",
   },
 ];
 

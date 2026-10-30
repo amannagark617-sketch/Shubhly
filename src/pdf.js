@@ -58,7 +58,7 @@ export function runs(text, bold) {
 }
 
 function newDoc() {
-  const doc = new PDFDocument({ size: "A4", margin: 42, bufferPages: true, info: { Title: "Shubhly kundli", Author: "Shubhly" } });
+  const doc = new PDFDocument({ size: "A4", margin: 42, bufferPages: true, info: { Title: "Kundli Kaka kundli", Author: "Kundli Kaka" } });
   for (const [k, [reg, bold]] of Object.entries(FONTS)) {
     doc.registerFont(k, reg);
     doc.registerFont(`${k}-b`, bold);
@@ -171,7 +171,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
 
   // ---- header band
   doc.rect(0, 0, doc.page.width, 62).fill(NAVY);
-  rich(doc, "Shubhly", L, 18, { size: 22, bold: true, color: GOLD, });
+  rich(doc, "Kundli Kaka", L, 18, { size: 22, bold: true, color: GOLD, });
   rich(doc, T(western ? "pdf_h_western" : "pdf_h_vedic"), L, 24, { size: 10, color: CREAM, width: W, align: "right", });
 
   // ---- name and birth details
@@ -446,7 +446,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     doc.page.margins.bottom = 0;
     doc.moveTo(L, doc.page.height - 50).lineTo(L + W, doc.page.height - 50).lineWidth(0.6).stroke(GOLD);
     rich(doc, T("rep_fine"), L, doc.page.height - 44, { size: 7, color: MUTED, width: W - 60 });
-    rich(doc, `Shubhly  ${i + 1}/${range.count}`, L, doc.page.height - 44, { size: 7, color: MUTED, width: W, align: "right" });
+    rich(doc, `Kundli Kaka  ${i + 1}/${range.count}`, L, doc.page.height - 44, { size: 7, color: MUTED, width: W, align: "right" });
     doc.page.margins.bottom = bottom;
   }
   doc.end();

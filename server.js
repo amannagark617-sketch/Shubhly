@@ -38,6 +38,18 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 app.set("trust proxy", true); // behind Cloud Run / a load balancer
 app.disable("x-powered-by");
+// When PUBLIC_URL is set, the old addresses (old domain, www, the Cloud Run link) send visitors
+// to the real domain with a permanent redirect, so search engines and shared links follow.
+const CANONICAL = (process.env.PUBLIC_URL || "").replace(/\/+$/, "");
+const CANONICAL_HOST = CANONICAL ? new URL(CANONICAL).host : "";
+const OLD_HOST = /(^|\.)shubhlyastro\.in$|\.run\.app$|^www\./i;
+app.use((req, res, next) => {
+  const host = (req.get("host") || "").toLowerCase();
+  if (CANONICAL_HOST && host !== CANONICAL_HOST && OLD_HOST.test(host) && req.path !== "/api/health") {
+    return res.redirect(301, CANONICAL + req.originalUrl);
+  }
+  next();
+});
 app.use((_req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
@@ -273,7 +285,7 @@ app.post("/api/pdf", kundliLimit, async (req, res, next) => {
     });
     res.set({
       "Content-Type": "application/pdf",
-      "Content-Disposition": 'attachment; filename="shubhly-kundli.pdf"',
+      "Content-Disposition": 'attachment; filename="kundlikaka-kundli.pdf"',
       "Cache-Control": "no-store",
     });
     res.send(pdf);
@@ -448,5 +460,5 @@ app.use((err, _req, res, _next) => {
 
 const port = Number(process.env.PORT) || 3000;
 app.listen(port, "0.0.0.0", () => {
-  console.log(`Shubhly is running on http://0.0.0.0:${port}`);
+  console.log(`Kundli Kaka is running on http://0.0.0.0:${port}`);
 });

@@ -105,7 +105,7 @@ export const POSTS = [
 </ul>
 <h2>How to use it sensibly</h2>
 <p>Treat the score as a conversation starter. Look at which areas are strong and which need care, then talk about those areas in real life. A low Nadi or Gana score points to a topic to understand together, not a closed door.</p>
-<p>Shubhly's Kundli Milan works out the Moon positions from the real sky and shows each of the eight areas, so you can see where a match is easy and where it asks for patience.</p>
+<p>Kundli Kaka's Kundli Milan works out the Moon positions from the real sky and shows each of the eight areas, so you can see where a match is easy and where it asks for patience.</p>
 `,
   },
   {
@@ -136,7 +136,7 @@ export const POSTS = [
 <h2>Why birth time matters</h2>
 <p>The Moon changes sign every couple of days, so if you were born near the change, the exact time decides your rashi. The Ascendant needs an exact time and place. If you don't know your birth time, your Moon sign can still be found for most days, and the Ascendant can't.</p>
 <h2>Find yours</h2>
-<p>Make your free kundli on Shubhly with your date, time and place of birth, and you will see your Moon sign, Sun sign and Ascendant side by side, worked out from the real sky.</p>
+<p>Make your free kundli on Kundli Kaka with your date, time and place of birth, and you will see your Moon sign, Sun sign and Ascendant side by side, worked out from the real sky.</p>
 `,
   },
 ];
@@ -157,7 +157,7 @@ const HEAD = (title, desc, url, extra = "", img = "/img/og-image.jpg") => `<!doc
   <meta property="og:title" content="${esc(title)}" />
   <meta property="og:description" content="${esc(desc)}" />
   <meta property="og:url" content="${esc(url)}" />
-  <meta property="og:site_name" content="Shubhly" />
+  <meta property="og:site_name" content="Kundli Kaka" />
   <meta property="og:image" content="${esc(img)}" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -169,11 +169,11 @@ ${extra}</head>`;
 
 const TOP = `<body class="blog-page">
 <header class="post-top"><div class="wrap post-top-in">
-  <a class="brand" href="/" aria-label="Shubhly home"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f6b81c" stroke="#1b1b3a" stroke-width="5"/><path d="M32 3a29 29 0 0 1 0 58a18 29 0 0 0 0-58z" fill="#d8321a"/></svg>Shubhly</a>
+  <a class="brand" href="/" aria-label="Kundli Kaka home"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f6b81c" stroke="#1b1b3a" stroke-width="5"/><path d="M32 3a29 29 0 0 1 0 58a18 29 0 0 0 0-58z" fill="#d8321a"/></svg>Kundli Kaka</a>
   <nav aria-label="Main"><a href="/kundli">Kundli</a><a href="/rashifal">Rashifal</a><a href="/match">Kundli Milan</a><a href="/blog">Blog</a></nav>
 </div></header>`;
 
-const FOOT = `<footer class="post-foot"><div class="wrap"><p>Shubhly: your kundli, your puja, your vibe.</p></div></footer>
+const FOOT = `<footer class="post-foot"><div class="wrap"><p>Kundli Kaka: your kundli, your puja, your vibe.</p></div></footer>
 </body></html>`;
 
 const fmt = (d) => new Date(d + "T00:00:00Z").toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
@@ -181,7 +181,7 @@ const fmt = (d) => new Date(d + "T00:00:00Z").toLocaleDateString("en-IN", { day:
 export function renderBlogIndex(origin) {
   const url = origin + "/blog";
   const cards = POSTS.map((p) => `<a class="post-card" href="/blog/${p.slug}"><img src="${p.img}" width="1200" height="630" alt="" loading="lazy" /><span class="post-meta">${fmt(p.date)} · ${p.read} min read</span><h2>${esc(p.title)}</h2><p>${esc(p.desc)}</p></a>`).join("\n");
-  return HEAD("Shubhly Blog: Kundli, Rashifal and Vedic Astrology Explained", "Plain-language articles on Sade Sati, Manglik Dosh, Kundli Milan, Moon sign and more from Shubhly.", url) +
+  return HEAD("Kundli Kaka Blog: Kundli, Rashifal and Vedic Astrology Explained", "Plain-language articles on Sade Sati, Manglik Dosh, Kundli Milan, Moon sign and more from Kundli Kaka.", url) +
     TOP + `<main class="wrap post-wrap"><h1>Astrology, explained simply</h1><p class="post-lead">Plain answers to the questions people actually ask about their kundli.</p><div class="post-cards">${cards}</div></main>` + FOOT;
 }
 
@@ -190,10 +190,10 @@ export function renderPost(p, origin) {
   const ld = `  <script type="application/ld+json">${JSON.stringify({
     "@context": "https://schema.org", "@type": "Article", headline: p.title, description: p.desc,
     datePublished: p.date, dateModified: p.date, mainEntityOfPage: url,
-    author: { "@type": "Organization", name: "Shubhly" }, publisher: { "@type": "Organization", name: "Shubhly" },
+    author: { "@type": "Organization", name: "Kundli Kaka" }, publisher: { "@type": "Organization", name: "Kundli Kaka" },
   })}</script>\n`;
   const more = POSTS.filter((x) => x.slug !== p.slug).map((x) => `<li><a href="/blog/${x.slug}">${esc(x.title)}</a></li>`).join("");
-  return HEAD(`${p.title} | Shubhly`, p.desc, url, ld, origin + p.img) + TOP +
+  return HEAD(`${p.title} | Kundli Kaka`, p.desc, url, ld, origin + p.img) + TOP +
     `<main class="wrap post-wrap"><article class="post"><p class="post-meta">${fmt(p.date)} · ${p.read} min read</p><h1>${esc(p.title)}</h1><img class="post-cover" src="${p.img}" width="1200" height="630" alt="" /><p class="post-lead">${esc(p.lead)}</p>${p.body}
 <aside class="post-cta"><h2>See your own chart</h2><p>Make your free kundli in two minutes and read your Moon sign, dasha and more, worked out from the real sky.</p><a class="btn btn-primary" href="/kundli">Make my free kundli</a></aside>
 <section class="post-more"><h2>Keep reading</h2><ul>${more}</ul></section></article></main>` + FOOT;
