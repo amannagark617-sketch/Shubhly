@@ -177,7 +177,7 @@ export async function guideReply({ guide, language, turns, chart, name, timeUnkn
   return text.slice(0, MAX_REPLY_CHARS);
 }
 
-async function defaultGenerate({ contents, systemInstruction }) {
+export async function defaultGenerate({ contents, systemInstruction }) {
   const ai = getClient();
   if (!ai) {
     const err = new Error("AI is not configured yet");

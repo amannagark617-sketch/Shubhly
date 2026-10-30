@@ -21,6 +21,7 @@ import { aiProblem } from "./src/aierror.js";
 import { buildMatch } from "./src/match.js";
 import { skyRange, MEANING } from "./src/sky.js";
 import { POSTS, POST_BY_SLUG, renderBlogIndex, renderPost } from "./src/blog.js";
+import { renderGitaIndex, renderChapter, chapterOf, GITA_PATHS, krishnaReply } from "./src/gita.js";
 import { PAGES, SLUGS, signPage, loadShell, renderPage, sitemap } from "./src/pages.js";
 import {
   InputError,
@@ -383,6 +384,28 @@ app.post("/api/chat", chatLimit, async (req, res, next) => {
   }
 });
 
+// Krishna: a calm voice that speaks only from the Gita. Shares the same free messages as the astrologers.
+app.post("/api/krishna", chatLimit, async (req, res, next) => {
+  try {
+    const cid = parseClientId(req.body?.cid);
+    const turns = parseMessages(req.body?.messages);
+    const language = parseLanguage(req.body?.language);
+    if (freeChats.left(cid) <= 0) {
+      return res.status(402).json({ code: "LIMIT", left: 0, error: "You have used your free messages." });
+    }
+    if (!aiConfigured()) {
+      return res.status(503).json({ error: "Krishna is not switched on yet. Please try again soon." + noKeyNote(req) });
+    }
+    const reply = await krishnaReply({ language, turns });
+    const left = freeChats.use(cid);
+    res.json({ reply, left: Number.isFinite(left) ? left : null, free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null });
+  } catch (e) {
+    const m = aiProblem(e);
+    if (m) return res.status(m[0]).json({ error: m[1] });
+    next(e);
+  }
+});
+
 // ---- pages ---------------------------------------------------------------
 const originOf = (req) => (process.env.PUBLIC_URL || `${req.protocol}://${req.get("host")}`).replace(/\/+$/, "");
 const SHELL = path.join(__dirname, "public", "index.html");
@@ -396,6 +419,13 @@ app.get("/blog/:slug", (req, res, next) => {
   const post = Object.hasOwn(POST_BY_SLUG, req.params.slug) ? POST_BY_SLUG[req.params.slug] : null;
   if (!post) return next();
   res.type("html").send(renderPost(post, originOf(req)));
+});
+app.get("/gita", (req, res) => { res.setHeader("Cache-Control", "no-cache"); res.type("html").send(renderGitaIndex(originOf(req))); });
+app.get("/gita/:n", (req, res, next) => {
+  const c = chapterOf(req.params.n);
+  if (!c) return next();
+  res.setHeader("Cache-Control", "no-cache");
+  res.type("html").send(renderChapter(c, originOf(req)));
 });
 app.get("/index.html", (_req, res) => res.redirect(301, "/"));
 
@@ -418,7 +448,7 @@ app.get("/rashifal/:sign", (req, res, next) => {
 app.get("/robots.txt", (req, res) => {
   res.type("text/plain").send(`User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${originOf(req)}/sitemap.xml\n`);
 });
-app.get("/sitemap.xml", (req, res) => res.type("application/xml").send(sitemap(originOf(req), POSTS)));
+app.get("/sitemap.xml", (req, res) => res.type("application/xml").send(sitemap(originOf(req), POSTS, GITA_PATHS())));
 
 // ---- static site ---------------------------------------------------------
 app.use(

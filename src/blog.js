@@ -1,7 +1,7 @@
 // The blog: a few plain, searchable articles. Each has its own address, title,
 // description and article data so search engines and shares read it properly.
 
-const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+export const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 export const POSTS = [
   {
@@ -143,7 +143,7 @@ export const POSTS = [
 POSTS.forEach((p) => { p.img = `/img/blog/${p.slug}.svg`; });
 export const POST_BY_SLUG = Object.fromEntries(POSTS.map((p) => [p.slug, p]));
 
-const HEAD = (title, desc, url, extra = "", img = "/img/og-image.jpg") => `<!doctype html>
+export const HEAD = (title, desc, url, extra = "", img = "/img/og-image.jpg") => `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -167,13 +167,13 @@ const HEAD = (title, desc, url, extra = "", img = "/img/og-image.jpg") => `<!doc
   <link rel="stylesheet" href="/style.css" />
 ${extra}</head>`;
 
-const TOP = `<body class="blog-page">
+export const TOP = `<body class="blog-page">
 <header class="post-top"><div class="wrap post-top-in">
   <a class="brand" href="/" aria-label="Kundli Kaka home"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f6b81c" stroke="#1b1b3a" stroke-width="5"/><path d="M32 3a29 29 0 0 1 0 58a18 29 0 0 0 0-58z" fill="#d8321a"/></svg>Kundli Kaka</a>
-  <nav aria-label="Main"><a href="/kundli">Kundli</a><a href="/rashifal">Rashifal</a><a href="/match">Kundli Milan</a><a href="/blog">Blog</a></nav>
+  <nav aria-label="Main"><a href="/kundli">Kundli</a><a href="/rashifal">Rashifal</a><a href="/match">Kundli Milan</a><a href="/gita">Gita</a><a href="/blog">Blog</a></nav>
 </div></header>`;
 
-const FOOT = `<footer class="post-foot"><div class="wrap"><p>Kundli Kaka: your kundli, your puja, your vibe.</p></div></footer>
+export const FOOT = `<footer class="post-foot"><div class="wrap"><p>Kundli Kaka: your kundli, your puja, your vibe.</p></div></footer>
 </body></html>`;
 
 const fmt = (d) => new Date(d + "T00:00:00Z").toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });

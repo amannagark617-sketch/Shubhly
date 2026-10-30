@@ -1127,3 +1127,78 @@ button.install-btn:not(.btn) { font: inherit; font-weight: 700; color: inherit; 
 .post-fig { margin: 26px 0; display: grid; gap: 10px; justify-items: center; padding: 18px; background: #fff; border: 2.5px solid var(--ink); border-radius: 18px; box-shadow: 4px 4px 0 var(--ink); }
 .post-fig svg { width: min(100%, 380px); height: auto; }
 .post-fig figcaption { font-size: 0.95rem; color: #4a4a62; text-align: center; }
+
+/* ---- Gita and Krishna ---- */
+.gita-page { background: #fff; }
+.gita-wrap { max-width: 780px; padding-block: 30px 120px; }
+.gita-wrap h1 { text-wrap: balance; }
+.gita-sa { display: block; margin-top: 6px; font-size: 0.55em; font-weight: 400; color: #4a4a62; }
+.gita-nav { margin-bottom: 14px; }
+.gita-nav a { color: var(--red); font-weight: 700; }
+.gita-start { display: flex; flex-wrap: wrap; gap: 12px; margin: 6px 0 30px; }
+.gita-h2 { font-size: 1.5rem; margin: 0 0 14px; }
+.gc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.gc { display: flex; gap: 14px; align-items: center; padding: 14px 16px; border: 2px solid var(--ink); border-radius: 8px; background: #fff; color: var(--ink); text-decoration: none; }
+.gc:hover, .gc:focus-visible { background: #fff3c4; }
+.gc-n { flex: none; width: 40px; height: 40px; display: grid; place-items: center; background: var(--ink); color: var(--haldi); font-weight: 800; border-radius: 6px; }
+.gc-t { display: grid; gap: 2px; min-width: 0; }
+.gc-t i { font-style: normal; color: #4a4a62; }
+.gc-t small { color: #6a6a82; }
+.gita-about { margin-top: 36px; padding: 18px 20px; border-left: 5px solid var(--haldi); background: #f7f7fb; border-radius: 0 8px 8px 0; }
+.gita-about h2 { margin-top: 0; font-size: 1.2rem; }
+.gita-life { margin: 18px 0; padding: 16px 18px; border: 2px solid var(--ink); border-radius: 8px; background: #fff3c4; }
+.gita-life h2 { margin: 0 0 6px; font-size: 1.05rem; }
+.gita-life p { margin: 0 0 6px; }
+.gita-tools { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 0; margin: 20px 0 8px; background: #fff; border-bottom: 1px solid #e3e3ee; }
+.gita-tools span { font-weight: 700; margin-right: 4px; }
+.gita-tools button { padding: 7px 12px; border: 2px solid var(--ink); border-radius: 6px; background: #fff; color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
+.gita-tools button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.gv-list { display: grid; gap: 14px; }
+.gv { padding: 18px 20px; border: 1.5px solid #d9d9e6; border-radius: 8px; background: #fff; scroll-margin-top: 70px; }
+.gv:target { border-color: var(--ink); box-shadow: 0 0 0 3px var(--haldi); }
+.gv header { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+.gv-n { font-weight: 800; color: var(--ink); background: var(--haldi); padding: 2px 10px; border-radius: 4px; text-decoration: none; }
+.gv-ask { border: 0; background: none; color: var(--red); font: inherit; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 6px 0; }
+.gv-sa { font-size: 1.3rem; line-height: 1.7; margin: 0 0 8px; color: var(--ink); }
+.gv-tr { margin: 0 0 12px; color: #6a6a82; font-style: italic; line-height: 1.5; }
+.gv-en { margin: 0 0 8px; font-size: 1.12rem; line-height: 1.6; }
+.gv-hi { margin: 0; font-size: 1.08rem; line-height: 1.75; color: #3d3d5a; }
+[data-lang="en"] .gv-hi, [data-lang="hi"] .gv-en { display: none; }
+.gita-pn { display: flex; justify-content: space-between; gap: 12px; margin-top: 30px; }
+.gita-pn a { flex: 1; padding: 14px 16px; border: 2px solid var(--ink); border-radius: 8px; color: var(--ink); font-weight: 700; text-decoration: none; }
+.gita-pn a[rel="next"] { text-align: right; }
+.gita-pn a:hover { background: #fff3c4; }
+.kr-mark { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #243a8c; color: #fff; font-weight: 800; font-size: 0.95rem; flex: none; }
+.kr-open { position: fixed; right: 16px; bottom: 16px; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 8px 16px 8px 8px; border: 2px solid var(--ink); border-radius: 8px; background: #fff; color: var(--ink); font: inherit; font-weight: 800; box-shadow: 4px 4px 0 var(--ink); cursor: pointer; }
+.kr-open[hidden], .kr[hidden] { display: none; }
+.kr { position: fixed; right: 16px; bottom: 16px; z-index: 50; width: min(420px, calc(100vw - 32px)); max-height: min(640px, calc(100dvh - 32px)); display: flex; flex-direction: column; background: #fff; color: var(--ink); border: 2px solid var(--ink); border-radius: 10px; box-shadow: 6px 6px 0 var(--ink); overflow: hidden; }
+.kr-head { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: #eef1fb; border-bottom: 2px solid var(--ink); }
+.kr-head > div { flex: 1; min-width: 0; }
+.kr-head h2 { margin: 0; font-size: 1.1rem; }
+.kr-head p { margin: 0; font-size: 0.85rem; color: #4a4a62; }
+.kr-x { border: 0; background: none; font-size: 1.8rem; line-height: 1; cursor: pointer; color: var(--ink); padding: 0 6px; }
+.kr-log { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 14px; display: grid; gap: 10px; align-content: start; }
+.kr-msg { padding: 10px 12px; border-radius: 8px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; max-width: 92%; }
+.kr-msg.km-ai { background: #eef1fb; justify-self: start; }
+.kr-msg.km-me { background: var(--haldi); justify-self: end; }
+.kr-msg.wait { color: #6a6a82; }
+.kr-msg.err { background: #fde8e4; }
+.kr-ideas { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 14px 12px; }
+.kr-ideas[hidden] { display: none; }
+.kr-ideas button { padding: 7px 10px; border: 1.5px solid var(--ink); border-radius: 6px; background: #fff; color: var(--ink); font: inherit; font-size: 0.92rem; cursor: pointer; }
+.kr-ideas button:hover { background: #fff3c4; }
+.kr-form { display: flex; gap: 8px; padding: 10px 14px; border-top: 1.5px solid #d9d9e6; align-items: flex-end; }
+.kr-form[hidden] { display: none; }
+.kr-form textarea { flex: 1; resize: none; padding: 9px 10px; border: 2px solid var(--ink); border-radius: 6px; font: inherit; line-height: 1.4; max-height: 120px; }
+.kr-note { margin: 0; padding: 0 14px 12px; font-size: 0.8rem; color: #6a6a82; line-height: 1.4; }
+.kr-note a { color: var(--red); }
+@media (max-width: 560px) {
+  .kr { right: 0; bottom: 0; width: 100vw; max-height: 86dvh; border-radius: 10px 10px 0 0; border-inline: 0; border-bottom: 0; }
+  .gita-pn { flex-direction: column; }
+  .gita-pn a[rel="next"] { text-align: left; }
+  .gv-sa { font-size: 1.2rem; }
+  .gita-tools span { display: none; }
+  .gita-tools button { padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: no-preference) { .kr:not([hidden]) { animation: krIn 0.18s ease-out; } @keyframes krIn { from { opacity: 0; transform: translateY(8px); } } }
+.gita-wrap .btn, .kr .btn { border-radius: 8px; white-space: normal; }

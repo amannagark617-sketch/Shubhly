@@ -158,8 +158,8 @@ function headingId(main) {
   return { aaj: "aaj-h", rashifal: "rf-h", kundli: "k-h", match: "m-h", guides: "g-h", premium: "pr-h", report: "rp-h", tarot: "tr-h", store: "store-h" }[main];
 }
 
-export function sitemap(origin, posts = []) {
-  const urls = [...Object.values(PAGES).map((p) => p.path), ...SLUGS.map((s) => `/rashifal/${s}`), ...(posts.length ? ["/blog"] : []), ...posts.map((p) => `/blog/${p.slug}`)];
+export function sitemap(origin, posts = [], extra = []) {
+  const urls = [...Object.values(PAGES).map((p) => p.path), ...SLUGS.map((s) => `/rashifal/${s}`), ...(posts.length ? ["/blog"] : []), ...posts.map((p) => `/blog/${p.slug}`), ...extra];
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
     urls.map((u) => `  <url><loc>${origin}${u === "/" ? "/" : u}</loc><changefreq>${u.startsWith("/rashifal") || u === "/panchang" || u === "/" ? "daily" : "weekly"}</changefreq></url>`).join("\n") + `\n</urlset>\n`;
 }
