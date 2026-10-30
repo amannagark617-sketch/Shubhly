@@ -170,7 +170,7 @@ ${extra}</head>`;
 
 export const TOP = `<body class="blog-page">
 <header class="post-top"><div class="wrap post-top-in">
-  <a class="brand" href="/" aria-label="Kundli Kaka home"><img class="brand-mark" src="/img/logo-mark.png" alt="" width="36" height="36" />Kundli Kaka</a>
+  <a class="brand" href="/" aria-label="Kundli Kaka home"><img class="brand-mark" src="/img/logo-mark.png" alt="" width="36" height="36" /><span class="brand-text">Kundli <b>Kaka</b></span></a>
   <nav aria-label="Main"><a href="/kundli">Kundli</a><a href="/rashifal">Rashifal</a><a href="/match">Kundli Milan</a><a href="/gita">Gita</a><a href="/blog">Blog</a></nav>
 </div></header>`;
 
