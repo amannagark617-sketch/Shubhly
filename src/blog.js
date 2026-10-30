@@ -165,6 +165,7 @@ export const HEAD = (title, desc, url, extra = "", img = "/img/og-image.jpg") =>
   <link rel="preload" href="/fonts/yatra-one-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/hind-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/style.css" />
+  <script type="module" src="/analytics.js"></script>
 ${extra}</head>`;
 
 export const TOP = `<body class="blog-page">

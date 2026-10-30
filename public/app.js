@@ -1,3 +1,4 @@
+import "/analytics.js";
 import {
   esc, fmt12, todayIn, nowIn, addDays, dateLabel, setDateLocale,
   inSlot, dots, moonSvg, chartSvg, westernSvg, renderMarkdown, SHORT, elementBalance, elementsSvg, timelineSvg,
@@ -1086,19 +1087,7 @@ $("pdfBtn").addEventListener("click", async () => {
   }
 });
 
-// ---------- analytics (Google Analytics, only when GA_ID is set) ----------
-window.track = (name, params = {}) => { try { if (window.gtag) window.gtag("event", name, params); } catch { /* ignore */ } };
-function startAnalytics(id) {
-  if (!id || window.gtag) return;
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function () { window.dataLayer.push(arguments); };
-  window.gtag("js", new Date());
-  window.gtag("config", id);
-  const s = document.createElement("script");
-  s.async = true;
-  s.src = "https://www.googletagmanager.com/gtag/js?id=" + id;
-  document.head.appendChild(s);
-}
+// Analytics lives in analytics.js (loaded above). window.track(name, params) sends an event.
 
 // ---------- premium ----------
 function renderPremium() {
@@ -1382,7 +1371,6 @@ if ("serviceWorker" in navigator) window.addEventListener("load", () => navigato
   liveSky = initLiveSky({ t, getLang });
   touchStreak();
   try { config = await api("/api/config"); } catch { /* optional */ }
-  startAnalytics(config.gaId);
   if (config.whatsappUrl) {
     const wa = $("waBtn");
     wa.href = config.whatsappUrl;

@@ -5,20 +5,7 @@ const $ = (id) => document.getElementById(id);
 const get = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } };
 const set = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* private mode */ } };
 
-// ---- light analytics (same Google Analytics property as the main site) ----
-let gaReady = false;
-fetch("/api/config").then((r) => r.json()).then((c) => {
-  if (!c.gaId) return;
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function () { window.dataLayer.push(arguments); };
-  window.gtag("js", new Date());
-  window.gtag("config", c.gaId);
-  const s = document.createElement("script");
-  s.async = true; s.src = `https://www.googletagmanager.com/gtag/js?id=${c.gaId}`;
-  document.head.appendChild(s);
-  gaReady = true;
-}).catch(() => {});
-const track = (name, p = {}) => { try { if (gaReady && window.gtag) window.gtag("event", name, p); } catch { /* ignore */ } };
+const track = (name, p = {}) => window.track?.(name, p);
 
 // ---- meaning language on chapter pages ----
 const main = document.querySelector(".gita-wrap");
@@ -95,7 +82,6 @@ if (box) {
     input.value = ""; autosize();
     const wait = add("model", "…");
     wait.classList.add("wait");
-    track("krishna_message");
     try {
       const r = await fetch("/api/krishna", {
         method: "POST",
