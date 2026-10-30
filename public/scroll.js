@@ -4,7 +4,8 @@ const verses = [...document.querySelectorAll(".gv")];
 if (!reduce && "IntersectionObserver" in window && verses.length) {
   const target = location.hash.slice(1);
   const hs = verses.map((v) => v.querySelector(".sc-paper")?.offsetHeight || 0);
-  verses.forEach((v, i) => { if (v.id !== target) { v.style.setProperty("--h", hs[i] + "px"); v.classList.add("pending"); } });
+  const ti = verses.findIndex((v) => v.id === target);
+  verses.forEach((v, i) => { if (v.id !== target && !(ti > -1 && i < ti)) { v.style.setProperty("--h", hs[i] + "px"); v.classList.add("pending"); } });
   const io = new IntersectionObserver((entries) => {
     for (const en of entries) {
       if (!en.isIntersecting) continue;
