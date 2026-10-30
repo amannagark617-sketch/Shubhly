@@ -138,7 +138,7 @@ function isAskingForReading(text) {
 
 // ---------- Gemini ----------
 let client = null;
-function getClient() {
+export function getClient() {
   const key = geminiKey();
   if (!key) return null;
   if (!client) client = new GoogleGenAI({ apiKey: key });

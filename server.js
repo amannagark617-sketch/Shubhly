@@ -22,6 +22,7 @@ import { buildMatch } from "./src/match.js";
 import { skyRange, MEANING } from "./src/sky.js";
 import { POSTS, POST_BY_SLUG, renderBlogIndex, renderPost } from "./src/blog.js";
 import { renderGitaIndex, renderChapter, chapterOf, GITA_PATHS, krishnaReply } from "./src/gita.js";
+import { signReply, verifyReply, speakKrishna, FREE_LISTENS } from "./src/voice.js";
 import { PAGES, SLUGS, signPage, loadShell, renderPage, sitemap } from "./src/pages.js";
 import {
   InputError,
@@ -398,7 +399,26 @@ app.post("/api/krishna", chatLimit, async (req, res, next) => {
     }
     const reply = await krishnaReply({ language, turns });
     const left = freeChats.use(cid);
-    res.json({ reply, left: Number.isFinite(left) ? left : null, free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null });
+    res.json({ reply, sig: signReply(reply), left: Number.isFinite(left) ? left : null, free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null });
+  } catch (e) {
+    const m = aiProblem(e);
+    if (m) return res.status(m[0]).json({ error: m[1] });
+    next(e);
+  }
+});
+
+// Krishna's voice: a calm spoken version (up to one minute) of a reply he wrote. A few free listens per device.
+const listens = new FreeChats(FREE_LISTENS);
+app.post("/api/krishna/speak", chatLimit, async (req, res, next) => {
+  try {
+    const cid = parseClientId(req.body?.cid);
+    const text = String(req.body?.text ?? "").slice(0, 2400);
+    if (!text || !verifyReply(text, req.body?.sig)) return res.status(400).json({ error: "That reply cannot be spoken." });
+    if (listens.left(cid) <= 0) return res.status(402).json({ code: "LIMIT", error: "You have used your free listens." });
+    if (!aiConfigured()) return res.status(503).json({ error: "The voice is not switched on yet." });
+    const wav = await speakKrishna(text);
+    listens.use(cid);
+    res.set({ "Content-Type": "audio/wav", "Cache-Control": "private, max-age=3600", "X-Listens-Left": String(listens.left(cid)) }).send(wav);
   } catch (e) {
     const m = aiProblem(e);
     if (m) return res.status(m[0]).json({ error: m[1] });

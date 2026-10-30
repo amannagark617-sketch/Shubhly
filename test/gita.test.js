@@ -60,3 +60,22 @@ test("Krishna's reply is trimmed and an empty reply is an error", async () => {
   assert.match(seen.systemInstruction, /Krishna/);
   await assert.rejects(krishnaReply({ language: "en", turns: [{ role: "user", text: "hi" }] }, async () => "  "));
 });
+
+import { pcmToWav, trimForSpeech, signReply, verifyReply, speakKrishna, MAX_SECONDS } from "../src/voice.js";
+
+test("Krishna's voice: only signed replies, at most a minute, valid audio file", async () => {
+  assert.ok(verifyReply("Peace, dear one.", signReply("Peace, dear one.")));
+  assert.ok(!verifyReply("Something else", signReply("Peace, dear one.")));
+  assert.ok(!verifyReply("Peace, dear one.", ""));
+  const long = Array.from({ length: 300 }, (_, i) => `word${i}.`).join(" ");
+  assert.ok(trimForSpeech(long).split(" ").length <= 120);
+  assert.equal(trimForSpeech("Short and calm."), "Short and calm.");
+  const wav = pcmToWav(Buffer.alloc(24000 * 2 * 120)); // two minutes in
+  assert.equal(wav.toString("ascii", 0, 4), "RIFF");
+  assert.equal(wav.toString("ascii", 8, 12), "WAVE");
+  assert.equal(wav.length, 44 + 24000 * 2 * MAX_SECONDS);
+  let prompt;
+  const out = await speakKrishna("Be calm.", async (p) => { prompt = p; return Buffer.alloc(48000); });
+  assert.match(prompt, /calm, slow, warm and soothing/);
+  assert.equal(out.length, 44 + 48000);
+});

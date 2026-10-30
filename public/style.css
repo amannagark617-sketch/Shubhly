@@ -1202,3 +1202,5 @@ button.install-btn:not(.btn) { font: inherit; font-weight: 700; color: inherit; 
 }
 @media (prefers-reduced-motion: no-preference) { .kr:not([hidden]) { animation: krIn 0.18s ease-out; } @keyframes krIn { from { opacity: 0; transform: translateY(8px); } } }
 .gita-wrap .btn, .kr .btn { border-radius: 8px; white-space: normal; }
+.kr-listen { display: block; margin-top: 8px; padding: 5px 10px; border: 1.5px solid var(--ink); border-radius: 6px; background: #fff; color: var(--ink); font: inherit; font-size: 0.88rem; font-weight: 700; cursor: pointer; }
+.kr-listen[data-on="1"] { background: var(--ink); color: #fff; }
