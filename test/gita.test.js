@@ -79,3 +79,20 @@ test("Krishna's voice: only signed replies, at most a minute, valid audio file",
   assert.match(prompt, /calm, slow, warm and soothing/);
   assert.equal(out.length, 44 + 48000);
 });
+
+// ---- spoken verses ----
+import { verseClip, verseOf, promptFor } from "../src/gita-audio.js";
+test("a verse clip is made once and reused", async () => {
+  process.env.GITA_AUDIO_CACHE = (await import("node:fs")).mkdtempSync((await import("node:os")).tmpdir() + "/kkt-");
+  let calls = 0;
+  const speak = async () => { calls++; return Buffer.alloc(4800); };
+  const a = await verseClip(9, 33, "sa", speak);
+  const b = await verseClip(9, 33, "sa", speak);
+  assert.equal(a.file, b.file);
+  assert.equal(calls, 1);
+  assert.equal(await verseClip(99, 1, "sa", speak), null);
+  assert.equal(await verseClip(2, 47, "xx", speak), null);
+  const { c, v } = verseOf(2, 47);
+  assert.match(promptFor("sa", c, v), /Recite/);
+  assert.match(promptFor("hi", c, v), /Hindi/);
+});

@@ -21,6 +21,7 @@ import { aiProblem } from "./src/aierror.js";
 import { buildMatch } from "./src/match.js";
 import { skyRange, MEANING } from "./src/sky.js";
 import { POSTS, POST_BY_SLUG, renderBlogIndex, renderPost } from "./src/blog.js";
+import { verseClip } from "./src/gita-audio.js";
 import { chapterArt, gitaCover } from "./src/gita-art.js";
 import { renderGitaIndex, renderChapter, chapterOf, GITA_PATHS, krishnaReply } from "./src/gita.js";
 import { signReply, verifyReply, speakKrishna, FREE_LISTENS } from "./src/voice.js";
@@ -423,6 +424,27 @@ app.post("/api/krishna/speak", chatLimit, async (req, res, next) => {
   } catch (e) {
     const m = aiProblem(e);
     if (m) return res.status(m[0]).json({ error: m[1] });
+    next(e);
+  }
+});
+
+// A verse, spoken. Made once, then kept for everyone.
+app.get("/api/gita/audio/:file", chatLimit, async (req, res, next) => {
+  try {
+    const m = /^([1-9]\d?)-([1-9]\d{0,2})-(sa|en|hi)\.(?:wav|mp3)$/.exec(req.params.file);
+    if (!m) return res.status(404).json({ error: "No such verse." });
+    if (!aiConfigured()) {
+      // A finished file may still exist even when the AI key is not set here.
+      const have = await verseClip(m[1], m[2], m[3], async () => { const e = new Error("AI is not configured yet"); e.code = "AI_NOT_CONFIGURED"; throw e; });
+      return res.sendFile(have.file, { headers: { "Content-Type": have.type, "Cache-Control": "public, max-age=604800" } });
+    }
+    const clip = await verseClip(m[1], m[2], m[3]);
+    if (!clip) return res.status(404).json({ error: "No such verse." });
+    res.sendFile(clip.file, { headers: { "Content-Type": clip.type, "Cache-Control": "public, max-age=604800" } });
+  } catch (e) {
+    const x = aiProblem(e);
+    if (x) return res.status(x[0]).json({ error: x[1] });
+    if (e?.code === "AI_NOT_CONFIGURED") return res.status(503).json({ error: "The voice is not switched on yet." });
     next(e);
   }
 });

@@ -170,7 +170,7 @@ ${extra}</head>`;
 
 export const TOP = `<body class="blog-page">
 <header class="post-top"><div class="wrap post-top-in">
-  <a class="brand" href="/" aria-label="Kundli Kaka home"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f6b81c" stroke="#1b1b3a" stroke-width="5"/><path d="M32 3a29 29 0 0 1 0 58a18 29 0 0 0 0-58z" fill="#d8321a"/></svg>Kundli Kaka</a>
+  <a class="brand" href="/" aria-label="Kundli Kaka home"><img class="brand-mark" src="/img/logo-mark.png" alt="" width="36" height="36" />Kundli Kaka</a>
   <nav aria-label="Main"><a href="/kundli">Kundli</a><a href="/rashifal">Rashifal</a><a href="/match">Kundli Milan</a><a href="/gita">Gita</a><a href="/blog">Blog</a></nav>
 </div></header>`;
 

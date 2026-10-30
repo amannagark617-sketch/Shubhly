@@ -28,7 +28,7 @@ export const GITA_PATHS = () => ["/gita", ...loadGita().map((c) => `/gita/${c.n}
 // ---------- the Krishna chat box (same markup on every Gita page) ----------
 const WIDGET = `<section class="kr" id="krishna" aria-labelledby="kr-h" hidden>
   <div class="kr-head">
-    <span class="kr-mark" aria-hidden="true">कृ</span>
+    <img class="kr-mark" src="/img/krishna-avatar.jpg" alt="" width="40" height="40">
     <div><h2 id="kr-h">Ask Krishna</h2><p>A calm voice that speaks only from the Gita</p></div>
     <button type="button" class="kr-x" id="kr-close" aria-label="Close">×</button>
   </div>
@@ -46,7 +46,7 @@ const WIDGET = `<section class="kr" id="krishna" aria-labelledby="kr-h" hidden>
   </form>
   <p class="kr-note" id="kr-note">Replies are written by AI, inspired by the Bhagavad Gita. They are not a substitute for a doctor, counsellor or someone you trust.</p>
 </section>
-<button type="button" class="kr-open" id="kr-open" aria-controls="krishna"><span class="kr-mark" aria-hidden="true">कृ</span>Ask Krishna</button>`;
+<button type="button" class="kr-open" id="kr-open" aria-controls="krishna"><img class="kr-mark" src="/img/krishna-avatar.jpg" alt="" width="40" height="40">Ask Krishna</button>`;
 
 // Uses a picture from public/img/gita/ (1.jpg ... 18.jpg, cover.jpg; .webp and .png also work) when one is there, else the drawn art.
 const GITA_IMG_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "public", "img", "gita");
@@ -56,7 +56,7 @@ const artSrc = (n, thumb = false) => {
   return `/gita-art/${n}.svg`;
 };
 
-const PAGE_SCRIPT = `<script type="module" src="/krishna.js"></script>\n<script type="module" src="/versecard.js"></script>\n`;
+const PAGE_SCRIPT = `<script type="module" src="/krishna.js"></script>\n<script type="module" src="/versecard.js"></script>\n<script type="module" src="/recite.js"></script>\n`;
 
 const NAV = `<nav class="gita-nav" aria-label="Gita"><a href="/gita">All chapters</a></nav>`;
 
@@ -96,7 +96,7 @@ export function renderChapter(c, origin) {
   const url = `${origin}/gita/${c.n}`;
   const prev = g[c.n - 2], next = g[c.n];
   const verses = c.verses.map((v) => `<article class="gv" id="v${v.n}" data-sa="${esc(v.sa)}" data-en="${esc(v.en)}" data-hi="${esc(v.hi)}">
-  <header><a class="gv-n" href="#v${v.n}" aria-label="Verse ${c.n}.${v.n}">${c.n}.${v.n}</a><span class="gv-btns"><button type="button" class="gv-share" data-share="${c.n}.${v.n}">Share picture</button><button type="button" class="gv-ask" data-ask="Explain Gita ${c.n}.${v.n} in simple words and how I can use it in my life.">Ask Krishna</button></span></header>
+  <header><a class="gv-n" href="#v${v.n}" aria-label="Verse ${c.n}.${v.n}">${c.n}.${v.n}</a><span class="gv-btns"><button type="button" class="gv-listen" data-listen="${c.n}.${v.n}" data-kind="sa" aria-pressed="false">Listen</button><button type="button" class="gv-listen" data-listen="${c.n}.${v.n}" data-kind="mean" aria-pressed="false">Hear meaning</button><button type="button" class="gv-share" data-share="${c.n}.${v.n}">Share picture</button><button type="button" class="gv-ask" data-ask="Explain Gita ${c.n}.${v.n} in simple words and how I can use it in my life.">Ask Krishna</button></span></header>
   <p class="gv-sa" lang="sa">${esc(v.sa)}</p>
   ${v.tr ? `<p class="gv-tr">${esc(v.tr).replace(/\n/g, "<br>")}</p>` : ""}
   <p class="gv-en" lang="en">${esc(v.en)}</p>

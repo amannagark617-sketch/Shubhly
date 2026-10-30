@@ -1226,3 +1226,13 @@ button.install-btn:not(.btn) { font: inherit; font-weight: 700; color: inherit; 
   .gv-btns { width: 100%; }
 }
 @media (max-width: 380px) { .gc-grid { grid-template-columns: 1fr; } }
+
+/* brand logo + Krishna avatar */
+.brand img.brand-mark { width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0; }
+@media (max-width: 640px) { .brand img.brand-mark { width: 32px; height: 32px; } }
+img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
+.kr-head img.kr-mark { width: 44px; height: 44px; }
+.gv-listen { font: inherit; font-size: .85rem; font-weight: 700; padding: 6px 12px; border: 2px solid #243a8c; border-radius: 8px; background: #243a8c; color: #fff; cursor: pointer; }
+.gv-listen[data-kind="mean"] { background: #fff; color: #243a8c; }
+.gv-listen.on { background: #1f9d96; border-color: #1f9d96; color: #fff; }
+.gv-listen.wait { opacity: .7; cursor: progress; }

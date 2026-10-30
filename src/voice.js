@@ -43,7 +43,7 @@ export function pcmToWav(pcm, rate = RATE) {
   return Buffer.concat([h, data]);
 }
 
-async function defaultSpeak(prompt) {
+export async function defaultSpeak(prompt) {
   const ai = getClient();
   if (!ai) { const e = new Error("AI is not configured yet"); e.code = "AI_NOT_CONFIGURED"; throw e; }
   const r = await ai.models.generateContent({
