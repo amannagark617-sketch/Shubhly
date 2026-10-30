@@ -53,7 +53,7 @@ if (box) {
     const u = new SpeechSynthesisUtterance(text.slice(0, 900));
     const hi = /[\u0900-\u097F]/.test(text);
     u.lang = hi ? "hi-IN" : "en-IN"; u.rate = 0.82; u.pitch = 0.9;
-    const v = speechSynthesis.getVoices().find((x) => x.lang === u.lang) || speechSynthesis.getVoices().find((x) => x.lang.startsWith(u.lang.slice(0, 2)));
+    const all = speechSynthesis.getVoices(), best = (l) => all.filter((x) => x.lang.replace("_", "-") === l).sort((a, b) => (/google|neural|natural|microsoft/i.test(b.name) ? 1 : 0) - (/google|neural|natural|microsoft/i.test(a.name) ? 1 : 0))[0]; const v = best(u.lang) || all.find((x) => x.lang.startsWith(u.lang.slice(0, 2)));
     if (v) u.voice = v;
     u.onend = u.onerror = () => { btn.textContent = "Listen"; btn.dataset.on = ""; };
     stopSpeech = () => speechSynthesis.cancel();

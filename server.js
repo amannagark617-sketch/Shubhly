@@ -413,6 +413,7 @@ app.post("/api/krishna", chatLimit, async (req, res, next) => {
 const listens = new FreeChats(FREE_LISTENS);
 app.post("/api/krishna/speak", chatLimit, async (req, res, next) => {
   try {
+    if (!paidVoice()) return res.status(503).json({ error: "The voice is not switched on." });
     const cid = parseClientId(req.body?.cid);
     const text = String(req.body?.text ?? "").slice(0, 2400);
     if (!text || !verifyReply(text, req.body?.sig)) return res.status(400).json({ error: "That reply cannot be spoken." });
@@ -428,12 +429,14 @@ app.post("/api/krishna/speak", chatLimit, async (req, res, next) => {
   }
 });
 
+// The paid AI voice is off unless GEMINI_VOICE=on. Visitors then hear their phone's free voice instead.
+const paidVoice = () => process.env.GEMINI_VOICE === "on";
 // A verse, spoken. Made once, then kept for everyone.
 app.get("/api/gita/audio/:file", chatLimit, async (req, res, next) => {
   try {
     const m = /^([1-9]\d?)-([1-9]\d{0,2})-(sa|en|hi)\.(?:wav|mp3)$/.exec(req.params.file);
     if (!m) return res.status(404).json({ error: "No such verse." });
-    if (!aiConfigured()) {
+    if (!aiConfigured() || !paidVoice()) {
       // A finished file may still exist even when the AI key is not set here.
       const have = await verseClip(m[1], m[2], m[3], async () => { const e = new Error("AI is not configured yet"); e.code = "AI_NOT_CONFIGURED"; throw e; });
       return res.sendFile(have.file, { headers: { "Content-Type": have.type, "Cache-Control": "public, max-age=604800" } });
