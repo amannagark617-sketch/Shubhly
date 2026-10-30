@@ -96,3 +96,15 @@ test("a verse clip is made once and reused", async () => {
   assert.match(promptFor("sa", c, v), /Recite/);
   assert.match(promptFor("hi", c, v), /Hindi/);
 });
+
+test("every verse has a 'what Krishna meant' explanation in English and Hindi", () => {
+  for (const c of loadGita()) for (const v of c.verses) {
+    assert.ok(v.ex_en && v.ex_en.length > 40, `${c.n}.${v.n} English`);
+    assert.match(v.ex_hi || "", /[ऀ-ॿ]/, `${c.n}.${v.n} Hindi`);
+  }
+});
+test("a chapter page shows the explanation", () => {
+  const html = renderChapter(chapterOf("2"), "https://x.test");
+  assert.match(html, /What Krishna meant/);
+  assert.match(html, /gv-ex-hi/);
+});
