@@ -1246,3 +1246,15 @@ img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
 .footer .brand { color: #fff; font-size: 1.4rem; }
 .brand-text { white-space: nowrap; }
 @media (max-width: 420px) { .brand { font-size: 1.15rem; gap: 7px; } .brand img.brand-mark { width: 34px; height: 34px; } }
+
+/* footer: the picture fades into it instead of stopping at a hard edge */
+.final { border-bottom: 0; }
+.final::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 45%; z-index: 0; pointer-events: none; background: linear-gradient(180deg, rgba(27,27,58,0) 0%, rgba(27,27,58,.75) 60%, #1b1b3a 100%); }
+.footer { position: relative; background: #1b1b3a; padding: 8px 0 90px; }
+.footer .wrap > :first-child { margin-top: 0; }
+.footer p { color: #c9cbe3; line-height: 1.6; }
+.footer a { color: #e9e9f7; }
+.footer p a[href^="mailto"] { color: #f6b81c; text-decoration: none; border-bottom: 1px solid rgba(246,184,28,.5); }
+.footer nav, .footer .links { border-top: 1px solid rgba(255,255,255,.12); padding-top: 16px; margin-top: 18px; }
+.footer nav a { color: #e9e9f7; font-weight: 600; text-decoration: none; }
+.footer nav a:hover, .footer nav a:focus-visible { color: #f6b81c; }
