@@ -21,6 +21,7 @@ import { aiProblem } from "./src/aierror.js";
 import { buildMatch } from "./src/match.js";
 import { skyRange, MEANING } from "./src/sky.js";
 import { POSTS, POST_BY_SLUG, renderBlogIndex, renderPost } from "./src/blog.js";
+import { chapterArt, gitaCover } from "./src/gita-art.js";
 import { renderGitaIndex, renderChapter, chapterOf, GITA_PATHS, krishnaReply } from "./src/gita.js";
 import { signReply, verifyReply, speakKrishna, FREE_LISTENS } from "./src/voice.js";
 import { PAGES, SLUGS, signPage, loadShell, renderPage, sitemap } from "./src/pages.js";
@@ -439,6 +440,13 @@ app.get("/blog/:slug", (req, res, next) => {
   const post = Object.hasOwn(POST_BY_SLUG, req.params.slug) ? POST_BY_SLUG[req.params.slug] : null;
   if (!post) return next();
   res.type("html").send(renderPost(post, originOf(req)));
+});
+app.get("/gita-art/:file", (req, res, next) => {
+  const m = /^(cover|[1-9]\d?)\.svg$/.exec(req.params.file);
+  const svg = m && (m[1] === "cover" ? gitaCover() : chapterArt(Number(m[1])));
+  if (!svg) return next();
+  res.setHeader("Cache-Control", "public, max-age=86400");
+  res.type("image/svg+xml").send(svg);
 });
 app.get("/gita", (req, res) => { res.setHeader("Cache-Control", "no-cache"); res.type("html").send(renderGitaIndex(originOf(req))); });
 app.get("/gita/:n", (req, res, next) => {

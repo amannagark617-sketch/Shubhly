@@ -1204,3 +1204,16 @@ button.install-btn:not(.btn) { font: inherit; font-weight: 700; color: inherit; 
 .gita-wrap .btn, .kr .btn { border-radius: 8px; white-space: normal; }
 .kr-listen { display: block; margin-top: 8px; padding: 5px 10px; border: 1.5px solid var(--ink); border-radius: 6px; background: #fff; color: var(--ink); font: inherit; font-size: 0.88rem; font-weight: 700; cursor: pointer; }
 .kr-listen[data-on="1"] { background: var(--ink); color: #fff; }
+
+/* Gita pictures */
+.gita-cover, .gita-banner { display: block; width: 100%; height: auto; aspect-ratio: 800/340; border-radius: 8px; border: 2px solid var(--ink); background: #eef2ff; margin: 0 0 18px; }
+.gc { position: relative; flex-direction: column; align-items: stretch; padding: 0; overflow: hidden; gap: 0; }
+.gc-img { display: block; width: 100%; height: auto; aspect-ratio: 400/170; background: #eef2ff; border-bottom: 2px solid var(--ink); }
+.gc .gc-n { position: absolute; top: 10px; left: 10px; width: 34px; height: 34px; }
+.gc .gc-t { padding: 12px 16px 14px; }
+.gv-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.gv-share { font: inherit; font-size: .85rem; font-weight: 700; padding: 6px 12px; border: 2px solid var(--ink); border-radius: 8px; background: #fff; color: var(--ink); cursor: pointer; }
+.gv-share:hover { background: #eef2ff; }
+.gv { background-image: radial-gradient(circle at 100% 0, #fff6c9 0, rgba(255,246,201,0) 140px); }
+.gv-sa { font-family: "Noto Serif Devanagari", "Hind", serif; font-size: 1.35rem; line-height: 1.9; color: #243a8c; }
+.gv-toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 8px; z-index: 60; font-weight: 600; }

@@ -48,7 +48,14 @@ const WIDGET = `<section class="kr" id="krishna" aria-labelledby="kr-h" hidden>
 </section>
 <button type="button" class="kr-open" id="kr-open" aria-controls="krishna"><span class="kr-mark" aria-hidden="true">कृ</span>Ask Krishna</button>`;
 
-const PAGE_SCRIPT = `<script type="module" src="/krishna.js"></script>\n`;
+// Uses a picture from public/img/gita/ (1.jpg ... 18.jpg, cover.jpg; .webp and .png also work) when one is there, else the drawn art.
+const GITA_IMG_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "public", "img", "gita");
+const artSrc = (n) => {
+  for (const ext of ["jpg", "webp", "png"]) if (fs.existsSync(path.join(GITA_IMG_DIR, `${n}.${ext}`))) return `/img/gita/${n}.${ext}`;
+  return `/gita-art/${n}.svg`;
+};
+
+const PAGE_SCRIPT = `<script type="module" src="/krishna.js"></script>\n<script type="module" src="/versecard.js"></script>\n`;
 
 const NAV = `<nav class="gita-nav" aria-label="Gita"><a href="/gita">All chapters</a></nav>`;
 
@@ -56,7 +63,7 @@ const NAV = `<nav class="gita-nav" aria-label="Gita"><a href="/gita">All chapter
 export function renderGitaIndex(origin) {
   const g = loadGita();
   const url = origin + "/gita";
-  const cards = g.map((c) => `<a class="gc" href="/gita/${c.n}"><span class="gc-n">${c.n}</span><span class="gc-t"><b>${esc(c.en)}</b><i lang="hi">${esc(c.hi)}</i><small>${c.verses.length} verses</small></span></a>`).join("\n");
+  const cards = g.map((c) => `<a class="gc" href="/gita/${c.n}"><img class="gc-img" src="${artSrc(c.n)}" alt="" width="400" height="170" loading="lazy" decoding="async"><span class="gc-n">${c.n}</span><span class="gc-t"><b>${esc(c.en)}</b><i lang="hi">${esc(c.hi)}</i><small>${c.verses.length} verses</small></span></a>`).join("\n");
   const ld = `  <script type="application/ld+json">${JSON.stringify({
     "@context": "https://schema.org", "@type": "CollectionPage", name: "Bhagavad Gita in simple English and Hindi", url,
     description: "All 18 chapters of the Bhagavad Gita with the Sanskrit text and simple English and Hindi meanings.",
@@ -67,6 +74,7 @@ export function renderGitaIndex(origin) {
     url, ld + PAGE_SCRIPT) +
     TOP.replace("blog-page", "blog-page gita-page") +
     `<main class="wrap gita-wrap">
+<img class="gita-cover" src="${artSrc("cover")}" alt="A lotus, a flute and a chariot wheel" width="800" height="340" fetchpriority="high">
 <h1>The Bhagavad Gita, made simple</h1>
 <p class="post-lead">The Gita is a conversation between Krishna and Arjuna, a man who is confused and afraid before the biggest choice of his life. Its answers are still useful today: do your best, stay calm, be kind, and do not let fear or anger run your life. You do not need to know anything before you start.</p>
 <div class="gita-start">
@@ -86,8 +94,8 @@ export function renderChapter(c, origin) {
   const g = loadGita();
   const url = `${origin}/gita/${c.n}`;
   const prev = g[c.n - 2], next = g[c.n];
-  const verses = c.verses.map((v) => `<article class="gv" id="v${v.n}">
-  <header><a class="gv-n" href="#v${v.n}" aria-label="Verse ${c.n}.${v.n}">${c.n}.${v.n}</a><button type="button" class="gv-ask" data-ask="Explain Gita ${c.n}.${v.n} in simple words and how I can use it in my life.">Ask Krishna</button></header>
+  const verses = c.verses.map((v) => `<article class="gv" id="v${v.n}" data-sa="${esc(v.sa)}" data-en="${esc(v.en)}" data-hi="${esc(v.hi)}">
+  <header><a class="gv-n" href="#v${v.n}" aria-label="Verse ${c.n}.${v.n}">${c.n}.${v.n}</a><span class="gv-btns"><button type="button" class="gv-share" data-share="${c.n}.${v.n}">Share picture</button><button type="button" class="gv-ask" data-ask="Explain Gita ${c.n}.${v.n} in simple words and how I can use it in my life.">Ask Krishna</button></span></header>
   <p class="gv-sa" lang="sa">${esc(v.sa)}</p>
   ${v.tr ? `<p class="gv-tr">${esc(v.tr).replace(/\n/g, "<br>")}</p>` : ""}
   <p class="gv-en" lang="en">${esc(v.en)}</p>
@@ -105,6 +113,7 @@ export function renderChapter(c, origin) {
     TOP.replace("blog-page", "blog-page gita-page") +
     `<main class="wrap gita-wrap" data-lang="both">
 ${NAV}
+<img class="gita-banner" src="${artSrc(c.n)}" alt="" width="800" height="340" fetchpriority="high">
 <p class="post-meta">Chapter ${c.n} of 18 · ${c.verses.length} verses</p>
 <h1>${esc(c.en)} <span class="gita-sa" lang="sa">${esc(c.sa)}</span></h1>
 <p class="post-lead">${esc(c.sum_en)}</p>
