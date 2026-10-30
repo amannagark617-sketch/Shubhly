@@ -16,6 +16,10 @@ if (!reduce && "IntersectionObserver" in window && verses.length) {
       const o = { duration: Math.min(1400, 700 + H * 1.1), easing: "cubic-bezier(.22,.7,.25,1)", fill: "backwards" };
       paper.animate([{ clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0 0)" }], o);
       bot.animate([{ transform: `translateY(${-H}px)` }, { transform: "translateY(0)" }], o);
+      // the verse and its divider appear as the paper opens
+      v.querySelector(".gv-sa")?.animate([{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], { duration: 700, delay: o.duration * 0.35, easing: "ease-out", fill: "backwards" });
+      v.querySelector(".sc-div")?.animate([{ opacity: 0, transform: "scaleX(.2)" }, { opacity: 1, transform: "none" }], { duration: 800, delay: o.duration * 0.5, easing: "ease-out", fill: "backwards" });
+      v.querySelectorAll(".gv-en,.gv-hi,.gv-ex").forEach((el, k) => el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 600, delay: o.duration * 0.55 + k * 120, easing: "ease-out", fill: "backwards" }));
       seal.animate([{ opacity: 0, transform: "rotate(-8deg) scale(1.8)" }, { opacity: 1, transform: "rotate(-8deg) scale(1)" }], { duration: 380, delay: o.duration - 120, easing: "cubic-bezier(.3,1.6,.5,1)", fill: "backwards" });
     }
   }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });

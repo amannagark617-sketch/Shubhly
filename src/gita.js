@@ -100,10 +100,11 @@ export function renderChapter(c, origin) {
   <header><a class="gv-n" href="#v${v.n}" aria-label="Verse ${c.n}.${v.n}">${c.n}.${v.n}</a><span class="gv-btns"><button type="button" class="gv-listen" data-listen="${c.n}.${v.n}" data-kind="sa" aria-pressed="false">Listen</button><button type="button" class="gv-listen" data-listen="${c.n}.${v.n}" data-kind="mean" aria-pressed="false">Hear meaning</button><button type="button" class="gv-share" data-share="${c.n}.${v.n}">Share picture</button><button type="button" class="gv-ask" data-ask="Explain Gita ${c.n}.${v.n} in simple words and how I can use it in my life.">Ask Krishna</button></span></header>
   <p class="gv-sa" lang="sa">${esc(v.sa)}</p>
   ${v.tr ? `<p class="gv-tr">${esc(v.tr).replace(/\n/g, "<br>")}</p>` : ""}
+  <i class="sc-div" aria-hidden="true"></i>
   <p class="gv-en" lang="en">${esc(v.en)}</p>
   <p class="gv-hi" lang="hi">${esc(v.hi)}</p>
   ${v.ex_en ? `<div class="gv-ex"><h3>What Krishna meant</h3><p class="gv-ex-en" lang="en">${esc(v.ex_en)}</p><p class="gv-ex-hi" lang="hi">${esc(v.ex_hi || "")}</p></div>` : ""}
-</div><i class="sc-roll sc-bot" aria-hidden="true"></i><span class="sc-seal" aria-hidden="true">कृ</span></div>
+</div><i class="sc-roll sc-bot" aria-hidden="true"></i><span class="sc-seal" aria-hidden="true"></span></div>
 </article>`).join("\n");
   const ld = `  <script type="application/ld+json">${JSON.stringify({
     "@context": "https://schema.org", "@type": "Article", headline: `Bhagavad Gita Chapter ${c.n}: ${c.en}`,
