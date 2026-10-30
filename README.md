@@ -71,7 +71,7 @@ Payments (UPI and Razorpay), marriage matching, the WhatsApp flow, and the puja 
 
 ## Website and daily features
 
-- Pages, each with its own address: `/` (home), `/kundli`, `/rashifal` and `/rashifal/<sign>` for all 12 signs, `/panchang`, `/guides`, `/premium`, `/store`. They share one HTML shell (`public/index.html`); `src/pages.js` sets each page's title, description, canonical link, visible sections and heading. `/sitemap.xml` and `/robots.txt` are generated. Set `PUBLIC_URL` (for example `https://shubhly.in`) so links in the sitemap use your real domain.
+- Pages, each with its own address: `/` (home), `/kundli`, `/rashifal` and `/rashifal/<sign>` for all 12 signs, `/panchang`, `/guides`, `/premium`, `/store`. They share one HTML shell (`public/index.html`); `src/pages.js` sets each page's title, description, canonical link, visible sections and heading. `/sitemap.xml` and `/robots.txt` are generated. Set `PUBLIC_URL` (for example `https://kundlikaka.in`) so links in the sitemap use your real domain.
 - Installable app (PWA): `public/manifest.webmanifest`, `public/sw.js`, `public/offline.html`, icons in `public/icons/`. Chrome on Android shows an install button; on iPhone it shows the Share steps. To package it for the Play Store later, use PWABuilder with your live domain.
 - Features: today's panchang and choghadiya, daily rashifal, vrat calendar, kundli with a free life reading, share card, saved profiles, streak, AI astrologers, puja store teaser.
 - Daily content is computed in code (no AI): `src/panchang.js`, `src/horoscope.js`, `src/transits.js`, with text tables in `src/content.js`.
