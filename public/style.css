@@ -1217,3 +1217,12 @@ button.install-btn:not(.btn) { font: inherit; font-weight: 700; color: inherit; 
 .gv { background-image: radial-gradient(circle at 100% 0, #fff6c9 0, rgba(255,246,201,0) 140px); }
 .gv-sa { font-family: "Noto Serif Devanagari", "Hind", serif; font-size: 1.35rem; line-height: 1.9; color: #243a8c; }
 .gv-toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 8px; z-index: 60; font-weight: 600; }
+@media (max-width: 640px) {
+  .gita-cover, .gita-banner { aspect-ratio: 16/9; object-fit: cover; object-position: center; border-radius: 6px; margin-bottom: 14px; }
+  .gc-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .gc .gc-t { padding: 10px 10px 12px; }
+  .gc .gc-t b { font-size: .95rem; }
+  .gv-sa { font-size: 1.25rem; }
+  .gv-btns { width: 100%; }
+}
+@media (max-width: 380px) { .gc-grid { grid-template-columns: 1fr; } }

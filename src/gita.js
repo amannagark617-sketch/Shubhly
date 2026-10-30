@@ -50,7 +50,8 @@ const WIDGET = `<section class="kr" id="krishna" aria-labelledby="kr-h" hidden>
 
 // Uses a picture from public/img/gita/ (1.jpg ... 18.jpg, cover.jpg; .webp and .png also work) when one is there, else the drawn art.
 const GITA_IMG_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "public", "img", "gita");
-const artSrc = (n) => {
+const artSrc = (n, thumb = false) => {
+  if (thumb && fs.existsSync(path.join(GITA_IMG_DIR, `t-${n}.jpg`))) return `/img/gita/t-${n}.jpg`;
   for (const ext of ["jpg", "webp", "png"]) if (fs.existsSync(path.join(GITA_IMG_DIR, `${n}.${ext}`))) return `/img/gita/${n}.${ext}`;
   return `/gita-art/${n}.svg`;
 };
@@ -63,7 +64,7 @@ const NAV = `<nav class="gita-nav" aria-label="Gita"><a href="/gita">All chapter
 export function renderGitaIndex(origin) {
   const g = loadGita();
   const url = origin + "/gita";
-  const cards = g.map((c) => `<a class="gc" href="/gita/${c.n}"><img class="gc-img" src="${artSrc(c.n)}" alt="" width="400" height="170" loading="lazy" decoding="async"><span class="gc-n">${c.n}</span><span class="gc-t"><b>${esc(c.en)}</b><i lang="hi">${esc(c.hi)}</i><small>${c.verses.length} verses</small></span></a>`).join("\n");
+  const cards = g.map((c) => `<a class="gc" href="/gita/${c.n}"><img class="gc-img" src="${artSrc(c.n, true)}" alt="" width="400" height="170" loading="lazy" decoding="async"><span class="gc-n">${c.n}</span><span class="gc-t"><b>${esc(c.en)}</b><i lang="hi">${esc(c.hi)}</i><small>${c.verses.length} verses</small></span></a>`).join("\n");
   const ld = `  <script type="application/ld+json">${JSON.stringify({
     "@context": "https://schema.org", "@type": "CollectionPage", name: "Bhagavad Gita in simple English and Hindi", url,
     description: "All 18 chapters of the Bhagavad Gita with the Sanskrit text and simple English and Hindi meanings.",

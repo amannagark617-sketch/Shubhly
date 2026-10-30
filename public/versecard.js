@@ -30,12 +30,17 @@ async function make(ref, sa, en) {
   x.fillStyle = "#1b1b3a"; x.font = '500 38px "Hind",system-ui,sans-serif';
   y += 24;
   for (const l of wrap(x, en, W - 160).slice(0, 7)) { x.fillText(l, W / 2, y); y += 56; }
-  x.fillStyle = "#f6b81c"; x.fillRect(W / 2 - 40, H - 150, 80, 5);
-  x.fillStyle = "#1b1b3a"; x.font = '700 34px "Hind",system-ui,sans-serif';
-  x.fillText(`Bhagavad Gita ${ref}`, W / 2, H - 90);
-  x.fillStyle = "#555"; x.font = '500 28px "Hind",system-ui,sans-serif';
-  x.fillText(`kundlikaka.in/gita/${ch}#v${ref.split(".")[1]}`, W / 2, H - 48);
-  return new Promise((r) => c.toBlob(r, "image/png"));
+  const h = Math.min(H, Math.round(y + 190));
+  const out = document.createElement("canvas"); out.width = W; out.height = h;
+  const o = out.getContext("2d");
+  o.drawImage(c, 0, 0);
+  o.textAlign = "center";
+  o.fillStyle = "#f6b81c"; o.fillRect(W / 2 - 40, h - 150, 80, 5);
+  o.fillStyle = "#1b1b3a"; o.font = '700 34px "Hind",system-ui,sans-serif';
+  o.fillText(`Bhagavad Gita ${ref}`, W / 2, h - 90);
+  o.fillStyle = "#555"; o.font = '500 28px "Hind",system-ui,sans-serif';
+  o.fillText(`kundlikaka.in/gita/${ch}#v${ref.split(".")[1]}`, W / 2, h - 48);
+  return new Promise((r) => out.toBlob(r, "image/png"));
 }
 
 document.addEventListener("click", async (e) => {
