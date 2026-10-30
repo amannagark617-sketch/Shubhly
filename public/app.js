@@ -350,7 +350,7 @@ function meter(label, n, kind) {
 }
 
 function readingText(r) {
-  return `${sn(r.sign, r.signHi)}, ${dateLabel(horo.date)}\n${r.moodLabel}: ${r.theme}\n${r.text}\n\nKundli Kaka: ${location.origin}`;
+  return `${sn(r.sign, r.signHi)}, ${dateLabel(horo.date)}\n${r.moodLabel}: ${r.theme}\n${r.text}\n\nKundli Kaka: https://kundlikaka.in`;
 }
 
 function renderReading() {
@@ -797,7 +797,7 @@ async function deliverFile(blob, name) {
 function kundliLink(p) {
   const o = { n: p.name || "", d: p.date, t: p.time, u: p.timeUnknown ? 1 : 0, r: p.tradition, p: [p.place.label, p.place.lat, p.place.lon, p.place.tz] };
   const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-  return `${location.origin}/kundli#k=${b64}`;
+  return `https://kundlikaka.in/kundli#k=${b64}`;
 }
 function readKundliLink() {
   const m = /^#k=([\w-]+)$/.exec(location.hash);
@@ -989,7 +989,7 @@ $("matchForm").addEventListener("submit", async (e) => {
         <small>${esc(i.measures)}</small><p>${esc(i.text)}</p></li>`).join("")}</ul>
       <p class="fine">${esc(r.summary)}</p>
       <button type="button" class="btn btn-outline" id="matchShare">${esc(t("m_share"))}</button>`;
-    matchText = `${n1} & ${n2}: ${num(r.total)}/36 (${r.verdict})\nKundli Kaka Kundli Milan: ${location.origin}/match`;
+    matchText = `${n1} & ${n2}: ${num(r.total)}/36 (${r.verdict})\nKundli Kaka Kundli Milan: https://kundlikaka.in/match`;
     show(out, true);
     out.scrollIntoView({ behavior: "smooth", block: "start" });
   } catch (ex) {

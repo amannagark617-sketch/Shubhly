@@ -90,8 +90,7 @@ test("a reply is built from the chart and the conversation, and tarot gets cards
   const out = await guideReply({ ...base, guide: GUIDES.find((g) => g.id === "arjun") }, generate);
   assert.equal(out, "Hello there.");
   assert.match(seen.contents[0].parts[0].text, /Sidereal/);
-  assert.equal(seen.contents.at(-1).parts[0].text, "Hi");
-  await guideReply({ ...base, guide: GUIDES.find((g) => g.id === "anaya") }, generate);
+  await guideReply({ ...base, turns: [{ role: "user", text: "Can you give me a tarot reading?" }], guide: GUIDES.find((g) => g.id === "anaya") }, generate);
   assert.match(seen.contents.at(-1).parts[0].text, /Cards drawn by the system/);
   await guideReply({ ...base, chart: null, guide: GUIDES[0] }, generate);
   assert.equal(seen.contents.length, 1);

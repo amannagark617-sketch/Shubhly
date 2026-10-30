@@ -50,7 +50,7 @@ document.addEventListener("click", async (e) => {
   try {
     const blob = await make(ref, art.dataset.sa, art.dataset.en);
     const file = new File([blob], `gita-${ref}.png`, { type: "image/png" });
-    const link = `${location.origin}/gita/${ref.split(".")[0]}#v${ref.split(".")[1]}`;
+    const link = `https://kundlikaka.in/gita/${ref.split(".")[0]}#v${ref.split(".")[1]}`;
     track("share_click", { kind: "gita_verse", verse: ref });
     if (navigator.canShare?.({ files: [file] })) await navigator.share({ files: [file], text: `Bhagavad Gita ${ref}\n${link}` }).catch(() => {});
     else { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = file.name; a.click(); toast("Picture saved"); }
