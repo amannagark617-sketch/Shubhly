@@ -43,6 +43,13 @@ async function browserSpeak(text, lang, btn) {
   });
 }
 
+// The meaning, then "what Krishna meant" and its explanation.
+function spoken(art, lang) {
+  if (lang === "sa") return art.dataset.sa;
+  if (lang === "hi") return art.dataset.hi + (art.dataset.exHi ? " । श्रीकृष्ण के कहने का मतलब यह है। " + art.dataset.exHi : "");
+  return art.dataset.en + (art.dataset.exEn ? " What Krishna meant by this is: " + art.dataset.exEn : "");
+}
+
 document.addEventListener("click", async (e) => {
   const b = e.target.closest("[data-listen]"); if (!b) return;
   b.dataset.label ||= b.textContent;
@@ -74,7 +81,7 @@ document.addEventListener("click", async (e) => {
     reset();
     // Fall back to the phone's own voice so there is always something to hear.
     active = b; b.classList.remove("wait");
-    const text = lang === "sa" ? art.dataset.sa : lang === "hi" ? art.dataset.hi : art.dataset.en;
+    const text = spoken(art, lang);
     browserSpeak(text, lang === "en" ? "en-IN" : "hi-IN", b);
   }
 });

@@ -95,7 +95,7 @@ export function renderChapter(c, origin) {
   const g = loadGita();
   const url = `${origin}/gita/${c.n}`;
   const prev = g[c.n - 2], next = g[c.n];
-  const verses = c.verses.map((v) => `<article class="gv" id="v${v.n}" data-sa="${esc(v.sa)}" data-en="${esc(v.en)}" data-hi="${esc(v.hi)}">
+  const verses = c.verses.map((v) => `<article class="gv" id="v${v.n}" data-sa="${esc(v.sa)}" data-en="${esc(v.en)}" data-hi="${esc(v.hi)}" data-ex-en="${esc(v.ex_en || "")}" data-ex-hi="${esc(v.ex_hi || "")}">
   <div class="scroll"><i class="sc-roll sc-top" aria-hidden="true"></i><div class="sc-paper">
   <header><a class="gv-n" href="#v${v.n}" aria-label="Verse ${c.n}.${v.n}">${c.n}.${v.n}</a><span class="gv-btns"><button type="button" class="gv-listen" data-listen="${c.n}.${v.n}" data-kind="sa" aria-pressed="false">Listen</button><button type="button" class="gv-listen" data-listen="${c.n}.${v.n}" data-kind="mean" aria-pressed="false">Hear meaning</button><button type="button" class="gv-share" data-share="${c.n}.${v.n}">Share picture</button><button type="button" class="gv-ask" data-ask="Explain Gita ${c.n}.${v.n} in simple words and how I can use it in my life.">Ask Krishna</button></span></header>
   <p class="gv-sa" lang="sa">${esc(v.sa)}</p>

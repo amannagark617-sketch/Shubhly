@@ -25,8 +25,8 @@ export function verseOf(n, v) {
 
 export function promptFor(kind, c, v) {
   if (kind === "sa") return `Recite this Bhagavad Gita verse slowly and clearly in a calm, deep, devotional voice, with correct Sanskrit pronunciation and natural pauses. Say only the verse:\n\n${v.sa.replace(/\s+/g, " ")}`;
-  if (kind === "hi") return `Read this slowly in a warm, calm, kind voice, in simple Hindi, like a gentle teacher:\n\n${v.hi}`;
-  return `Read this slowly in a warm, calm, kind voice, like a gentle teacher:\n\n${v.en}`;
+  if (kind === "hi") return `Read this slowly in a warm, calm, kind voice, in simple Hindi, like a gentle teacher:\n\n${v.hi}${v.ex_hi ? " । श्रीकृष्ण के कहने का मतलब यह है। " + v.ex_hi : ""}`;
+  return `Read this slowly in a warm, calm, kind voice, like a gentle teacher:\n\n${v.en}${v.ex_en ? " What Krishna meant by this is: " + v.ex_en : ""}`;
 }
 
 const inflight = new Map();
