@@ -120,22 +120,25 @@ const loadPic = (src) => new Promise((res) => { const i = new Image(); i.onload 
 
 async function show(p) {
   store.sset("kk.pop.shown", "1");
-  const pic = (await loadPic(`/img/popups/${p.id}${picSuffix}.jpg`)) || (await loadPic(`/img/popups/${p.id}${picSuffix}.png`));
-  if (pic) return showPic(p, pic);
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const root = el("aside", "kkp");
   root.setAttribute("role", "dialog"); root.setAttribute("aria-label", p.who.name[lang]);
-  root.innerHTML = `<div class="kkp-glow" aria-hidden="true"></div>
-    <div class="kkp-spark" aria-hidden="true">${Array.from({ length: 9 }, (_, i) => `<i style="--i:${i}"></i>`).join("")}</div>
+  const hm = (d) => d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }).toLowerCase();
+  let clock = new Date();
+  root.innerHTML = `<div class="kkp-back" data-back></div>
     <div class="kkp-card">
-      <header class="kkp-head"><img src="${p.who.img}" alt="" width="40" height="40"><div><b>${esc(p.who.name[lang])}</b><span><i></i>${lang === "hi" ? "ऑनलाइन" : "online"}</span></div><button type="button" class="kkp-x" aria-label="${lang === "hi" ? "बंद करें" : "Close"}">×</button></header>
-      <div class="kkp-log" aria-live="polite"></div>
-      <div class="kkp-foot" hidden><a class="kkp-cta" href="${p.href}">${esc(p.cta[lang])}</a><button type="button" class="kkp-later">${lang === "hi" ? "अभी नहीं" : "Not now"}</button></div>
-    </div>`;
+      <button type="button" class="kkp-x" aria-label="${lang === "hi" ? "बंद करें" : "Close"}">×</button>
+      <header class="kkp-head"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><img src="${p.who.img}" alt="" width="40" height="40"><div><b>${esc(p.who.name[lang])}</b><span class="kkp-st">${lang === "hi" ? "ऑनलाइन" : "online"}</span></div></header>
+      <div class="kkp-log" aria-live="polite"><div class="kkp-day">${lang === "hi" ? "आज" : "Today"}</div></div>
+      <div class="kkp-foot" hidden><a class="kkp-cta" href="${p.href}">${esc(p.cta[lang])}</a></div>
+      <div class="kkp-bar" aria-hidden="true"><span>${lang === "hi" ? "संदेश लिखिए" : "Type a message"}</span></div>
+    </div>
+    <button type="button" class="kkp-later">${lang === "hi" ? "अभी नहीं" : "Not now"}</button>`;
   document.body.append(root);
   requestAnimationFrame(() => root.classList.add("in"));
   track("popup_view", { id: p.id });
-  const log = root.querySelector(".kkp-log"), foot = root.querySelector(".kkp-foot");
+  const log = root.querySelector(".kkp-log"), foot = root.querySelector(".kkp-foot"), st = root.querySelector(".kkp-st");
+  const tick = '<svg viewBox="0 0 18 12" width="16" height="11" aria-hidden="true"><path d="M1 6.500l3.500 3.500L11 2.500M7 9.500l1 1L16 2.500" fill="none" stroke="#53bdeb" stroke-width="1.600" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   let closed = false;
   const close = (why) => {
     if (closed) return; closed = true;
@@ -145,6 +148,7 @@ async function show(p) {
   };
   root.querySelector(".kkp-x").onclick = () => close("x");
   root.querySelector(".kkp-later").onclick = () => close("later");
+  root.querySelector(".kkp-back").onclick = () => close("backdrop");
   root.querySelector(".kkp-cta").addEventListener("click", () => { track("popup_cta", { id: p.id }); const m = seenMap(); m[p.id] = Date.now(); store.set(SEEN_KEY, JSON.stringify(m)); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") close("esc"); }, { once: true });
 
@@ -152,12 +156,16 @@ async function show(p) {
   for (const [who, body] of p.chat[lang]) {
     if (closed) return;
     if (who === "me") {
-      const b = el("div", "kkp-b me", esc(body)); log.append(b); scrollDown(); await wait(reduce ? 0 : 900);
+      clock = new Date(clock.getTime() + 60000);
+      const b = el("div", "kkp-b me", `${esc(body)}<small>${hm(clock)} ${tick}</small>`); log.append(b); scrollDown(); await wait(reduce ? 0 : 900);
     } else if (who === "you") {
+      st.textContent = lang === "hi" ? "लिख रहे हैं…" : "typing…";
       const t = el("div", "kkp-b you typing", "<i></i><i></i><i></i>"); log.append(t); scrollDown();
       await wait(reduce ? 0 : 900 + Math.min(1400, body.length * 14));
       if (closed) return;
-      t.className = "kkp-b you"; t.textContent = body; scrollDown();
+      clock = new Date(clock.getTime() + 60000);
+      st.textContent = lang === "hi" ? "ऑनलाइन" : "online";
+      t.className = "kkp-b you"; t.innerHTML = `${esc(body)}<small>${hm(clock)}</small>`; scrollDown();
       await wait(reduce ? 0 : 500);
     } else {
       const f = el("div", "kkp-b you img", `<img src="${body}" alt="" loading="eager">`); log.append(f); scrollDown(); await wait(reduce ? 0 : 400);

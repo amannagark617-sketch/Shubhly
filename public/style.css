@@ -1534,3 +1534,29 @@ img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
 .btn-wa:hover, .gv-share.btn-wa:hover, .sc-paper .gv-share.btn-wa:hover { background: #f4faf6; border-color: #25D366; }
 .btn-wa .wa-ic { background: none; border-radius: 0; padding: 0; width: 26px; height: 26px; }
 .gv-share .wa-ic { width: 20px; height: 20px; }
+
+/* ---- Chat popup, centred, WhatsApp-style ---- */
+.kkp { position: fixed; inset: 0; left: 0; bottom: 0; z-index: 90; width: auto; display: grid; place-items: center; padding: 16px; transform: none; }
+.kkp.in { transform: none; }
+.kkp-back { position: absolute; inset: 0; background: rgba(10, 14, 30, .62); }
+.kkp-glow, .kkp-spark { display: none; }
+.kkp-card { position: relative; width: min(390px, 100%); background: #efeae2; border: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 30px 80px rgba(0, 0, 0, .5); transform: translateY(16px) scale(.97); transition: transform .35s cubic-bezier(.2, .9, .3, 1.1); }
+.kkp.in .kkp-card { transform: none; }
+.kkp-head { display: flex; align-items: center; gap: 10px; padding: 10px 52px 10px 10px; background: #075e54; color: #fff; }
+.kkp-head img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; box-shadow: none; background: #fff; }
+.kkp-head b { font-size: 1rem; } .kkp-head span { color: #cfeee8; font-size: .8rem; display: block; }
+.kkp-x { position: absolute; top: 8px; right: 8px; z-index: 3; width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, .2); color: #fff; font-size: 1.6rem; }
+.kkp-x:hover { background: rgba(255, 255, 255, .35); }
+.kkp-log { background: #efeae2; padding: 12px 12px 8px; max-height: min(58vh, 420px); min-height: 200px; gap: 6px; }
+.kkp-day { align-self: center; background: #fff; color: #54656f; font-size: .75rem; padding: 4px 10px; border-radius: 8px; box-shadow: 0 1px 1px rgba(0, 0, 0, .1); margin-bottom: 4px; }
+.kkp-b { position: relative; max-width: 84%; border-radius: 9px; padding: 7px 10px 6px; font-size: .95rem; line-height: 1.4; color: #111b21; box-shadow: 0 1px 1px rgba(0, 0, 0, .13); }
+.kkp-b small { display: flex; justify-content: flex-end; align-items: center; gap: 4px; margin-top: 2px; font-size: .68rem; color: #667781; }
+.kkp-b.me { align-self: flex-end; background: #d9fdd3; color: #111b21; border-bottom-right-radius: 3px; }
+.kkp-b.you { align-self: flex-start; background: #fff; border-bottom-left-radius: 3px; }
+.kkp-b.typing i { background: #9aa6ad; }
+.kkp-foot { background: #efeae2; border: 0; padding: 4px 12px 10px; }
+.kkp-cta { background: #25d366; color: #06301a; box-shadow: none; border-radius: 8px; font-weight: 700; }
+.kkp-bar { background: #f0f2f5; padding: 10px 12px; } .kkp-bar span { display: block; background: #fff; color: #8696a0; border-radius: 20px; padding: 9px 14px; font-size: .9rem; }
+.kkp-later { position: relative; margin-top: 10px; background: rgba(255, 255, 255, .92); color: #1b1b3a; border-radius: 8px; padding: 9px 22px; font-weight: 600; }
+.kkp { grid-auto-flow: row; align-content: center; justify-items: center; }
+@media (max-width: 640px) { .kkp { left: 0; right: 0; bottom: 0; } .kkp-log { max-height: 50vh; } }
