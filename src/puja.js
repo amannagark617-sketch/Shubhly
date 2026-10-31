@@ -94,7 +94,7 @@ export function renderPujaIndex(origin) {
     const [c1, c2] = ACCENT[s];
     const ph = photo(s);
     return `<a class="pj-card" href="/puja/${s}" style="--pj:${c1};--pj2:${c2}">
-  <span class="pj-card-img">${ph ? `<img src="${ph}" alt="" width="640" height="360" loading="lazy">` : `<b lang="hi">${esc(p.hi.split(" ")[0])}</b>`}</span>
+  <span class="pj-card-img">${ph ? `<img src="${ph}" alt="" width="1600" height="700" loading="lazy">` : `<b lang="hi">${esc(p.hi.split(" ")[0])}</b>`}</span>
   <span class="pj-card-t"><strong>${T(p.en, p.hi)}</strong><small>${T(p.tag_en, p.tag_hi)}</small><em>${T(p.time_en, p.time_hi)} · ${p.samagri.length} ${T("items", "सामग्री")}</em></span></a>`;
   }).join("\n");
   const ld = `  <script type="application/ld+json">${JSON.stringify({
@@ -141,7 +141,7 @@ export function renderPuja(p, origin) {
     `<main class="wrap puja-wrap" style="--pj:${c1};--pj2:${c2}">
 <p class="pj-crumb"><a href="/puja">${T("All pujas", "सभी पूजा")}</a></p>
 ${TOGGLE}
-<div class="pj-hero">${ph ? `<img class="pj-photo" src="${ph}" alt="${esc(p.en)}" width="1200" height="520" fetchpriority="high">` : panel(c1, c2, p)}</div>
+<div class="pj-hero">${ph ? `<img class="pj-photo" src="${ph}" alt="${esc(p.en)}" width="1600" height="700" fetchpriority="high">` : panel(c1, c2, p)}</div>
 <h1>${T(p.en, p.hi)}</h1>
 <p class="post-lead">${T(p.tag_en, p.tag_hi)}</p>
 <div class="pj-glance"><div><b>${p.samagri.length}</b><span>${T("items", "सामग्री")}</span></div><div><b>${p.steps.length}</b><span>${T("steps", "कदम")}</span></div><div><b>${T(p.time_en.replace(/^About /, ""), p.time_hi.replace(/^लगभग /, ""))}</b><span>${T("time", "समय")}</span></div></div>
