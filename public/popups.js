@@ -69,6 +69,28 @@ const POPUPS = [
            ["you", "मुफ़्त है और दो मिनट में तैयार।"],
            ["img", "/img/step-1.png"]] },
     cta: { en: "Make my free kundli", hi: "मेरी मुफ़्त कुंडली बनाएँ" } },
+  { id: "money", paths: [/^\/$/, /^\/kundli/, /^\/rashifal/, /^\/premium/, /^\/blog/], who: KAKA, href: "/kundli",
+    chat: {
+      en: [["me", "Money goes out as fast as it comes in. Is something wrong with my chart?"],
+           ["you", "Not necessarily. A chart shows patterns, like which years favour saving and which favour spending. Knowing them helps you plan."],
+           ["you", "Let us look at yours. Date, time and place of birth is all I need."],
+           ["img", "/img/step-2.png"]],
+      hi: [["me", "पैसा जितनी तेज़ी से आता है उतनी ही तेज़ी से चला जाता है। क्या मेरी कुंडली में कुछ गड़बड़ है?"],
+           ["you", "ज़रूरी नहीं। कुंडली पैटर्न दिखाती है, जैसे कौन-से साल बचत के हैं और कौन-से खर्च के। यह जानकर आप बेहतर योजना बना सकते हैं।"],
+           ["you", "चलिए आपकी देखते हैं। बस जन्म की तारीख, समय और जगह चाहिए।"],
+           ["img", "/img/step-2.png"]] },
+    cta: { en: "See my money timing", hi: "मेरे धन का समय देखें" } },
+  { id: "love", paths: [/^\/$/, /^\/match/, /^\/rashifal/, /^\/tarot/], who: KAKA, href: "/match",
+    chat: {
+      en: [["me", "We keep fighting over small things. Are we even right for each other?"],
+           ["you", "Fights over small things often come from different natures, not a wrong person. Comparing both charts shows where you fit and where you need patience."],
+           ["you", "Add both birth details and I will show you."],
+           ["img", "/img/step-2.png"]],
+      hi: [["me", "हम छोटी-छोटी बातों पर झगड़ते हैं। क्या हम एक-दूसरे के लिए सही हैं?"],
+           ["you", "छोटी बातों पर झगड़ा अक्सर अलग स्वभाव से होता है, गलत इंसान से नहीं। दोनों कुंडलियाँ देखने से पता चलता है कि कहाँ मेल है और कहाँ धैर्य चाहिए।"],
+           ["you", "दोनों की जन्म जानकारी डालिए, मैं दिखाता हूँ।"],
+           ["img", "/img/step-2.png"]] },
+    cta: { en: "Compare our charts", hi: "हमारी कुंडलियाँ मिलाएँ" } },
 ];
 
 const path = location.pathname;
@@ -91,8 +113,13 @@ const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls)
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// If a finished conversation picture exists (public/img/popups/<id>.png, and <id>-hi.png for Hindi), show it instead of the typed chat.
+const loadPic = (src) => new Promise((res) => { const i = new Image(); i.onload = () => res(i.naturalWidth ? src : null); i.onerror = () => res(null); i.src = src; });
+
 async function show(p) {
   store.sset("kk.pop.shown", "1");
+  const pic = await loadPic(`/img/popups/${p.id}${lang === "hi" ? "-hi" : ""}.png`);
+  if (pic) return showPic(p, pic);
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const root = el("aside", "kkp");
   root.setAttribute("role", "dialog"); root.setAttribute("aria-label", p.who.name[lang]);
@@ -136,6 +163,25 @@ async function show(p) {
   }
   if (closed) return;
   foot.hidden = false; scrollDown();
+}
+
+function showPic(p, src) {
+  const root = el("aside", "kkp kkp-picmode");
+  root.setAttribute("role", "dialog"); root.setAttribute("aria-label", p.who.name[lang]);
+  root.innerHTML = `<div class="kkp-glow" aria-hidden="true"></div>
+    <div class="kkp-spark" aria-hidden="true">${Array.from({ length: 9 }, (_, i) => `<i style="--i:${i}"></i>`).join("")}</div>
+    <div class="kkp-card"><button type="button" class="kkp-x" aria-label="${lang === "hi" ? "बंद करें" : "Close"}">×</button>
+      <img class="kkp-pic" src="${src}" alt="">
+      <div class="kkp-foot"><a class="kkp-cta" href="${p.href}">${esc(p.cta[lang])}</a><button type="button" class="kkp-later">${lang === "hi" ? "अभी नहीं" : "Not now"}</button></div></div>`;
+  document.body.append(root);
+  requestAnimationFrame(() => root.classList.add("in"));
+  track("popup_view", { id: p.id, mode: "picture" });
+  const done = () => { const m = seenMap(); m[p.id] = Date.now(); store.set(SEEN_KEY, JSON.stringify(m)); };
+  const close = (how) => { done(); track("popup_close", { id: p.id, how }); root.classList.remove("in"); setTimeout(() => root.remove(), 350); };
+  root.querySelector(".kkp-x").onclick = () => close("x");
+  root.querySelector(".kkp-later").onclick = () => close("later");
+  root.querySelector(".kkp-cta").addEventListener("click", () => { track("popup_cta", { id: p.id }); done(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") close("esc"); }, { once: true });
 }
 
 function arm() {

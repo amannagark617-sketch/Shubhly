@@ -1374,3 +1374,7 @@ img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
 @media (prefers-reduced-motion: reduce) { .kkp, .kkp-b, .kkp-glow, .kkp-spark i { animation: none !important; transition: none; } }
 .kkp-log { max-height: min(56vh, 430px); }
 .kkp-b.img img { max-width: 230px; aspect-ratio: 16 / 10; object-fit: cover; }
+.kkp-picmode .kkp-card { position: relative; }
+.kkp-picmode .kkp-x { position: absolute; top: 8px; right: 8px; z-index: 2; background: rgba(27,27,58,.55); }
+.kkp-pic { display: block; width: 100%; height: auto; max-height: 62vh; object-fit: cover; animation: kkpPop .5s ease; }
+@media (min-width: 641px) { .kkp-picmode { width: min(380px, calc(100vw - 24px)); } }
