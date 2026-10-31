@@ -1,0 +1,297 @@
+{
+ "slug": "griha-pravesh",
+ "en": "Griha Pravesh",
+ "hi": "गृह प्रवेश",
+ "tag_en": "A warm housewarming puja when you first enter a new home",
+ "tag_hi": "नए घर में पहली बार प्रवेश पर की जाने वाली सरल पूजा",
+ "when_en": "It is done when a family moves into a newly built or newly bought home for the first time, before settling in. The day and time (muhurat) are usually chosen with a pandit's guidance.",
+ "when_hi": "यह तब की जाती है जब परिवार पहली बार नए बने या नए ख़रीदे घर में रहने जाता है, सामान जमाने से पहले। दिन और समय (मुहूर्त) आमतौर पर पंडितजी की सलाह से तय किए जाते हैं।",
+ "time_en": "About 1.5 to 2 hours",
+ "time_hi": "लगभग डेढ़ से 2 घंटे",
+ "intro_en": "Griha Pravesh is a joyful puja to bless a new home with prayer, light and the company of loved ones. Do it with a happy heart; a simple, sincere puja is just as good as a grand one. Families and regions do it a little differently, so where this guide differs from your family's or your pandit's way, please follow theirs. The date and time (muhurat) are best confirmed with a pandit.",
+ "intro_hi": "गृह प्रवेश नए घर को प्रार्थना, रोशनी और अपनों के साथ से शुभ शुरुआत देने की खुशी भरी पूजा है। इसे खुले मन से करें, सादी और सच्ची पूजा भी उतनी ही अच्छी होती है जितनी भव्य पूजा। हर परिवार और क्षेत्र में यह थोड़ा अलग ढंग से होती है, इसलिए जहाँ यह गाइड आपके परिवार या पंडितजी की विधि से अलग हो, वहाँ उन्हीं की विधि मानें। तारीख़ और समय (मुहूर्त) पंडितजी से पक्का कर लेना सबसे अच्छा रहता है।",
+ "samagri": [
+  {
+   "en": "Kalash (brass, copper or steel)",
+   "hi": "कलश (पीतल, तांबा या स्टील)",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Filled with water and carried in at entry",
+   "use_hi": "जल भरकर प्रवेश के समय साथ ले जाने के लिए"
+  },
+  {
+   "en": "Mango leaves",
+   "hi": "आम के पत्ते",
+   "qty_en": "7 to 11",
+   "qty_hi": "7 से 11",
+   "use_en": "Placed in the kalash and strung as a toran",
+   "use_hi": "कलश में रखने और तोरण बनाने के लिए"
+  },
+  {
+   "en": "Coconut",
+   "hi": "नारियल",
+   "qty_en": "2",
+   "qty_hi": "2",
+   "use_en": "One for the kalash, one to offer in the puja",
+   "use_hi": "एक कलश के लिए, एक पूजा में चढ़ाने के लिए"
+  },
+  {
+   "en": "Ganesh idol or photo",
+   "hi": "गणेश जी की मूर्ति या तस्वीर",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Worshipped first in the new home",
+   "use_hi": "नए घर में सबसे पहले पूजने के लिए"
+  },
+  {
+   "en": "Lakshmi or family deity picture",
+   "hi": "लक्ष्मी जी या कुलदेवता की तस्वीर",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Placed in the puja corner and worshipped",
+   "use_hi": "पूजा के कोने में रखकर पूजने के लिए"
+  },
+  {
+   "en": "Red or yellow cloth",
+   "hi": "लाल या पीला कपड़ा",
+   "qty_en": "1 metre",
+   "qty_hi": "1 मीटर",
+   "use_en": "Spread on a chowki for the deities",
+   "use_hi": "देवताओं के लिए चौकी पर बिछाने के लिए"
+  },
+  {
+   "en": "Roli, kumkum and haldi",
+   "hi": "रोली, कुमकुम और हल्दी",
+   "qty_en": "1 small packet each",
+   "qty_hi": "हर एक का छोटा पैकेट",
+   "use_en": "For tilak and swastik marks at the door",
+   "use_hi": "तिलक और दरवाज़े पर स्वस्तिक बनाने के लिए"
+  },
+  {
+   "en": "Akshat (whole raw rice)",
+   "hi": "अक्षत (साबुत कच्चे चावल)",
+   "qty_en": "About 200 g",
+   "qty_hi": "लगभग 200 ग्राम",
+   "use_en": "Offered in the puja and sprinkled for blessings",
+   "use_hi": "पूजा में चढ़ाने और आशीर्वाद के लिए छिड़कने के लिए"
+  },
+  {
+   "en": "Marigold flowers and garlands",
+   "hi": "गेंदे के फूल और मालाएँ",
+   "qty_en": "2 garlands and a bowl of loose flowers",
+   "qty_hi": "2 मालाएँ और एक कटोरी खुले फूल",
+   "use_en": "Offered to deities and used for the door toran",
+   "use_hi": "देवताओं को चढ़ाने और दरवाज़े के तोरण के लिए"
+  },
+  {
+   "en": "Rangoli colours or flower petals",
+   "hi": "रंगोली के रंग या फूलों की पंखुड़ियाँ",
+   "qty_en": "1 small packet or 1 bowl",
+   "qty_hi": "1 छोटा पैकेट या 1 कटोरी",
+   "use_en": "For the welcome rangoli at the entrance",
+   "use_hi": "प्रवेश द्वार पर स्वागत की रंगोली बनाने के लिए"
+  },
+  {
+   "en": "Gangajal",
+   "hi": "गंगाजल",
+   "qty_en": "1 small bottle",
+   "qty_hi": "1 छोटी बोतल",
+   "use_en": "Sprinkled in each room to purify the space",
+   "use_hi": "हर कमरे में छिड़ककर स्थान को पवित्र करने के लिए"
+  },
+  {
+   "en": "Incense sticks and dhoop",
+   "hi": "अगरबत्ती और धूप",
+   "qty_en": "1 packet each",
+   "qty_hi": "हर एक का 1 पैकेट",
+   "use_en": "Lit during the puja and in each room",
+   "use_hi": "पूजा में और हर कमरे में जलाने के लिए"
+  },
+  {
+   "en": "Ghee diyas with cotton wicks",
+   "hi": "घी के दीये और रुई की बत्ती",
+   "qty_en": "3 to 5 diyas",
+   "qty_hi": "3 से 5 दीये",
+   "use_en": "One for the puja corner, others for doorway",
+   "use_hi": "एक पूजा कोने के लिए, बाकी द्वार के लिए"
+  },
+  {
+   "en": "Camphor",
+   "hi": "कपूर",
+   "qty_en": "1 small pack",
+   "qty_hi": "1 छोटा पैकेट",
+   "use_en": "Lit for the aarti",
+   "use_hi": "आरती के लिए जलाने के लिए"
+  },
+  {
+   "en": "Small havan kund with havan samagri",
+   "hi": "छोटा हवन कुंड और हवन सामग्री",
+   "qty_en": "1 kund and 1 packet",
+   "qty_hi": "1 कुंड और 1 पैकेट",
+   "use_en": "For the optional small havan",
+   "use_hi": "वैकल्पिक छोटे हवन के लिए"
+  },
+  {
+   "en": "Ghee and mango or havan wood sticks",
+   "hi": "घी और आम या हवन की लकड़ी",
+   "qty_en": "250 g ghee and 1 bundle",
+   "qty_hi": "250 ग्राम घी और 1 गट्ठर",
+   "use_en": "Fuel and offering for the havan fire",
+   "use_hi": "हवन की अग्नि के ईंधन और आहुति के लिए"
+  },
+  {
+   "en": "Milk, rice and sugar",
+   "hi": "दूध, चावल और चीनी",
+   "qty_en": "1 litre milk, 100 g rice, 100 g sugar",
+   "qty_hi": "1 लीटर दूध, 100 ग्राम चावल, 100 ग्राम चीनी",
+   "use_en": "For boiling milk and making kheer in the kitchen",
+   "use_hi": "रसोई में दूध उबालने और खीर बनाने के लिए"
+  },
+  {
+   "en": "New pot or pan",
+   "hi": "नया बर्तन या पतीला",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Used to boil milk on the new stove",
+   "use_hi": "नए चूल्हे पर दूध उबालने के लिए"
+  },
+  {
+   "en": "Fruits and sweets",
+   "hi": "फल और मिठाई",
+   "qty_en": "5 fruits and 500 g sweets",
+   "qty_hi": "5 फल और 500 ग्राम मिठाई",
+   "use_en": "Offered to deities and shared as prasad",
+   "use_hi": "देवताओं को चढ़ाने और प्रसाद में बाँटने के लिए"
+  },
+  {
+   "en": "Moli (red sacred thread)",
+   "hi": "मौली (कलावा)",
+   "qty_en": "1 reel",
+   "qty_hi": "1 रील",
+   "use_en": "Tied on the kalash and on wrists",
+   "use_hi": "कलश पर और कलाई पर बाँधने के लिए"
+  }
+ ],
+ "before_en": [
+  "Confirm the date and muhurat with a pandit a few days earlier.",
+  "Clean the whole house, including the kitchen, and keep the puja corner ready.",
+  "Keep the water, electricity and gas connections working before you enter.",
+  "Shift a few essentials first, such as the deity pictures, a lamp, and a pot for milk.",
+  "Invite relatives and close friends, and plan a simple meal or sweets for them."
+ ],
+ "before_hi": [
+  "कुछ दिन पहले पंडितजी से तारीख़ और मुहूर्त पक्का कर लें।",
+  "पूरे घर की, रसोई समेत, सफ़ाई करें और पूजा का कोना तैयार रखें।",
+  "प्रवेश से पहले पानी, बिजली और गैस के कनेक्शन चालू करवा लें।",
+  "कुछ ज़रूरी चीज़ें पहले ले जाएँ, जैसे देवताओं की तस्वीरें, दीया और दूध उबालने का बर्तन।",
+  "रिश्तेदारों और क़रीबी दोस्तों को बुलाएँ और उनके लिए सादा भोजन या मिठाई की योजना बना लें।"
+ ],
+ "steps": [
+  {
+   "title_en": "Gather at the door",
+   "title_hi": "दरवाज़े पर इकट्ठा हों",
+   "en": "At the chosen time, the family gathers outside the main door with the kalash, puja thali and the deity pictures. Keep the mood calm and happy.",
+   "hi": "तय समय पर पूरा परिवार कलश, पूजा की थाली और देवताओं की तस्वीरों के साथ मुख्य दरवाज़े के बाहर इकट्ठा हो। माहौल शांत और खुशनुमा रखें।"
+  },
+  {
+   "title_en": "Decorate the entrance",
+   "title_hi": "प्रवेश द्वार सजाएँ",
+   "en": "Make a small rangoli and draw a swastik with roli or haldi on both sides of the door. Hang the mango leaf and marigold toran on the door frame.",
+   "hi": "छोटी रंगोली बनाएँ और दरवाज़े के दोनों ओर रोली या हल्दी से स्वस्तिक बनाएँ। चौखट पर आम के पत्तों और गेंदे के फूलों का तोरण लगाएँ।"
+  },
+  {
+   "title_en": "Prepare the kalash",
+   "title_hi": "कलश तैयार करें",
+   "en": "Fill the kalash with water and a little rice and a coin, place mango leaves and coconut on top, and tie moli. The lady of the house usually carries it in.",
+   "hi": "कलश में जल, थोड़े चावल और एक सिक्का डालें, ऊपर आम के पत्ते और नारियल रखें और मौली बाँधें। आमतौर पर घर की महिला इसे लेकर भीतर जाती हैं।"
+  },
+  {
+   "title_en": "Enter with the right foot",
+   "title_hi": "दाहिना पैर रखकर प्रवेश",
+   "en": "Break the coconut only if your family does so, and step in with the right foot first, carrying the kalash. Others follow, with the eldest or the head of the family close behind.",
+   "hi": "यदि आपके परिवार में परंपरा हो तभी नारियल फोड़ें, और कलश लेकर पहले दाहिना पैर भीतर रखें। बाकी लोग पीछे आएँ, घर के बड़े या मुखिया साथ में रहें।"
+  },
+  {
+   "title_en": "Light the lamp in the puja corner",
+   "title_hi": "पूजा के कोने में दीप जलाएँ",
+   "en": "Spread the cloth, place the Ganesh and Lakshmi or family deity pictures, and light the ghee diya and incense. Place the kalash beside them.",
+   "hi": "कपड़ा बिछाएँ, गणेश जी और लक्ष्मी जी या कुलदेवता की तस्वीरें रखें, और घी का दीया व अगरबत्ती जलाएँ। कलश को पास में रखें।"
+  },
+  {
+   "title_en": "Sankalp (intention)",
+   "title_hi": "संकल्प",
+   "en": "Hold water and rice in your right hand and say, in your own words, that you are entering this home with gratitude and wish to begin well. Let the water fall into a plate.",
+   "hi": "दाएँ हाथ में जल और चावल लेकर अपने शब्दों में कहें कि आप आभार के साथ इस घर में आए हैं और अच्छी शुरुआत करना चाहते हैं। फिर जल थाली में छोड़ दें।"
+  },
+  {
+   "title_en": "Worship Ganesh ji",
+   "title_hi": "गणेश पूजन",
+   "en": "Offer tilak, flowers and rice to Ganesh ji and chant Om Gam Ganapataye Namah several times. Offer a sweet and fold your hands.",
+   "hi": "गणेश जी को तिलक, फूल और चावल चढ़ाएँ और ॐ गं गणपतये नमः कई बार बोलें। मिठाई चढ़ाकर हाथ जोड़ें।"
+  },
+  {
+   "title_en": "Worship Lakshmi ji and the family deity",
+   "title_hi": "लक्ष्मी जी और कुलदेवता की पूजा",
+   "en": "Offer tilak, flowers, rice, fruits and sweets to Lakshmi ji and your family deity. Say a simple prayer for peace and happiness in the home.",
+   "hi": "लक्ष्मी जी और कुलदेवता को तिलक, फूल, चावल, फल और मिठाई अर्पित करें। घर में शांति और खुशी के लिए सरल प्रार्थना करें।"
+  },
+  {
+   "title_en": "Small havan (optional)",
+   "title_hi": "छोटा हवन (वैकल्पिक)",
+   "en": "If you wish, light a small fire in the havan kund with wood and ghee. Offer a little havan samagri with each Om Gam Ganapataye Namah, keeping the room ventilated.",
+   "hi": "चाहें तो हवन कुंड में लकड़ी और घी से छोटी अग्नि जलाएँ। हर बार ॐ गं गणपतये नमः बोलकर थोड़ी हवन सामग्री डालें, और कमरे में हवा आने दें।"
+  },
+  {
+   "title_en": "Sprinkle Gangajal in each room",
+   "title_hi": "हर कमरे में गंगाजल",
+   "en": "Walk through every room with a little Gangajal and a diya or incense. Sprinkle a few drops gently and keep the windows open.",
+   "hi": "थोड़ा गंगाजल और दीया या अगरबत्ती लेकर हर कमरे में जाएँ। कुछ बूँदें धीरे से छिड़कें और खिड़कियाँ खुली रखें।"
+  },
+  {
+   "title_en": "Boil milk in the kitchen",
+   "title_hi": "रसोई में दूध उबालें",
+   "en": "Light the stove, pour milk into the new pot and let it boil over, as a sign of abundance. Use it to make kheer for everyone.",
+   "hi": "चूल्हा जलाएँ, नए बर्तन में दूध डालें और उसे उबलकर बाहर आने दें, जो भरपूरी का प्रतीक माना जाता है। इसी से सबके लिए खीर बनाएँ।"
+  },
+  {
+   "title_en": "Aarti and prasad",
+   "title_hi": "आरती और प्रसाद",
+   "en": "Light the camphor and sing the aarti together. Share the kheer, fruits and sweets, and sit down for a meal with family and guests.",
+   "hi": "कपूर जलाएँ और सब मिलकर आरती गाएँ। खीर, फल और मिठाई बाँटें और परिवार व मेहमानों के साथ बैठकर भोजन करें।"
+  }
+ ],
+ "mantra": {
+  "sa": "ॐ गं गणपतये नमः",
+  "tr": "Om Gam Ganapataye Namah",
+  "en": "I bow to Lord Ganesha, the remover of obstacles.",
+  "hi": "मैं विघ्नों को दूर करने वाले भगवान गणेश को प्रणाम करता हूँ।"
+ },
+ "tips_en": [
+  "Keep one person in charge of the thali and another for photos, so no one is rushing.",
+  "Have the havan done near a window or the door, and keep a bowl of water nearby.",
+  "Spend the first night in the new home if you can, as many families like to.",
+  "Keep the milk pot large enough, so that it does not spill over the new stove top.",
+  "Keep a small lamp lit in the puja corner through the first evening.",
+  "Thank the helpers, such as painters and carpenters, with sweets if you like."
+ ],
+ "tips_hi": [
+  "थाली की ज़िम्मेदारी एक व्यक्ति और फ़ोटो की दूसरे को दे दें, ताकि कोई हड़बड़ी में न रहे।",
+  "हवन खिड़की या दरवाज़े के पास करें और पास में पानी का कटोरा रखें।",
+  "हो सके तो पहली रात नए घर में ही बिताएँ, कई परिवार ऐसा पसंद करते हैं।",
+  "दूध का बर्तन बड़ा रखें ताकि नए चूल्हे पर दूध गिरकर न फैले।",
+  "पहली शाम पूजा के कोने में एक छोटा दीया जलता रहने दें।",
+  "चाहें तो पेंटर, कारपेंटर जैसे साथ काम करने वालों को मिठाई देकर धन्यवाद कहें।"
+ ],
+ "avoid_en": [
+  "Do not fix the date by yourself; ask a pandit about the muhurat.",
+  "Do not enter an unfinished house with open wiring or loose floors.",
+  "Do not leave the havan fire or diyas unattended, especially around children.",
+  "Do not stress over perfection; a calm and sincere puja is enough."
+ ],
+ "avoid_hi": [
+  "तारीख़ अपने आप तय न करें, मुहूर्त के लिए पंडितजी से पूछ लें।",
+  "अधूरे घर में न जाएँ जहाँ खुली वायरिंग हो या फ़र्श ढीला हो।",
+  "हवन की अग्नि या दीयों को, ख़ासकर बच्चों के आसपास, अकेला न छोड़ें।",
+  "हर चीज़ के परफ़ेक्ट होने का तनाव न लें, शांत और सच्ची पूजा काफ़ी है।"
+ ]
+}

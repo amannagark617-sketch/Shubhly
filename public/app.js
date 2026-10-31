@@ -1121,6 +1121,7 @@ function setLanguage(l, { first = false } = {}) {
   store.set("shubhly.lang", lang);
   document.documentElement.lang = lang === "hn" ? "en" : lang;
   setDateLocale(DATE_LOCALE[lang] || "en-IN");
+  document.dispatchEvent(new Event("kk:lang"));
   applyStatic();
   decorateHero();
   renderOnline();

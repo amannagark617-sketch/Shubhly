@@ -1,0 +1,281 @@
+{
+ "slug": "hanuman",
+ "en": "Hanuman Puja",
+ "hi": "हनुमान पूजा",
+ "tag_en": "A simple puja to remember Hanuman ji's devotion, courage and strength",
+ "tag_hi": "हनुमान जी की भक्ति, साहस और बल को याद करने की सरल पूजा",
+ "when_en": "Usually done on Tuesdays and Saturdays, which are dear to Hanuman ji. It is also done with extra joy on Hanuman Jayanti.",
+ "when_hi": "आमतौर पर मंगलवार और शनिवार को की जाती है, जो हनुमान जी को प्रिय माने जाते हैं। हनुमान जयंती पर इसे विशेष उत्साह से किया जाता है।",
+ "time_en": "About 30 minutes",
+ "time_hi": "लगभग 30 मिनट",
+ "intro_en": "Hanuman ji is remembered for his devotion to Shri Ram, his courage and his humble service. This puja is a simple way to pray, feel steady and thank him. Families and regions do it a little differently, so wherever your family or pandit ji does something another way, please follow that.",
+ "intro_hi": "हनुमान जी को श्रीराम के प्रति भक्ति, साहस और विनम्र सेवा के लिए याद किया जाता है। यह पूजा प्रार्थना करने, मन में स्थिरता महसूस करने और उन्हें धन्यवाद कहने का एक सरल तरीका है। हर परिवार और हर क्षेत्र में पूजा थोड़ी अलग तरह से होती है, इसलिए जहाँ आपके परिवार या पंडित जी की विधि अलग हो, वहाँ उसी का पालन करें।",
+ "samagri": [
+  {
+   "en": "Hanuman ji idol or picture",
+   "hi": "हनुमान जी की मूर्ति या तस्वीर",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "The main image you will worship",
+   "use_hi": "मुख्य रूप से पूजी जाने वाली प्रतिमा"
+  },
+  {
+   "en": "Ram Darbar or Ram-Sita picture",
+   "hi": "राम दरबार या राम-सीता की तस्वीर",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Hanuman ji is worshipped along with Shri Ram",
+   "use_hi": "हनुमान जी की पूजा श्रीराम के साथ की जाती है"
+  },
+  {
+   "en": "Wooden chowki or clean platform",
+   "hi": "लकड़ी की चौकी या साफ़ स्थान",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Place where the images are seated",
+   "use_hi": "जहाँ तस्वीर या मूर्ति विराजमान की जाती है"
+  },
+  {
+   "en": "Red or saffron cloth",
+   "hi": "लाल या केसरिया कपड़ा",
+   "qty_en": "1 piece",
+   "qty_hi": "1 टुकड़ा",
+   "use_en": "Spread on the chowki as a seat",
+   "use_hi": "चौकी पर आसन की तरह बिछाने के लिए"
+  },
+  {
+   "en": "Kalash or small pot with water",
+   "hi": "जल भरा कलश या छोटा लोटा",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Clean water for sprinkling and aachman",
+   "use_hi": "छिड़काव और आचमन के लिए साफ़ जल"
+  },
+  {
+   "en": "Diya (clay lamp)",
+   "hi": "दीया",
+   "qty_en": "2",
+   "qty_hi": "2",
+   "use_en": "Lit during the puja and aarti",
+   "use_hi": "पूजा और आरती में जलाने के लिए"
+  },
+  {
+   "en": "Sesame or mustard oil, or ghee",
+   "hi": "तिल या सरसों का तेल, या घी",
+   "qty_en": "50 ml",
+   "qty_hi": "50 मिली",
+   "use_en": "Fuel for the diya as per family custom",
+   "use_hi": "परिवार की परंपरा के अनुसार दीये के लिए"
+  },
+  {
+   "en": "Cotton wicks",
+   "hi": "रुई की बत्तियाँ",
+   "qty_en": "4",
+   "qty_hi": "4",
+   "use_en": "Used for the diya and aarti",
+   "use_hi": "दीया और आरती के लिए"
+  },
+  {
+   "en": "Incense sticks",
+   "hi": "अगरबत्ती",
+   "qty_en": "1 small packet",
+   "qty_hi": "1 छोटा पैकेट",
+   "use_en": "Lit to fill the space with fragrance",
+   "use_hi": "वातावरण को सुगंधित करने के लिए"
+  },
+  {
+   "en": "Sindoor with a little oil",
+   "hi": "सिंदूर और थोड़ा तेल",
+   "qty_en": "2 teaspoons",
+   "qty_hi": "2 चम्मच",
+   "use_en": "Offered to Hanuman ji as per tradition",
+   "use_hi": "परंपरा के अनुसार हनुमान जी को चढ़ाने के लिए"
+  },
+  {
+   "en": "Chandan or roli",
+   "hi": "चंदन या रोली",
+   "qty_en": "1 teaspoon",
+   "qty_hi": "1 चम्मच",
+   "use_en": "Used for tilak on the idol and yourself",
+   "use_hi": "मूर्ति और स्वयं को तिलक लगाने के लिए"
+  },
+  {
+   "en": "Akshat (whole rice grains)",
+   "hi": "अक्षत (साबुत चावल)",
+   "qty_en": "1 handful",
+   "qty_hi": "1 मुट्ठी",
+   "use_en": "Offered along with tilak and flowers",
+   "use_hi": "तिलक और फूलों के साथ चढ़ाने के लिए"
+  },
+  {
+   "en": "Red flowers such as marigold or hibiscus",
+   "hi": "लाल फूल जैसे गेंदा या गुड़हल",
+   "qty_en": "1 small bunch",
+   "qty_hi": "1 छोटा गुच्छा",
+   "use_en": "Offered to Hanuman ji with devotion",
+   "use_hi": "श्रद्धा से हनुमान जी को अर्पित करने के लिए"
+  },
+  {
+   "en": "Tulsi leaves",
+   "hi": "तुलसी के पत्ते",
+   "qty_en": "5 to 7 leaves",
+   "qty_hi": "5 से 7 पत्ते",
+   "use_en": "Offered to Shri Ram and Hanuman ji",
+   "use_hi": "श्रीराम और हनुमान जी को चढ़ाने के लिए"
+  },
+  {
+   "en": "Boondi laddoo or gud-chana",
+   "hi": "बूँदी के लड्डू या गुड़-चना",
+   "qty_en": "1 small bowl",
+   "qty_hi": "1 छोटी कटोरी",
+   "use_en": "Offered as bhog and shared as prasad",
+   "use_hi": "भोग लगाने और प्रसाद बाँटने के लिए"
+  },
+  {
+   "en": "Bananas",
+   "hi": "केले",
+   "qty_en": "2 to 4",
+   "qty_hi": "2 से 4",
+   "use_en": "Offered as fruit bhog",
+   "use_hi": "फल के भोग के रूप में चढ़ाने के लिए"
+  },
+  {
+   "en": "Hanuman Chalisa book or phone",
+   "hi": "हनुमान चालीसा की पुस्तक या फ़ोन",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "For reading the Chalisa aloud",
+   "use_hi": "चालीसा पढ़ने के लिए"
+  },
+  {
+   "en": "Camphor and aarti plate",
+   "hi": "कपूर और आरती की थाली",
+   "qty_en": "2 to 3 tablets",
+   "qty_hi": "2 से 3 टिकिया",
+   "use_en": "Lit for the final aarti",
+   "use_hi": "अंत की आरती के लिए जलाने के लिए"
+  }
+ ],
+ "before_en": [
+  "Clean the puja space and wipe the chowki or platform.",
+  "Keep sindoor, oil, flowers and prasad ready the evening before.",
+  "If you wish to fast, decide it gently as per your health and family custom.",
+  "Place the Chalisa book where it is easy to reach, or download it on your phone.",
+  "Wake up a little early so there is no rush in the morning."
+ ],
+ "before_hi": [
+  "पूजा की जगह साफ़ करें और चौकी या चबूतरे को पोंछ लें।",
+  "सिंदूर, तेल, फूल और प्रसाद की सामग्री शाम को ही तैयार रख लें।",
+  "अगर व्रत रखना चाहें तो अपनी सेहत और परिवार की परंपरा के अनुसार आराम से तय करें।",
+  "चालीसा की पुस्तक ऐसी जगह रखें जहाँ से आसानी से उठ जाए, या फ़ोन में खोलकर रख लें।",
+  "थोड़ा जल्दी उठें ताकि सुबह जल्दबाज़ी न हो।"
+ ],
+ "steps": [
+  {
+   "title_en": "Bathe and dress",
+   "title_hi": "स्नान और वस्त्र",
+   "en": "Take a bath and wear clean, simple clothes. Many people prefer red or saffron, but any clean clothes are fine.",
+   "hi": "स्नान करके साफ़ और सादे कपड़े पहनें। कई लोग लाल या केसरिया रंग पसंद करते हैं, पर कोई भी साफ़ कपड़े ठीक हैं।"
+  },
+  {
+   "title_en": "Set up the chowki",
+   "title_hi": "चौकी सजाएँ",
+   "en": "Spread the red or saffron cloth on the chowki and place Shri Ram's picture and Hanuman ji on it. Hanuman ji is usually kept facing south or as per your family way.",
+   "hi": "चौकी पर लाल या केसरिया कपड़ा बिछाएँ और उस पर श्रीराम की तस्वीर और हनुमान जी को स्थापित करें। हनुमान जी को आमतौर पर दक्षिण की ओर मुख करके रखा जाता है, या अपने परिवार की रीति से रखें।"
+  },
+  {
+   "title_en": "Sit and take a sankalp",
+   "title_hi": "बैठकर संकल्प लें",
+   "en": "Sit on a mat facing the idol. Take a little water in your palm and say in your own words that you are doing this puja with devotion and thanks.",
+   "hi": "आसन पर मूर्ति की ओर मुख करके बैठें। हथेली में थोड़ा जल लेकर अपने शब्दों में कहें कि आप भक्ति और धन्यवाद के भाव से यह पूजा कर रहे हैं।"
+  },
+  {
+   "title_en": "Light the diya and incense",
+   "title_hi": "दीया और अगरबत्ती जलाएँ",
+   "en": "Light the diya with oil or ghee and the incense sticks. Place the diya on the right side of the idol.",
+   "hi": "तेल या घी का दीया और अगरबत्ती जलाएँ। दीये को मूर्ति के दाहिनी ओर रखें।"
+  },
+  {
+   "title_en": "Sprinkle water",
+   "title_hi": "जल छिड़कें",
+   "en": "Sprinkle a few drops of clean water on the idols and around the puja area. Take a small sip of water yourself as aachman if your family does so.",
+   "hi": "मूर्तियों पर और पूजा स्थान के चारों ओर साफ़ जल की कुछ बूँदें छिड़कें। अगर आपके यहाँ परंपरा हो तो आचमन के लिए स्वयं भी थोड़ा जल लें।"
+  },
+  {
+   "title_en": "Offer tilak to Shri Ram and Hanuman ji",
+   "title_hi": "तिलक लगाएँ",
+   "en": "First put a tilak of chandan on Shri Ram, then offer sindoor mixed with a little oil to Hanuman ji with your ring finger. Put a small tilak on your own forehead too.",
+   "hi": "पहले श्रीराम को चंदन का तिलक लगाएँ, फिर थोड़े तेल में मिला सिंदूर अनामिका उँगली से हनुमान जी को अर्पित करें। अपने माथे पर भी छोटा तिलक लगा लें।"
+  },
+  {
+   "title_en": "Offer flowers, akshat and tulsi",
+   "title_hi": "फूल, अक्षत और तुलसी",
+   "en": "Offer red flowers and a pinch of akshat to Hanuman ji. Place the tulsi leaves at the feet of Shri Ram with folded hands.",
+   "hi": "हनुमान जी को लाल फूल और चुटकी भर अक्षत अर्पित करें। हाथ जोड़कर तुलसी के पत्ते श्रीराम के चरणों में रखें।"
+  },
+  {
+   "title_en": "Chant the mantra",
+   "title_hi": "मंत्र जाप",
+   "en": "Chant the Hanuman mantra 11 or 21 times in a steady, quiet voice. Count on your fingers or with a mala if you have one.",
+   "hi": "हनुमान मंत्र 11 या 21 बार स्थिर और धीमी आवाज़ में बोलें। उँगलियों पर या माला हो तो उस पर गिनती करें।"
+  },
+  {
+   "title_en": "Read the Hanuman Chalisa",
+   "title_hi": "हनुमान चालीसा पढ़ें",
+   "en": "Read the Hanuman Chalisa aloud once, slowly. If it is difficult, read along with an audio or a family member, as sincerity matters more than speed.",
+   "hi": "हनुमान चालीसा एक बार धीरे-धीरे ज़ोर से पढ़ें। कठिन लगे तो ऑडियो या परिवार के किसी सदस्य के साथ पढ़ लें, क्योंकि गति से ज़्यादा भाव मायने रखता है।"
+  },
+  {
+   "title_en": "Offer bhog",
+   "title_hi": "भोग लगाएँ",
+   "en": "Place the laddoo or gud-chana and bananas on a clean plate. Offer them with folded hands, first to Shri Ram and then to Hanuman ji.",
+   "hi": "बूँदी के लड्डू या गुड़-चना और केले साफ़ थाली में रखें। हाथ जोड़कर पहले श्रीराम को और फिर हनुमान जी को भोग अर्पित करें।"
+  },
+  {
+   "title_en": "Do the aarti",
+   "title_hi": "आरती करें",
+   "en": "Light the camphor on the aarti plate and wave it clockwise before the idols while singing Hanuman ji's aarti. Everyone at home can join in.",
+   "hi": "आरती की थाली में कपूर जलाएँ और हनुमान जी की आरती गाते हुए मूर्तियों के सामने घड़ी की दिशा में घुमाएँ। घर के सब लोग साथ गा सकते हैं।"
+  },
+  {
+   "title_en": "Close and share prasad",
+   "title_hi": "समापन और प्रसाद",
+   "en": "Bow down with a short, thankful prayer for strength and a good heart. Share the prasad with everyone at home and with neighbours if you like.",
+   "hi": "प्रणाम करके शक्ति और अच्छे मन के लिए छोटी सी धन्यवाद-प्रार्थना करें। प्रसाद घर में सबको और चाहें तो पड़ोसियों को भी बाँटें।"
+  }
+ ],
+ "mantra": {
+  "sa": "ॐ हं हनुमते नमः",
+  "tr": "Om Hum Hanumate Namah",
+  "en": "I bow to Hanuman ji, the devoted servant of Shri Ram.",
+  "hi": "मैं श्रीराम के भक्त हनुमान जी को प्रणाम करता हूँ।"
+ },
+ "tips_en": [
+  "Tuesday or Saturday morning, or the day of Hanuman Jayanti, are the usual times, but any calm time is welcome.",
+  "Keep the puja simple; a diya, flowers, a little prasad and a sincere prayer are enough.",
+  "Read the Chalisa with children so they learn it slowly and happily.",
+  "Use a small steel or brass plate for bhog and keep it clean.",
+  "If you are doing a fast, keep it light and listen to your body.",
+  "Share the prasad at home or with neighbours so that the day feels joyful."
+ ],
+ "tips_hi": [
+  "मंगलवार या शनिवार की सुबह, या हनुमान जयंती का दिन आम तौर पर चुना जाता है, पर कोई भी शांत समय ठीक है।",
+  "पूजा सरल रखें; एक दीया, फूल, थोड़ा प्रसाद और सच्ची प्रार्थना काफ़ी है।",
+  "बच्चों के साथ चालीसा पढ़ें ताकि वे धीरे-धीरे और खुशी से उसे सीखें।",
+  "भोग के लिए छोटी स्टील या पीतल की थाली रखें और उसे साफ़ रखें।",
+  "अगर व्रत रखें तो हल्का रखें और अपने शरीर की सुनें।",
+  "प्रसाद घर में या पड़ोसियों में बाँटें ताकि दिन आनंद का लगे।"
+ ],
+ "avoid_en": [
+  "Avoid using stale or dry flowers and leftover food for the offering; keep everything fresh and clean.",
+  "Avoid offering anything that is not part of your family's way, such as items you are unsure about.",
+  "Do not rush the Chalisa; it is fine to read a little slowly or stop and continue later.",
+  "Please do not worry about small mistakes; Hanuman ji is remembered for loving devotion, not perfection."
+ ],
+ "avoid_hi": [
+  "बासी या सूखे फूल और बचा हुआ खाना चढ़ावे में न लें; सब कुछ ताज़ा और साफ़ रखें।",
+  "ऐसी कोई चीज़ न चढ़ाएँ जो आपके परिवार की रीति में न हो या जिसके बारे में आप निश्चित न हों।",
+  "चालीसा जल्दबाज़ी में न पढ़ें; थोड़ा धीरे पढ़ना या रुककर बाद में दोबारा शुरू करना भी ठीक है।",
+  "छोटी-मोटी भूल की चिंता न करें; हनुमान जी को प्रेम भरी भक्ति के लिए याद किया जाता है, पूर्णता के लिए नहीं।"
+ ]
+}

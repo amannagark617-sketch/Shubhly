@@ -108,3 +108,26 @@ test("a chapter page shows the explanation", () => {
   assert.match(html, /What Krishna meant/);
   assert.match(html, /gv-ex-hi/);
 });
+
+import { renderPuja, renderPujaIndex, loadPujas, ORDER } from "../src/puja.js";
+import { buildMyDay } from "../src/myday.js";
+
+test("every puja guide has samagri, steps and both languages", () => {
+  const all = loadPujas();
+  for (const s of ORDER) {
+    const p = all[s];
+    assert.ok(p.samagri.length >= 14 && p.steps.length >= 10, s);
+    assert.equal(p.before_en.length, p.before_hi.length);
+    assert.equal(p.tips_en.length, p.tips_hi.length);
+    assert.ok(renderPuja(p, "https://x.test").includes("Step by step"));
+  }
+  assert.ok(renderPujaIndex("https://x.test").includes("/puja/lakshmi"));
+});
+
+test("my day gives do, avoid, wear and times", () => {
+  const birth = { year: 1995, month: 5, day: 12, hour: 9, minute: 30, lat: 28.6, lon: 77.2, tz: "Asia/Kolkata" };
+  for (const lang of ["en", "hi"]) {
+    const d = buildMyDay({ name: "Aman", birth, date: "2026-10-31", place: { lat: 28.6, lon: 77.2, tz: "Asia/Kolkata", label: "Delhi" }, lang });
+    assert.ok(d.do.length >= 4 && d.avoid.length >= 4 && d.wear.colours.length >= 1 && d.best.length >= 1);
+  }
+});

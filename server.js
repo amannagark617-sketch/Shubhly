@@ -24,6 +24,8 @@ import { POSTS, POST_BY_SLUG, renderBlogIndex, renderPost } from "./src/blog.js"
 import { verseClip } from "./src/gita-audio.js";
 import { chapterArt, gitaCover } from "./src/gita-art.js";
 import { renderGitaIndex, renderChapter, chapterOf, GITA_PATHS, krishnaReply } from "./src/gita.js";
+import { buildMyDay } from "./src/myday.js";
+import { renderPujaIndex, renderPuja, pujaOf, PUJA_PATHS } from "./src/puja.js";
 import { signReply, verifyReply, speakKrishna, FREE_LISTENS } from "./src/voice.js";
 import { PAGES, SLUGS, signPage, loadShell, renderPage, sitemap } from "./src/pages.js";
 import {
@@ -266,6 +268,25 @@ app.post("/api/kundli", kundliLimit, (req, res, next) => {
   }
 });
 
+// A personal, detailed guide for today from the visitor's own birth details.
+app.post("/api/myday", kundliLimit, (req, res, next) => {
+  try {
+    const birth = parseBirthInput(req.body);
+    const lang = parseLang(req.body?.lang);
+    // today's times are for where the person is now (falls back to the birth place)
+    const h = req.body?.here ?? {};
+    const ok = Number.isFinite(Number(h.lat)) && Math.abs(Number(h.lat)) <= 90 && Number.isFinite(Number(h.lon)) && Math.abs(Number(h.lon)) <= 180 && h.tz && DateTime.now().setZone(String(h.tz)).isValid;
+    const place = ok
+      ? { lat: Number(h.lat), lon: Number(h.lon), tz: String(h.tz), label: String(h.name ?? "").slice(0, 60) }
+      : { lat: birth.lat, lon: birth.lon, tz: birth.tz, label: birth.placeLabel.split(",")[0] };
+    const date = DateTime.now().setZone(place.tz).toISODate();
+    const out = buildMyDay({ name: cleanName(req.body?.name), birth, date, place, lang: lang === "hi" ? "hi" : "en" });
+    res.json(out);
+  } catch (e) {
+    next(e);
+  }
+});
+
 app.post("/api/pdf", kundliLimit, async (req, res, next) => {
   try {
     const birth = parseBirthInput(req.body);
@@ -493,6 +514,13 @@ app.get("/gita/:n", (req, res, next) => {
   res.setHeader("Cache-Control", "no-cache");
   res.type("html").send(renderChapter(c, originOf(req)));
 });
+app.get("/puja", (req, res) => { res.setHeader("Cache-Control", "no-cache"); res.type("html").send(renderPujaIndex(originOf(req))); });
+app.get("/puja/:slug", (req, res, next) => {
+  const p = pujaOf(String(req.params.slug).toLowerCase());
+  if (!p) return next();
+  res.setHeader("Cache-Control", "no-cache");
+  res.type("html").send(renderPuja(p, originOf(req)));
+});
 app.get("/index.html", (_req, res) => res.redirect(301, "/"));
 
 // Each sign has its own address, with today's reading in the page itself.
@@ -514,7 +542,7 @@ app.get("/rashifal/:sign", (req, res, next) => {
 app.get("/robots.txt", (req, res) => {
   res.type("text/plain").send(`User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${originOf(req)}/sitemap.xml\n`);
 });
-app.get("/sitemap.xml", (req, res) => res.type("application/xml").send(sitemap(originOf(req), POSTS, GITA_PATHS())));
+app.get("/sitemap.xml", (req, res) => res.type("application/xml").send(sitemap(originOf(req), POSTS, [...GITA_PATHS(), ...PUJA_PATHS()])));
 
 // ---- static site ---------------------------------------------------------
 app.use(

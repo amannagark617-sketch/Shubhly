@@ -1,0 +1,299 @@
+{
+ "slug": "satyanarayan",
+ "en": "Satyanarayan Puja",
+ "hi": "सत्यनारायण पूजा",
+ "tag_en": "A simple family puja and katha to thank Lord Vishnu",
+ "tag_hi": "भगवान विष्णु का धन्यवाद करने की सरल पारिवारिक पूजा और कथा",
+ "when_en": "Many families do it on Purnima (full-moon day), or to give thanks on a happy occasion such as a new job, a wedding, a new home or a birthday. It is usually done in the morning or the evening.",
+ "when_hi": "बहुत से परिवार इसे पूर्णिमा के दिन करते हैं, या किसी खुशी के मौक़े पर धन्यवाद देने के लिए, जैसे नई नौकरी, शादी, नया घर या जन्मदिन। यह पूजा आमतौर पर सुबह या शाम को की जाती है।",
+ "time_en": "About 2 hours with the katha",
+ "time_hi": "कथा सहित लगभग 2 घंटे",
+ "intro_en": "Satyanarayan Puja is a gentle, family-centred puja in which we remember Lord Vishnu as Truth, offer prasad and listen to the katha together. You do not need to be an expert, as sincerity matters more than perfect rules. Families and regions do this puja a little differently, so where this guide differs from your family's or your pandit's way, please follow theirs.",
+ "intro_hi": "सत्यनारायण पूजा एक सरल पारिवारिक पूजा है, जिसमें हम भगवान विष्णु को सत्य के रूप में याद करते हैं, प्रसाद चढ़ाते हैं और सब मिलकर कथा सुनते हैं। आपको इसका जानकार होना ज़रूरी नहीं, श्रद्धा नियमों की हर बारीकी से ज़्यादा मायने रखती है। हर परिवार और हर क्षेत्र में पूजा थोड़ी अलग तरह से होती है, इसलिए जहाँ यह गाइड आपके परिवार या पंडितजी की विधि से अलग हो, वहाँ उन्हीं की विधि मानें।",
+ "samagri": [
+  {
+   "en": "Satyanarayan photo or idol",
+   "hi": "सत्यनारायण भगवान की तस्वीर या मूर्ति",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Placed on the chowki as the main deity",
+   "use_hi": "चौकी पर मुख्य देवता के रूप में रखी जाती है"
+  },
+  {
+   "en": "Wooden chowki (small platform)",
+   "hi": "लकड़ी की चौकी",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Seat for the deity and kalash",
+   "use_hi": "भगवान और कलश को बिठाने के लिए आसन"
+  },
+  {
+   "en": "Yellow or red cloth",
+   "hi": "पीला या लाल कपड़ा",
+   "qty_en": "1 metre",
+   "qty_hi": "1 मीटर",
+   "use_en": "Spread over the chowki before placing the deity",
+   "use_hi": "देवता रखने से पहले चौकी पर बिछाने के लिए"
+  },
+  {
+   "en": "Kalash (brass, copper or steel)",
+   "hi": "कलश (पीतल, तांबा या स्टील)",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Filled with water and kept beside the deity",
+   "use_hi": "जल भरकर भगवान के पास रखा जाता है"
+  },
+  {
+   "en": "Mango leaves",
+   "hi": "आम के पत्ते",
+   "qty_en": "5 to 7",
+   "qty_hi": "5 से 7",
+   "use_en": "Placed in the mouth of the kalash",
+   "use_hi": "कलश के मुँह पर सजाने के लिए"
+  },
+  {
+   "en": "Coconut",
+   "hi": "नारियल",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Kept on top of the kalash with leaves",
+   "use_hi": "पत्तों के ऊपर कलश पर रखने के लिए"
+  },
+  {
+   "en": "Roli, kumkum and haldi",
+   "hi": "रोली, कुमकुम और हल्दी",
+   "qty_en": "1 small packet each",
+   "qty_hi": "हर एक का छोटा पैकेट",
+   "use_en": "For tilak on the deity, kalash and family",
+   "use_hi": "भगवान, कलश और परिवार को तिलक लगाने के लिए"
+  },
+  {
+   "en": "Akshat (whole raw rice)",
+   "hi": "अक्षत (साबुत कच्चे चावल)",
+   "qty_en": "About 100 g",
+   "qty_hi": "लगभग 100 ग्राम",
+   "use_en": "Offered during the puja and used to seat the kalash",
+   "use_hi": "पूजा में चढ़ाने और कलश के नीचे रखने के लिए"
+  },
+  {
+   "en": "Flowers and a garland",
+   "hi": "फूल और माला",
+   "qty_en": "1 garland and a bowl of loose flowers",
+   "qty_hi": "1 माला और एक कटोरी खुले फूल",
+   "use_en": "Offered to the deity and to Ganesh ji",
+   "use_hi": "भगवान और गणेश जी को अर्पित करने के लिए"
+  },
+  {
+   "en": "Tulsi leaves",
+   "hi": "तुलसी के पत्ते",
+   "qty_en": "11 or more",
+   "qty_hi": "11 या अधिक",
+   "use_en": "Offered to Vishnu and added to the panchamrit",
+   "use_hi": "विष्णु जी को चढ़ाने और पंचामृत में डालने के लिए"
+  },
+  {
+   "en": "Incense sticks and dhoop",
+   "hi": "अगरबत्ती और धूप",
+   "qty_en": "1 packet each",
+   "qty_hi": "हर एक का 1 पैकेट",
+   "use_en": "Lit during the puja for fragrance",
+   "use_hi": "पूजा में सुगंध के लिए जलाने के लिए"
+  },
+  {
+   "en": "Ghee diya with cotton wicks",
+   "hi": "घी का दीया और रुई की बत्ती",
+   "qty_en": "2 diyas",
+   "qty_hi": "2 दीये",
+   "use_en": "One lamp for the deity, one for Ganesh ji",
+   "use_hi": "एक दीया भगवान और एक गणेश जी के लिए"
+  },
+  {
+   "en": "Camphor",
+   "hi": "कपूर",
+   "qty_en": "1 small pack",
+   "qty_hi": "1 छोटा पैकेट",
+   "use_en": "Lit for the aarti at the end",
+   "use_hi": "अंत में आरती के लिए जलाने के लिए"
+  },
+  {
+   "en": "Panchamrit (milk, curd, honey, ghee, sugar)",
+   "hi": "पंचामृत (दूध, दही, शहद, घी, चीनी)",
+   "qty_en": "About 1 cup in all",
+   "qty_hi": "कुल मिलाकर लगभग 1 कप",
+   "use_en": "Offered to the deity and shared as prasad",
+   "use_hi": "भगवान को अर्पित कर प्रसाद में बाँटने के लिए"
+  },
+  {
+   "en": "Sheera or sooji halwa prasad",
+   "hi": "शीरा या सूजी का हलवा (प्रसाद)",
+   "qty_en": "About 250 g sooji with ghee and sugar",
+   "qty_hi": "लगभग 250 ग्राम सूजी, घी और चीनी के साथ",
+   "use_en": "The main bhog offered to Satyanarayan",
+   "use_hi": "सत्यनारायण भगवान को चढ़ने वाला मुख्य भोग"
+  },
+  {
+   "en": "Bananas and other fruits",
+   "hi": "केले और अन्य फल",
+   "qty_en": "1 dozen bananas and 4 to 5 fruits",
+   "qty_hi": "1 दर्जन केले और 4 से 5 फल",
+   "use_en": "Offered with the bhog and shared afterwards",
+   "use_hi": "भोग के साथ चढ़ाने और बाद में बाँटने के लिए"
+  },
+  {
+   "en": "Paan leaves and supari",
+   "hi": "पान के पत्ते और सुपारी",
+   "qty_en": "5 leaves and 5 supari",
+   "qty_hi": "5 पत्ते और 5 सुपारी",
+   "use_en": "Placed near the kalash as an offering",
+   "use_hi": "कलश के पास भेंट के रूप में रखने के लिए"
+  },
+  {
+   "en": "Moli (red sacred thread)",
+   "hi": "मौली (कलावा)",
+   "qty_en": "1 reel",
+   "qty_hi": "1 रील",
+   "use_en": "Tied on the kalash and on wrists",
+   "use_hi": "कलश पर और कलाई पर बाँधने के लिए"
+  },
+  {
+   "en": "Satyanarayan katha book",
+   "hi": "सत्यनारायण कथा की पुस्तक",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Read aloud after the main puja",
+   "use_hi": "मुख्य पूजा के बाद ज़ोर से पढ़ने के लिए"
+  },
+  {
+   "en": "Dakshina (a small amount of money)",
+   "hi": "दक्षिणा (थोड़ी सी राशि)",
+   "qty_en": "As you wish",
+   "qty_hi": "अपनी श्रद्धा अनुसार",
+   "use_en": "Given to the pandit, or set aside as a donation",
+   "use_hi": "पंडितजी को देने या दान के लिए अलग रखने के लिए"
+  }
+ ],
+ "before_en": [
+  "Clean the puja room or corner and wipe the floor.",
+  "Buy all the samagri and keep it together in a tray.",
+  "Tell family and friends the time so they can join for the katha.",
+  "Keep the katha book handy, or ask someone to read it aloud in advance.",
+  "Decide who will read the katha and who will help with prasad.",
+  "Eat light and early, since many families keep a simple fast until after the puja."
+ ],
+ "before_hi": [
+  "पूजा का कमरा या कोना साफ़ करें और फ़र्श पोंछ लें।",
+  "सारी सामग्री पहले से ले आएँ और एक थाली में साथ रख लें।",
+  "परिवार और दोस्तों को समय बता दें ताकि वे कथा में शामिल हो सकें।",
+  "कथा की पुस्तक हाथ के पास रखें, या किसी से पहले ही पढ़ने के लिए कह दें।",
+  "तय कर लें कि कथा कौन पढ़ेगा और प्रसाद में कौन मदद करेगा।",
+  "हल्का भोजन जल्दी कर लें, क्योंकि कई परिवार पूजा होने तक सादा उपवास रखते हैं।"
+ ],
+ "steps": [
+  {
+   "title_en": "Set up the puja space",
+   "title_hi": "पूजा की जगह सजाएँ",
+   "en": "Place the chowki facing east or north and spread the yellow or red cloth. Put the Satyanarayan photo or idol in the middle and keep the samagri tray close by.",
+   "hi": "चौकी को पूर्व या उत्तर दिशा की ओर रखें और उस पर पीला या लाल कपड़ा बिछाएँ। बीच में सत्यनारायण भगवान की तस्वीर या मूर्ति रखें और सामग्री की थाली पास में रखें।"
+  },
+  {
+   "title_en": "Bathe and sit together",
+   "title_hi": "स्नान करके साथ बैठें",
+   "en": "Everyone bathes and wears clean clothes. Sit on a mat facing the deity, with the family around you.",
+   "hi": "सब लोग स्नान करके साफ़ कपड़े पहनें। चटाई या आसन पर भगवान की ओर मुँह करके बैठें और परिवार आसपास बैठे।"
+  },
+  {
+   "title_en": "Sankalp (intention)",
+   "title_hi": "संकल्प",
+   "en": "Take a little water and rice in your right hand. Say, in your own words, that you are doing this puja with gratitude for your family, then let the water fall into a plate.",
+   "hi": "दाएँ हाथ में थोड़ा जल और चावल लें। अपने शब्दों में कहें कि आप परिवार के लिए आभार के साथ यह पूजा कर रहे हैं, फिर जल को थाली में छोड़ दें।"
+  },
+  {
+   "title_en": "Worship Ganesh ji first",
+   "title_hi": "पहले गणेश जी की पूजा",
+   "en": "Place a small Ganesh idol or a supari wrapped in moli on the chowki. Offer tilak, flowers and rice, and chant Om Gam Ganapataye Namah a few times.",
+   "hi": "चौकी पर छोटी गणेश मूर्ति या मौली लपेटी हुई सुपारी रखें। तिलक, फूल और चावल चढ़ाएँ और ॐ गं गणपतये नमः कुछ बार बोलें।"
+  },
+  {
+   "title_en": "Set up the kalash",
+   "title_hi": "कलश स्थापना",
+   "en": "Fill the kalash with water, add a little rice and a coin, and place mango leaves in its mouth with the coconut on top. Tie moli around its neck, put tilak on it and set it to the right of the deity.",
+   "hi": "कलश में जल भरें, थोड़े चावल और एक सिक्का डालें, मुँह पर आम के पत्ते रखकर ऊपर नारियल रखें। गले में मौली बाँधें, तिलक लगाएँ और उसे भगवान के दाईं ओर रखें।"
+  },
+  {
+   "title_en": "Welcome Satyanarayan ji",
+   "title_hi": "भगवान का स्वागत",
+   "en": "Fold your hands and invite the Lord with a simple prayer. Sprinkle a few drops of panchamrit on the photo or idol, wipe gently with a clean cloth, and place it back.",
+   "hi": "हाथ जोड़कर सरल प्रार्थना से भगवान को आमंत्रित करें। तस्वीर या मूर्ति पर पंचामृत की कुछ बूँदें छिड़कें, साफ़ कपड़े से धीरे से पोंछें और वापस रख दें।"
+  },
+  {
+   "title_en": "Offer tilak, flowers and tulsi",
+   "title_hi": "तिलक, फूल और तुलसी",
+   "en": "Apply roli and haldi tilak, tie a small piece of moli, and offer the garland, flowers and tulsi leaves. Chant Om Namo Narayanaya as you offer each one.",
+   "hi": "रोली और हल्दी का तिलक लगाएँ, थोड़ी मौली चढ़ाएँ, और माला, फूल व तुलसी के पत्ते अर्पित करें। हर चीज़ चढ़ाते समय ॐ नमो नारायणाय बोलें।"
+  },
+  {
+   "title_en": "Light dhoop and diya",
+   "title_hi": "धूप और दीप",
+   "en": "Light the incense and the ghee diyas and wave them gently in front of the deity. Keep the diyas safely on the chowki where they will not tip over.",
+   "hi": "अगरबत्ती और घी के दीये जलाकर भगवान के सामने धीरे से घुमाएँ। दीयों को चौकी पर ऐसी सुरक्षित जगह रखें जहाँ वे गिरें नहीं।"
+  },
+  {
+   "title_en": "Offer the bhog",
+   "title_hi": "भोग लगाएँ",
+   "en": "Place the sheera, fruits, paan and supari in front of the deity. Put a tulsi leaf on the sheera, fold your hands and offer it with love.",
+   "hi": "सामने शीरा, फल, पान और सुपारी रखें। शीरे पर एक तुलसी पत्ता रखें, हाथ जोड़ें और प्रेम से भोग अर्पित करें।"
+  },
+  {
+   "title_en": "Listen to the katha",
+   "title_hi": "कथा सुनें",
+   "en": "One person reads the Satyanarayan katha aloud, chapter by chapter, while others listen with folded hands and a little rice. If a chapter is long, it is fine to read the shorter version of your family's book.",
+   "hi": "एक व्यक्ति सत्यनारायण कथा अध्याय दर अध्याय ज़ोर से पढ़े, बाकी लोग हाथ में थोड़े चावल लेकर जुड़े हाथों से सुनें। अध्याय लंबे लगें तो अपने परिवार की पुस्तक का संक्षिप्त रूप पढ़ना भी ठीक है।"
+  },
+  {
+   "title_en": "Aarti",
+   "title_hi": "आरती",
+   "en": "Light the camphor and sing the aarti, such as Om Jai Jagdish Hare, with everyone joining in. Pass the flame around so each person can take it with both hands.",
+   "hi": "कपूर जलाएँ और सब मिलकर आरती गाएँ, जैसे ॐ जय जगदीश हरे। लौ सबके सामने घुमाएँ ताकि हर कोई दोनों हाथों से आरती ले सके।"
+  },
+  {
+   "title_en": "Prasad and closing",
+   "title_hi": "प्रसाद और समापन",
+   "en": "Bow before the Lord, ask forgiveness for any small mistakes, and offer the panchamrit as charanamrit. Share the prasad with everyone, including neighbours, then eat together.",
+   "hi": "भगवान को प्रणाम करें, जाने-अनजाने हुई छोटी भूलों के लिए क्षमा माँगें और पंचामृत को चरणामृत की तरह बाँटें। प्रसाद सबको, पड़ोसियों को भी, बाँटें और फिर साथ बैठकर भोजन करें।"
+  }
+ ],
+ "mantra": {
+  "sa": "ॐ नमो नारायणाय",
+  "tr": "Om Namo Narayanaya",
+  "en": "I bow to Narayana (Lord Vishnu).",
+  "hi": "मैं भगवान नारायण (विष्णु) को प्रणाम करता हूँ।"
+ },
+ "tips_en": [
+  "Make the sheera with ghee in a clean pan and taste it only after the bhog is offered.",
+  "Keep the katha book marked, so reading goes smoothly even with children around.",
+  "Invite children to help with flowers and prasad, so they feel part of it.",
+  "If you have no pandit, the eldest family member can lead the puja calmly.",
+  "Keep a small bowl of rice and a spare diya ready in case you need them.",
+  "Share prasad with neighbours and anyone who comes, since it is meant to be shared."
+ ],
+ "tips_hi": [
+  "शीरा साफ़ कड़ाही में घी से बनाएँ और भोग लगने के बाद ही चखें।",
+  "कथा की पुस्तक में निशान लगा लें, ताकि बच्चों के बीच भी पढ़ना आसानी से चले।",
+  "बच्चों को फूल और प्रसाद में मदद करने दें, इससे वे भी पूजा का हिस्सा महसूस करेंगे।",
+  "पंडितजी न हों तो परिवार के सबसे बड़े सदस्य शांति से पूजा करवा सकते हैं।",
+  "एक कटोरी चावल और एक अतिरिक्त दीया पास रखें, ज़रूरत पड़ सकती है।",
+  "प्रसाद पड़ोसियों और आने वाले हर व्यक्ति में बाँटें, क्योंकि यह बाँटने के लिए ही होता है।"
+ ],
+ "avoid_en": [
+  "Do not taste the prasad before it is offered to the Lord.",
+  "Do not rush the katha; sit together calmly, and no one needs to be perfect.",
+  "Do not leave lit diyas or camphor unattended near cloth or curtains.",
+  "Do not worry about small mistakes; offer them with a simple apology and carry on."
+ ],
+ "avoid_hi": [
+  "भगवान को भोग लगाने से पहले प्रसाद न चखें।",
+  "कथा जल्दबाज़ी में न पढ़ें, शांति से साथ बैठें, किसी को भी परफ़ेक्ट होने की ज़रूरत नहीं।",
+  "जलते दीये या कपूर को कपड़े या पर्दों के पास बिना देखभाल के न छोड़ें।",
+  "छोटी-छोटी भूलों की चिंता न करें, सरल क्षमा माँगकर आगे बढ़ें।"
+ ]
+}

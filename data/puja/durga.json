@@ -1,0 +1,287 @@
+{
+ "slug": "durga",
+ "en": "Durga Puja with Kalash Sthapana",
+ "hi": "कलश स्थापना के साथ दुर्गा पूजा",
+ "tag_en": "Welcoming Maa Durga at home with a kalash during Navratri",
+ "tag_hi": "नवरात्रि में कलश के साथ माँ दुर्गा का घर में स्वागत",
+ "when_en": "Done during Navratri, which comes twice a year in Chaitra and Sharad. The kalash is placed on the first day and the puja continues daily for nine days.",
+ "when_hi": "नवरात्रि में की जाती है, जो साल में दो बार, चैत्र और शारदीय, आती है। पहले दिन कलश स्थापित किया जाता है और नौ दिनों तक रोज़ पूजा चलती है।",
+ "time_en": "About 45 minutes on day one, 20 minutes daily after",
+ "time_hi": "पहले दिन लगभग 45 मिनट, बाद में रोज़ लगभग 20 मिनट",
+ "intro_en": "In Navratri, families welcome Maa Durga into the home by placing a kalash, sowing barley, and worshipping her for nine days with simple daily offerings. Families and regions do this a little differently, so where your family or pandit ji follows another way, please follow theirs. The exact date and muhurat for kalash sthapana is best confirmed with a pandit or a trusted calendar.",
+ "intro_hi": "नवरात्रि में परिवार कलश स्थापित करके, जौ बोकर और नौ दिन सरल रोज़ाना अर्पण के साथ पूजा करके माँ दुर्गा का घर में स्वागत करते हैं। हर परिवार और क्षेत्र में तरीका थोड़ा अलग होता है, इसलिए जहाँ आपके परिवार या पंडित जी की रीति अलग हो, वहाँ उसी का पालन करें। कलश स्थापना की सही तिथि और मुहूर्त किसी पंडित जी या भरोसेमंद पंचांग से पक्का कर लेना सबसे अच्छा है।",
+ "samagri": [
+  {
+   "en": "Durga Maa idol or picture",
+   "hi": "माँ दुर्गा की मूर्ति या तस्वीर",
+   "qty_en": "1",
+   "qty_hi": "एक",
+   "use_en": "The main deity placed on the chowki",
+   "use_hi": "चौकी पर स्थापित की जाने वाली मुख्य देवी"
+  },
+  {
+   "en": "Wooden chowki",
+   "hi": "लकड़ी की चौकी",
+   "qty_en": "1 small",
+   "qty_hi": "1 छोटी",
+   "use_en": "A raised seat for Maa and the kalash",
+   "use_hi": "माँ और कलश के लिए ऊँचा आसन"
+  },
+  {
+   "en": "Red cloth",
+   "hi": "लाल कपड़ा",
+   "qty_en": "1 metre",
+   "qty_hi": "1 मीटर",
+   "use_en": "Spread over the chowki as the seat",
+   "use_hi": "चौकी पर आसन के रूप में बिछाने के लिए"
+  },
+  {
+   "en": "Kalash of copper, brass or clay",
+   "hi": "तांबे, पीतल या मिट्टी का कलश",
+   "qty_en": "1",
+   "qty_hi": "एक",
+   "use_en": "Filled with water and installed as the sacred pot",
+   "use_hi": "जल भरकर पवित्र घट के रूप में स्थापित करने के लिए"
+  },
+  {
+   "en": "Clean soil and a wide plate",
+   "hi": "साफ़ मिट्टी और चौड़ी थाली",
+   "qty_en": "1 kg soil, 1 plate",
+   "qty_hi": "1 किलो मिट्टी, 1 थाली",
+   "use_en": "A bed in which barley is sown",
+   "use_hi": "जौ बोने के लिए क्यारी बनाने हेतु"
+  },
+  {
+   "en": "Barley seeds (jau)",
+   "hi": "जौ के बीज",
+   "qty_en": "2 handfuls",
+   "qty_hi": "2 मुट्ठी",
+   "use_en": "Sown on day one and watched as it grows",
+   "use_hi": "पहले दिन बोने और उगते देखने के लिए"
+  },
+  {
+   "en": "Mango leaves",
+   "hi": "आम के पत्ते",
+   "qty_en": "5 to 7 leaves",
+   "qty_hi": "5 से 7 पत्ते",
+   "use_en": "Placed in the mouth of the kalash",
+   "use_hi": "कलश के मुँह पर रखने के लिए"
+  },
+  {
+   "en": "Coconut with husk",
+   "hi": "जटा वाला नारियल",
+   "qty_en": "1",
+   "qty_hi": "एक",
+   "use_en": "Wrapped in red cloth and set on top of the kalash",
+   "use_hi": "लाल कपड़े में लपेटकर कलश के ऊपर रखने के लिए"
+  },
+  {
+   "en": "Red chunri",
+   "hi": "लाल चुनरी",
+   "qty_en": "1",
+   "qty_hi": "एक",
+   "use_en": "Offered to Maa and tied around the coconut",
+   "use_hi": "माँ को चढ़ाने और नारियल पर लपेटने के लिए"
+  },
+  {
+   "en": "Kalava (moli)",
+   "hi": "कलावा (मौली)",
+   "qty_en": "1 reel",
+   "qty_hi": "1 गुच्छा",
+   "use_en": "Tied around the neck of the kalash",
+   "use_hi": "कलश की गर्दन पर बाँधने के लिए"
+  },
+  {
+   "en": "Roli or kumkum",
+   "hi": "रोली या कुमकुम",
+   "qty_en": "1 small bowl",
+   "qty_hi": "1 छोटी कटोरी",
+   "use_en": "For tilak on Maa, the kalash and the family",
+   "use_hi": "माँ, कलश और परिवार को तिलक लगाने के लिए"
+  },
+  {
+   "en": "Akshat (whole rice)",
+   "hi": "अक्षत (साबुत चावल)",
+   "qty_en": "1 small bowl",
+   "qty_hi": "1 छोटी कटोरी",
+   "use_en": "Offered with tilak and used in the sankalp",
+   "use_hi": "तिलक के साथ चढ़ाने और संकल्प में लेने के लिए"
+  },
+  {
+   "en": "Supari, coin and clove",
+   "hi": "सुपारी, सिक्का और लौंग",
+   "qty_en": "1 supari, 1 coin, 2 cloves",
+   "qty_hi": "1 सुपारी, 1 सिक्का, 2 लौंग",
+   "use_en": "Put inside the kalash along with the water",
+   "use_hi": "जल के साथ कलश के अंदर डालने के लिए"
+  },
+  {
+   "en": "Gangajal",
+   "hi": "गंगाजल",
+   "qty_en": "1 tablespoon",
+   "qty_hi": "1 बड़ा चम्मच",
+   "use_en": "Mixed into the kalash water and sprinkled for purity",
+   "use_hi": "कलश के जल में मिलाने और शुद्धि के लिए छिड़कने हेतु"
+  },
+  {
+   "en": "Red flowers or hibiscus",
+   "hi": "लाल फूल या गुड़हल",
+   "qty_en": "A small handful daily",
+   "qty_hi": "रोज़ एक छोटी मुट्ठी",
+   "use_en": "Offered to Maa every day of Navratri",
+   "use_hi": "नवरात्रि में रोज़ माँ को चढ़ाने के लिए"
+  },
+  {
+   "en": "Diya, ghee and cotton wicks",
+   "hi": "दीपक, घी और रुई की बत्तियाँ",
+   "qty_en": "1 diya, 2 tablespoons ghee",
+   "qty_hi": "1 दीपक, 2 बड़े चम्मच घी",
+   "use_en": "The akhand or daily diya kept near Maa",
+   "use_hi": "माँ के पास अखंड या रोज़ का दीपक जलाने के लिए"
+  },
+  {
+   "en": "Incense and camphor",
+   "hi": "धूप, अगरबत्ती और कपूर",
+   "qty_en": "1 pack each",
+   "qty_hi": "हर एक का 1 पैकेट",
+   "use_en": "For dhoop and for the aarti",
+   "use_hi": "धूप देने और आरती करने के लिए"
+  },
+  {
+   "en": "Shringar items",
+   "hi": "श्रृंगार की सामग्री",
+   "qty_en": "1 small set",
+   "qty_hi": "1 छोटा सेट",
+   "use_en": "Bindi, bangles and sindoor offered to Maa",
+   "use_hi": "माँ को चढ़ाने के लिए बिंदी, चूड़ियाँ और सिंदूर"
+  },
+  {
+   "en": "Fruits and homemade bhog",
+   "hi": "फल और घर का बना भोग",
+   "qty_en": "2 fruits, 1 small bowl",
+   "qty_hi": "2 फल, 1 छोटी कटोरी",
+   "use_en": "Halwa, kheer or chana offered as naivedya",
+   "use_hi": "नैवेद्य के रूप में हलवा, खीर या चने चढ़ाने के लिए"
+  }
+ ],
+ "before_en": [
+  "Confirm the date and kalash muhurat with your pandit ji or a trusted calendar.",
+  "Clean the whole house, especially the puja corner, a day before Navratri begins.",
+  "Buy soil, barley, mango leaves, coconut, flowers and the red cloth.",
+  "Wash the kalash and wipe the chowki; keep everything ready on a tray.",
+  "Plan simple satvik meals for the nine days, as your family prefers."
+ ],
+ "before_hi": [
+  "पंडित जी या भरोसेमंद पंचांग से तिथि और कलश स्थापना का मुहूर्त पक्का कर लें।",
+  "नवरात्रि शुरू होने से एक दिन पहले पूरे घर की, खासकर पूजा स्थान की, सफ़ाई करें।",
+  "मिट्टी, जौ, आम के पत्ते, नारियल, फूल और लाल कपड़ा ले आएँ।",
+  "कलश धोकर रखें और चौकी पोंछ लें; सब सामान एक ट्रे में तैयार रखें।",
+  "अपने परिवार की रीति के अनुसार नौ दिनों के लिए सादे सात्विक भोजन की योजना बना लें।"
+ ],
+ "steps": [
+  {
+   "title_en": "Bathe and prepare the place",
+   "title_hi": "स्नान और स्थान की तैयारी",
+   "en": "Take a bath and wear clean clothes before the muhurat. Place the chowki in the puja corner, spread the red cloth, and sprinkle a little Gangajal around.",
+   "hi": "मुहूर्त से पहले स्नान करके साफ़ कपड़े पहनें। पूजा के स्थान पर चौकी रखें, उस पर लाल कपड़ा बिछाएँ और चारों ओर थोड़ा गंगाजल छिड़कें।"
+  },
+  {
+   "title_en": "Sow the barley",
+   "title_hi": "जौ बोएँ",
+   "en": "Spread a layer of clean soil on the wide plate and scatter the barley seeds over it. Cover with a little more soil and sprinkle a few drops of water. Keep this plate on the chowki.",
+   "hi": "चौड़ी थाली में साफ़ मिट्टी की एक परत बिछाएँ और उस पर जौ के दाने बिखेरें। ऊपर थोड़ी और मिट्टी डालें और कुछ बूँदें जल छिड़कें। इस थाली को चौकी पर रखें।"
+  },
+  {
+   "title_en": "Fill the kalash",
+   "title_hi": "कलश भरें",
+   "en": "Fill the kalash with clean water and add a few drops of Gangajal. Put in the supari, coin and cloves. Tie the kalava around its neck and apply roli tilak.",
+   "hi": "कलश में साफ़ जल भरें और कुछ बूँदें गंगाजल की डालें। उसमें सुपारी, सिक्का और लौंग डालें। गर्दन पर कलावा बाँधें और रोली का तिलक लगाएँ।"
+  },
+  {
+   "title_en": "Place the kalash",
+   "title_hi": "कलश स्थापित करें",
+   "en": "Set the kalash gently on the soil in the centre of the plate. Arrange the mango leaves in its mouth with the tips facing out. Wrap the coconut in the red chunri and place it on top.",
+   "hi": "कलश को थाली के बीच में मिट्टी पर धीरे से रखें। आम के पत्तों को उसके मुँह में इस तरह लगाएँ कि नोक बाहर रहे। नारियल को लाल चुनरी में लपेटकर ऊपर रखें।"
+  },
+  {
+   "title_en": "Light the diya",
+   "title_hi": "दीपक जलाएँ",
+   "en": "Light the ghee diya next to the kalash and then the incense. Fold your hands and take a quiet moment before starting the puja.",
+   "hi": "कलश के पास घी का दीपक और फिर अगरबत्ती जलाएँ। हाथ जोड़कर पूजा शुरू करने से पहले एक शांत पल लें।"
+  },
+  {
+   "title_en": "Take the sankalp",
+   "title_hi": "संकल्प लें",
+   "en": "Take water and rice in your right palm. Say in your own words that you are beginning Navratri puja with devotion for the family's wellbeing, and let the water fall into a bowl.",
+   "hi": "दाहिने हाथ में जल और चावल लें। अपने शब्दों में कहें कि आप परिवार की भलाई के लिए श्रद्धा से नवरात्रि पूजा आरंभ कर रहे हैं, और जल को कटोरी में छोड़ दें।"
+  },
+  {
+   "title_en": "Remember Ganesh ji",
+   "title_hi": "गणेश जी का स्मरण",
+   "en": "Offer a flower and a little rice to Ganesh ji first and say, Om Gan Ganapataye Namah. Then bow to the kalash as the seat of all the devis and devtas.",
+   "hi": "सबसे पहले गणेश जी को फूल और थोड़े चावल चढ़ाकर कहें, ॐ गं गणपतये नमः। फिर कलश को सभी देवी-देवताओं का आसन मानकर प्रणाम करें।"
+  },
+  {
+   "title_en": "Welcome Maa Durga",
+   "title_hi": "माँ दुर्गा का आवाहन",
+   "en": "Place Maa Durga's idol or picture on the chowki. Welcome her with folded hands, apply roli and akshat tilak, and wipe the idol gently with a clean damp cloth.",
+   "hi": "माँ दुर्गा की मूर्ति या तस्वीर चौकी पर रखें। हाथ जोड़कर उनका स्वागत करें, रोली-अक्षत का तिलक लगाएँ और साफ़ गीले कपड़े से मूर्ति को धीरे से पोंछें।"
+  },
+  {
+   "title_en": "Offer chunri and shringar",
+   "title_hi": "चुनरी और श्रृंगार अर्पित करें",
+   "en": "Offer the red chunri, then bindi, sindoor and bangles. Garland Maa with red flowers or hibiscus, and keep a few flowers near the kalash too.",
+   "hi": "लाल चुनरी चढ़ाएँ, फिर बिंदी, सिंदूर और चूड़ियाँ अर्पित करें। माँ को लाल फूल या गुड़हल की माला पहनाएँ और कुछ फूल कलश के पास भी रखें।"
+  },
+  {
+   "title_en": "Dhoop, bhog and japa",
+   "title_hi": "धूप, भोग और जप",
+   "en": "Wave the incense and place the fruit and homemade bhog before Maa. Sit quietly and chant Om Dum Durgayai Namah 11 or 108 times, using a mala if you have one.",
+   "hi": "धूप घुमाएँ और माँ के सामने फल व घर का बना भोग रखें। शांत बैठकर ॐ दुं दुर्गायै नमः का 11 या 108 बार जप करें, माला हो तो उसका उपयोग करें।"
+  },
+  {
+   "title_en": "Aarti and prasad",
+   "title_hi": "आरती और प्रसाद",
+   "en": "Light camphor and sing the Durga aarti with the family. Ask forgiveness for any mistake, bow down, and share the prasad with everyone at home.",
+   "hi": "कपूर जलाकर परिवार के साथ दुर्गा जी की आरती गाएँ। किसी भी भूल के लिए क्षमा माँगें, प्रणाम करें और घर में सबको प्रसाद बाँटें।"
+  },
+  {
+   "title_en": "Daily care for nine days",
+   "title_hi": "नौ दिन की रोज़ की सेवा",
+   "en": "Each morning, light the diya, offer fresh flowers, bhog and aarti. Sprinkle a little water on the barley daily and watch it sprout. At the close of Navratri, say thank you to Maa and immerse the barley and flowers in a river, or place them at the base of a tree, as your family does.",
+   "hi": "रोज़ सुबह दीपक जलाएँ, ताज़े फूल, भोग और आरती अर्पित करें। जौ पर रोज़ थोड़ा जल छिड़कें और उसे उगते देखें। नवरात्रि के अंत में माँ का धन्यवाद करें और अपने परिवार की रीति अनुसार जौ व फूल नदी में प्रवाहित करें या किसी पेड़ की जड़ में रख दें।"
+  }
+ ],
+ "mantra": {
+  "sa": "ॐ दुं दुर्गायै नमः",
+  "tr": "Om Dum Durgayai Namah",
+  "en": "I bow to Goddess Durga; Dum is her sacred seed sound.",
+  "hi": "मैं देवी दुर्गा को प्रणाम करता हूँ; दुं उनका पवित्र बीज स्वर है।"
+ },
+ "tips_en": [
+  "Keep the kalash at the centre of the soil plate and do not move it during Navratri.",
+  "Sprinkle only a little water on the barley each day, so the seeds do not rot.",
+  "Keep the diya from going out by adding ghee, and keep a safe distance from curtains.",
+  "Choose a spot in the house that stays quiet and clean, and mostly sunlit for the barley.",
+  "Let everyone at home join the aarti; children enjoy tending the barley."
+ ],
+ "tips_hi": [
+  "कलश को मिट्टी की थाली के बीच में रखें और नवरात्रि भर उसे हिलाएँ नहीं।",
+  "जौ पर रोज़ केवल थोड़ा जल छिड़कें, ताकि दाने सड़ें नहीं।",
+  "घी डालते रहें ताकि दीपक न बुझे, और पर्दों से सुरक्षित दूरी रखें।",
+  "घर में ऐसी जगह चुनें जो शांत और साफ़ हो, और जौ के लिए थोड़ी रोशनी वाली हो।",
+  "घर के सभी लोग आरती में शामिल हों; बच्चों को जौ की देखभाल करना अच्छा लगता है।"
+ ],
+ "avoid_en": [
+  "Please do not use a cracked or leaking kalash, or a broken coconut.",
+  "Avoid leaving the diya unattended for long; ask someone to keep an eye on it.",
+  "Try not to start the puja in a hurry; a calm, clean mind matters most.",
+  "Do not worry if you cannot do everything perfectly; a sincere offering is enough."
+ ],
+ "avoid_hi": [
+  "कृपया फटे या रिसते कलश अथवा टूटे हुए नारियल का उपयोग न करें।",
+  "दीपक को लंबे समय तक अकेला न छोड़ें; किसी से उस पर नज़र रखने को कह दें।",
+  "पूजा जल्दबाज़ी में शुरू न करें; शांत और साफ़ मन सबसे ज़रूरी है।",
+  "सब कुछ पूरी तरह सही न हो पाए तो चिंता न करें; सच्चे मन का अर्पण ही पर्याप्त है।"
+ ]
+}

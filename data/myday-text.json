@@ -1,0 +1,191 @@
+{
+"house": {
+"1": {
+"do": {"en": ["Sit quietly for five minutes before you pick up your phone.", "Dress neatly and take one small step for yourself.", "Write down the one thing you want from today."],
+"hi": ["फोन उठाने से पहले पाँच मिनट शांत बैठिए।", "साफ़-सुथरे कपड़े पहनिए और अपने लिए एक छोटा कदम उठाइए।", "आज आप क्या चाहते हैं, वह एक बात लिख लीजिए।"]},
+"avoid": {"en": ["Do not take every passing mood too seriously.", "Do not compare yourself with people online.", "Do not begin the day in a rush."],
+"hi": ["हर गुज़रते मूड को ज़्यादा गंभीरता से मत लीजिए।", "ऑनलाइन लोगों से अपनी तुलना मत कीजिए।", "दिन की शुरुआत हड़बड़ी में मत कीजिए।"]}
+},
+"2": {
+"do": {"en": ["Check your spending for the week and note it down.", "Speak slowly and kindly with family at meals.", "Put a small amount aside, even if it is tiny."],
+"hi": ["इस हफ़्ते का खर्च देखिए और लिख लीजिए।", "खाने के समय परिवार से धीरे और प्यार से बात कीजिए।", "थोड़ी-सी रकम अलग रख दीजिए, चाहे बहुत छोटी हो।"]},
+"avoid": {"en": ["Avoid sharp words you may regret by evening.", "Avoid buying things only because they are on sale.", "Avoid arguing about money with loved ones."],
+"hi": ["ऐसे तीखे शब्दों से बचिए जिन पर शाम तक पछतावा हो।", "सिर्फ़ सेल देखकर चीज़ें खरीदने से बचिए।", "अपनों से पैसों पर बहस करने से बचिए।"]}
+},
+"3": {
+"do": {"en": ["Start the task you have been delaying, even for twenty minutes.", "Message a sibling or close friend and ask how they are.", "Take a brisk walk or do some light exercise."],
+"hi": ["जो काम टाल रहे थे, उसे बीस मिनट के लिए ही सही, शुरू कीजिए।", "भाई-बहन या करीबी दोस्त को संदेश भेजकर हाल पूछिए।", "तेज़ क़दमों से टहलिए या हल्की कसरत कीजिए।"]},
+"avoid": {"en": ["Avoid waiting for the perfect moment to begin.", "Avoid picking fights just to prove a point.", "Avoid overpromising what you cannot finish today."],
+"hi": ["शुरू करने के लिए सही मौके का इंतज़ार मत कीजिए।", "अपनी बात साबित करने के लिए झगड़ा मत कीजिए।", "ऐसे वादे मत कीजिए जो आज पूरे न हो सकें।"]}
+},
+"4": {
+"do": {"en": ["Tidy one corner of your room or home.", "Have one unhurried meal with your family.", "Call your mother or an elder at home."],
+"hi": ["अपने कमरे या घर का एक कोना सँवारिए।", "परिवार के साथ एक आराम से भरा भोजन कीजिए।", "माँ या घर के किसी बड़े को फ़ोन कीजिए।"]},
+"avoid": {"en": ["Avoid carrying office stress into the house.", "Avoid heavy talk late at night.", "Avoid leaving small home chores for tomorrow."],
+"hi": ["दफ़्तर का तनाव घर में मत लाइए।", "रात को देर तक भारी बातें मत कीजिए।", "घर के छोटे काम कल पर मत छोड़िए।"]}
+},
+"5": {
+"do": {"en": ["Spend an hour on something creative you enjoy.", "Revise or learn one small topic with full attention.", "Tell someone you care about them, simply and honestly."],
+"hi": ["एक घंटा किसी मनपसंद रचनात्मक काम को दीजिए।", "एक छोटा विषय पूरे ध्यान से पढ़िए या दोहराइए।", "जिसकी परवाह है, उसे सीधे और सच्चे मन से बताइए।"]},
+"avoid": {"en": ["Avoid scrolling for hours instead of creating anything.", "Avoid overthinking one message from someone special.", "Avoid risky shortcuts in studies or exams."],
+"hi": ["कुछ रचने की जगह घंटों स्क्रॉल मत कीजिए।", "किसी ख़ास के एक संदेश पर ज़्यादा मत सोचिए।", "पढ़ाई या परीक्षा में जोखिम भरे शॉर्टकट मत अपनाइए।"]}
+},
+"6": {
+"do": {"en": ["Clear one pending bill, form or reply today.", "Keep a simple routine: water, a proper meal, early sleep.", "Clean your desk or your phone gallery."],
+"hi": ["आज एक लंबित बिल, फ़ॉर्म या जवाब निपटा दीजिए।", "सादा दिनचर्या रखिए: पानी, ठीक से भोजन, जल्दी नींद।", "अपनी मेज़ या फ़ोन की गैलरी साफ़ कीजिए।"]},
+"avoid": {"en": ["Avoid piling new work on top of old work.", "Avoid skipping meals while you are busy.", "Avoid holding grudges about small things."],
+"hi": ["पुराने काम के ऊपर नया काम मत लादिए।", "व्यस्तता में भोजन छोड़ने से बचिए।", "छोटी बातों पर मन में गाँठ मत रखिए।"]}
+},
+"7": {
+"do": {"en": ["Meet or call the person who matters most to you.", "Listen fully in a meeting before giving your view.", "Settle one pending talk with a partner or colleague."],
+"hi": ["जो व्यक्ति आपके लिए सबसे अहम है, उससे मिलिए या बात कीजिए।", "बैठक में अपनी राय देने से पहले पूरा सुनिए।", "किसी साथी या सहकर्मी से एक अटकी बात सुलझाइए।"]},
+"avoid": {"en": ["Avoid assuming what the other person is thinking.", "Avoid signing or agreeing in a hurry.", "Avoid keeping score in relationships."],
+"hi": ["दूसरे के मन की बात अपने आप मत मान लीजिए।", "जल्दबाज़ी में हामी भरने या दस्तख़त करने से बचिए।", "रिश्तों में हिसाब रखने से बचिए।"]}
+},
+"8": {
+"do": {"en": ["Go slow today and finish only the essential tasks.", "Rest your eyes and take a short break every few hours.", "Keep your phone away for one quiet hour."],
+"hi": ["आज धीमे चलिए और सिर्फ़ ज़रूरी काम पूरे कीजिए।", "कुछ घंटों में आँखों को आराम देकर छोटा ब्रेक लीजिए।", "एक शांत घंटे के लिए फ़ोन दूर रख दीजिए।"]},
+"avoid": {"en": ["Avoid big decisions made in a low mood.", "Avoid pushing yourself to prove something.", "Avoid late-night worry about things you cannot control."],
+"hi": ["उदास मन में बड़े फ़ैसले लेने से बचिए।", "कुछ साबित करने के लिए खुद को मत थकाइए।", "जो आपके बस में नहीं, उसकी रात में चिंता मत कीजिए।"]}
+},
+"9": {
+"do": {"en": ["Touch the feet or seek blessings of an elder.", "Read ten pages of something that teaches you.", "Ask a teacher or senior for one piece of advice."],
+"hi": ["किसी बड़े के चरण छूकर आशीर्वाद लीजिए।", "कुछ सिखाने वाली किताब के दस पन्ने पढ़िए।", "किसी गुरु या वरिष्ठ से एक सलाह माँगिए।"]},
+"avoid": {"en": ["Avoid arguing with elders just to win.", "Avoid thinking you already know everything.", "Avoid skipping your small daily prayer or quiet time."],
+"hi": ["जीतने के लिए बड़ों से बहस मत कीजिए।", "यह मत मान लीजिए कि आप सब कुछ जानते हैं।", "रोज़ की छोटी प्रार्थना या शांत समय मत छोड़िए।"]}
+},
+"10": {
+"do": {"en": ["Do the most important work task first, before anything else.", "Share your progress with your manager in two clear lines.", "Take responsibility for one thing others are avoiding."],
+"hi": ["सबसे ज़रूरी काम सबसे पहले कीजिए।", "अपनी प्रगति दो साफ़ पंक्तियों में अपने मैनेजर को बताइए।", "जिस काम से सब बच रहे हों, उनमें से एक की ज़िम्मेदारी लीजिए।"]},
+"avoid": {"en": ["Avoid chasing praise instead of doing good work.", "Avoid office gossip, even if it is tempting.", "Avoid taking criticism personally today."],
+"hi": ["अच्छे काम की जगह तारीफ़ के पीछे मत भागिए।", "दफ़्तर की गपशप से बचिए, भले मन करे।", "आज आलोचना को दिल पर मत लीजिए।"]}
+},
+"11": {
+"do": {"en": ["Call the one friend you have been postponing.", "Join a group, class or meetup that matches your goal.", "Follow up on a payment or opportunity you were promised."],
+"hi": ["जिस दोस्त को टालते आ रहे थे, उसे फ़ोन कीजिए।", "अपने लक्ष्य से जुड़े किसी समूह, कक्षा या मुलाक़ात में शामिल होइए।", "जिस भुगतान या मौके का वादा मिला था, उस पर बात कीजिए।"]},
+"avoid": {"en": ["Avoid lending more than you can comfortably let go.", "Avoid spending the whole day only on social media.", "Avoid forgetting people who helped you earlier."],
+"hi": ["उतना ही उधार दीजिए जितना आराम से छोड़ सकें, उससे ज़्यादा नहीं।", "पूरा दिन सिर्फ़ सोशल मीडिया पर मत बिताइए।", "पहले मदद करने वालों को मत भूलिए।"]}
+},
+"12": {
+"do": {"en": ["Sleep a little earlier and keep your evening calm.", "Spend a quiet hour alone, with music or a walk.", "Review small expenses before you pay for anything new."],
+"hi": ["थोड़ा जल्दी सोइए और शाम को शांत रखिए।", "संगीत या सैर के साथ एक घंटा अकेले, शांति से बिताइए।", "कुछ नया खरीदने से पहले छोटे खर्चों पर नज़र डालिए।"]},
+"avoid": {"en": ["Avoid impulse purchases made to feel better.", "Avoid starting heavy new projects today.", "Avoid staying up late on screens."],
+"hi": ["मन बहलाने के लिए आवेश में खरीदारी मत कीजिए।", "आज कोई भारी नया प्रोजेक्ट शुरू मत कीजिए।", "देर रात तक स्क्रीन देखने से बचिए।"]}
+}
+},
+"weekday": {
+"1": {
+"do": {"en": "Monday belongs to the Moon, so keep your mind calm and kind.", "hi": "सोमवार चंद्रमा का दिन है, मन को शांत और कोमल रखिए।"},
+"food": {"en": "Some families like milk, kheer or plain rice today.", "hi": "आज कई परिवारों में दूध, खीर या सादा चावल लेने की परंपरा है।"},
+"daan": {"en": "If you wish, offer milk or rice to someone in need.", "hi": "चाहें तो ज़रूरतमंद को दूध या चावल दे दीजिए।"},
+"avoid": {"en": "Avoid harsh words and hurrying through your feelings.", "hi": "कठोर शब्दों और भावनाओं को जल्दी में टालने से बचिए।"}
+},
+"2": {
+"do": {"en": "Tuesday belongs to Mars, so put your energy into one honest effort.", "hi": "मंगलवार मंगल का दिन है, अपनी ऊर्जा एक ईमानदार प्रयास में लगाइए।"},
+"food": {"en": "Jaggery with roasted chana is a simple traditional treat today.", "hi": "आज गुड़ और भुने चने एक सादा पारंपरिक व्यंजन माने जाते हैं।"},
+"daan": {"en": "If you wish, share sweets or masoor dal with someone.", "hi": "चाहें तो किसी को मिठाई या मसूर की दाल दे दीजिए।"},
+"avoid": {"en": "Avoid anger and rash replies when you feel pushed.", "hi": "दबाव महसूस हो तो गुस्से और जल्दबाज़ी वाले जवाब से बचिए।"}
+},
+"3": {
+"do": {"en": "Wednesday belongs to Mercury, so talk, write and learn with care.", "hi": "बुधवार बुध का दिन है, सोच-समझकर बोलिए, लिखिए और सीखिए।"},
+"food": {"en": "Moong dal or green vegetables are a light, traditional choice today.", "hi": "आज मूँग दाल या हरी सब्ज़ियाँ हल्का पारंपरिक भोजन मानी जाती हैं।"},
+"daan": {"en": "If you wish, help a student with a book or notebook.", "hi": "चाहें तो किसी विद्यार्थी को किताब या कॉपी दिला दीजिए।"},
+"avoid": {"en": "Avoid half-truths and careless messages.", "hi": "अधूरी बातों और लापरवाह संदेशों से बचिए।"}
+},
+"4": {
+"do": {"en": "Thursday belongs to Jupiter, so learn something or thank a teacher.", "hi": "गुरुवार बृहस्पति का दिन है, कुछ सीखिए या किसी गुरु को धन्यवाद कहिए।"},
+"food": {"en": "Chana dal, banana or a yellow sweet is traditional today.", "hi": "आज चने की दाल, केला या कोई पीली मिठाई पारंपरिक मानी जाती है।"},
+"daan": {"en": "If you wish, give bananas or chana to someone.", "hi": "चाहें तो किसी को केले या चने दे दीजिए।"},
+"avoid": {"en": "Avoid showing off what you know.", "hi": "अपनी जानकारी का दिखावा करने से बचिए।"}
+},
+"5": {
+"do": {"en": "Friday belongs to Venus, so make time for beauty and kind company.", "hi": "शुक्रवार शुक्र का दिन है, सुंदरता और अच्छे साथ के लिए समय निकालिए।"},
+"food": {"en": "Kheer, curd or something lightly sweet suits the day.", "hi": "खीर, दही या कुछ हल्का मीठा आज की परंपरा के अनुकूल है।"},
+"daan": {"en": "If you wish, offer flowers or sweets at a temple.", "hi": "चाहें तो मंदिर में फूल या मिठाई चढ़ा दीजिए।"},
+"avoid": {"en": "Avoid overindulging in comfort or spending for show.", "hi": "आराम में हद से ज़्यादा डूबने या दिखावे के खर्च से बचिए।"}
+},
+"6": {
+"do": {"en": "Saturday belongs to Saturn, so be patient and finish what is due.", "hi": "शनिवार शनि का दिन है, धैर्य रखिए और जो बाकी है उसे पूरा कीजिए।"},
+"food": {"en": "Til laddu or simple urad khichdi is traditional today.", "hi": "आज तिल के लड्डू या सादी उड़द की खिचड़ी पारंपरिक मानी जाती है।"},
+"daan": {"en": "If you wish, give a meal to a worker or helper.", "hi": "चाहें तो किसी कामगार या सहायक को भोजन करा दीजिए।"},
+"avoid": {"en": "Avoid cutting corners and being unfair to people who work for you.", "hi": "शॉर्टकट और अपने साथ काम करने वालों के प्रति अन्याय से बचिए।"}
+},
+"7": {
+"do": {"en": "Sunday belongs to the Sun, so step outside and greet the morning light.", "hi": "रविवार सूर्य का दिन है, बाहर निकलिए और सुबह की रोशनी का स्वागत कीजिए।"},
+"food": {"en": "Wheat roti with a little jaggery is a simple tradition today.", "hi": "आज गेहूँ की रोटी के साथ थोड़ा गुड़ एक सादी परंपरा है।"},
+"daan": {"en": "If you wish, leave water and grain for the birds.", "hi": "चाहें तो पक्षियों के लिए पानी और दाना रख दीजिए।"},
+"avoid": {"en": "Avoid pride and insisting on having your way.", "hi": "अहंकार और अपनी ही बात मनवाने की ज़िद से बचिए।"}
+}
+},
+"wear": {
+"good": {"en": "Choose something bright and well fitted that makes you feel confident.", "hi": "कुछ चटक और ठीक नाप का पहनिए जिसमें आप आत्मविश्वास महसूस करें।"},
+"ok": {"en": "Keep it simple and neat, with clean, pressed clothes.", "hi": "सादा और करीने से रहिए, साफ़ और इस्तिरी किए कपड़े पहनिए।"},
+"gentle": {"en": "Wear soft, comfortable clothes in light colours.", "hi": "हल्के रंगों के नरम और आरामदायक कपड़े पहनिए।"}
+},
+"area": {
+"love": {
+"1": {"en": "Be patient today; listen more and avoid reading too much into words.", "hi": "आज धैर्य रखिए; ज़्यादा सुनिए और शब्दों में ज़्यादा मतलब मत ढूँढिए।"},
+"2": {"en": "Keep conversations light and give your partner some space.", "hi": "बातें हल्की रखिए और अपने साथी को थोड़ी जगह दीजिए।"},
+"3": {"en": "A calm, steady day for relationships; small gestures help.", "hi": "रिश्तों के लिए शांत और स्थिर दिन है; छोटे इशारे असर करते हैं।"},
+"4": {"en": "Warmth comes easily today, so share a kind word or a meal.", "hi": "आज अपनापन सहज है, एक मीठा बोल या साथ का भोजन बाँटिए।"},
+"5": {"en": "A lovely day to open your heart and make time for someone.", "hi": "दिल खोलकर किसी के लिए समय निकालने का बढ़िया दिन है।"}
+},
+"career": {
+"1": {"en": "Go slowly, double-check your work and avoid big moves.", "hi": "धीरे चलिए, अपना काम दोबारा जाँचिए और बड़े क़दम से बचिए।"},
+"2": {"en": "Stick to routine tasks and keep your head down.", "hi": "रोज़ के काम पर टिके रहिए और शांति से काम कीजिए।"},
+"3": {"en": "A steady day; finish what is on your list.", "hi": "स्थिर दिन है; अपनी सूची के काम पूरे कीजिए।"},
+"4": {"en": "Good momentum today; share your ideas and ask for feedback.", "hi": "आज अच्छी गति है; अपने विचार साझा कीजिए और राय माँगिए।"},
+"5": {"en": "A strong day to speak up, present or take the lead.", "hi": "अपनी बात रखने, प्रस्तुति देने या नेतृत्व करने का अच्छा दिन है।"}
+},
+"money": {
+"1": {"en": "Hold off on big purchases and keep track of every small spend.", "hi": "बड़ी खरीदारी रोकिए और हर छोटे खर्च का हिसाब रखिए।"},
+"2": {"en": "Spend only on needs today and review your budget calmly.", "hi": "आज सिर्फ़ ज़रूरत पर खर्च कीजिए और बजट शांति से देखिए।"},
+"3": {"en": "A neutral day; keep to your plan and avoid impulse buys.", "hi": "सामान्य दिन है; अपनी योजना पर टिके रहिए और आवेश में खरीदारी से बचिए।"},
+"4": {"en": "A fair day to sort bills, savings and pending payments.", "hi": "बिल, बचत और बकाया भुगतान निपटाने के लिए अच्छा दिन है।"},
+"5": {"en": "A good day to plan ahead and follow up on what is owed.", "hi": "आगे की योजना बनाने और बकाया पर बात करने का अच्छा दिन है।"}
+},
+"health": {
+"1": {"en": "Rest more, drink water and keep your day light.", "hi": "ज़्यादा आराम कीजिए, पानी पीजिए और दिन को हल्का रखिए।"},
+"2": {"en": "Go easy on yourself; short breaks and early sleep will help.", "hi": "खुद पर नरमी रखिए; छोटे ब्रेक और जल्दी नींद काम आएगी।"},
+"3": {"en": "Keep to regular meals and a short walk.", "hi": "समय पर भोजन और थोड़ी सैर का नियम रखिए।"},
+"4": {"en": "You may feel fairly energetic; enjoy movement or stretching.", "hi": "आप काफ़ी ऊर्जावान महसूस कर सकते हैं; चलने-फिरने या स्ट्रेचिंग का आनंद लीजिए।"},
+"5": {"en": "A fresh, active day; use it for your favourite exercise.", "hi": "ताज़गी भरा सक्रिय दिन है; अपनी पसंदीदा कसरत के लिए इसका उपयोग कीजिए।"}
+}
+},
+"dasha": {
+"Sun": {"en": "In the Sun period, lead with confidence but stay humble and listen.", "hi": "सूर्य दशा में आत्मविश्वास से आगे बढ़िए, पर विनम्र रहिए और सुनिए।"},
+"Moon": {"en": "In the Moon period, look after your mind and keep people close.", "hi": "चंद्र दशा में अपने मन का ध्यान रखिए और अपनों के पास रहिए।"},
+"Mars": {"en": "In the Mars period, use your energy on action, not on arguments.", "hi": "मंगल दशा में ऊर्जा को बहस में नहीं, काम में लगाइए।"},
+"Mercury": {"en": "In the Mercury period, learn, write and speak clearly today.", "hi": "बुध दशा में आज सीखिए, लिखिए और साफ़ बोलिए।"},
+"Jupiter": {"en": "In the Jupiter period, seek guidance and share what you know.", "hi": "गुरु दशा में मार्गदर्शन लीजिए और अपना ज्ञान बाँटिए।"},
+"Venus": {"en": "In the Venus period, enjoy beauty and relationships, but spend wisely.", "hi": "शुक्र दशा में सुंदरता और रिश्तों का आनंद लीजिए, पर सोच-समझकर खर्च कीजिए।"},
+"Saturn": {"en": "In the Saturn period, steady effort and patience will serve you best.", "hi": "शनि दशा में लगातार मेहनत और धैर्य सबसे काम आएँगे।"},
+"Rahu": {"en": "In the Rahu period, stay grounded and check facts before acting.", "hi": "राहु दशा में ज़मीन से जुड़े रहिए और कदम उठाने से पहले तथ्य जाँचिए।"},
+"Ketu": {"en": "In the Ketu period, simplify, reflect and let go of clutter.", "hi": "केतु दशा में जीवन सरल कीजिए, मनन कीजिए और फ़ालतू बोझ छोड़िए।"}
+},
+"lagna": [
+{"en": "Aries rising: your energy is a gift, so pause before you react.", "hi": "मेष लग्न: आपकी ऊर्जा एक वरदान है, प्रतिक्रिया देने से पहले ठहरिए।"},
+{"en": "Taurus rising: your steadiness is your strength, so keep your routine.", "hi": "वृषभ लग्न: आपकी स्थिरता आपकी ताकत है, अपनी दिनचर्या बनाए रखिए।"},
+{"en": "Gemini rising: your curiosity is a strength, so finish one thing first.", "hi": "मिथुन लग्न: आपकी जिज्ञासा ताकत है, पहले एक काम पूरा कीजिए।"},
+{"en": "Cancer rising: your care for others is precious, so care for yourself too.", "hi": "कर्क लग्न: दूसरों की परवाह अनमोल है, अपनी परवाह भी कीजिए।"},
+{"en": "Leo rising: your warmth leads others, so let others shine too.", "hi": "सिंह लग्न: आपकी गर्मजोशी दूसरों को राह दिखाती है, दूसरों को भी चमकने दीजिए।"},
+{"en": "Virgo rising: your attention to detail helps, so do not be too hard on yourself.", "hi": "कन्या लग्न: बारीकी पर आपका ध्यान काम आता है, खुद पर ज़्यादा सख़्त मत होइए।"},
+{"en": "Libra rising: your balance is a gift, so make one decision without delay.", "hi": "तुला लग्न: आपका संतुलन एक वरदान है, एक फ़ैसला बिना देरी के लीजिए।"},
+{"en": "Scorpio rising: your depth is powerful, so share one feeling openly.", "hi": "वृश्चिक लग्न: आपकी गहराई ताकतवर है, एक भावना खुलकर साझा कीजिए।"},
+{"en": "Sagittarius rising: your optimism lifts people, so keep promises small and real.", "hi": "धनु लग्न: आपकी आशा लोगों को उठाती है, वादे छोटे और सच्चे रखिए।"},
+{"en": "Capricorn rising: your discipline builds results, so take one proper break.", "hi": "मकर लग्न: आपका अनुशासन नतीजे बनाता है, एक अच्छा ब्रेक ज़रूर लीजिए।"},
+{"en": "Aquarius rising: your fresh thinking helps, so stay connected to your people.", "hi": "कुंभ लग्न: आपकी नई सोच काम आती है, अपनों से जुड़े रहिए।"},
+{"en": "Pisces rising: your kindness is a strength, so keep gentle boundaries today.", "hi": "मीन लग्न: आपकी दयालुता ताकत है, आज कोमल सीमाएँ बनाए रखिए।"}
+],
+"colour": {
+"Sun": {"en": "Saffron or orange", "hi": "केसरिया या नारंगी", "hex": "#E8892B"},
+"Moon": {"en": "White or cream", "hi": "सफ़ेद या क्रीम", "hex": "#F3EEDF"},
+"Mars": {"en": "Red or maroon", "hi": "लाल या मरून", "hex": "#C0392B"},
+"Mercury": {"en": "Green", "hi": "हरा", "hex": "#3C8D5A"},
+"Jupiter": {"en": "Yellow", "hi": "पीला", "hex": "#E6B800"},
+"Venus": {"en": "Pink or light shades", "hi": "गुलाबी या हल्के रंग", "hex": "#E8A0BF"},
+"Saturn": {"en": "Blue or navy", "hi": "नीला या गहरा नीला", "hex": "#27406B"},
+"Rahu": {"en": "Deep grey", "hi": "गहरा स्लेटी", "hex": "#5B5F66"},
+"Ketu": {"en": "Brown", "hi": "भूरा", "hex": "#7A5230"}
+}
+}

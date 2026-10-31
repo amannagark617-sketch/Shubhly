@@ -1,0 +1,293 @@
+{
+ "slug": "ganesh",
+ "en": "Ganesh Puja",
+ "hi": "गणेश पूजा",
+ "tag_en": "A cheerful home puja to begin something new with Ganesh",
+ "tag_hi": "गणेश जी के साथ कुछ नया शुरू करने की आनंद भरी पूजा",
+ "when_en": "It is done at home on Ganesh Chaturthi, and also before a new beginning such as a new home, business, job or school year.",
+ "when_hi": "यह घर पर गणेश चतुर्थी के दिन की जाती है, और किसी नई शुरुआत से पहले भी, जैसे नया घर, व्यवसाय, नौकरी या स्कूल का नया साल।",
+ "time_en": "About 30 minutes",
+ "time_hi": "लगभग 30 मिनट",
+ "intro_en": "Ganesh Puja is a cheerful, simple puja in which we remember Lord Ganesh at the start of something new. You do not need a priest; a clean altar and a happy heart are enough. Families and regions do it a little differently, so wherever your own family or pandit's way differs from this guide, please follow theirs.",
+ "intro_hi": "गणेश पूजा एक आनंद भरी, सरल पूजा है, जिसमें हम किसी नई शुरुआत के समय गणेश जी को याद करते हैं। इसके लिए पंडित जी ज़रूरी नहीं; साफ़ वेदी और प्रसन्न मन काफ़ी हैं। हर परिवार और हर क्षेत्र में तरीक़ा थोड़ा अलग होता है, इसलिए जहाँ आपके परिवार या पंडित जी का तरीक़ा इस गाइड से अलग हो, वहाँ उन्हीं का तरीक़ा अपनाएँ।",
+ "samagri": [
+  {
+   "en": "Ganesh idol (clay, eco-friendly)",
+   "hi": "गणेश जी की मूर्ति (मिट्टी की, पर्यावरण के अनुकूल)",
+   "qty_en": "1, about 6 to 9 inches",
+   "qty_hi": "1, लगभग 6 से 9 इंच",
+   "use_en": "The main deity, placed on the altar",
+   "use_hi": "मुख्य देवता, जिन्हें वेदी पर विराजमान किया जाता है"
+  },
+  {
+   "en": "Wooden chowki or clean platform",
+   "hi": "लकड़ी की चौकी या साफ़ चबूतरा",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "A raised seat on which Ganesh is placed",
+   "use_hi": "ऊँचा आसन, जिस पर गणेश जी विराजते हैं"
+  },
+  {
+   "en": "Red or yellow cloth",
+   "hi": "लाल या पीला कपड़ा",
+   "qty_en": "1 piece, about 1 metre",
+   "qty_hi": "1 टुकड़ा, लगभग 1 मीटर",
+   "use_en": "Spread over the chowki before placing the idol",
+   "use_hi": "मूर्ति रखने से पहले चौकी पर बिछाया जाता है"
+  },
+  {
+   "en": "Whole rice (akshat)",
+   "hi": "साबुत चावल (अक्षत)",
+   "qty_en": "1 small bowl, about 100 g",
+   "qty_hi": "1 छोटी कटोरी, लगभग 100 ग्राम",
+   "use_en": "Offered unbroken and used for tilak",
+   "use_hi": "साबुत चढ़ाने और तिलक में लगाने के लिए"
+  },
+  {
+   "en": "Roli (kumkum) and haldi",
+   "hi": "रोली (कुमकुम) और हल्दी",
+   "qty_en": "1 small packet each",
+   "qty_hi": "हर एक का 1 छोटा पैकेट",
+   "use_en": "For tilak on Ganesh and the family",
+   "use_hi": "गणेश जी और परिवार को तिलक लगाने के लिए"
+  },
+  {
+   "en": "Chandan (sandalwood paste)",
+   "hi": "चंदन",
+   "qty_en": "1 small tube or packet",
+   "qty_hi": "1 छोटी ट्यूब या पैकेट",
+   "use_en": "Applied gently as tilak on the idol",
+   "use_hi": "मूर्ति को हल्के से तिलक लगाने के लिए"
+  },
+  {
+   "en": "Kalash (small brass or copper pot)",
+   "hi": "कलश (छोटा पीतल या तांबे का)",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Filled with water and kept beside the idol",
+   "use_hi": "पानी भरकर मूर्ति के पास रखा जाता है"
+  },
+  {
+   "en": "Mango leaves and coconut",
+   "hi": "आम के पत्ते और नारियल",
+   "qty_en": "5 leaves, 1 coconut",
+   "qty_hi": "5 पत्ते, 1 नारियल",
+   "use_en": "Placed on the kalash and tied with red thread",
+   "use_hi": "कलश पर सजाए और लाल धागे से बाँधे जाते हैं"
+  },
+  {
+   "en": "Kalawa (mauli thread)",
+   "hi": "कलावा (मौली)",
+   "qty_en": "1 reel",
+   "qty_hi": "1 गोला",
+   "use_en": "Tied around the kalash and on the wrists",
+   "use_hi": "कलश पर और कलाई पर बाँधने के लिए"
+  },
+  {
+   "en": "Durva grass",
+   "hi": "दूर्वा घास",
+   "qty_en": "21 blades, in small bunches",
+   "qty_hi": "21 तिनके, छोटी-छोटी गुच्छियों में",
+   "use_en": "Ganesh's favourite offering, placed on his feet",
+   "use_hi": "गणेश जी को प्रिय, उनके चरणों में चढ़ाई जाती है"
+  },
+  {
+   "en": "Red hibiscus or marigold flowers",
+   "hi": "लाल गुड़हल या गेंदे के फूल",
+   "qty_en": "5 to 7, plus 1 garland",
+   "qty_hi": "5 से 7, साथ में 1 माला",
+   "use_en": "Offered at the feet and around the idol",
+   "use_hi": "चरणों में और मूर्ति के आसपास अर्पित किए जाते हैं"
+  },
+  {
+   "en": "Modak or laddu",
+   "hi": "मोदक या लड्डू",
+   "qty_en": "5, 11 or 21 pieces",
+   "qty_hi": "5, 11 या 21 टुकड़े",
+   "use_en": "Ganesh's favourite sweet, offered as bhog",
+   "use_hi": "गणेश जी की प्रिय मिठाई, भोग के लिए"
+  },
+  {
+   "en": "Bananas and seasonal fruits",
+   "hi": "केले और मौसमी फल",
+   "qty_en": "1 small bunch, 2 more fruits",
+   "qty_hi": "1 छोटा गुच्छा, 2 और फल",
+   "use_en": "Offered as bhog and shared as prasad",
+   "use_hi": "भोग लगाकर प्रसाद के रूप में बाँटे जाते हैं"
+  },
+  {
+   "en": "Betel leaves and supari",
+   "hi": "पान के पत्ते और सुपारी",
+   "qty_en": "5 leaves, 5 nuts",
+   "qty_hi": "5 पत्ते, 5 सुपारी",
+   "use_en": "Offered along with a coin near the idol",
+   "use_hi": "मूर्ति के पास सिक्के के साथ अर्पित किए जाते हैं"
+  },
+  {
+   "en": "Clay diyas",
+   "hi": "मिट्टी के दीये",
+   "qty_en": "2 or 3",
+   "qty_hi": "2 या 3",
+   "use_en": "One main ghee lamp and one or two extras",
+   "use_hi": "एक मुख्य घी का दीया और एक-दो अतिरिक्त"
+  },
+  {
+   "en": "Ghee, cotton wicks",
+   "hi": "घी, रुई की बत्तियाँ",
+   "qty_en": "1 small bowl ghee, 5 wicks",
+   "qty_hi": "1 छोटी कटोरी घी, 5 बत्तियाँ",
+   "use_en": "Fuel and wicks for the diyas",
+   "use_hi": "दीयों के लिए घी और बत्तियाँ"
+  },
+  {
+   "en": "Incense sticks and dhoop",
+   "hi": "अगरबत्ती और धूप",
+   "qty_en": "1 packet",
+   "qty_hi": "1 पैकेट",
+   "use_en": "Lit and offered during the puja",
+   "use_hi": "पूजा के समय जलाई और अर्पित की जाती है"
+  },
+  {
+   "en": "Gangajal or clean water",
+   "hi": "गंगाजल या साफ़ पानी",
+   "qty_en": "1 small bottle",
+   "qty_hi": "1 छोटी शीशी",
+   "use_en": "Sprinkled to purify the space and the items",
+   "use_hi": "स्थान और सामग्री पर छिड़ककर शुद्ध करने के लिए"
+  },
+  {
+   "en": "Camphor",
+   "hi": "कपूर",
+   "qty_en": "1 small packet",
+   "qty_hi": "1 छोटा पैकेट",
+   "use_en": "Lit for the aarti at the end",
+   "use_hi": "अंत में आरती के लिए जलाया जाता है"
+  },
+  {
+   "en": "Puja thali",
+   "hi": "पूजा की थाली",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Holds the items and is used for aarti",
+   "use_hi": "सामग्री रखने और आरती उतारने के काम आती है"
+  }
+ ],
+ "before_en": [
+  "Choose a spot for the altar and clean it well, including the wall and the floor around it.",
+  "Bring the idol home gently, ideally a day early, and keep it covered until the puja.",
+  "Buy durva, flowers, fruits and modak or laddu, and check the rest of the list.",
+  "Keep the chowki, cloth, thali and kalash ready, with diya wicks already placed.",
+  "Decide the puja time with the family so that everyone can sit together."
+ ],
+ "before_hi": [
+  "वेदी के लिए जगह चुनें और उसे, आसपास की दीवार और फ़र्श समेत, अच्छी तरह साफ़ करें।",
+  "मूर्ति को सँभालकर घर लाएँ, हो सके तो एक दिन पहले, और पूजा तक ढककर रखें।",
+  "दूर्वा, फूल, फल और मोदक या लड्डू ले आएँ, और सूची की बाकी चीज़ें भी देख लें।",
+  "चौकी, कपड़ा, थाली और कलश तैयार रखें, और दीयों में बत्ती पहले से लगा लें।",
+  "परिवार के साथ पूजा का समय तय कर लें, ताकि सब साथ बैठ सकें।"
+ ],
+ "steps": [
+  {
+   "title_en": "Clean and get ready",
+   "title_hi": "सफ़ाई और तैयारी",
+   "en": "Clean the altar area and bathe before you begin. Wear fresh, clean clothes. Keep all the items near you so that you do not need to get up in the middle.",
+   "hi": "शुरू करने से पहले वेदी की जगह साफ़ करें और स्नान कर लें। ताज़े, साफ़ कपड़े पहनें। सारी सामग्री अपने पास रखें, ताकि बीच में उठना न पड़े।"
+  },
+  {
+   "title_en": "Set the altar",
+   "title_hi": "वेदी सजाएँ",
+   "en": "Place the chowki and spread the cloth. Put a little rice on it and seat Ganesh on top, facing the family or towards the east if possible. Keep the thali, flowers and bhog within easy reach.",
+   "hi": "चौकी रखकर उस पर कपड़ा बिछाएँ। उस पर थोड़े चावल रखें और गणेश जी को विराजमान करें, मुख परिवार की ओर या हो सके तो पूर्व की ओर रखें। थाली, फूल और भोग पास में रखें।"
+  },
+  {
+   "title_en": "Place the kalash",
+   "title_hi": "कलश स्थापित करें",
+   "en": "Fill the kalash with water, add a coin, a supari and a pinch of rice. Put the mango leaves in its mouth, place the coconut on top and tie kalawa around it. Keep it beside the idol.",
+   "hi": "कलश में पानी भरें और उसमें एक सिक्का, एक सुपारी और चुटकी भर चावल डालें। मुँह पर आम के पत्ते लगाएँ, ऊपर नारियल रखें और कलावा बाँधें। इसे मूर्ति के पास रखें।"
+  },
+  {
+   "title_en": "Light the lamp and take sankalp",
+   "title_hi": "दीया जलाएँ और संकल्प लें",
+   "en": "Light the ghee diya and the incense. Sprinkle a few drops of Gangajal on yourself and the items. Then say in your own words why you are doing this puja, for example for Ganesh Chaturthi or a new beginning in your family.",
+   "hi": "घी का दीया और अगरबत्ती जलाएँ। अपने ऊपर और सामग्री पर गंगाजल की कुछ बूँदें छिड़कें। फिर अपने शब्दों में बताएँ कि आप यह पूजा क्यों कर रहे हैं, जैसे गणेश चतुर्थी के लिए या परिवार में किसी नई शुरुआत के लिए।"
+  },
+  {
+   "title_en": "Welcome Ganesh",
+   "title_hi": "गणेश जी का स्वागत",
+   "en": "Fold your hands and invite Lord Ganesh to sit and stay with you for the puja. Offer a flower and a little water, saying \"Welcome, Ganpati Bappa\". Children usually love this part.",
+   "hi": "हाथ जोड़कर गणेश जी को पूजा के लिए आसन ग्रहण करने का निमंत्रण दें। एक फूल और थोड़ा जल अर्पित करें और कहें \"गणपति बप्पा, पधारिए\"। बच्चों को यह हिस्सा अक्सर बहुत पसंद आता है।"
+  },
+  {
+   "title_en": "Offer tilak and water",
+   "title_hi": "तिलक और जल अर्पित करें",
+   "en": "Apply chandan or roli tilak on the forehead of the idol and sprinkle a few grains of rice. Offer a spoon of water for his feet. Then give tilak to everyone present.",
+   "hi": "मूर्ति के माथे पर चंदन या रोली का तिलक लगाएँ और चावल के कुछ दाने चढ़ाएँ। चरणों के लिए एक चम्मच जल अर्पित करें। फिर वहाँ मौजूद सबको तिलक लगाएँ।"
+  },
+  {
+   "title_en": "Offer durva and flowers",
+   "title_hi": "दूर्वा और फूल चढ़ाएँ",
+   "en": "Place the 21 durva blades at Ganesh's feet, a few at a time. Then offer the hibiscus or marigold flowers and the garland. Offer the betel leaves and supari with a coin.",
+   "hi": "गणेश जी के चरणों में 21 दूर्वा के तिनके, थोड़े-थोड़े करके, रखें। फिर गुड़हल या गेंदे के फूल और माला अर्पित करें। पान के पत्ते और सुपारी सिक्के के साथ चढ़ाएँ।"
+  },
+  {
+   "title_en": "Offer incense and bhog",
+   "title_hi": "धूप और भोग",
+   "en": "Wave the incense gently in front of the idol and offer the lit diya. Place the modak or laddu and the fruits on a plate before him. Offer it for a minute with folded hands and keep it covered until the end.",
+   "hi": "अगरबत्ती को मूर्ति के सामने धीरे से घुमाएँ और जलता दीया अर्पित करें। मोदक या लड्डू और फल थाली में सजाकर उनके सामने रखें। एक मिनट हाथ जोड़कर अर्पित करें और अंत तक ढककर रखें।"
+  },
+  {
+   "title_en": "Chant the mantra",
+   "title_hi": "मंत्र जाप",
+   "en": "Sit quietly and chant \"Om Gam Ganapataye Namah\" 21 or 108 times. You can count on a mala or with grains of rice. Everyone at home can join in, and it is fine to chant softly.",
+   "hi": "शांति से बैठकर \"ॐ गं गणपतये नमः\" 21 या 108 बार बोलें। गिनती माला से या चावल के दानों से कर सकते हैं। घर के सभी लोग साथ बोल सकते हैं, और धीमे स्वर में बोलना भी ठीक है।"
+  },
+  {
+   "title_en": "Do the aarti",
+   "title_hi": "आरती करें",
+   "en": "Light the camphor on the thali and sing the Ganesh aarti, \"Jai Ganesh Deva\", together. Move the thali slowly in a clockwise circle before the idol. Then everyone passes their hands over the flame and touches them to the eyes.",
+   "hi": "थाली में कपूर जलाएँ और सब मिलकर गणेश जी की आरती, \"जय गणेश देवा\", गाएँ। थाली को मूर्ति के सामने धीरे-धीरे घड़ी की दिशा में घुमाएँ। फिर सब लौ के ऊपर से हाथ घुमाकर आँखों से लगाएँ।"
+  },
+  {
+   "title_en": "Close and share prasad",
+   "title_hi": "समापन और प्रसाद",
+   "en": "Bow down, thank Ganesh and ask forgiveness for any mistake in the puja. Share the modak and fruits as prasad and tie kalawa on the wrists. Let the diya burn down safely, and keep the idol in a clean place.",
+   "hi": "प्रणाम करें, गणेश जी को धन्यवाद दें और पूजा में हुई किसी भूल के लिए क्षमा माँगें। मोदक और फल प्रसाद के रूप में बाँटें और कलाई पर कलावा बाँधें। दीये को सुरक्षित रूप से जल जाने दें, और मूर्ति को साफ़ जगह पर रखें।"
+  }
+ ],
+ "mantra": {
+  "sa": "ॐ गं गणपतये नमः",
+  "tr": "Om Gam Ganapataye Namah",
+  "en": "Om, I bow to Lord Ganapati, the remover of obstacles.",
+  "hi": "ॐ, मैं विघ्नों को दूर करने वाले भगवान गणपति को प्रणाम करता हूँ।"
+ },
+ "tips_en": [
+  "Choose a clay idol; it is gentle on water and can be immersed at home in a bucket.",
+  "Do the puja in the morning or at midday on Ganesh Chaturthi, and any calm hour for a new beginning.",
+  "Keep modak simple: store-bought or homemade laddu works just as well.",
+  "Let children make a small rangoli or decorate the altar with flowers.",
+  "Do the puja before something important begins, such as a new job, a new home or a school year.",
+  "Take a moment at the end to say thank you; it is the best part of the puja."
+ ],
+ "tips_hi": [
+  "मिट्टी की मूर्ति चुनें; यह पानी के लिए सुरक्षित है और घर पर बाल्टी में विसर्जित की जा सकती है।",
+  "गणेश चतुर्थी पर पूजा सुबह या दोपहर में करें, और किसी नई शुरुआत के लिए कोई भी शांत समय चुनें।",
+  "मोदक सरल रखें: बाज़ार के या घर के बने लड्डू भी उतने ही अच्छे हैं।",
+  "बच्चों से छोटी रंगोली बनवाएँ या वेदी को फूलों से सजवाएँ।",
+  "पूजा किसी महत्वपूर्ण काम के शुरू होने से पहले करें, जैसे नई नौकरी, नया घर या स्कूल का नया साल।",
+  "अंत में एक पल रुककर धन्यवाद ज़रूर कहें; यही पूजा का सबसे सुंदर हिस्सा है।"
+ ],
+ "avoid_en": [
+  "Do not offer tulsi leaves to Ganesh; use durva and hibiscus instead.",
+  "Avoid plaster-of-Paris or chemically painted idols, and never immerse in a lake or river.",
+  "Do not leave the lit diya or camphor unattended, especially around children.",
+  "Avoid offering wilted or broken rice; fresh flowers and whole rice are best.",
+  "Do not worry about small mistakes; the puja does not need to be repeated."
+ ],
+ "avoid_hi": [
+  "गणेश जी को तुलसी के पत्ते न चढ़ाएँ; उनके लिए दूर्वा और गुड़हल का उपयोग करें।",
+  "प्लास्टर ऑफ़ पेरिस या रासायनिक रंगों वाली मूर्ति से बचें, और झील या नदी में विसर्जन न करें।",
+  "जलते दीये या कपूर को अकेला न छोड़ें, ख़ासकर बच्चों के आसपास।",
+  "मुरझाए फूल या टूटे चावल चढ़ाने से बचें; ताज़े फूल और साबुत चावल सबसे अच्छे हैं।",
+  "छोटी-मोटी भूलों की चिंता न करें; पूजा को दोबारा करने की ज़रूरत नहीं है।"
+ ]
+}

@@ -1408,3 +1408,107 @@ img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
 .sc-seal::before { display: none; }
 .kkp-picl { display: block; line-height: 0; }
 .kkp-picmode .kkp-cta { display: none; } .kkp-picmode .kkp-foot { justify-content: center; padding: 8px; }
+
+/* ---------- Puja guides ---------- */
+.puja-wrap { max-width: 860px; padding-block: 26px 120px; }
+.puja-wrap h1 { text-wrap: balance; margin: 6px 0 4px; }
+.puja-wrap h2 { margin: 34px 0 10px; }
+[data-pl="en"] .l-hi, [data-pl="hi"] .l-en { display: none; }
+.pj-lang { display: flex; gap: 0; margin: 4px 0 16px; width: max-content; border: 1px solid #d9d9e3; border-radius: 8px; overflow: hidden; }
+.pj-lang button { font: inherit; padding: 7px 16px; border: 0; background: #fff; color: #333; cursor: pointer; }
+.pj-lang button[aria-pressed="true"] { background: #1b1b3a; color: #fff; }
+.pj-crumb { margin: 0 0 6px; font-size: .92rem; }
+.pj-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 20px 0 8px; }
+.pj-card { display: flex; flex-direction: column; border: 1px solid #e4e4ee; border-radius: 10px; overflow: hidden; background: #fff; color: inherit; text-decoration: none; transition: box-shadow .2s, transform .2s; }
+.pj-card:hover { box-shadow: 0 8px 26px rgba(20, 20, 60, .12); transform: translateY(-2px); }
+.pj-card-img { display: grid; place-items: center; aspect-ratio: 16 / 7; background: var(--pj2); color: var(--pj); overflow: hidden; }
+.pj-card-img b { font-family: "Yatra One", serif; font-weight: 400; font-size: clamp(2rem, 7vw, 3rem); }
+.pj-card-img img { width: 100%; height: 100%; object-fit: cover; }
+.pj-card-t { display: grid; gap: 4px; padding: 14px 16px 16px; }
+.pj-card-t strong { font-size: 1.12rem; }
+.pj-card-t small { color: #555; line-height: 1.4; }
+.pj-card-t em { font-style: normal; color: var(--pj); font-size: .88rem; font-weight: 600; }
+.pj-hero { border-radius: 10px; overflow: hidden; margin: 6px 0 18px; border: 1px solid #ececf3; }
+.pj-art, .pj-photo { display: block; width: 100%; height: auto; }
+.pj-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 10px 0 16px; }
+.pj-facts > div { background: var(--pj2); border-radius: 8px; padding: 12px 14px; }
+.pj-facts small { color: var(--pj); font-weight: 700; }
+.pj-facts p { margin: 3px 0 0; }
+.pj-hint { color: #555; margin: 0 0 10px; }
+.pj-samagri { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 14px; }
+.pj-samagri li label { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid #e4e4ee; border-radius: 8px; cursor: pointer; height: 100%; }
+.pj-samagri input { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--pj); flex: none; }
+.pj-sg { display: grid; gap: 1px; min-width: 0; }
+.pj-sg i { font-style: normal; color: var(--pj); font-size: .9rem; font-weight: 600; }
+.pj-sg small { color: #666; line-height: 1.35; }
+.pj-samagri input:checked + .pj-sg b { text-decoration: line-through; color: #888; }
+.pj-samagri li:has(input:checked) label { background: var(--pj2); border-color: transparent; }
+.pj-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 0; }
+.puja-wrap .btn { border-radius: 8px; white-space: normal; }
+.pj-plain { padding-left: 1.2em; display: grid; gap: 6px; }
+.pj-avoid li::marker { color: #b4412f; }
+.pj-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; counter-reset: s; }
+.pj-steps li { display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 14px; }
+.pj-n { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 8px; background: var(--pj); color: #fff; font-weight: 700; }
+.pj-steps h3 { margin: 0 0 3px; font-size: 1.08rem; }
+.pj-steps p { margin: 0; line-height: 1.6; }
+.pj-mantra { margin: 30px 0 0; padding: 20px; border-radius: 10px; background: var(--pj2); text-align: center; }
+.pj-mantra small { color: var(--pj); font-weight: 700; }
+.pj-sa { font-family: "Yatra One", serif; font-size: clamp(1.4rem, 5vw, 1.9rem); color: var(--pj); margin: 8px 0 2px; }
+.pj-tr { font-style: italic; margin: 0 0 6px; color: #444; }
+.pj-cta { margin: 36px 0 0; padding: 20px; border: 1px solid #e4e4ee; border-radius: 10px; }
+.pj-cta h2 { margin-top: 0; }
+.pj-more > div { display: flex; flex-wrap: wrap; gap: 8px; }
+.pj-more a { padding: 8px 14px; border: 1px solid #d9d9e3; border-radius: 8px; color: inherit; text-decoration: none; }
+.pj-more a:hover { border-color: var(--pj); color: var(--pj); }
+.pj-note { margin-top: 28px; color: #666; font-size: .9rem; }
+@media (max-width: 640px) {
+  .pj-grid, .pj-samagri { grid-template-columns: minmax(0, 1fr); }
+  .pj-facts { grid-template-columns: minmax(0, 1fr); }
+}
+@media print {
+  .post-top, .pj-lang, .pj-actions, .pj-cta, .pj-more, .post-foot, .pj-hero, .kkp, [id^="kkp"] { display: none !important; }
+  .pj-samagri li label { break-inside: avoid; }
+}
+.puja-page { background: #fff; }
+.pj-panel { display: grid; place-items: center; align-content: center; gap: 6px; aspect-ratio: 800 / 260; text-align: center; }
+.pj-panel b { font-family: "Yatra One", serif; font-weight: 400; font-size: clamp(2rem, 8vw, 3.4rem); }
+.pj-panel span { font-weight: 600; opacity: .8; }
+/* Your day */
+.md { margin: 0 0 28px; }
+.md-card { border: 1px solid #e4e4ee; border-radius: 12px; background: #fff; padding: 22px; }
+.md-form form { display: grid; gap: 12px; max-width: 520px; }
+.md-form label { display: grid; gap: 4px; font-weight: 600; }
+.md-form input:not([type=checkbox]) { font: inherit; padding: 10px 12px; border: 1px solid #cfcfdc; border-radius: 8px; }
+.md-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.md-chk { display: flex !important; align-items: center; gap: 8px; font-weight: 400 !important; }
+.md-place { position: relative; }
+.md-list { list-style: none; margin: -6px 0 0; padding: 0; border: 1px solid #cfcfdc; border-radius: 8px; background: #fff; max-height: 220px; overflow: auto; }
+.md-list li { padding: 9px 12px; cursor: pointer; } .md-list li:hover { background: #f1f1f8; }
+.md-err { color: #b4412f; margin: 0; } .md-fine { color: #666; font-size: .88rem; margin: 0; }
+.md-day header { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+.md-day h3 { margin: 0 0 4px; } .md-day header p { margin: 0; color: #555; }
+.md-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; padding: 0; margin: 14px 0; }
+.md-chips li { background: #f3f3fa; border-radius: 8px; padding: 8px 12px; display: grid; }
+.md-chips small { color: #666; }
+.md-theme { margin: 6px 0 14px; line-height: 1.6; }
+.md-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.md-day h4 { margin: 18px 0 8px; }
+.md-do, .md-no { padding-left: 1.2em; display: grid; gap: 6px; margin: 0; }
+.md-do li::marker { color: #2f7d4f; } .md-no li::marker { color: #b4412f; }
+.md-sw { display: inline-flex; align-items: center; gap: 8px; margin: 0 14px 8px 0; font-weight: 600; }
+.md-sw i { width: 22px; height: 22px; border-radius: 6px; border: 1px solid #0002; }
+.md-areas { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.md-areas li > div { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.md-areas p { margin: 4px 0 0; color: #444; }
+.md-bar { width: 80px; height: 8px; background: #e6e6f0; border-radius: 4px; overflow: hidden; display: inline-block; }
+.md-bar i { display: block; height: 100%; background: #1b1b3a; }
+.md-times > div { display: flex; flex-wrap: wrap; gap: 10px; }
+.md-t { display: grid; padding: 8px 12px; border-radius: 8px; font-weight: 600; }
+.md-t small { font-weight: 400; }
+.md-t--good { background: #e3f3e8; } .md-t--bad { background: #fbe4e0; }
+.md-mantra { margin-top: 18px; text-align: center; background: #f3f3fa; border-radius: 10px; padding: 14px; }
+.md-mantra div { font-family: "Yatra One", serif; font-size: 1.5rem; margin: 4px 0; }
+.md-day footer { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.md .btn { border-radius: 8px; white-space: normal; }
+@media (max-width: 640px) { .md-two, .md-areas, .md-row { grid-template-columns: minmax(0, 1fr); } .md-card { padding: 16px; } }

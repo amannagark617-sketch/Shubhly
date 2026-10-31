@@ -1,0 +1,287 @@
+{
+ "slug": "shiv",
+ "en": "Shiv Puja and Abhishek",
+ "hi": "शिव पूजा और अभिषेक",
+ "tag_en": "A simple home puja offering water and milk to Shiv ji",
+ "tag_hi": "शिव जी को जल और दूध अर्पित करने की सरल घरेलू पूजा",
+ "when_en": "Usually done on Mondays, through the month of Sawan, and on Maha Shivratri. Many families also do it on any day they wish to remember Mahadev.",
+ "when_hi": "आमतौर पर सोमवार को, सावन के महीने में और महाशिवरात्रि पर की जाती है। कई परिवार जब भी महादेव को याद करना चाहें, किसी भी दिन कर लेते हैं।",
+ "time_en": "About 30 minutes",
+ "time_hi": "लगभग 30 मिनट",
+ "intro_en": "Shiv Puja is one of the simplest pujas to do at home. You bathe the Shivling with water, milk and a few other things, offer belpatra and flowers, and sit quietly with the mantra. Families and regions do this a little differently, so where your family or pandit ji follows another way, please follow theirs.",
+ "intro_hi": "शिव पूजा घर पर की जाने वाली सबसे सरल पूजाओं में से एक है। इसमें शिवलिंग को जल, दूध और कुछ अन्य चीज़ों से स्नान कराते हैं, बेलपत्र और फूल चढ़ाते हैं, और शांत बैठकर मंत्र जपते हैं। हर परिवार और क्षेत्र में तरीका थोड़ा अलग होता है, इसलिए जहाँ आपके परिवार या पंडित जी की रीति अलग हो, वहाँ उसी का पालन करें।",
+ "samagri": [
+  {
+   "en": "Shivling or Shiv image",
+   "hi": "शिवलिंग या शिव जी की तस्वीर",
+   "qty_en": "1",
+   "qty_hi": "एक",
+   "use_en": "The main deity you will worship and bathe",
+   "use_hi": "मुख्य देव, जिनकी पूजा और स्नान कराएँगे"
+  },
+  {
+   "en": "Plate with a raised rim",
+   "hi": "किनारे वाली थाली या परात",
+   "qty_en": "1 large",
+   "qty_hi": "1 बड़ी",
+   "use_en": "Holds the Shivling and catches the abhishek water",
+   "use_hi": "शिवलिंग रखने और अभिषेक का जल इकट्ठा करने के लिए"
+  },
+  {
+   "en": "Clean water in a lota",
+   "hi": "लोटे में साफ़ जल",
+   "qty_en": "1 full lota",
+   "qty_hi": "1 भरा लोटा",
+   "use_en": "For the first and the final bath of the Shivling",
+   "use_hi": "शिवलिंग के पहले और अंतिम स्नान के लिए"
+  },
+  {
+   "en": "Gangajal",
+   "hi": "गंगाजल",
+   "qty_en": "1 tablespoon",
+   "qty_hi": "1 बड़ा चम्मच",
+   "use_en": "Mixed in water and sprinkled for cleanliness",
+   "use_hi": "जल में मिलाने और शुद्धि के लिए छिड़कने हेतु"
+  },
+  {
+   "en": "Raw cow milk",
+   "hi": "कच्चा गाय का दूध",
+   "qty_en": "1 cup (200 ml)",
+   "qty_hi": "1 कप (200 मिली)",
+   "use_en": "Poured over the Shivling during abhishek",
+   "use_hi": "अभिषेक के समय शिवलिंग पर चढ़ाने के लिए"
+  },
+  {
+   "en": "Curd",
+   "hi": "दही",
+   "qty_en": "2 tablespoons",
+   "qty_hi": "2 बड़े चम्मच",
+   "use_en": "One part of the Panchamrit bath",
+   "use_hi": "पंचामृत स्नान का एक भाग"
+  },
+  {
+   "en": "Ghee",
+   "hi": "घी",
+   "qty_en": "1 tablespoon",
+   "qty_hi": "1 बड़ा चम्मच",
+   "use_en": "For Panchamrit and for the diya",
+   "use_hi": "पंचामृत और दीपक के लिए"
+  },
+  {
+   "en": "Honey",
+   "hi": "शहद",
+   "qty_en": "1 tablespoon",
+   "qty_hi": "1 बड़ा चम्मच",
+   "use_en": "One part of the Panchamrit bath",
+   "use_hi": "पंचामृत स्नान का एक भाग"
+  },
+  {
+   "en": "Sugar",
+   "hi": "चीनी या बूरा",
+   "qty_en": "1 tablespoon",
+   "qty_hi": "1 बड़ा चम्मच",
+   "use_en": "One part of the Panchamrit bath",
+   "use_hi": "पंचामृत स्नान का एक भाग"
+  },
+  {
+   "en": "Belpatra",
+   "hi": "बेलपत्र",
+   "qty_en": "5 to 11 leaves",
+   "qty_hi": "5 से 11 पत्ते",
+   "use_en": "Offered on the Shivling, smooth side down",
+   "use_hi": "शिवलिंग पर चिकनी सतह नीचे रखकर चढ़ाने के लिए"
+  },
+  {
+   "en": "White flowers",
+   "hi": "सफ़ेद फूल",
+   "qty_en": "A small handful",
+   "qty_hi": "एक छोटी मुट्ठी",
+   "use_en": "Offered with love after the belpatra",
+   "use_hi": "बेलपत्र के बाद प्रेम से अर्पित करने के लिए"
+  },
+  {
+   "en": "Akshat (whole rice)",
+   "hi": "अक्षत (साबुत चावल)",
+   "qty_en": "2 tablespoons",
+   "qty_hi": "2 बड़े चम्मच",
+   "use_en": "Offered after the tilak and during the sankalp",
+   "use_hi": "तिलक के बाद और संकल्प के समय चढ़ाने के लिए"
+  },
+  {
+   "en": "Chandan paste",
+   "hi": "चंदन का लेप",
+   "qty_en": "1 small bowl",
+   "qty_hi": "1 छोटी कटोरी",
+   "use_en": "Applied as tilak on the Shivling",
+   "use_hi": "शिवलिंग पर तिलक लगाने के लिए"
+  },
+  {
+   "en": "Bhasma or vibhuti",
+   "hi": "भस्म या विभूति",
+   "qty_en": "1 pinch",
+   "qty_hi": "1 चुटकी",
+   "use_en": "Three lines applied on the Shivling, if your family does",
+   "use_hi": "परिवार की रीति हो तो शिवलिंग पर तीन रेखाएँ लगाने के लिए"
+  },
+  {
+   "en": "Diya with cotton wicks",
+   "hi": "दीपक और रुई की बत्तियाँ",
+   "qty_en": "1 diya, 2 wicks",
+   "qty_hi": "1 दीपक, 2 बत्तियाँ",
+   "use_en": "Lit at the start and kept burning through the puja",
+   "use_hi": "शुरू में जलाने और पूजा भर जलाए रखने के लिए"
+  },
+  {
+   "en": "Incense sticks",
+   "hi": "अगरबत्ती या धूप",
+   "qty_en": "2 sticks",
+   "qty_hi": "2 अगरबत्तियाँ",
+   "use_en": "Waved before Shiv ji to fill the space with fragrance",
+   "use_hi": "शिव जी के सामने घुमाकर सुगंध फैलाने के लिए"
+  },
+  {
+   "en": "Seasonal fruits",
+   "hi": "मौसमी फल",
+   "qty_en": "2 to 3 pieces",
+   "qty_hi": "2 से 3 फल",
+   "use_en": "Offered as naivedya and shared as prasad",
+   "use_hi": "नैवेद्य के रूप में चढ़ाने और प्रसाद बाँटने के लिए"
+  },
+  {
+   "en": "Simple sweet or kheer",
+   "hi": "कोई सादी मिठाई या खीर",
+   "qty_en": "1 small bowl",
+   "qty_hi": "1 छोटी कटोरी",
+   "use_en": "Homemade bhog offered before prasad is shared",
+   "use_hi": "घर का भोग, प्रसाद बाँटने से पहले चढ़ाने के लिए"
+  },
+  {
+   "en": "Camphor and matchbox",
+   "hi": "कपूर और माचिस",
+   "qty_en": "2 tablets, 1 box",
+   "qty_hi": "2 टिकिया, 1 डिब्बी",
+   "use_en": "For lighting the aarti at the end",
+   "use_hi": "अंत में आरती जलाने के लिए"
+  }
+ ],
+ "before_en": [
+  "Clean the puja corner and wash the Shivling and the plate gently.",
+  "Bring fresh belpatra, flowers and milk, and keep milk in the fridge until morning.",
+  "Wash the belpatra leaves and pat them dry; choose whole, unbroken leaves.",
+  "Set out all the samagri on a tray so nothing is missing tomorrow.",
+  "Decide who will sit for the puja and keep the time free for about half an hour."
+ ],
+ "before_hi": [
+  "पूजा का स्थान साफ़ करें और शिवलिंग व थाली को धीरे से धो लें।",
+  "ताज़े बेलपत्र, फूल और दूध ले आएँ, और दूध को सुबह तक फ्रिज में रखें।",
+  "बेलपत्र धोकर पोंछ लें और साबुत, बिना कटे पत्ते चुनें।",
+  "सारी सामग्री एक ट्रे में निकालकर रख लें, ताकि कल कुछ छूटे नहीं।",
+  "तय कर लें कि पूजा में कौन-कौन बैठेगा और लगभग आधे घंटे का समय खाली रखें।"
+ ],
+ "steps": [
+  {
+   "title_en": "Bathe and clean the space",
+   "title_hi": "स्नान और स्थान की सफ़ाई",
+   "en": "Take a bath and wear clean clothes. Sweep and wipe the puja place, then sprinkle a little Gangajal around it. Sit on a mat or aasan, facing east or north if you can.",
+   "hi": "स्नान करके साफ़ कपड़े पहनें। पूजा के स्थान पर झाड़ू-पोंछा करें और चारों ओर थोड़ा गंगाजल छिड़कें। हो सके तो चटाई या आसन पर पूर्व या उत्तर की ओर मुँह करके बैठें।"
+  },
+  {
+   "title_en": "Set up Shiv ji",
+   "title_hi": "शिव जी को स्थापित करें",
+   "en": "Place the Shivling on the rimmed plate, with the spout side facing north. Keep the diya, flowers, belpatra and bowls within easy reach. If you have only a picture, keep it in front of you on a clean cloth.",
+   "hi": "शिवलिंग को किनारे वाली थाली में रखें, जलहरी का मुख उत्तर की ओर रहे। दीपक, फूल, बेलपत्र और कटोरियाँ हाथ के पास रखें। यदि केवल तस्वीर है तो उसे साफ़ कपड़े पर अपने सामने रखें।"
+  },
+  {
+   "title_en": "Light the diya",
+   "title_hi": "दीपक जलाएँ",
+   "en": "Light the ghee diya and the incense. Bow with folded hands and take a moment to quiet your mind before you begin.",
+   "hi": "घी का दीपक और अगरबत्ती जलाएँ। हाथ जोड़कर प्रणाम करें और शुरू करने से पहले एक पल मन को शांत कर लें।"
+  },
+  {
+   "title_en": "Pray to Ganesh ji",
+   "title_hi": "गणेश जी का स्मरण",
+   "en": "Begin by remembering Ganesh ji, as is done before every puja. Offer a flower or a few grains of rice and say, Om Gan Ganapataye Namah, asking for a smooth puja.",
+   "hi": "हर पूजा की तरह पहले गणेश जी को याद करें। एक फूल या कुछ चावल के दाने चढ़ाकर कहें, ॐ गं गणपतये नमः, और पूजा निर्विघ्न होने की प्रार्थना करें।"
+  },
+  {
+   "title_en": "Take a simple sankalp",
+   "title_hi": "सरल संकल्प लें",
+   "en": "Take a little water and rice in your right palm. Say in your own words that you are doing this puja with devotion for your family's wellbeing, then let the water fall into a small bowl.",
+   "hi": "दाहिने हाथ में थोड़ा जल और चावल लें। अपने शब्दों में कहें कि आप परिवार की भलाई के लिए श्रद्धा से यह पूजा कर रहे हैं, फिर जल को एक छोटी कटोरी में छोड़ दें।"
+  },
+  {
+   "title_en": "Jal abhishek",
+   "title_hi": "जल अभिषेक",
+   "en": "Pour clean water mixed with a little Gangajal slowly over the Shivling in a thin stream. Keep repeating Om Namah Shivaya in your mind or softly aloud while you pour.",
+   "hi": "थोड़े गंगाजल मिले साफ़ जल को शिवलिंग पर पतली धारा में धीरे-धीरे चढ़ाएँ। जल चढ़ाते समय मन में या हल्की आवाज़ में ॐ नमः शिवाय दोहराते रहें।"
+  },
+  {
+   "title_en": "Milk and Panchamrit abhishek",
+   "title_hi": "दूध और पंचामृत अभिषेक",
+   "en": "Pour the milk slowly, then offer curd, honey, ghee and sugar one by one. Do it gently and without hurry. If you do not have all five, milk alone is perfectly fine.",
+   "hi": "पहले दूध धीरे-धीरे चढ़ाएँ, फिर दही, शहद, घी और चीनी एक-एक करके अर्पित करें। यह सब शांति से, बिना जल्दबाज़ी के करें। पाँचों चीज़ें न हों तो केवल दूध भी पर्याप्त है।"
+  },
+  {
+   "title_en": "Bathe again with clean water",
+   "title_hi": "फिर से शुद्ध जल से स्नान",
+   "en": "Wash the Shivling once more with clean water to remove the milk and other things. Wipe it gently with a soft clean cloth and place it back on the plate.",
+   "hi": "दूध आदि हटाने के लिए शिवलिंग को एक बार फिर साफ़ जल से धोएँ। नरम साफ़ कपड़े से धीरे से पोंछकर वापस थाली में रखें।"
+  },
+  {
+   "title_en": "Chandan and bhasma",
+   "title_hi": "चंदन और भस्म",
+   "en": "Apply chandan paste on the Shivling as tilak. If your family uses it, add three horizontal lines of bhasma. Put a few grains of akshat on top.",
+   "hi": "शिवलिंग पर चंदन का तिलक लगाएँ। परिवार की रीति हो तो भस्म की तीन आड़ी रेखाएँ भी बनाएँ। ऊपर कुछ अक्षत के दाने रखें।"
+  },
+  {
+   "title_en": "Belpatra and flowers",
+   "title_hi": "बेलपत्र और फूल",
+   "en": "Offer the belpatra with the smooth side touching the Shivling, then the white flowers. Offer them with a calm mind and a thankful heart.",
+   "hi": "बेलपत्र चढ़ाएँ, चिकनी सतह शिवलिंग को छूती हुई रहे, फिर सफ़ेद फूल अर्पित करें। शांत मन और कृतज्ञ भाव से चढ़ाएँ।"
+  },
+  {
+   "title_en": "Dhoop, naivedya and japa",
+   "title_hi": "धूप, नैवेद्य और जप",
+   "en": "Wave the incense, then place the fruit and sweet in front of Shiv ji. Sit quietly and chant Om Namah Shivaya 11 or 108 times, using a mala if you have one.",
+   "hi": "अगरबत्ती घुमाएँ, फिर फल और मिठाई शिव जी के सामने रखें। शांत बैठकर ॐ नमः शिवाय का 11 या 108 बार जप करें, माला हो तो उसका उपयोग करें।"
+  },
+  {
+   "title_en": "Aarti and prasad",
+   "title_hi": "आरती और प्रसाद",
+   "en": "Light camphor and sing the Shiv aarti together as a family. Ask forgiveness for any mistake made in the puja, bow down, and then share the prasad with everyone at home.",
+   "hi": "कपूर जलाकर परिवार के साथ शिव जी की आरती गाएँ। पूजा में हुई किसी भी भूल के लिए क्षमा माँगें, प्रणाम करें और फिर घर में सबको प्रसाद बाँटें।"
+  }
+ ],
+ "mantra": {
+  "sa": "ॐ नमः शिवाय",
+  "tr": "Om Namah Shivaya",
+  "en": "I bow to Shiva, the auspicious one.",
+  "hi": "मैं कल्याणकारी शिव को प्रणाम करता हूँ।"
+ },
+ "tips_en": [
+  "Pour the milk and water in a slow, thin stream rather than all at once.",
+  "Use a steel, copper, brass or clay vessel for the abhishek, as is traditional.",
+  "Let children help with flowers, belpatra and the aarti, so they enjoy it.",
+  "You can keep the puja short if time is tight; water, belpatra and the mantra are enough.",
+  "Pour the used abhishek water at the base of a plant or tree, not into a drain."
+ ],
+ "tips_hi": [
+  "दूध और जल को एक साथ उड़ेलने के बजाय धीमी, पतली धार में चढ़ाएँ।",
+  "परंपरा के अनुसार अभिषेक के लिए स्टील, तांबे, पीतल या मिट्टी का पात्र लें।",
+  "बच्चों को फूल, बेलपत्र और आरती में शामिल करें, ताकि उन्हें पूजा अच्छी लगे।",
+  "समय कम हो तो पूजा छोटी रख सकते हैं; जल, बेलपत्र और मंत्र ही पर्याप्त हैं।",
+  "अभिषेक का उपयोग किया हुआ जल नाली में न बहाएँ, किसी पौधे या पेड़ की जड़ में डालें।"
+ ],
+ "avoid_en": [
+  "Please do not offer tulsi leaves, turmeric or kumkum on the Shivling; these are usually not used for Shiv ji.",
+  "Avoid broken or torn belpatra, and flowers picked up from the ground.",
+  "Try not to use packet or flavoured milk; plain milk is best.",
+  "Do not worry about small mistakes; a sincere heart matters more than a perfect method."
+ ],
+ "avoid_hi": [
+  "कृपया शिवलिंग पर तुलसी, हल्दी या कुमकुम न चढ़ाएँ; शिव जी के लिए आमतौर पर इनका प्रयोग नहीं होता।",
+  "कटे-फटे बेलपत्र और ज़मीन से उठाए हुए फूल चढ़ाने से बचें।",
+  "पैकेट वाला या फ्लेवर वाला दूध न लें तो अच्छा है; सादा दूध सबसे उचित है।",
+  "छोटी-मोटी भूलों की चिंता न करें; सच्चा मन पूजा की सही विधि से ज़्यादा मायने रखता है।"
+ ]
+}

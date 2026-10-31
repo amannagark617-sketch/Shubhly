@@ -1,0 +1,289 @@
+{
+ "slug": "saraswati",
+ "en": "Saraswati Puja",
+ "hi": "सरस्वती पूजा",
+ "tag_en": "A simple puja to begin learning with a calm, grateful mind",
+ "tag_hi": "पढ़ाई की शुरुआत शांत और कृतज्ञ मन से करने की सरल पूजा",
+ "when_en": "Usually done on Basant Panchami in January or February. Many families and students also do it before exams or when a new school year or course begins.",
+ "when_hi": "आमतौर पर जनवरी या फरवरी में बसंत पंचमी पर की जाती है। कई परिवार और विद्यार्थी परीक्षा से पहले, या नया सत्र या नया कोर्स शुरू होने पर भी यह पूजा करते हैं।",
+ "time_en": "About 40 minutes",
+ "time_hi": "लगभग 40 मिनट",
+ "intro_en": "Saraswati Maa is worshipped as the goddess of knowledge, music and the arts. This puja is a way to say thank you for learning and to begin studies with a calm, focused mind. Families and regions do it a little differently, so wherever your family or pandit ji does something another way, please follow that.",
+ "intro_hi": "सरस्वती माँ को ज्ञान, संगीत और कलाओं की देवी माना जाता है। यह पूजा विद्या के लिए धन्यवाद कहने और शांत, एकाग्र मन से पढ़ाई शुरू करने का एक सुंदर तरीका है। हर परिवार और हर क्षेत्र में पूजा थोड़ी अलग तरह से होती है, इसलिए जहाँ आपके परिवार या पंडित जी की विधि अलग हो, वहाँ उसी का पालन करें।",
+ "samagri": [
+  {
+   "en": "Saraswati idol or picture",
+   "hi": "सरस्वती जी की मूर्ति या तस्वीर",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "The main image you will worship",
+   "use_hi": "मुख्य रूप से पूजी जाने वाली प्रतिमा"
+  },
+  {
+   "en": "Ganesh ji idol or picture",
+   "hi": "गणेश जी की मूर्ति या तस्वीर",
+   "qty_en": "1 small",
+   "qty_hi": "1 छोटी",
+   "use_en": "Invoked first before starting the puja",
+   "use_hi": "पूजा शुरू करने से पहले पहले पूजे जाते हैं"
+  },
+  {
+   "en": "Wooden chowki or clean table",
+   "hi": "लकड़ी की चौकी या साफ़ मेज़",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Place where the idols are seated",
+   "use_hi": "जहाँ मूर्तियाँ विराजमान की जाती हैं"
+  },
+  {
+   "en": "Yellow or white cloth",
+   "hi": "पीला या सफ़ेद कपड़ा",
+   "qty_en": "1 piece",
+   "qty_hi": "1 टुकड़ा",
+   "use_en": "Spread over the chowki as a seat",
+   "use_hi": "चौकी पर आसन की तरह बिछाने के लिए"
+  },
+  {
+   "en": "Books, notebooks, pens, instruments",
+   "hi": "किताबें, कॉपियाँ, कलम, वाद्य यंत्र",
+   "qty_en": "As needed",
+   "qty_hi": "ज़रूरत अनुसार",
+   "use_en": "Kept near the idol to be blessed",
+   "use_hi": "आशीर्वाद के लिए मूर्ति के पास रखे जाते हैं"
+  },
+  {
+   "en": "Kalash (small pot) with water",
+   "hi": "जल भरा कलश (छोटा लोटा)",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Holds clean water as a symbol of purity",
+   "use_hi": "पवित्रता के प्रतीक रूप में साफ़ जल रखने के लिए"
+  },
+  {
+   "en": "Mango leaves",
+   "hi": "आम के पत्ते",
+   "qty_en": "5 leaves",
+   "qty_hi": "5 पत्ते",
+   "use_en": "Placed in the mouth of the kalash",
+   "use_hi": "कलश के मुँह पर रखे जाते हैं"
+  },
+  {
+   "en": "Coconut",
+   "hi": "नारियल",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Placed on top of the kalash",
+   "use_hi": "कलश के ऊपर रखा जाता है"
+  },
+  {
+   "en": "Diya (clay lamp)",
+   "hi": "दीया",
+   "qty_en": "2",
+   "qty_hi": "2",
+   "use_en": "Lit during the puja and aarti",
+   "use_hi": "पूजा और आरती में जलाने के लिए"
+  },
+  {
+   "en": "Ghee or oil with cotton wicks",
+   "hi": "घी या तेल और रुई की बत्तियाँ",
+   "qty_en": "50 g and 4 wicks",
+   "qty_hi": "50 ग्राम और 4 बत्तियाँ",
+   "use_en": "Fuel for lighting the diya",
+   "use_hi": "दीया जलाने के लिए"
+  },
+  {
+   "en": "Incense sticks",
+   "hi": "अगरबत्ती",
+   "qty_en": "1 small packet",
+   "qty_hi": "1 छोटा पैकेट",
+   "use_en": "Lit to fill the space with fragrance",
+   "use_hi": "वातावरण को सुगंधित करने के लिए"
+  },
+  {
+   "en": "Haldi and kumkum",
+   "hi": "हल्दी और कुमकुम",
+   "qty_en": "1 small pinch each",
+   "qty_hi": "एक-एक चुटकी",
+   "use_en": "Used for tilak on the idol and yourself",
+   "use_hi": "मूर्ति और स्वयं को तिलक लगाने के लिए"
+  },
+  {
+   "en": "Chandan (sandalwood) paste",
+   "hi": "चंदन",
+   "qty_en": "1 teaspoon",
+   "qty_hi": "1 चम्मच",
+   "use_en": "Applied as a cooling tilak",
+   "use_hi": "ठंडक देने वाले तिलक के रूप में लगाने के लिए"
+  },
+  {
+   "en": "Akshat (whole rice grains)",
+   "hi": "अक्षत (साबुत चावल)",
+   "qty_en": "1 handful",
+   "qty_hi": "1 मुट्ठी",
+   "use_en": "Offered along with flowers and tilak",
+   "use_hi": "फूलों और तिलक के साथ चढ़ाने के लिए"
+  },
+  {
+   "en": "Yellow or white flowers",
+   "hi": "पीले या सफ़ेद फूल",
+   "qty_en": "1 small bunch",
+   "qty_hi": "1 छोटा गुच्छा",
+   "use_en": "Offered to the Goddess with devotion",
+   "use_hi": "श्रद्धा से माँ को अर्पित करने के लिए"
+  },
+  {
+   "en": "Fruits such as banana, apple, ber",
+   "hi": "फल जैसे केला, सेब, बेर",
+   "qty_en": "5 pieces",
+   "qty_hi": "5 टुकड़े",
+   "use_en": "Offered as bhog and shared later",
+   "use_hi": "भोग के रूप में चढ़ाकर बाद में बाँटने के लिए"
+  },
+  {
+   "en": "Yellow sweet like kesari bhat or laddoo",
+   "hi": "पीली मिठाई जैसे केसरी भात या लड्डू",
+   "qty_en": "1 small bowl",
+   "qty_hi": "1 छोटी कटोरी",
+   "use_en": "Basant Panchami favourite, offered as bhog",
+   "use_hi": "बसंत पंचमी की प्रिय मिठाई, भोग के लिए"
+  },
+  {
+   "en": "Camphor",
+   "hi": "कपूर",
+   "qty_en": "2 to 3 tablets",
+   "qty_hi": "2 से 3 टिकिया",
+   "use_en": "Lit for the final aarti",
+   "use_hi": "अंत की आरती के लिए जलाने के लिए"
+  },
+  {
+   "en": "Aarti plate (thali)",
+   "hi": "आरती की थाली",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Holds the diya, flowers and camphor",
+   "use_hi": "दीया, फूल और कपूर रखने के लिए"
+  }
+ ],
+ "before_en": [
+  "Clean the puja corner and the study table, and tidy up your books.",
+  "Buy flowers, fruits and sweets, or plan to pick them up in the morning.",
+  "Gather all samagri in one place so nothing is missing during the puja.",
+  "Keep a pen and notebook ready if you wish to place them near the idol.",
+  "Decide a time, ideally morning, and let everyone at home know."
+ ],
+ "before_hi": [
+  "पूजा का कोना और पढ़ाई की मेज़ साफ़ करें और किताबें सलीके से रख दें।",
+  "फूल, फल और मिठाई पहले ही ले आएँ, या सुबह लाने की योजना बना लें।",
+  "सारी सामग्री एक जगह इकट्ठी कर लें ताकि पूजा के बीच कुछ कम न पड़े।",
+  "अगर चाहें तो कलम और कॉपी भी मूर्ति के पास रखने के लिए अलग निकाल लें।",
+  "पूजा का समय तय कर लें, सुबह का समय अच्छा रहता है, और घर में सबको बता दें।"
+ ],
+ "steps": [
+  {
+   "title_en": "Bathe and dress",
+   "title_hi": "स्नान और वस्त्र",
+   "en": "Take a bath and wear clean clothes. Yellow is popular on Basant Panchami, but any clean, simple clothes are fine.",
+   "hi": "स्नान करके साफ़ कपड़े पहनें। बसंत पंचमी पर पीला रंग पसंद किया जाता है, पर कोई भी साफ़ और सादे कपड़े चलते हैं।"
+  },
+  {
+   "title_en": "Set up the chowki",
+   "title_hi": "चौकी सजाएँ",
+   "en": "Spread the yellow or white cloth on the chowki and place Saraswati Maa on it, facing east if possible. Keep Ganesh ji to the side and your books near the idol.",
+   "hi": "चौकी पर पीला या सफ़ेद कपड़ा बिछाएँ और सरस्वती माँ को स्थापित करें, हो सके तो मुख पूर्व दिशा में रहे। गणेश जी को एक ओर और किताबें मूर्ति के पास रखें।"
+  },
+  {
+   "title_en": "Sit calmly and take a sankalp",
+   "title_hi": "शांत बैठें और संकल्प लें",
+   "en": "Sit on a mat facing the idol and take a few slow breaths. With a little water in your palm, say in your own words that you are doing this puja with gratitude for learning.",
+   "hi": "आसन पर मूर्ति की ओर मुख करके बैठें और कुछ गहरी साँसें लें। हथेली में थोड़ा जल लेकर अपने शब्दों में कहें कि आप विद्या के प्रति आभार के साथ यह पूजा कर रहे हैं।"
+  },
+  {
+   "title_en": "Place the kalash",
+   "title_hi": "कलश स्थापना",
+   "en": "Fill the kalash with clean water, put mango leaves in its mouth and rest the coconut on top. Keep it on the right side of the chowki.",
+   "hi": "कलश में साफ़ जल भरें, उसके मुँह पर आम के पत्ते लगाएँ और ऊपर नारियल रखें। इसे चौकी के दाहिनी ओर रखें।"
+  },
+  {
+   "title_en": "Light the diya and incense",
+   "title_hi": "दीया और अगरबत्ती जलाएँ",
+   "en": "Light the ghee diya and the incense sticks. Show the incense gently towards the idols.",
+   "hi": "घी का दीया और अगरबत्ती जलाएँ। अगरबत्ती को मूर्तियों की ओर हल्के से घुमाकर दिखाएँ।"
+  },
+  {
+   "title_en": "Worship Ganesh ji first",
+   "title_hi": "पहले गणेश जी की पूजा",
+   "en": "Put a tilak of haldi and kumkum on Ganesh ji, offer a flower and akshat, and bow with a short prayer that the puja goes smoothly.",
+   "hi": "गणेश जी को हल्दी-कुमकुम का तिलक लगाएँ, फूल और अक्षत चढ़ाएँ और प्रणाम करके प्रार्थना करें कि पूजा अच्छे से पूरी हो।"
+  },
+  {
+   "title_en": "Offer tilak to Saraswati Maa",
+   "title_hi": "माँ को तिलक लगाएँ",
+   "en": "Apply chandan and haldi-kumkum tilak to Saraswati Maa, then sprinkle a few drops of water from the kalash on the idol. Apply a small tilak to your own forehead too.",
+   "hi": "सरस्वती माँ को चंदन और हल्दी-कुमकुम का तिलक लगाएँ और कलश से थोड़ा जल छिड़कें। फिर अपने माथे पर भी छोटा सा तिलक लगा लें।"
+  },
+  {
+   "title_en": "Offer flowers and akshat",
+   "title_hi": "फूल और अक्षत अर्पित करें",
+   "en": "Offer yellow or white flowers and a pinch of akshat at the feet of the Goddess. Place your books, pens and instruments near her and touch them gently with a flower.",
+   "hi": "माँ के चरणों में पीले या सफ़ेद फूल और चुटकी भर अक्षत अर्पित करें। किताबें, कलम और वाद्य यंत्र उनके पास रखें और फूल से हल्के से स्पर्श कराएँ।"
+  },
+  {
+   "title_en": "Chant the mantra",
+   "title_hi": "मंत्र जाप",
+   "en": "Chant the Saraswati mantra 11 or 21 times, slowly and with focus. If you cannot say it, just sit quietly for a minute and thank her for your learning.",
+   "hi": "सरस्वती मंत्र 11 या 21 बार धीरे-धीरे और ध्यान लगाकर बोलें। अगर मंत्र न बोल पाएँ तो एक मिनट शांत बैठकर अपनी विद्या के लिए धन्यवाद करें।"
+  },
+  {
+   "title_en": "Offer bhog",
+   "title_hi": "भोग लगाएँ",
+   "en": "Place the fruits and sweets before the Goddess on a clean plate. Fold your hands and offer them with a simple prayer, then sprinkle a little water around the plate.",
+   "hi": "फल और मिठाई साफ़ थाली में माँ के सामने रखें। हाथ जोड़कर सरल प्रार्थना के साथ भोग अर्पित करें और थाली के चारों ओर थोड़ा जल छिड़कें।"
+  },
+  {
+   "title_en": "Do the aarti",
+   "title_hi": "आरती करें",
+   "en": "Light the camphor on the aarti plate and wave it clockwise in front of the idol while singing a Saraswati aarti or just humming along. Everyone at home can join.",
+   "hi": "आरती की थाली में कपूर जलाएँ और सरस्वती आरती गाते हुए मूर्ति के सामने घड़ी की दिशा में घुमाएँ। घर के सभी लोग साथ जुड़ सकते हैं।"
+  },
+  {
+   "title_en": "Close and share prasad",
+   "title_hi": "समापन और प्रसाद",
+   "en": "Bow down and ask for a clear mind and steady effort in studies. Share the prasad with everyone, and begin your study session soon after if you can.",
+   "hi": "प्रणाम करके पढ़ाई में साफ़ मन और लगातार मेहनत की प्रार्थना करें। प्रसाद सबको बाँटें और हो सके तो पूजा के तुरंत बाद थोड़ी देर पढ़ाई शुरू करें।"
+  }
+ ],
+ "mantra": {
+  "sa": "ॐ ऐं सरस्वत्यै नमः",
+  "tr": "Om Aim Saraswatyai Namah",
+  "en": "I bow to Goddess Saraswati, the giver of knowledge and wisdom.",
+  "hi": "मैं ज्ञान और विद्या देने वाली देवी सरस्वती को प्रणाम करता हूँ।"
+ },
+ "tips_en": [
+  "Morning is a good time because the mind is fresh, but any calm hour works.",
+  "Keep a pen and a notebook near the idol so children feel part of the puja.",
+  "Let children offer the flowers and say their own short prayer.",
+  "Use a diya with ghee if you can, otherwise oil is perfectly fine.",
+  "After the puja, enjoy the prasad together and start a short study session.",
+  "Keep it simple and sincere; a smaller puja done with a happy heart is complete."
+ ],
+ "tips_hi": [
+  "सुबह का समय अच्छा रहता है क्योंकि मन ताज़ा होता है, पर कोई भी शांत समय चल सकता है।",
+  "कलम और कॉपी मूर्ति के पास रखें ताकि बच्चे भी पूजा का हिस्सा महसूस करें।",
+  "बच्चों को फूल चढ़ाने दें और अपनी छोटी प्रार्थना खुद बोलने दें।",
+  "हो सके तो घी का दीया जलाएँ, नहीं तो तेल भी बिल्कुल ठीक है।",
+  "पूजा के बाद सब मिलकर प्रसाद लें और थोड़ी देर पढ़ाई शुरू करें।",
+  "पूजा सरल और सच्चे मन से करें; छोटी पूजा भी खुशी से की जाए तो पूरी मानी जाती है।"
+ ],
+ "avoid_en": [
+  "Do not put books or notes on the floor during the puja; keep them on the chowki or a clean surface.",
+  "Try not to step over or touch books with your feet, and apologise with a gentle touch if it happens by mistake.",
+  "Avoid rushing through the steps; it is better to do fewer things calmly.",
+  "Please do not worry about small mistakes in the mantra or the order; sincerity matters most."
+ ],
+ "avoid_hi": [
+  "पूजा के दौरान किताबें या कॉपियाँ ज़मीन पर न रखें, उन्हें चौकी या साफ़ जगह पर रखें।",
+  "किताबों को पैर से न लगाएँ, और अगर गलती से लग जाए तो हाथ से छूकर प्रेम से क्षमा माँग लें।",
+  "जल्दबाज़ी में सारे चरण निपटाने से अच्छा है कि कम काम आराम से करें।",
+  "मंत्र या क्रम में छोटी-मोटी भूल की चिंता न करें; सच्ची श्रद्धा सबसे ज़रूरी है।"
+ ]
+}

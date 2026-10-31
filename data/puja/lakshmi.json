@@ -1,0 +1,293 @@
+{
+ "slug": "lakshmi",
+ "en": "Lakshmi Puja",
+ "hi": "लक्ष्मी पूजा",
+ "tag_en": "A simple evening puja to welcome Goddess Lakshmi home",
+ "tag_hi": "देवी लक्ष्मी का घर में स्वागत करने की सरल शाम की पूजा",
+ "when_en": "It is usually done in the evening after sunset on Diwali, and many families also do a shorter version on Friday evenings.",
+ "when_hi": "यह आमतौर पर दिवाली की शाम सूर्यास्त के बाद की जाती है, और कई परिवार शुक्रवार की शाम को भी इसका छोटा रूप करते हैं।",
+ "time_en": "About 45 minutes",
+ "time_hi": "लगभग 45 मिनट",
+ "intro_en": "Lakshmi Puja is a warm family moment of gratitude, in which we thank the Goddess for what we have and welcome her into a clean, bright home. You do not need a priest; a calm mind and simple offerings are enough. Families and regions do it a little differently, so wherever your own family or pandit's way differs from this guide, please follow theirs.",
+ "intro_hi": "लक्ष्मी पूजा परिवार के साथ कृतज्ञता का एक सुंदर पल है, जिसमें हम जो कुछ हमारे पास है उसके लिए देवी को धन्यवाद देते हैं और साफ़, रोशन घर में उनका स्वागत करते हैं। इसके लिए पंडित जी ज़रूरी नहीं; शांत मन और सरल भेंट काफ़ी हैं। हर परिवार और हर क्षेत्र में तरीक़ा थोड़ा अलग होता है, इसलिए जहाँ आपके परिवार या पंडित जी का तरीक़ा इस गाइड से अलग हो, वहाँ उन्हीं का तरीक़ा अपनाएँ।",
+ "samagri": [
+  {
+   "en": "Lakshmi-Ganesh idol or picture",
+   "hi": "लक्ष्मी-गणेश की मूर्ति या तस्वीर",
+   "qty_en": "1 pair",
+   "qty_hi": "1 जोड़ी",
+   "use_en": "Kept on the altar as the focus of worship",
+   "use_hi": "वेदी पर पूजा के केंद्र में रखी जाती है"
+  },
+  {
+   "en": "Wooden chowki or clean platform",
+   "hi": "लकड़ी की चौकी या साफ़ चबूतरा",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "A raised seat on which the idols are placed",
+   "use_hi": "ऊँचा आसन, जिस पर मूर्तियाँ विराजमान होती हैं"
+  },
+  {
+   "en": "Red or yellow cloth",
+   "hi": "लाल या पीला कपड़ा",
+   "qty_en": "1 piece, about 1 metre",
+   "qty_hi": "1 टुकड़ा, लगभग 1 मीटर",
+   "use_en": "Spread over the chowki before placing the idols",
+   "use_hi": "मूर्तियाँ रखने से पहले चौकी पर बिछाया जाता है"
+  },
+  {
+   "en": "Whole rice (akshat)",
+   "hi": "साबुत चावल (अक्षत)",
+   "qty_en": "1 small bowl, about 100 g",
+   "qty_hi": "1 छोटी कटोरी, लगभग 100 ग्राम",
+   "use_en": "Offered unbroken to the deities and used for tilak",
+   "use_hi": "देवताओं को चढ़ाने और तिलक में लगाने के लिए"
+  },
+  {
+   "en": "Roli (kumkum) and haldi",
+   "hi": "रोली (कुमकुम) और हल्दी",
+   "qty_en": "1 small packet each",
+   "qty_hi": "हर एक का 1 छोटा पैकेट",
+   "use_en": "For tilak on the deities and on the family",
+   "use_hi": "देवताओं और परिवार के सभी सदस्यों को तिलक लगाने के लिए"
+  },
+  {
+   "en": "Kalash (small brass or copper pot)",
+   "hi": "कलश (छोटा पीतल या तांबे का)",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Filled with water and kept beside the idols",
+   "use_hi": "पानी भरकर मूर्तियों के पास रखा जाता है"
+  },
+  {
+   "en": "Mango leaves",
+   "hi": "आम के पत्ते",
+   "qty_en": "5 leaves",
+   "qty_hi": "5 पत्ते",
+   "use_en": "Placed in the mouth of the kalash",
+   "use_hi": "कलश के मुँह में सजाए जाते हैं"
+  },
+  {
+   "en": "Coconut",
+   "hi": "नारियल",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Set on top of the kalash, tied with red thread",
+   "use_hi": "कलश के ऊपर रखा जाता है, लाल धागे के साथ"
+  },
+  {
+   "en": "Kalawa (mauli thread)",
+   "hi": "कलावा (मौली)",
+   "qty_en": "1 reel",
+   "qty_hi": "1 गोला",
+   "use_en": "Tied around the kalash and on everyone's wrist",
+   "use_hi": "कलश पर बाँधने और सबकी कलाई पर बाँधने के लिए"
+  },
+  {
+   "en": "Clay diyas",
+   "hi": "मिट्टी के दीये",
+   "qty_en": "11 or more",
+   "qty_hi": "11 या उससे ज़्यादा",
+   "use_en": "One main lamp for puja, rest for the house",
+   "use_hi": "एक मुख्य दीया पूजा के लिए, बाकी घर में सजाने के लिए"
+  },
+  {
+   "en": "Ghee, cotton wicks",
+   "hi": "घी, रुई की बत्तियाँ",
+   "qty_en": "1 small bowl ghee, 15 wicks",
+   "qty_hi": "1 छोटी कटोरी घी, 15 बत्तियाँ",
+   "use_en": "Fuel and wicks for lighting the diyas",
+   "use_hi": "दीये जलाने के लिए घी और बत्तियाँ"
+  },
+  {
+   "en": "Incense sticks and dhoop",
+   "hi": "अगरबत्ती और धूप",
+   "qty_en": "1 packet",
+   "qty_hi": "1 पैकेट",
+   "use_en": "Lit and offered while welcoming and praying",
+   "use_hi": "स्वागत और प्रार्थना के समय जलाई जाती है"
+  },
+  {
+   "en": "Fresh flowers (lotus or marigold) and garland",
+   "hi": "ताज़े फूल (कमल या गेंदा) और माला",
+   "qty_en": "1 garland, 1 handful petals",
+   "qty_hi": "1 माला, 1 मुट्ठी पंखुड़ियाँ",
+   "use_en": "Offered at the feet; lotus is dear to Lakshmi",
+   "use_hi": "चरणों में अर्पित किए जाते हैं; कमल लक्ष्मी जी को प्रिय है"
+  },
+  {
+   "en": "Seasonal fruits",
+   "hi": "मौसमी फल",
+   "qty_en": "5 kinds, or what you have",
+   "qty_hi": "5 तरह के, या जो उपलब्ध हों",
+   "use_en": "Offered to the deities, then shared as prasad",
+   "use_hi": "भोग लगाकर प्रसाद के रूप में बाँटे जाते हैं"
+  },
+  {
+   "en": "Sweets such as batasha, kheer or laddu",
+   "hi": "मिठाई, जैसे बताशे, खीर या लड्डू",
+   "qty_en": "About 250 g",
+   "qty_hi": "लगभग 250 ग्राम",
+   "use_en": "Offered as bhog and shared afterwards",
+   "use_hi": "भोग के रूप में चढ़ाकर बाद में बाँटी जाती है"
+  },
+  {
+   "en": "Betel leaves and supari",
+   "hi": "पान के पत्ते और सुपारी",
+   "qty_en": "5 leaves, 5 nuts",
+   "qty_hi": "5 पत्ते, 5 सुपारी",
+   "use_en": "Offered along with a coin near the idols",
+   "use_hi": "मूर्तियों के पास सिक्के के साथ अर्पित किए जाते हैं"
+  },
+  {
+   "en": "Coins and a few notes",
+   "hi": "सिक्के और कुछ नोट",
+   "qty_en": "5 coins, 1 or 2 notes",
+   "qty_hi": "5 सिक्के, 1 या 2 नोट",
+   "use_en": "Placed at the feet of Lakshmi as an offering",
+   "use_hi": "लक्ष्मी जी के चरणों में भेंट के रूप में रखे जाते हैं"
+  },
+  {
+   "en": "Gangajal or clean water",
+   "hi": "गंगाजल या साफ़ पानी",
+   "qty_en": "1 small bottle",
+   "qty_hi": "1 छोटी शीशी",
+   "use_en": "Sprinkled to purify the space and the items",
+   "use_hi": "स्थान और सामग्री पर छिड़ककर शुद्ध करने के लिए"
+  },
+  {
+   "en": "Camphor",
+   "hi": "कपूर",
+   "qty_en": "1 small packet",
+   "qty_hi": "1 छोटा पैकेट",
+   "use_en": "Lit for the aarti at the end",
+   "use_hi": "अंत में आरती के लिए जलाया जाता है"
+  },
+  {
+   "en": "Puja thali",
+   "hi": "पूजा की थाली",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Holds the items and is used for aarti",
+   "use_hi": "सामग्री रखने और आरती उतारने के काम आती है"
+  }
+ ],
+ "before_en": [
+  "Clean the house and the puja corner; wash the entrance and make it tidy.",
+  "Buy flowers, fruits and sweets, and check that every item on the list is ready.",
+  "Wash the idols or wipe the pictures gently, and keep the chowki and cloth ready.",
+  "Fill the diya wicks, and keep matchsticks and a lighter safely near the altar.",
+  "Tell the family the puja time and ask everyone to be home and ready by then."
+ ],
+ "before_hi": [
+  "घर और पूजा के कोने की सफ़ाई कर लें; दरवाज़े को धोकर साफ़-सुथरा रखें।",
+  "फूल, फल और मिठाई ले आएँ और देख लें कि सूची की हर चीज़ तैयार है।",
+  "मूर्तियों को हल्के से धो लें या तस्वीर पोंछ लें, और चौकी व कपड़ा तैयार रखें।",
+  "दीयों में बत्ती लगा लें, और माचिस या लाइटर वेदी के पास सुरक्षित रखें।",
+  "परिवार को पूजा का समय बता दें, ताकि सब समय पर घर आकर तैयार रहें।"
+ ],
+ "steps": [
+  {
+   "title_en": "Clean and get ready",
+   "title_hi": "सफ़ाई और तैयारी",
+   "en": "Clean the house, especially the entrance and the puja corner, a little before sunset. Bathe and wear fresh, clean clothes. A small rangoli or a toran on the door makes the home feel welcoming.",
+   "hi": "सूर्यास्त से थोड़ा पहले घर की सफ़ाई कर लें, ख़ासकर दरवाज़े और पूजा के कोने की। स्नान करके साफ़, ताज़े कपड़े पहनें। दरवाज़े पर छोटी-सी रंगोली या तोरण घर को स्वागत भरा बना देता है।"
+  },
+  {
+   "title_en": "Set the altar",
+   "title_hi": "वेदी सजाएँ",
+   "en": "Place the chowki in the puja corner and spread the red cloth. Seat Ganesh on the left and Lakshmi on the right, facing the family, with a little rice under each idol. Keep the thali and all items within easy reach.",
+   "hi": "पूजा के कोने में चौकी रखें और उस पर लाल कपड़ा बिछाएँ। गणेश जी को बाईं ओर और लक्ष्मी जी को दाईं ओर बिठाएँ, मुख परिवार की तरफ़ हो, और हर मूर्ति के नीचे थोड़े चावल रखें। थाली और सारी सामग्री पास में रखें।"
+  },
+  {
+   "title_en": "Place the kalash",
+   "title_hi": "कलश स्थापित करें",
+   "en": "Fill the kalash with water, add a coin, a supari and a pinch of rice. Put the mango leaves in its mouth, set the coconut on top and tie kalawa around it. Keep it near the idols.",
+   "hi": "कलश में पानी भरें और उसमें एक सिक्का, एक सुपारी और चुटकी भर चावल डालें। मुँह पर आम के पत्ते लगाएँ, ऊपर नारियल रखें और कलश के चारों ओर कलावा बाँधें। इसे मूर्तियों के पास रखें।"
+  },
+  {
+   "title_en": "Light the lamp and settle",
+   "title_hi": "दीया जलाएँ और बैठें",
+   "en": "Light the main ghee diya and the incense. Sit on a mat, take a few quiet breaths, and sprinkle a few drops of Gangajal on yourself and the items. Say aloud who you are and that you are doing the puja with a calm heart.",
+   "hi": "घी का मुख्य दीया और अगरबत्ती जलाएँ। आसन पर बैठकर कुछ शांत साँसें लें और अपने ऊपर तथा सामग्री पर गंगाजल की कुछ बूँदें छिड़कें। मन ही मन, या बोलकर, कहें कि आप शांत मन से यह पूजा कर रहे हैं।"
+  },
+  {
+   "title_en": "Begin with Ganesh",
+   "title_hi": "पहले गणेश जी की पूजा",
+   "en": "Apply roli and rice tilak to Ganesh, offer a flower and say \"Om Gam Ganapataye Namah\" three times. It is a tradition to remember Ganesh first, so that the puja goes smoothly.",
+   "hi": "गणेश जी को रोली और चावल का तिलक लगाएँ, एक फूल चढ़ाएँ और तीन बार \"ॐ गं गणपतये नमः\" बोलें। परंपरा है कि सबसे पहले गणेश जी को याद किया जाता है, ताकि पूजा शांति से पूरी हो।"
+  },
+  {
+   "title_en": "Welcome Lakshmi",
+   "title_hi": "लक्ष्मी जी का स्वागत",
+   "en": "Fold your hands and invite Goddess Lakshmi into your home in your own words. Offer a little water, then apply tilak of roli, haldi and rice. If the idol is metal, you may gently wipe it with water and a clean cloth first.",
+   "hi": "हाथ जोड़कर अपने शब्दों में देवी लक्ष्मी को घर आने का निमंत्रण दें। थोड़ा जल अर्पित करें, फिर रोली, हल्दी और चावल का तिलक लगाएँ। मूर्ति धातु की हो तो पहले उसे पानी और साफ़ कपड़े से हल्के से पोंछ सकते हैं।"
+  },
+  {
+   "title_en": "Offer flowers and coins",
+   "title_hi": "फूल और सिक्के अर्पित करें",
+   "en": "Place the garland and flowers at her feet, preferably lotus or marigold. Put the coins and notes near the idol and offer the betel leaves with supari. Each family member can offer a flower too.",
+   "hi": "माला और फूल उनके चरणों में रखें, कमल या गेंदा हो तो अच्छा है। सिक्के और नोट मूर्ति के पास रखें और पान के पत्ते सुपारी के साथ चढ़ाएँ। परिवार का हर सदस्य एक-एक फूल भी चढ़ा सकता है।"
+  },
+  {
+   "title_en": "Offer bhog",
+   "title_hi": "भोग लगाएँ",
+   "en": "Place the fruits and sweets on the thali and set them before the deities. Sprinkle a few drops of water around the plate and offer it with folded hands for a minute. Keep it covered until the puja ends.",
+   "hi": "फल और मिठाई थाली में सजाकर देवताओं के सामने रखें। थाली के चारों ओर पानी की कुछ बूँदें छिड़कें और हाथ जोड़कर एक मिनट के लिए अर्पित करें। पूजा पूरी होने तक इसे ढककर रखें।"
+  },
+  {
+   "title_en": "Chant the mantra",
+   "title_hi": "मंत्र जाप",
+   "en": "Sit calmly and chant \"Om Mahalakshmyai Namah\" 11 or 108 times. You can count on a mala or with grains of rice. The whole family can chant together, and children can simply repeat after you.",
+   "hi": "शांति से बैठकर \"ॐ महालक्ष्म्यै नमः\" 11 या 108 बार बोलें। गिनती माला से या चावल के दानों से कर सकते हैं। पूरा परिवार साथ बोल सकता है, और बच्चे बस आपके पीछे दोहरा सकते हैं।"
+  },
+  {
+   "title_en": "Do the aarti",
+   "title_hi": "आरती करें",
+   "en": "Light the camphor on the thali and sing the Lakshmi aarti, \"Om Jai Lakshmi Mata\", together. Move the thali slowly in a clockwise circle in front of the idols. Then everyone gently passes their hands over the flame and touches them to the eyes.",
+   "hi": "थाली में कपूर जलाएँ और सब मिलकर लक्ष्मी जी की आरती, \"ॐ जय लक्ष्मी माता\", गाएँ। थाली को मूर्तियों के सामने धीरे-धीरे घड़ी की दिशा में घुमाएँ। फिर सब लौ के ऊपर से हाथ घुमाकर हल्के से आँखों से लगाएँ।"
+  },
+  {
+   "title_en": "Close and share prasad",
+   "title_hi": "समापन और प्रसाद",
+   "en": "Bow down, ask forgiveness for any mistake in the puja, and thank the deities. Share the prasad with everyone, and tie kalawa on the wrists. Then light diyas at the door, windows and courtyard, and let the main diya burn down safely.",
+   "hi": "प्रणाम करें, पूजा में हुई किसी भी भूल के लिए क्षमा माँगें और धन्यवाद कहें। सबको प्रसाद बाँटें और कलाई पर कलावा बाँधें। फिर दरवाज़े, खिड़कियों और आँगन में दीये जलाएँ, और मुख्य दीये को सुरक्षित रूप से अपने आप जल जाने दें।"
+  }
+ ],
+ "mantra": {
+  "sa": "ॐ महालक्ष्म्यै नमः",
+  "tr": "Om Mahalakshmyai Namah",
+  "en": "Om, I bow to the Great Goddess Lakshmi.",
+  "hi": "ॐ, मैं महादेवी लक्ष्मी को प्रणाम करता हूँ।"
+ },
+ "tips_en": [
+  "Do the puja in the evening after sunset; on Diwali, the hour after sunset is the usual time.",
+  "Keep the puja area bright and clean, with the main lamp lit before you start.",
+  "Involve children: let them place flowers, light a diya with help, and sing the aarti.",
+  "Use what you can comfortably afford; sincere offerings matter more than a long list of items.",
+  "Keep a small bowl of water and a cloth nearby so you can wipe spills and handle diyas safely.",
+  "If you forget a step, simply carry on calmly; the spirit of the puja is devotion."
+ ],
+ "tips_hi": [
+  "पूजा शाम को सूर्यास्त के बाद करें; दिवाली पर सूर्यास्त के बाद का समय सामान्यतः उपयुक्त माना जाता है।",
+  "पूजा का स्थान साफ़ और रोशन रखें, और शुरू करने से पहले मुख्य दीया जला लें।",
+  "बच्चों को शामिल करें: वे फूल रख सकते हैं, बड़ों की मदद से दीया जला सकते हैं और आरती गा सकते हैं।",
+  "जितना आराम से हो सके उतना ही चढ़ाएँ; सच्चे मन की भेंट लंबी सूची से ज़्यादा मायने रखती है।",
+  "पास में पानी की कटोरी और कपड़ा रखें, ताकि गिरी चीज़ें पोंछ सकें और दीये सावधानी से सँभाल सकें।",
+  "कोई चरण भूल जाएँ तो शांति से आगे बढ़ें; पूजा का असली भाव श्रद्धा है।"
+ ],
+ "avoid_en": [
+  "Do not leave burning diyas or camphor unattended, especially near curtains or children.",
+  "Try not to offer broken rice or wilted flowers; fresh and whole is best.",
+  "Avoid rushing through the puja or checking phones in the middle of it.",
+  "Do not feel worried about small mistakes; there is no need to repeat the puja.",
+  "Keep the idols away from crackers and sparklers outside the altar area."
+ ],
+ "avoid_hi": [
+  "जलते दीये या कपूर को अकेला न छोड़ें, ख़ासकर पर्दों या बच्चों के पास।",
+  "टूटे चावल या मुरझाए फूल चढ़ाने से बचें; ताज़े और साबुत सबसे अच्छे रहते हैं।",
+  "पूजा जल्दबाज़ी में न करें और बीच में फ़ोन देखने से बचें।",
+  "छोटी-मोटी भूलों की चिंता न करें; पूजा को दोबारा करने की ज़रूरत नहीं है।",
+  "मूर्तियों को वेदी के बाहर पटाखों और फुलझड़ियों से दूर रखें।"
+ ]
+}
