@@ -350,7 +350,7 @@ function meter(label, n, kind) {
 }
 
 function readingText(r) {
-  return `${sn(r.sign, r.signHi)}, ${dateLabel(horo.date)}\n${r.moodLabel}: ${r.theme}\n${r.text}\n\nKundli Kaka: https://kundlikaka.in`;
+  return `${sn(r.sign, r.signHi)}, ${dateLabel(horo.date)}\n${r.moodLabel}: ${r.theme}\n${r.text}\n\nKundli Kaka: https://kundlikaka.in/rashifal/${String(r.sign).toLowerCase()}?utm_source=whatsapp&utm_medium=share&utm_campaign=rashifal`;
 }
 
 function renderReading() {
@@ -375,7 +375,7 @@ function renderReading() {
         <p class="muted">${esc(horo.tithiTone)}</p>
         <div id="sati"></div>
         <div class="reading-actions">
-          <button type="button" class="btn btn-dark" id="shareRead">${esc(t("rf_share"))}</button>
+          <button type="button" class="btn btn-wa" id="shareRead"><img class="wa-ic" src="/img/whatsapp.svg" alt="" width="20" height="20">${esc(t("rf_share"))}</button>
           ${r.index === myRashi ? "" : `<button type="button" class="btn btn-outline" id="makeMine">${esc(t("rf_make_mine"))}</button>`}
         </div>
       </div>
@@ -392,7 +392,10 @@ function renderReading() {
       </div>
     </article>`;
 
-  $("shareRead").addEventListener("click", () => shareText(readingText(r)));
+  $("shareRead").addEventListener("click", () => {
+    window.track?.("share_click", { kind: "rashifal", sign: r.sign });
+    window.open("https://wa.me/?text=" + encodeURIComponent(readingText(r)), "_blank", "noopener");
+  });
   const mk = $("makeMine");
   if (mk) mk.addEventListener("click", () => setMyRashi(r.index));
   if (horoDate === todayIn(loc.tz)) loadSati(r.index);

@@ -1512,3 +1512,19 @@ img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
 .md-day footer { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
 .md .btn { border-radius: 8px; white-space: normal; }
 @media (max-width: 640px) { .md-two, .md-areas, .md-row { grid-template-columns: minmax(0, 1fr); } .md-card { padding: 16px; } }
+/* WhatsApp share buttons */
+.btn-wa { display: inline-flex; align-items: center; justify-content: center; gap: 9px; background: #25D366; color: #08331a; border: 1px solid #1fb957; font-weight: 700; border-radius: 8px; box-shadow: none; }
+.btn-wa:hover { background: #20c05c; }
+.btn-wa .wa-ic { width: 22px; height: 22px; flex: none; }
+.pj-share-top { margin: 4px 0 8px; }
+.pj-glance { display: flex; gap: 12px; margin: 12px 0; flex-wrap: wrap; }
+.pj-glance > div { flex: 1 1 90px; background: var(--pj2); border-radius: 8px; padding: 10px 12px; text-align: center; display: grid; gap: 2px; }
+.pj-glance b { color: var(--pj); font-size: 1.25rem; } .pj-glance span { color: #555; font-size: .85rem; }
+.pj-prog { display: flex; align-items: center; gap: 12px; margin: 0 0 12px; }
+.pj-prog-bar { flex: 1; height: 8px; background: #e6e6f0; border-radius: 4px; overflow: hidden; }
+.pj-prog-bar i { display: block; height: 100%; width: 0; background: var(--pj); transition: width .25s; }
+.pj-prog span { font-size: .9rem; color: #444; white-space: nowrap; }
+.pj-it { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; flex: none; background: #fff; border: 1px solid #ececf3; }
+.gv-share.btn-wa, .sc-paper .gv-share.btn-wa { display: inline-flex; align-items: center; gap: 6px; background: #25D366; border-color: #1fb957; color: #08331a; }
+.gv-share.btn-wa:hover, .sc-paper .gv-share.btn-wa:hover { background: #20c05c; }
+.gv-share .wa-ic { width: 18px; height: 18px; }

@@ -27,6 +27,45 @@ export function loadPujas() {
 export const pujaOf = (slug) => loadPujas()[slug] || null;
 export const PUJA_PATHS = () => ["/puja", ...ORDER.map((s) => `/puja/${s}`)];
 
+// Small pictures for samagri items: public/img/puja/items/<key>.jpg (or .webp/.png). Prompts: docs/puja-image-prompts.md
+export const ITEMS = [
+  ["panchamrit", /panchamrit|milk|curd|honey|sugar/i, "a small brass bowl of panchamrit with white milk, curd, honey, ghee and sugar in separate small bowls"],
+  ["ghee", /ghee|wick|oil/i, "a small brass bowl of golden ghee next to a handful of twisted cotton wicks"],
+  ["diya", /diya|lamp/i, "two lit traditional clay diyas with steady warm flames"],
+  ["mango", /mango/i, "a bunch of fresh green mango leaves tied with a thread"],
+  ["coconut", /coconut/i, "a whole brown coconut with husk and a tuft on top"],
+  ["kalash", /kalash|small pot/i, "a polished brass kalash with a coconut and mango leaves on top, tied with red thread"],
+  ["incense", /incense|dhoop/i, "a bundle of incense sticks and a small dhoop holder with thin smoke rising"],
+  ["camphor", /camphor/i, "a few white camphor tablets in a small brass bowl"],
+  ["gangajal", /gangajal|clean water|lota/i, "a small brass lota (pot) of clean water"],
+  ["chowki", /chowki|platform|table/i, "a small low wooden chowki (platform stool) with a neat finish"],
+  ["cloth", /cloth|chunri/i, "a folded bright red puja cloth with a golden border"],
+  ["rice", /akshat|rice/i, "a small brass bowl full of whole unbroken raw white rice (akshat)"],
+  ["kumkum", /roli|kumkum|haldi|sindoor/i, "small brass bowls of red kumkum, yellow haldi and orange sindoor powder"],
+  ["moli", /kalawa|kalava|moli|mauli/i, "a roll of red and yellow sacred thread (moli, kalawa)"],
+  ["betel", /betel|paan|supari/i, "fresh green betel (paan) leaves with a few whole betel nuts (supari)"],
+  ["tulsi", /tulsi/i, "a bunch of fresh green tulsi leaves"],
+  ["durva", /durva/i, "a small bunch of fresh green durva grass tied with a thread"],
+  ["bel", /belpatra|bel/i, "three-leaf bel patra leaves, fresh and green"],
+  ["chandan", /chandan|sandal|bhasma|vibhuti/i, "a small bowl of sandalwood paste and a small bowl of grey ash (bhasma)"],
+  ["flowers", /flower|garland|petal|hibiscus|marigold|lotus/i, "fresh orange marigold flowers, a red hibiscus and a pink lotus with a marigold garland"],
+  ["fruits", /fruit|banana/i, "a small plate of fresh seasonal fruits: bananas, an apple, a pomegranate and ber"],
+  ["sweets", /modak|laddu|laddoo|sweet|halwa|sheera|kheer|boondi|bhog|prasad/i, "a steel plate of modak, boondi laddoo and sooji halwa prasad"],
+  ["thali", /thali|plate/i, "an empty polished brass puja thali (aarti plate) with a small diya and kumkum bowl on it"],
+  ["coins", /coin|dakshina|notes/i, "a few old gold-coloured coins and some rupee notes on a small red cloth"],
+  ["books", /book|notebook|chalisa|katha/i, "a small stack of religious books, a notebook and a pen"],
+  ["havan", /havan/i, "a small copper havan kund with mango wood sticks and a bowl of havan samagri"],
+  ["jau", /barley|jau|soil/i, "a clay tray of fresh green sprouted barley shoots (jau) in soil"],
+  ["rangoli", /rangoli/i, "bowls of bright rangoli colour powders and some flower petals"],
+];
+export const itemKey = (name) => (ITEMS.find(([, re]) => re.test(name)) || [])[0] || null;
+const itemImg = (name) => {
+  const k = itemKey(name);
+  if (!k) return "";
+  for (const ext of ["jpg", "webp", "png"]) if (fs.existsSync(path.join(IMG, "items", `${k}.${ext}`))) return `/img/puja/items/${k}.${ext}`;
+  return "";
+};
+
 const photo = (slug) => {
   for (const ext of ["jpg", "webp", "png"]) if (fs.existsSync(path.join(IMG, `${slug}.${ext}`))) return `/img/puja/${slug}.${ext}`;
   return null;
@@ -86,7 +125,7 @@ export function renderPuja(p, origin) {
   const idx = ORDER.indexOf(p.slug);
   const all = loadPujas();
   const others = ORDER.filter((s) => s !== p.slug).map((s) => `<a href="/puja/${s}">${T(all[s].en, all[s].hi)}</a>`).join("");
-  const samagri = p.samagri.map((it, i) => `<li><label><input type="checkbox" data-sg="${i}"><span class="pj-sg"><b>${T(it.en, it.hi)}</b><i>${T(it.qty_en, it.qty_hi)}</i><small>${T(it.use_en, it.use_hi)}</small></span></label></li>`).join("");
+  const samagri = p.samagri.map((it, i) => `<li><label><input type="checkbox" data-sg="${i}">${itemImg(it.en) ? `<img class="pj-it" src="${itemImg(it.en)}" alt="" width="64" height="64" loading="lazy">` : ""}<span class="pj-sg"><b>${T(it.en, it.hi)}</b><i>${T(it.qty_en, it.qty_hi)}</i><small>${T(it.use_en, it.use_hi)}</small></span></label></li>`).join("");
   const steps = p.steps.map((s, i) => `<li><span class="pj-n">${i + 1}</span><div><h3>${T(s.title_en, s.title_hi)}</h3><p>${T(s.en, s.hi)}</p></div></li>`).join("");
   const share = `${p.en}: samagri list and steps, simple, in English and Hindi.\n${url}`;
   const ld = `  <script type="application/ld+json">${JSON.stringify({
@@ -105,12 +144,15 @@ ${TOGGLE}
 <div class="pj-hero">${ph ? `<img class="pj-photo" src="${ph}" alt="${esc(p.en)}" width="1200" height="520" fetchpriority="high">` : panel(c1, c2, p)}</div>
 <h1>${T(p.en, p.hi)}</h1>
 <p class="post-lead">${T(p.tag_en, p.tag_hi)}</p>
+<div class="pj-glance"><div><b>${p.samagri.length}</b><span>${T("items", "सामग्री")}</span></div><div><b>${p.steps.length}</b><span>${T("steps", "कदम")}</span></div><div><b>${T(p.time_en.replace(/^About /, ""), p.time_hi.replace(/^लगभग /, ""))}</b><span>${T("time", "समय")}</span></div></div>
+<a class="btn btn-wa pj-share-top" href="https://wa.me/?text=${encodeURIComponent(p.en + " at home: full samagri list and step by step vidhi, simple and free.\n" + url + "?utm_source=whatsapp&utm_medium=share&utm_campaign=puja_page")}" target="_blank" rel="noopener" data-track="puja_page"><img class="wa-ic" src="/img/whatsapp.svg" alt="" width="22" height="22">${T("Share this puja on WhatsApp", "यह पूजा WhatsApp पर शेयर करें")}</a>
 <div class="pj-facts"><div><small>${T("When", "कब")}</small><p>${T(p.when_en, p.when_hi)}</p></div><div><small>${T("Time needed", "समय")}</small><p>${T(p.time_en, p.time_hi)}</p></div></div>
 <p>${T(p.intro_en, p.intro_hi)}</p>
 <h2>${T("What you need (samagri)", "ज़रूरी सामग्री")}</h2>
+<div class="pj-prog" aria-live="polite"><div class="pj-prog-bar"><i id="pj-bar"></i></div><span id="pj-count"></span></div>
 <p class="pj-hint">${T("Tick each item as you collect it. Your ticks stay on this phone.", "सामान जमा करते हुए हर चीज़ पर टिक लगाइए। टिक इसी फ़ोन में रहते हैं।")}</p>
 <ul class="pj-samagri" id="pj-sg" data-slug="${p.slug}">${samagri}</ul>
-<div class="pj-actions"><button type="button" class="btn" id="pj-copy" data-title="${esc(p.en)}">${T("Copy list", "सूची कॉपी करें")}</button><a class="btn btn-primary" id="pj-wa" href="#" rel="noopener">${T("Send on WhatsApp", "WhatsApp पर भेजें")}</a><button type="button" class="btn" onclick="window.print()">${T("Print", "प्रिंट")}</button></div>
+<div class="pj-actions"><button type="button" class="btn" id="pj-copy" data-title="${esc(p.en)}">${T("Copy list", "सूची कॉपी करें")}</button><a class="btn btn-wa" id="pj-wa" href="#" rel="noopener"><img class="wa-ic" src="/img/whatsapp.svg" alt="" width="22" height="22">${T("Send this list on WhatsApp", "यह सूची WhatsApp पर भेजें")}</a><button type="button" class="btn" onclick="window.print()">${T("Print", "प्रिंट")}</button></div>
 <h2>${T("The day before", "एक दिन पहले")}</h2>
 <ul class="pj-plain">${list(p.before_en, p.before_hi)}</ul>
 <h2>${T("Step by step", "कदम-दर-कदम विधि")}</h2>
