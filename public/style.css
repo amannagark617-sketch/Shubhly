@@ -1378,3 +1378,31 @@ img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
 .kkp-picmode .kkp-x { position: absolute; top: 8px; right: 8px; z-index: 2; background: rgba(27,27,58,.55); }
 .kkp-pic { display: block; width: 100%; height: auto; max-height: 62vh; object-fit: cover; animation: kkpPop .5s ease; }
 @media (min-width: 641px) { .kkp-picmode { width: min(380px, calc(100vw - 24px)); } }
+
+/* ---- scroll: more real, less cut-out ---- */
+.scroll { filter: drop-shadow(0 18px 22px rgba(60,30,10,.32)) drop-shadow(0 2px 3px rgba(60,30,10,.3)); }
+.sc-paper { isolation: isolate; background: none; box-shadow: none; }
+.sc-paper::after { content: ""; position: absolute; inset: 0; z-index: -1; filter: url(#deckle);
+  background:
+    linear-gradient(90deg, rgba(90,50,12,.34) 0, rgba(90,50,12,0) 7%, rgba(90,50,12,0) 93%, rgba(90,50,12,.34) 100%),
+    linear-gradient(180deg, rgba(60,30,8,.55) 0, rgba(60,30,8,0) 16%, rgba(60,30,8,0) 84%, rgba(60,30,8,.5) 100%),
+    url(/img/scroll/corner-tl.png) left 10px top 10px / 58px no-repeat,
+    url(/img/scroll/corner-tr.png) right 10px top 10px / 58px no-repeat,
+    url(/img/scroll/corner-bl.png) left 10px bottom 10px / 58px no-repeat,
+    url(/img/scroll/corner-br.png) right 10px bottom 10px / 58px no-repeat,
+    url(/img/scroll/paper.jpg) center / cover; }
+.sc-paper::before { inset: 16px; border: 1px solid rgba(150,100,25,.45); outline: 0; }
+/* paper winding onto each roller */
+.sc-top::after, .sc-bot::before { }
+.sc-paper { padding-top: 34px; padding-bottom: 54px; }
+.sc-seal { right: auto; left: 50%; margin-left: -42px; bottom: -14px; z-index: 4; }
+.sc-seal::before { content: ""; position: absolute; left: 50%; top: 70%; width: 46px; height: 64px; margin-left: -23px; z-index: -1;
+  background: linear-gradient(135deg, transparent 49%, #8d1a14 50%) left / 50% 100% no-repeat, linear-gradient(225deg, transparent 49%, #a8231b 50%) right / 50% 100% no-repeat; }
+.gv-sa { font-size: 1.55rem; line-height: 1.9; color: #4a1f3a; text-shadow: 0 1px 0 rgba(255,255,255,.5), 0 0 12px rgba(246,184,28,.25); }
+@media (max-width: 640px) {
+  .sc-paper { padding-top: 26px; padding-bottom: 56px; }
+  .sc-paper::after { background-size: auto, auto, 40px, 40px, 40px, 40px, cover; }
+  .sc-seal { margin-left: -31px; bottom: -10px; }
+  .gv-sa { font-size: 1.35rem; }
+}
+.sc-seal::before { display: none; }

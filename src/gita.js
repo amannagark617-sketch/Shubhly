@@ -117,6 +117,7 @@ export function renderChapter(c, origin) {
     url, ld + PAGE_SCRIPT) +
     TOP.replace("blog-page", "blog-page gita-page") +
     `<main class="wrap gita-wrap" data-lang="both">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="deckle" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency="0.035 0.05" numOctaves="3" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 ${NAV}
 <img class="gita-banner" src="${artSrc(c.n)}" alt="" width="800" height="340" fetchpriority="high">
 <p class="post-meta">Chapter ${c.n} of 18 · ${c.verses.length} verses</p>
