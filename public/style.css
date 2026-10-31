@@ -1529,3 +1529,8 @@ img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
 .gv-share.btn-wa:hover, .sc-paper .gv-share.btn-wa:hover { background: #20c05c; }
 .gv-share .wa-ic { width: 18px; height: 18px; }
 .btn-wa .wa-ic { background: #fff; border-radius: 50%; padding: 1px; box-sizing: content-box; }
+/* WhatsApp buttons: white button, the logo carries the green */
+.btn-wa, .gv-share.btn-wa, .sc-paper .gv-share.btn-wa { background: #fff; color: #1b1b3a; border: 1.5px solid #d4d9e2; }
+.btn-wa:hover, .gv-share.btn-wa:hover, .sc-paper .gv-share.btn-wa:hover { background: #f4faf6; border-color: #25D366; }
+.btn-wa .wa-ic { background: none; border-radius: 0; padding: 0; width: 26px; height: 26px; }
+.gv-share .wa-ic { width: 20px; height: 20px; }
