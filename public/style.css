@@ -1528,3 +1528,4 @@ img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
 .gv-share.btn-wa, .sc-paper .gv-share.btn-wa { display: inline-flex; align-items: center; gap: 6px; background: #25D366; border-color: #1fb957; color: #08331a; }
 .gv-share.btn-wa:hover, .sc-paper .gv-share.btn-wa:hover { background: #20c05c; }
 .gv-share .wa-ic { width: 18px; height: 18px; }
+.btn-wa .wa-ic { background: #fff; border-radius: 50%; padding: 1px; box-sizing: content-box; }
