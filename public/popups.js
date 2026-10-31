@@ -7,7 +7,9 @@ const store = {
   sget(k) { try { return sessionStorage.getItem(k); } catch { return null; } },
   sset(k, v) { try { sessionStorage.setItem(k, v); } catch {} },
 };
-const lang = (() => { let v = store.get("shubhly.lang") || "en"; try { v = JSON.parse(v); } catch {} return v === "hi" ? "hi" : "en"; })();
+const rawLang = (() => { let v = store.get("shubhly.lang") || "en"; try { v = JSON.parse(v); } catch {} return v; })();
+const lang = rawLang === "hi" ? "hi" : "en";
+const picSuffix = rawLang === "hi" || rawLang === "hn" ? "-hi" : ""; // the finished pictures are English, and Hinglish for Hindi and Hinglish visitors
 
 const KAKA = { name: { en: "Kundli Kaka", hi: "कुंडली काका" }, img: "/img/logo-mark.png" };
 const KRISHNA = { name: { en: "Krishna", hi: "श्रीकृष्ण" }, img: "/img/krishna-avatar.jpg" };
@@ -118,7 +120,7 @@ const loadPic = (src) => new Promise((res) => { const i = new Image(); i.onload 
 
 async function show(p) {
   store.sset("kk.pop.shown", "1");
-  const pic = await loadPic(`/img/popups/${p.id}${lang === "hi" ? "-hi" : ""}.png`);
+  const pic = (await loadPic(`/img/popups/${p.id}${picSuffix}.jpg`)) || (await loadPic(`/img/popups/${p.id}${picSuffix}.png`));
   if (pic) return showPic(p, pic);
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const root = el("aside", "kkp");
@@ -171,7 +173,7 @@ function showPic(p, src) {
   root.innerHTML = `<div class="kkp-glow" aria-hidden="true"></div>
     <div class="kkp-spark" aria-hidden="true">${Array.from({ length: 9 }, (_, i) => `<i style="--i:${i}"></i>`).join("")}</div>
     <div class="kkp-card"><button type="button" class="kkp-x" aria-label="${lang === "hi" ? "बंद करें" : "Close"}">×</button>
-      <img class="kkp-pic" src="${src}" alt="">
+      <a href="${p.href}" class="kkp-picl" aria-label="${esc(p.cta[lang])}"><img class="kkp-pic" src="${src}" alt=""></a>
       <div class="kkp-foot"><a class="kkp-cta" href="${p.href}">${esc(p.cta[lang])}</a><button type="button" class="kkp-later">${lang === "hi" ? "अभी नहीं" : "Not now"}</button></div></div>`;
   document.body.append(root);
   requestAnimationFrame(() => root.classList.add("in"));
@@ -180,7 +182,7 @@ function showPic(p, src) {
   const close = (how) => { done(); track("popup_close", { id: p.id, how }); root.classList.remove("in"); setTimeout(() => root.remove(), 350); };
   root.querySelector(".kkp-x").onclick = () => close("x");
   root.querySelector(".kkp-later").onclick = () => close("later");
-  root.querySelector(".kkp-cta").addEventListener("click", () => { track("popup_cta", { id: p.id }); done(); });
+  root.querySelectorAll(".kkp-cta, .kkp-picl").forEach((a) => a.addEventListener("click", () => { track("popup_cta", { id: p.id }); done(); }));
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") close("esc"); }, { once: true });
 }
 

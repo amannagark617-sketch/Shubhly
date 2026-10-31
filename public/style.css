@@ -1406,3 +1406,5 @@ img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
   .gv-sa { font-size: 1.35rem; }
 }
 .sc-seal::before { display: none; }
+.kkp-picl { display: block; line-height: 0; }
+.kkp-picmode .kkp-cta { display: none; } .kkp-picmode .kkp-foot { justify-content: center; padding: 8px; }
