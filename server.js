@@ -453,7 +453,20 @@ app.get("/api/gita/audio/:file", chatLimit, async (req, res, next) => {
 });
 
 // ---- pages ---------------------------------------------------------------
-const originOf = (req) => (process.env.PUBLIC_URL || `${req.protocol}://${req.get("host")}`).replace(/\/+$/, "");
+// The address people actually used. A "localhost" address is never right for a live site, so when the
+// server is not running locally it falls back to the real domain instead of putting localhost in
+// the sitemap and canonical links.
+const isLocalHost = (h) => /^(localhost|127\.|0\.0\.0\.0|\[::1\]|::1)/i.test(String(h || "").replace(/^https?:\/\//, ""));
+const LIVE_SITE = (process.env.SITE_URL || "https://kundlikaka.in").replace(/\/+$/, "");
+const originOf = (req) => {
+  const set = (process.env.PUBLIC_URL || "").trim();
+  if (set && !isLocalHost(set)) return set.replace(/\/+$/, "");
+  const host = (req.get("x-forwarded-host") || req.get("host") || "").split(",")[0].trim();
+  const proto = (req.get("x-forwarded-proto") || req.protocol || "https").split(",")[0].trim();
+  if (host && !isLocalHost(host)) return `${proto}://${host}`;
+  if (process.env.K_SERVICE || process.env.NODE_ENV === "production") return LIVE_SITE;
+  return `${req.protocol}://${req.get("host")}`;
+};
 const SHELL = path.join(__dirname, "public", "index.html");
 function sendPage(req, res, page, extra = {}) {
   res.setHeader("Cache-Control", "no-cache");
