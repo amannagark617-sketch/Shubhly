@@ -1309,6 +1309,7 @@ function closeWelcome() {
   show(welcomeEl, false);
 }
 function openWelcome() {
+  return; // replaced by the conversation popups (popups.js)
   if (!welcomeEl || document.body.dataset.page !== "home") return;
   if (Date.now() - store.get("shubhly.welcomeNo", 0) < 3 * 86_400_000) return;
   if (!$("chat").hidden || !$("installBar").hidden) return;
