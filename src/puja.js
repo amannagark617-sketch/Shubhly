@@ -145,7 +145,7 @@ ${TOGGLE}
 <h1>${T(p.en, p.hi)}</h1>
 <p class="post-lead">${T(p.tag_en, p.tag_hi)}</p>
 <div class="pj-glance"><div><b>${p.samagri.length}</b><span>${T("items", "सामग्री")}</span></div><div><b>${p.steps.length}</b><span>${T("steps", "कदम")}</span></div><div><b>${T(p.time_en.replace(/^About /, ""), p.time_hi.replace(/^लगभग /, ""))}</b><span>${T("time", "समय")}</span></div></div>
-<a class="btn btn-wa pj-share-top" href="https://wa.me/?text=${encodeURIComponent(p.en + " at home: full samagri list and step by step vidhi, simple and free.\n" + url + "?utm_source=whatsapp&utm_medium=share&utm_campaign=puja_page")}" target="_blank" rel="noopener" data-track="puja_page"><img class="wa-ic" src="/img/whatsapp.svg" alt="" width="22" height="22">${T("Share this puja on WhatsApp", "यह पूजा WhatsApp पर शेयर करें")}</a>
+<a class="btn btn-wa pj-share-top" id="pj-share-top" href="https://wa.me/?text=${encodeURIComponent(p.en + " at home: full samagri list and step by step vidhi, simple and free.\n" + url + "?utm_source=whatsapp&utm_medium=share&utm_campaign=puja_page")}" target="_blank" rel="noopener" data-track="puja_page"><img class="wa-ic" src="/img/whatsapp.svg" alt="" width="22" height="22">${T("Share this puja on WhatsApp", "यह पूजा WhatsApp पर शेयर करें")}</a>
 <div class="pj-facts"><div><small>${T("When", "कब")}</small><p>${T(p.when_en, p.when_hi)}</p></div><div><small>${T("Time needed", "समय")}</small><p>${T(p.time_en, p.time_hi)}</p></div></div>
 <p>${T(p.intro_en, p.intro_hi)}</p>
 <h2>${T("What you need (samagri)", "ज़रूरी सामग्री")}</h2>
@@ -165,6 +165,6 @@ ${TOGGLE}
 <aside class="pj-cta"><h2>${T("Choose a good day for it", "शुभ दिन चुनिए")}</h2><p>${T("A pandit or a trusted calendar can confirm the best date and time for your family. You can also check today's panchang and choghadiya here.", "आपके परिवार के लिए सबसे अच्छी तिथि और समय पंडित जी या भरोसेमंद पंचांग से पक्का करें। आज का पंचांग और चौघड़िया यहाँ भी देख सकते हैं।")}</p><a class="btn btn-primary" href="/panchang">${T("Today's panchang", "आज का पंचांग")}</a> <a class="btn" href="/kundli">${T("Make my kundli", "मेरी कुंडली बनाएँ")}</a></aside>
 <nav class="pj-more" aria-label="More pujas"><h2>${T("More pujas", "और पूजा")}</h2><div>${others}</div></nav>
 <p class="pj-note">${T("Families and regions do this a little differently. Follow your own family's or pandit's way where it differs.", "परिवार और क्षेत्र के अनुसार तरीका थोड़ा अलग हो सकता है। जहाँ अलग हो, वहाँ अपने परिवार या पंडित जी का तरीका मानिए।")}</p>
-<script type="application/json" id="pj-share">${JSON.stringify({ title: p.en, hi: p.hi, url, share, items_en: p.samagri.map((s) => `${s.en} (${s.qty_en})`), items_hi: p.samagri.map((s) => `${s.hi} (${s.qty_hi})`) }).replace(/</g, "\\u003c")}</script>
+<script type="application/json" id="pj-share">${JSON.stringify({ title: p.en, hi: p.hi, url, share, tag_en: p.tag_en, tag_hi: p.tag_hi, time_en: p.time_en, time_hi: p.time_hi, steps: p.steps.length, photo: ph, c1, c2, names_en: p.samagri.map((s) => s.en), names_hi: p.samagri.map((s) => s.hi), items_en: p.samagri.map((s) => `${s.en} (${s.qty_en})`), items_hi: p.samagri.map((s) => `${s.hi} (${s.qty_hi})`) }).replace(/</g, "\\u003c")}</script>
 </main>` + FOOT.replace("</body>", PAGE_JS + "\n</body>");
 }
