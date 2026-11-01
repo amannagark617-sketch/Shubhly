@@ -1581,3 +1581,5 @@ img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
 .seo-in .faq { max-width: none; }
 .pj-lang a { display: block; font: inherit; padding: 7px 16px; background: #fff; color: #333; text-decoration: none; }
 .pj-lang a[aria-current="page"] { background: #1b1b3a; color: #fff; }
+.post-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; }
+.post-tags span { font-size: .82rem; color: #444; border: 1px solid #d9d9e3; border-radius: 6px; padding: 3px 10px; background: #fff; }

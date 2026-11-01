@@ -1,13 +1,18 @@
 // The blog: a few plain, searchable articles. Each has its own address, title,
 // description and article data so search engines and shares read it properly.
 
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { MORE_POSTS } from "./blog-more.js";
+
 export const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 export const POSTS = [
   {
     slug: "when-life-feels-stuck-kundli-gita-puja",
     title: "When Life Feels Stuck: A Calm Guide Using Kundli, the Gita and Puja",
-    desc: "Stuck in a job, waiting for marriage, worried about money or just restless? A simple, honest way to use your kundli, a few Gita verses and a small home puja, with a 7 day plan.",
+    desc: "Stuck in a job, waiting for marriage or just restless? A calm way to use your kundli, a few Gita verses and a small home puja, with a 7 day plan.",
     date: "2026-11-01",
     read: 8,
     img: "/img/blog/when-life-feels-stuck.jpg",
@@ -209,7 +214,32 @@ export const POSTS = [
 `,
   },
 ];
-POSTS.forEach((p) => { if (!p.img) p.img = `/img/blog/${p.slug}.svg`; });
+POSTS.unshift(...MORE_POSTS);
+const BLOG_IMG = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "public", "img", "blog");
+const coverFor = (slug) => {
+  for (const ext of ["webp", "jpg", "png"]) if (fs.existsSync(path.join(BLOG_IMG, `${slug}.${ext}`))) return `/img/blog/${slug}.${ext}`;
+  return fs.existsSync(path.join(BLOG_IMG, `${slug}.svg`)) ? `/img/blog/${slug}.svg` : "/img/og-image.jpg";
+};
+POSTS.forEach((p) => { if (!p.img || p.img === "/img/og-image.jpg") p.img = coverFor(p.slug); });
+// Tags: used for the keywords, the article tags and the related posts
+const TAGS = {
+  "sade-sati-what-it-really-means": ["Sade Sati", "Saturn", "Shani", "Vedic astrology", "Moon sign"],
+  "manglik-dosh-myth-and-meaning": ["Manglik dosh", "Mars", "Marriage", "Kundli Milan", "Vedic astrology"],
+  "kundli-milan-36-gunas-explained": ["Kundli Milan", "Ashtakoot", "36 gunas", "Marriage", "Nadi dosh"],
+  "moon-sign-vs-sun-sign-which-is-your-rashi": ["Rashi", "Moon sign", "Sun sign", "Rashifal", "Vedic astrology"],
+  "when-life-feels-stuck-kundli-gita-puja": ["Kundli", "Bhagavad Gita", "Puja", "Career", "Marriage", "Mental peace"],
+  "lakshmi-puja-at-home-on-diwali-step-by-step": ["Lakshmi Puja", "Diwali", "Puja vidhi", "Samagri list", "Puja at home"],
+  "dhanteras-what-to-buy-and-how-to-do-the-puja": ["Dhanteras", "Diwali", "Lakshmi", "Dhanvantari", "Puja at home"],
+  "bhai-dooj-tika-puja-vidhi-and-story": ["Bhai Dooj", "Diwali", "Tilak", "Yama Dwitiya", "Puja vidhi"],
+  "ganesh-puja-at-home-before-every-new-beginning": ["Ganesh Puja", "Puja vidhi", "Samagri list", "Puja at home", "Ganesh"],
+  "gita-for-anxiety-and-overthinking": ["Bhagavad Gita", "Anxiety", "Overthinking", "Gita verses", "Mental peace"],
+  "career-stuck-what-your-kundli-can-show": ["Kundli", "Career", "Dasha", "Saturn", "Jupiter"],
+  "marriage-delay-kundli-and-practical-steps": ["Marriage", "Kundli", "Seventh house", "Kundli Milan", "Saturn"],
+  "rahu-kaal-and-choghadiya-explained-simply": ["Rahu Kaal", "Choghadiya", "Panchang", "Muhurat", "Vedic astrology"],
+  "how-to-read-your-kundli-a-beginners-guide": ["Kundli", "Lagna", "Dasha", "Nakshatra", "Vedic astrology"],
+  "three-card-tarot-how-to-read-past-present-next": ["Tarot", "Three card spread", "Love", "Career", "Money"],
+};
+POSTS.forEach((p) => { p.tags = TAGS[p.slug] || ["Vedic astrology", "Kundli"]; });
 export const POST_BY_SLUG = Object.fromEntries(POSTS.map((p) => [p.slug, p]));
 
 export const HEAD = (title, desc, url, extra = "", img = "/img/og-image.jpg") => `<!doctype html>
@@ -251,7 +281,7 @@ const fmt = (d) => new Date(d + "T00:00:00Z").toLocaleDateString("en-IN", { day:
 
 export function renderBlogIndex(origin) {
   const url = origin + "/blog";
-  const cards = POSTS.map((p) => `<a class="post-card" href="/blog/${p.slug}"><img src="${p.img}" width="1200" height="630" alt="" loading="lazy" /><span class="post-meta">${fmt(p.date)} · ${p.read} min read</span><h2>${esc(p.title)}</h2><p>${esc(p.desc)}</p></a>`).join("\n");
+  const cards = POSTS.map((p) => `<a class="post-card" href="/blog/${p.slug}"><img src="${p.img}" width="1200" height="630" alt="${esc(p.title)}" loading="lazy" decoding="async" /><span class="post-meta">${fmt(p.date)} · ${p.read} min read</span><h2>${esc(p.title)}</h2><p>${esc(p.desc)}</p></a>`).join("\n");
   const ld = `  <script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "Kundli Kaka Blog", url, description: "Plain-language articles on Sade Sati, Manglik Dosh, Kundli Milan, Moon sign and more.", isPartOf: { "@type": "WebSite", name: "Kundli Kaka", url: origin + "/" }, hasPart: POSTS.map((x) => ({ "@type": "Article", headline: x.title, url: `${origin}/blog/${x.slug}` })) })}</script>\n`;
   return HEAD("Kundli Kaka Blog: Kundli, Rashifal and Vedic Astrology Explained", "Plain-language articles on Sade Sati, Manglik Dosh, Kundli Milan, Moon sign and more from Kundli Kaka.", url, ld) +
     TOP + `<main class="wrap post-wrap"><h1>Astrology, explained simply</h1><p class="post-lead">Plain answers to the questions people actually ask about their kundli.</p><div class="post-cards">${cards}</div></main>` + FOOT;
@@ -259,14 +289,31 @@ export function renderBlogIndex(origin) {
 
 export function renderPost(p, origin) {
   const url = `${origin}/blog/${p.slug}`;
+  const words = p.body.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
   const ld = `  <script type="application/ld+json">${JSON.stringify({
-    "@context": "https://schema.org", "@type": "Article", headline: p.title, description: p.desc,
-    datePublished: p.date, dateModified: p.date, mainEntityOfPage: url,
-    author: { "@type": "Organization", name: "Kundli Kaka" }, publisher: { "@type": "Organization", name: "Kundli Kaka" },
-  })}</script>\n`;
-  const more = POSTS.filter((x) => x.slug !== p.slug).map((x) => `<li><a href="/blog/${x.slug}">${esc(x.title)}</a></li>`).join("");
+    "@context": "https://schema.org", "@type": "Article", headline: p.title, description: p.desc, inLanguage: "en",
+    datePublished: p.date, dateModified: p.date, mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    image: [origin + p.img], keywords: p.tags.join(", "), articleSection: p.tags[0], wordCount: words,
+    author: { "@type": "Organization", name: "Kundli Kaka", url: origin + "/" },
+    publisher: { "@type": "Organization", name: "Kundli Kaka", logo: { "@type": "ImageObject", url: origin + "/img/logo-mark.png" } },
+  })}</script>
+  <script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Kundli Kaka", item: origin + "/" },
+    { "@type": "ListItem", position: 2, name: "Blog", item: origin + "/blog" },
+    { "@type": "ListItem", position: 3, name: p.title, item: url },
+  ] })}</script>
+  <meta name="keywords" content="${esc(p.tags.join(", "))}" />
+  <meta property="article:published_time" content="${p.date}" />
+  <meta property="article:modified_time" content="${p.date}" />
+  <meta property="article:section" content="${esc(p.tags[0])}" />
+${p.tags.map((t) => `  <meta property="article:tag" content="${esc(t)}" />`).join("\n")}
+  <meta property="og:image:alt" content="${esc(p.title)}" />
+`;
+  const related = POSTS.filter((x) => x.slug !== p.slug).map((x) => ({ x, n: x.tags.filter((t) => p.tags.includes(t)).length })).sort((m, n) => n.n - m.n).slice(0, 4);
+  const more = related.map(({ x }) => `<li><a href="/blog/${x.slug}">${esc(x.title)}</a></li>`).join("");
   return HEAD(`${p.title} | Kundli Kaka`, p.desc, url, ld, origin + p.img) + TOP +
-    `<main class="wrap post-wrap"><article class="post"><p class="post-meta">${fmt(p.date)} · ${p.read} min read</p><h1>${esc(p.title)}</h1><img class="post-cover" src="${p.img}" width="1200" height="630" alt="" /><p class="post-lead">${esc(p.lead)}</p>${p.body}
+    `<main class="wrap post-wrap"><nav class="pj-crumb" aria-label="Breadcrumb"><a href="/">Kundli Kaka</a> / <a href="/blog">Blog</a></nav><article class="post"><p class="post-meta"><time datetime="${p.date}">${fmt(p.date)}</time> · ${p.read} min read</p><h1>${esc(p.title)}</h1><img class="post-cover" src="${p.img}" width="1200" height="630" alt="${esc(p.title)}" fetchpriority="high" decoding="async" /><p class="post-lead">${esc(p.lead)}</p>${p.body}
+<p class="post-tags">${p.tags.map((t) => `<span>${esc(t)}</span>`).join("")}</p>
 <aside class="post-cta"><h2>See your own chart</h2><p>Make your free kundli in two minutes and read your Moon sign, dasha and more, worked out from the real sky.</p><a class="btn btn-primary" href="/kundli">Make my free kundli</a></aside>
 <section class="post-more"><h2>Keep reading</h2><ul>${more}</ul></section></article></main>` + FOOT;
 }

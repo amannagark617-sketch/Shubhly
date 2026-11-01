@@ -64,7 +64,7 @@ const NAV = `<nav class="gita-nav" aria-label="Gita"><a href="/gita">All chapter
 export function renderGitaIndex(origin) {
   const g = loadGita();
   const url = origin + "/gita";
-  const cards = g.map((c) => `<a class="gc" href="/gita/${c.n}"><img class="gc-img" src="${artSrc(c.n, true)}" alt="" width="400" height="170" loading="lazy" decoding="async"><span class="gc-n">${c.n}</span><span class="gc-t"><b>${esc(c.en)}</b><i lang="hi">${esc(c.hi)}</i><small>${c.verses.length} verses</small></span></a>`).join("\n");
+  const cards = g.map((c) => `<a class="gc" href="/gita/${c.n}"><img class="gc-img" src="${artSrc(c.n, true)}" alt="Bhagavad Gita Chapter ${c.n}: ${esc(c.en)}" width="400" height="170" loading="lazy" decoding="async"><span class="gc-n">${c.n}</span><span class="gc-t"><b>${esc(c.en)}</b><i lang="hi">${esc(c.hi)}</i><small>${c.verses.length} verses</small></span></a>`).join("\n");
   const ld = `  <script type="application/ld+json">${JSON.stringify({
     "@context": "https://schema.org", "@type": "CollectionPage", name: "Bhagavad Gita in simple English and Hindi", url,
     description: "All 18 chapters of the Bhagavad Gita with the Sanskrit text and simple English and Hindi meanings.",
@@ -119,7 +119,7 @@ export function renderChapter(c, origin) {
     `<main class="wrap gita-wrap" data-lang="both">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="deckle" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency="0.035 0.05" numOctaves="3" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 ${NAV}
-<img class="gita-banner" src="${artSrc(c.n)}" alt="" width="800" height="340" fetchpriority="high">
+<img class="gita-banner" src="${artSrc(c.n)}" alt="Bhagavad Gita Chapter ${c.n}: ${esc(c.en)}" width="800" height="340" fetchpriority="high">
 <p class="post-meta">Chapter ${c.n} of 18 · ${c.verses.length} verses</p>
 <h1>${esc(c.en)} <span class="gita-sa" lang="sa">${esc(c.sa)}</span></h1>
 <p class="post-lead">${esc(c.sum_en)}</p>

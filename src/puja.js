@@ -139,7 +139,7 @@ function renderPujaIndexBase(origin) {
     const [c1, c2] = ACCENT[s];
     const ph = photo(s);
     return `<a class="pj-card" href="/puja/${s}" style="--pj:${c1};--pj2:${c2}">
-  <span class="pj-card-img">${ph ? `<img src="${ph}" alt="" width="1600" height="700" loading="lazy">` : idolImg(s) ? `<img class="pj-card-idol" src="${idolImg(s)}" alt="" width="480" height="480" loading="lazy">` : `<b lang="hi">${esc(p.hi.split(" ")[0])}</b>`}</span>
+  <span class="pj-card-img">${ph ? `<img src="${ph}" alt="${esc(p.en)} at home: samagri and vidhi" width="1600" height="700" loading="lazy" decoding="async">` : idolImg(s) ? `<img class="pj-card-idol" src="${idolImg(s)}" alt="" width="480" height="480" loading="lazy">` : `<b lang="hi">${esc(p.hi.split(" ")[0])}</b>`}</span>
   <span class="pj-card-t"><strong>${T(p.en, p.hi)}</strong><small>${T(p.tag_en, p.tag_hi)}</small><em>${T(p.time_en, p.time_hi)} · ${p.samagri.length} ${T("items", "सामग्री")}</em></span></a>`;
   }).join("\n");
   const ld = `  <script type="application/ld+json">${JSON.stringify({
@@ -173,7 +173,7 @@ function renderPujaBase(p, origin) {
   const idx = ORDER.indexOf(p.slug);
   const all = loadPujas();
   const others = ORDER.filter((s) => s !== p.slug).map((s) => `<a href="/puja/${s}">${T(all[s].en, all[s].hi)}</a>`).join("");
-  const samagri = p.samagri.map((it, i) => `<li><label><input type="checkbox" data-sg="${i}">${itemImg(it.en) ? `<img class="pj-it" src="${itemImg(it.en)}" alt="" width="64" height="64" loading="lazy">` : ""}<span class="pj-sg"><b>${T(it.en, it.hi)}</b><i>${T(it.qty_en, it.qty_hi)}</i><small>${T(it.use_en, it.use_hi)}</small></span></label></li>`).join("");
+  const samagri = p.samagri.map((it, i) => `<li><label><input type="checkbox" data-sg="${i}">${itemImg(it.en) ? `<img class="pj-it" src="${itemImg(it.en)}" alt="${esc(it.en)} for puja" width="64" height="64" loading="lazy" decoding="async">` : ""}<span class="pj-sg"><b>${T(it.en, it.hi)}</b><i>${T(it.qty_en, it.qty_hi)}</i><small>${T(it.use_en, it.use_hi)}</small></span></label></li>`).join("");
   const steps = p.steps.map((s, i) => `<li><span class="pj-n">${i + 1}</span><div><h3>${T(s.title_en, s.title_hi)}</h3><p>${T(s.en, s.hi)}</p></div></li>`).join("");
   const share = `${p.en}: samagri list and steps, simple, in English and Hindi.\n${url}`;
   const ld = `  <script type="application/ld+json">${JSON.stringify({

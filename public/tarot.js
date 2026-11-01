@@ -298,7 +298,7 @@ const CARD_SLUGS = [
 
 export const cardSvg = (i) => {
   const slug = CARD_SLUGS[i];
-  return `<img src="/img/tarot/${slug}.webp" alt="" loading="lazy" class="card-img">`;
+  return `<img src="/img/tarot/${slug}.webp" alt="${slug.split("-").map((w) => w[0].toUpperCase() + w.slice(1)).join(" ")} tarot card" loading="lazy" decoding="async" class="card-img">`;
 };
 
 // The back of every card: a moon and sun inside a field of stars and sacred geometry.

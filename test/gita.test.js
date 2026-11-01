@@ -172,3 +172,19 @@ test("sitemap lists the Hindi pages", () => {
   const x = _sm("https://x.in", [], []);
   for (const u of ["/hi", "/hi/kundli", "/hi/match", "/hi/tarot"]) assert.ok(x.includes(`https://x.in${u}</loc>`), u);
 });
+
+import { POSTS as _POSTS, renderPost as _rpost } from "../src/blog.js";
+test("every blog post has tags, a good description and unique address", () => {
+  const slugs = new Set();
+  for (const p of _POSTS) {
+    assert.ok(!slugs.has(p.slug), p.slug); slugs.add(p.slug);
+    assert.ok(p.tags.length >= 3, p.slug);
+    assert.ok(p.desc.length >= 80 && p.desc.length <= 175, `${p.slug} desc ${p.desc.length}`);
+    assert.ok(p.title.length <= 75, `${p.slug} title ${p.title.length}`);
+    const h = _rpost(p, "https://x.in");
+    assert.match(h, /article:tag/);
+    assert.match(h, /"@type":"BreadcrumbList"/);
+    assert.match(h, new RegExp(`alt="${p.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/&/g, "&amp;")}"`));
+  }
+  assert.ok(_POSTS.length >= 14);
+});
