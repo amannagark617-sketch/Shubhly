@@ -350,6 +350,11 @@ app.post("/api/report", reportLimit, async (req, res, next) => {
 
 // ---- AI astrologers ------------------------------------------------------------
 const freeChats = new FreeChats();
+// A second guard by network address, so clearing the browser does not give three more messages.
+const ipChats = new FreeChats(FREE_MESSAGES * 3);
+const ipKey = (req) => "ip:" + (req.ip || "");
+const used = (req, cid) => freeChats.left(cid) <= 0 || ipChats.left(ipKey(req)) <= 0;
+const spend = (req, cid) => { ipChats.use(ipKey(req)); return freeChats.use(cid); };
 const guidesAlwaysOn = process.env.GUIDES_ALWAYS_ON === "1";
 
 app.get("/api/chat/status", dailyLimit, (req, res, next) => {
@@ -374,7 +379,7 @@ app.post("/api/chat", chatLimit, async (req, res, next) => {
         error: `${guide.name} is resting right now and is back at ${backAt(guide)} (India time). Another guide is available.`,
       });
     }
-    if (freeChats.left(cid) <= 0) {
+    if (used(req, cid)) {
       return res.status(402).json({
         code: "LIMIT",
         left: 0,
@@ -399,7 +404,7 @@ app.post("/api/chat", chatLimit, async (req, res, next) => {
       people,
       today: new Date().toISOString().slice(0, 10),
     });
-    const left = freeChats.use(cid);
+    const left = spend(req, cid);
     res.json({ reply, left: Number.isFinite(left) ? left : null, free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null });
   } catch (e) {
     const m = aiProblem(e);
@@ -414,14 +419,14 @@ app.post("/api/krishna", chatLimit, async (req, res, next) => {
     const cid = parseClientId(req.body?.cid);
     const turns = parseMessages(req.body?.messages);
     const language = parseLanguage(req.body?.language);
-    if (freeChats.left(cid) <= 0) {
+    if (used(req, cid)) {
       return res.status(402).json({ code: "LIMIT", left: 0, error: "You have used your free messages." });
     }
     if (!aiConfigured()) {
       return res.status(503).json({ error: "Krishna is not switched on yet. Please try again soon." + noKeyNote(req) });
     }
     const reply = await krishnaReply({ language, turns });
-    const left = freeChats.use(cid);
+    const left = spend(req, cid);
     res.json({ reply, sig: signReply(reply), left: Number.isFinite(left) ? left : null, free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null });
   } catch (e) {
     const m = aiProblem(e);
