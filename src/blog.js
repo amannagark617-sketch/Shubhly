@@ -5,6 +5,75 @@ export const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;")
 
 export const POSTS = [
   {
+    slug: "when-life-feels-stuck-kundli-gita-puja",
+    title: "When Life Feels Stuck: A Calm Guide Using Kundli, the Gita and Puja",
+    desc: "Stuck in a job, waiting for marriage, worried about money or just restless? A simple, honest way to use your kundli, a few Gita verses and a small home puja, with a 7 day plan.",
+    date: "2026-11-01",
+    read: 8,
+    img: "/img/blog/when-life-feels-stuck.jpg",
+    lead: "Almost everyone reaches a stretch where nothing moves: the job, the rishta, the money, or your own mind. Here is a calm way to look at it, using three things Indian families have always turned to: the kundli, the Gita and a small puja at home.",
+    body: `
+<h2>The problems people bring us most</h2>
+<p>When people ask for a kundli, the question underneath is almost always one of these:</p>
+<ul>
+<li><b>"Why is my career not moving?"</b> Years of hard work and the same desk.</li>
+<li><b>"When will I get married?"</b> Or whether a particular match is right.</li>
+<li><b>"Why does money not stay?"</b> It comes in and goes out.</li>
+<li><b>"Why can't I switch off my mind?"</b> Worry at night, restlessness in the day.</li>
+<li><b>"Is something wrong at home?"</b> Small fights, a heavy mood.</li>
+</ul>
+<p>None of these is solved by one chart or one verse. But together, the three tools below give you a way to understand the timing, steady the mind and take a small, real action.</p>
+
+<h2>1. The kundli: understanding the timing</h2>
+<p>A kundli is a map of the sky at your birth. Its most useful gift is not a verdict but <b>timing</b>. Vedic astrology divides life into planetary periods called dashas. Each period brings the themes of its planet to the front: Saturn periods tend to ask for patience and hard work, Jupiter periods for growth and guidance, Venus periods for relationships and comfort.</p>
+<p>So when you feel stuck, the first useful question is not "what is wrong with me?" but "which period am I in, and what is it asking?" Many people find that a slow stretch is a Saturn period doing what Saturn does: testing, slowing and building a base that lasts.</p>
+<ul>
+<li>For work and money, look at your current dasha and where Saturn and Jupiter are right now.</li>
+<li>For marriage, look at the seventh house, and if a match is proposed, compare both charts with <a href="/match">Kundli Milan</a>.</li>
+<li>You can see your own chart, dasha and a simple reading free at <a href="/kundli">Make your free kundli</a>.</li>
+</ul>
+<p>If you do not know your exact birth time, give your best estimate. The Moon sign is often still right, though the ascendant and houses can shift.</p>
+
+<h2>2. The Gita: steadying the mind</h2>
+<p>A chart can tell you a slow period is on. It cannot make the waiting easier. That is where the Gita helps. Three ideas, in plain words:</p>
+<ul>
+<li><b>Do your work, and let go of the outcome you cannot control (<a href="/gita/2">Gita 2.47</a>).</b> You control the effort, not the result. Ask yourself tonight: what is the one effort I can make tomorrow?</li>
+<li><b>Hard times and good times both pass (<a href="/gita/2">Gita 2.14</a>).</b> Cold and heat, pleasure and pain, come and go. Learn to bear them without being thrown by them.</li>
+<li><b>Lift yourself by your own mind (<a href="/gita/6">Gita 6.5</a>).</b> Your mind can be your friend or your enemy. Small daily habits, like a walk, a fixed hour of sleep and one quiet minute, make it a friend.</li>
+</ul>
+<p>You do not have to read the whole book. One verse a day is enough. On Kundli Kaka every verse comes with the Sanskrit, a simple meaning and what it asks of you, in English and Hindi. <a href="/gita">Start with the Gita</a>.</p>
+
+<h2>3. Puja: giving the worry a daily shape</h2>
+<p>Whatever one believes about its effect, a puja does something practical: it gives you a clean space, a fixed time, a quiet mind for twenty minutes, and the feeling of having done something. People often notice they sleep better and speak more gently at home afterwards.</p>
+<p>The pujas people usually choose for common worries:</p>
+<ul>
+<li><b>Money and a good start to a new season:</b> <a href="/puja/lakshmi">Lakshmi Puja</a>.</li>
+<li><b>New beginnings, a new job, a new house:</b> <a href="/puja/ganesh">Ganesh Puja</a> and <a href="/puja/griha-pravesh">Griha Pravesh</a>.</li>
+<li><b>Fear and low courage:</b> <a href="/puja/hanuman">Hanuman Puja</a>.</li>
+<li><b>A heavy Saturn period:</b> <a href="/puja/shani">Shani Puja</a>, done on a Saturday with simple offerings.</li>
+<li><b>Study and exams:</b> <a href="/puja/saraswati">Saraswati Puja</a>.</li>
+<li><b>Strength and protection:</b> <a href="/puja/durga">Durga Puja</a>.</li>
+<li><b>Peace at home:</b> <a href="/puja/satyanarayan">Satyanarayan Puja</a>.</li>
+</ul>
+<p>Each guide has the full samagri list with a picture of every item and the steps in order, in English and Hindi. <a href="/puja">See all puja guides</a>.</p>
+
+<h2>A simple 7 day plan</h2>
+<ol>
+<li><b>Day 1:</b> Make your free kundli and note your current dasha and your Moon sign.</li>
+<li><b>Day 2:</b> Read Gita 2.47 and write down one effort you will make this week, however small.</li>
+<li><b>Day 3:</b> Fix one thing in your routine: a sleep time, a walk, or a screen-free hour.</li>
+<li><b>Day 4:</b> Pick the puja that matches your worry and collect the samagri, ticking items off as you go.</li>
+<li><b>Day 5:</b> Check the panchang and choose a calm hour that avoids Rahu Kaal.</li>
+<li><b>Day 6:</b> Do the puja with your family if you can. Keep it simple and sincere.</li>
+<li><b>Day 7:</b> Read Gita 2.14, then sit quietly for five minutes and write what has changed, even a little.</li>
+</ol>
+
+<h2>An honest note</h2>
+<p>A kundli shows tendencies and timing, not a fixed fate. It does not replace effort, a doctor, a counsellor or a frank talk with your family. If you feel low for weeks, or cannot cope, please talk to someone you trust or a professional. Use astrology, the Gita and puja as supports for a steadier mind and clearer decisions, alongside real action and not in place of it.</p>
+<p>You are not behind. You are in a period, and periods change.</p>
+`,
+  },
+  {
     slug: "sade-sati-what-it-really-means",
     title: "Sade Sati: What It Really Means (and What It Doesn't)",
     desc: "Sade Sati is Saturn's 7.5-year walk around your Moon sign. Here is how it works, the three phases, what Dhaiya is, and why it is not a curse.",
@@ -140,7 +209,7 @@ export const POSTS = [
 `,
   },
 ];
-POSTS.forEach((p) => { p.img = `/img/blog/${p.slug}.svg`; });
+POSTS.forEach((p) => { if (!p.img) p.img = `/img/blog/${p.slug}.svg`; });
 export const POST_BY_SLUG = Object.fromEntries(POSTS.map((p) => [p.slug, p]));
 
 export const HEAD = (title, desc, url, extra = "", img = "/img/og-image.jpg") => `<!doctype html>
