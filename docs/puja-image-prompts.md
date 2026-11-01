@@ -50,15 +50,93 @@ File: `public/img/puja/durga.jpg`
 
 A home Navratri Durga puja set-up: a kalash with a coconut wrapped in a red chunri on a bed of sand with sprouted green barley shoots in a clay tray, a small Durga murti, red hibiscus flowers, a brass plate with kumkum and lit diya, a red and gold cloth, warm evening light. Realistic editorial photograph, shot on a full-frame camera with a 50mm lens, natural soft window light mixed with the warm glow of a real brass diya, shallow depth of field, true-to-life colours and textures, genuine slight imperfections like real flower petals and ghee marks on brass, clean uncluttered background, authentic Indian home setting, looks like a real photograph and not an illustration or a 3D render, wide 16:9 aspect ratio image (about 1600x700), ultra high quality, no text, no letters, no watermark, no logo, no borders, no people's faces.
 
-## Samagri flat lay (optional, one for any puja page later)
+# Gods (murti pictures)
 
-File: `public/img/puja/samagri-1.jpg`
+One respectful picture of each god as a real murti. They show on the puja pages and the gods row on the Puja page. Save in `public/img/puja/items/`.
 
-Top-down flat lay of Indian puja samagri neatly arranged on a plain light wooden table: brass kalash, coconut, a bowl of rice, kumkum and haldi in small brass bowls, camphor, incense sticks, cotton wicks, a small bottle of ghee, betel leaves and betel nuts, fresh marigold flowers, a banana, a copper tumbler, loose rice and a red cloth. Realistic editorial photograph, shot straight down from above, soft natural window light, true-to-life colours, genuine imperfections, clean uncluttered background, looks like a real photograph and not an illustration, square 1:1 aspect ratio image, ultra high quality, no text, no letters, no watermark, no borders, no people.
+## idol-ganesh
+
+File: `public/img/puja/items/idol-ganesh.jpg`
+
+A small brass Ganesh murti seated on a lotus base with an offering of two modaks beside it. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## idol-lakshmi
+
+File: `public/img/puja/items/idol-lakshmi.jpg`
+
+A small brass Goddess Lakshmi murti seated on a lotus, with pink lotus petals around the base. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## idol-saraswati
+
+File: `public/img/puja/items/idol-saraswati.jpg`
+
+A small white marble Goddess Saraswati murti seated with a veena, with white flowers at the base. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## idol-hanuman
+
+File: `public/img/puja/items/idol-hanuman.jpg`
+
+A small orange-vermilion Hanuman murti kneeling with folded hands, with red hibiscus flowers at the base. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## idol-durga
+
+File: `public/img/puja/items/idol-durga.jpg`
+
+A small Goddess Durga murti riding a lion, with a red chunri and red hibiscus flowers at the base. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## idol-vishnu
+
+File: `public/img/puja/items/idol-vishnu.jpg`
+
+A small framed picture and brass murti of Lord Satyanarayan (Vishnu) with a yellow cloth and tulsi leaves. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## shivling
+
+File: `public/img/puja/items/shivling.jpg`
+
+A black stone Shivling on a brass base with a few bel leaves and white flowers on it. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## Gods for the next pujas (make now, we will add the pages next)
+
+### idol-krishna
+
+File: `public/img/puja/items/idol-krishna.jpg`
+
+A small brass Krishna murti playing a flute, with a peacock feather and a few white flowers at the base. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+### idol-ram
+
+File: `public/img/puja/items/idol-ram.jpg`
+
+A small brass murti of Lord Ram with a bow, standing, with marigold flowers at the base. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+### idol-shani
+
+File: `public/img/puja/items/idol-shani.jpg`
+
+A small black iron Shani Dev murti seated on a crow, with blue flowers and a small sesame-oil diya beside it. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+### idol-parvati
+
+File: `public/img/puja/items/idol-parvati.jpg`
+
+A small brass Goddess Parvati murti seated with a lotus, with red flowers at the base. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+### idol-surya
+
+File: `public/img/puja/items/idol-surya.jpg`
+
+A small brass Surya Dev murti with a sun-ray halo seated on a chariot, with red flowers at the base. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+### idol-kartikeya
+
+File: `public/img/puja/items/idol-kartikeya.jpg`
+
+A small brass Kartikeya (Murugan) murti with a spear, standing beside a peacock, with marigold flowers. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
 
 # Samagri item pictures
 
-One small square picture for each samagri item. Save each as the file shown in `public/img/puja/items/`. They show next to the item on every puja page that needs it. Every prompt is complete.
+One small square picture for each item. Save in `public/img/puja/items/`. They show beside the item on every puja page that needs it.
 
 ## panchamrit
 
@@ -227,4 +305,106 @@ A clay tray of fresh green sprouted barley shoots (jau) in soil. Realistic produ
 File: `public/img/puja/items/rangoli.jpg`
 
 Bowls of bright rangoli colour powders and some flower petals. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## bell
+
+File: `public/img/puja/items/bell.jpg`
+
+A small brass puja bell (ghanti) with a carved handle. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## conch
+
+File: `public/img/puja/items/conch.jpg`
+
+A white polished conch shell (shankh) on a small brass stand. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## panchpatra
+
+File: `public/img/puja/items/panchpatra.jpg`
+
+A small brass panchpatra cup with its small spoon (achamani). Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## gulal
+
+File: `public/img/puja/items/gulal.jpg`
+
+Small bowls of colourful gulal powders in red, yellow and green. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## dryfruits
+
+File: `public/img/puja/items/dryfruits.jpg`
+
+A small bowl of mixed dry fruits: almonds, cashews, raisins and makhana. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## gud
+
+File: `public/img/puja/items/gud.jpg`
+
+A few pieces of jaggery (gud) and a small bowl of roasted chana. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## til
+
+File: `public/img/puja/items/til.jpg`
+
+A small bowl of black and white sesame seeds. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## laung
+
+File: `public/img/puja/items/laung.jpg`
+
+A small bowl of cloves and green cardamom pods. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## rudraksha
+
+File: `public/img/puja/items/rudraksha.jpg`
+
+A rudraksha mala (prayer beads) coiled neatly. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## mishri
+
+File: `public/img/puja/items/mishri.jpg`
+
+A small bowl of white batasha and rock sugar (mishri) crystals. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## bananaleaf
+
+File: `public/img/puja/items/bananaleaf.jpg`
+
+Two fresh green banana leaves laid flat. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## kusha
+
+File: `public/img/puja/items/kusha.jpg`
+
+A bundle of dry kusha grass tied with a thread. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## aasan
+
+File: `public/img/puja/items/aasan.jpg`
+
+A folded red woollen puja aasan (seat mat). Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## shringar
+
+File: `public/img/puja/items/shringar.jpg`
+
+A brass plate with red bangles, a bindi packet, kumkum and a small mirror (shringar items). Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## veena
+
+File: `public/img/puja/items/veena.jpg`
+
+A small wooden veena (Indian string instrument). Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## matchbox
+
+File: `public/img/puja/items/matchbox.jpg`
+
+A matchbox with a few matchsticks beside a small brass diya. Realistic product photograph on a pure white seamless background, centred with generous empty space around it, shot from a slight angle with a 50mm lens, soft natural studio light with a gentle soft shadow underneath, true-to-life colours and textures, looks like a real photograph and not an illustration or a 3D render, square 1:1 aspect ratio image, ultra high quality, sharp focus, no text, no letters, no watermark, no logo, no borders, no people.
+
+## Samagri flat lay (optional, one for any puja page later)
+
+File: `public/img/puja/samagri-1.jpg`
+
+Top-down flat lay of Indian puja samagri neatly arranged on a plain light wooden table: brass kalash, coconut, a bowl of rice, kumkum and haldi in small brass bowls, camphor, incense sticks, cotton wicks, a small bottle of ghee, betel leaves and betel nuts, fresh marigold flowers, a banana, a copper tumbler, loose rice and a red cloth. Realistic editorial photograph, shot straight down from above, soft natural window light, true-to-life colours, genuine imperfections, clean uncluttered background, looks like a real photograph and not an illustration, square 1:1 aspect ratio image, ultra high quality, no text, no letters, no watermark, no borders, no people.
 

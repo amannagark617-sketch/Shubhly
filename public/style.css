@@ -1560,3 +1560,7 @@ img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
 .kkp-later { position: relative; margin-top: 10px; background: rgba(255, 255, 255, .92); color: #1b1b3a; border-radius: 8px; padding: 9px 22px; font-weight: 600; }
 .kkp { grid-auto-flow: row; align-content: center; justify-items: center; }
 @media (max-width: 640px) { .kkp { left: 0; right: 0; bottom: 0; } .kkp-log { max-height: 50vh; } }
+.pj-gods { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 14px; margin: 8px 0 12px; }
+.pj-god { display: grid; gap: 6px; text-align: center; color: inherit; text-decoration: none; font-weight: 600; }
+.pj-god img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; border: 1px solid #ececf3; background: #fff; transition: transform .2s, box-shadow .2s; }
+.pj-god:hover img { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(20,20,60,.14); }

@@ -29,6 +29,13 @@ export const PUJA_PATHS = () => ["/puja", ...ORDER.map((s) => `/puja/${s}`)];
 
 // Small pictures for samagri items: public/img/puja/items/<key>.jpg (or .webp/.png). Prompts: docs/puja-image-prompts.md
 export const ITEMS = [
+  ["idol-ganesh", /ganesh.*(idol|photo|picture)|lakshmi-ganesh/i, "a small brass Ganesh murti seated on a lotus base with an offering of two modaks beside it"],
+  ["idol-lakshmi", /lakshmi.*(idol|photo|picture)/i, "a small brass Goddess Lakshmi murti seated on a lotus, with pink lotus petals around the base"],
+  ["idol-saraswati", /saraswati.*(idol|photo|picture)/i, "a small white marble Goddess Saraswati murti seated with a veena, with white flowers at the base"],
+  ["idol-hanuman", /hanuman.*(idol|photo|picture)|ram darbar|ram-sita/i, "a small orange-vermilion Hanuman murti kneeling with folded hands, with red hibiscus flowers at the base"],
+  ["idol-durga", /durga.*(idol|photo|picture)/i, "a small Goddess Durga murti riding a lion, with a red chunri and red hibiscus flowers at the base"],
+  ["idol-vishnu", /satyanarayan.*(photo|idol)/i, "a small framed picture and brass murti of Lord Satyanarayan (Vishnu) with a yellow cloth and tulsi leaves"],
+  ["shivling", /shivling|shiv image/i, "a black stone Shivling on a brass base with a few bel leaves and white flowers on it"],
   ["panchamrit", /panchamrit|milk|curd|honey|sugar/i, "a small brass bowl of panchamrit with white milk, curd, honey, ghee and sugar in separate small bowls"],
   ["ghee", /ghee|wick|oil/i, "a small brass bowl of golden ghee next to a handful of twisted cotton wicks"],
   ["diya", /diya|lamp/i, "two lit traditional clay diyas with steady warm flames"],
@@ -46,7 +53,7 @@ export const ITEMS = [
   ["betel", /betel|paan|supari/i, "fresh green betel (paan) leaves with a few whole betel nuts (supari)"],
   ["tulsi", /tulsi/i, "a bunch of fresh green tulsi leaves"],
   ["durva", /durva/i, "a small bunch of fresh green durva grass tied with a thread"],
-  ["bel", /belpatra|bel/i, "three-leaf bel patra leaves, fresh and green"],
+  ["bel", /belpatra|\bbel\b/i, "three-leaf bel patra leaves, fresh and green"],
   ["chandan", /chandan|sandal|bhasma|vibhuti/i, "a small bowl of sandalwood paste and a small bowl of grey ash (bhasma)"],
   ["flowers", /flower|garland|petal|hibiscus|marigold|lotus/i, "fresh orange marigold flowers, a red hibiscus and a pink lotus with a marigold garland"],
   ["fruits", /fruit|banana/i, "a small plate of fresh seasonal fruits: bananas, an apple, a pomegranate and ber"],
@@ -57,7 +64,33 @@ export const ITEMS = [
   ["havan", /havan/i, "a small copper havan kund with mango wood sticks and a bowl of havan samagri"],
   ["jau", /barley|jau|soil/i, "a clay tray of fresh green sprouted barley shoots (jau) in soil"],
   ["rangoli", /rangoli/i, "bowls of bright rangoli colour powders and some flower petals"],
+  ["bell", /bell|ghanti/i, "a small brass puja bell (ghanti) with a carved handle"],
+  ["conch", /conch|shankh/i, "a white polished conch shell (shankh) on a small brass stand"],
+  ["panchpatra", /panchpatra|achamani|spoon/i, "a small brass panchpatra cup with its small spoon (achamani)"],
+  ["gulal", /gulal|abir/i, "small bowls of colourful gulal powders in red, yellow and green"],
+  ["dryfruits", /dry fruit|makhana|almond|kishmish/i, "a small bowl of mixed dry fruits: almonds, cashews, raisins and makhana"],
+  ["gud", /jaggery|gud\b|chana/i, "a few pieces of jaggery (gud) and a small bowl of roasted chana"],
+  ["til", /sesame|\btil\b/i, "a small bowl of black and white sesame seeds"],
+  ["laung", /clove|cardamom|elaichi|laung/i, "a small bowl of cloves and green cardamom pods"],
+  ["rudraksha", /rudraksha|\bmala\b/i, "a rudraksha mala (prayer beads) coiled neatly"],
+  ["mishri", /mishri|batasha|sugar candy/i, "a small bowl of white batasha and rock sugar (mishri) crystals"],
+  ["bananaleaf", /banana leaf|plantain|banana plant/i, "two fresh green banana leaves laid flat"],
+  ["kusha", /kusha|darbha|kush grass/i, "a bundle of dry kusha grass tied with a thread"],
+  ["aasan", /aasan|mat\b|seat/i, "a folded red woollen puja aasan (seat mat)"],
+  ["shringar", /shringar|bangle|bindi|solah/i, "a brass plate with red bangles, a bindi packet, kumkum and a small mirror (shringar items)"],
+  ["veena", /veena|instrument/i, "a small wooden veena (Indian string instrument)"],
+  ["matchbox", /matchbox|matches/i, "a matchbox with a few matchsticks beside a small brass diya"],
 ];
+const GODS = [["ganesh", "Ganesh", "गणेश", "idol-ganesh"], ["lakshmi", "Lakshmi", "लक्ष्मी", "idol-lakshmi"], ["saraswati", "Saraswati", "सरस्वती", "idol-saraswati"],
+  ["hanuman", "Hanuman", "हनुमान", "idol-hanuman"], ["shiv", "Shiv", "शिव", "shivling"], ["durga", "Durga", "दुर्गा", "idol-durga"], ["satyanarayan", "Vishnu", "विष्णु", "idol-vishnu"]];
+const godsRow = () => {
+  const found = GODS.map(([slug, en, hi, key]) => {
+    for (const ext of ["jpg", "webp", "png"]) if (fs.existsSync(path.join(IMG, "items", `${key}.${ext}`))) return `<a class="pj-god" href="/puja/${slug}"><img src="/img/puja/items/${key}.${ext}" alt="" width="240" height="240" loading="lazy"><span>${T(en, hi)}</span></a>`;
+    return "";
+  }).filter(Boolean);
+  return found.length ? `<h2>${T("Choose your god", "अपने इष्ट देव चुनिए")}</h2><div class="pj-gods">${found.join("")}</div>` : "";
+};
+
 export const itemKey = (name) => (ITEMS.find(([, re]) => re.test(name)) || [])[0] || null;
 const itemImg = (name) => {
   const k = itemKey(name);
@@ -110,6 +143,8 @@ export function renderPujaIndex(origin) {
 ${TOGGLE}
 <h1>${T("Puja at home, step by step", "घर पर पूजा, एक-एक कदम")}</h1>
 <p class="post-lead">${T("Choose a puja to see exactly what you need, how to prepare the day before, and every step in order. No priest needed, and no Sanskrit you cannot read.", "कोई भी पूजा चुनिए और देखिए कि क्या-क्या चाहिए, एक दिन पहले क्या तैयारी करनी है, और हर कदम क्रम से। पंडित जी की ज़रूरत नहीं, और कोई कठिन संस्कृत नहीं।")}</p>
+${godsRow()}
+<h2>${T("All pujas", "सभी पूजा")}</h2>
 <div class="pj-grid">${cards}</div>
 <aside class="gita-about"><h2>${T("A note before you begin", "शुरू करने से पहले")}</h2>
 <p>${T("Every family and region does these pujas a little differently. Where your family's way or your pandit's advice differs from this page, follow theirs. What matters most is a clean, calm mind and a sincere heart.", "हर परिवार और हर क्षेत्र में पूजा थोड़ी अलग तरह से होती है। जहाँ आपके परिवार या पंडित जी का तरीका इस पेज से अलग हो, वहाँ उनका तरीका मानिए। सबसे ज़रूरी है साफ़, शांत मन और सच्ची श्रद्धा।")}</p></aside>
