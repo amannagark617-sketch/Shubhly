@@ -4,6 +4,7 @@
 import fs from "node:fs";
 import { SIGNS } from "./astro-data.js";
 import { STR } from "../public/i18n.js";
+import { seoBlock, seoLd, alternates, hiPath, HI_META } from "./seo.js";
 
 export const SLUGS = SIGNS.map((s) => s.en.toLowerCase());
 
@@ -106,9 +107,15 @@ export function loadShell(file) {
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-export function renderPage(html, page, { origin, reading = "", noindex = false } = {}) {
-  const url = origin + page.path;
-  let out = html;
+export function renderPage(html, page, { origin, reading = "", noindex = false, lang = "en" } = {}) {
+  const hi = lang === "hi";
+  const key = Object.keys(PAGES).find((k) => PAGES[k].path === (page.navPath || page.path)) || "home";
+  const isTool = !page.sign && ["home", "kundli", "match", "rashifal", "panchang", "tarot"].includes(key) && !noindex && (page.path === PAGES[key].path || page.path === "/");
+  const path = hi ? hiPath(page.path) : page.path;
+  const url = origin + path;
+  if (hi && HI_META[key]) page = { ...page, title: HI_META[key].title, desc: HI_META[key].desc };
+  const S = hi ? STR.hi : STR.en;
+  let out = hi ? html.replace('<html lang="en">', '<html lang="hi">') : html;
 
   // head
   out = out.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(page.title)}</title>`);
@@ -119,17 +126,19 @@ export function renderPage(html, page, { origin, reading = "", noindex = false }
     "</head>",
     `  <link rel="canonical" href="${esc(url)}" />\n  <meta property="og:url" content="${esc(url)}" />\n  <meta property="og:site_name" content="Kundli Kaka" />\n` +
       (noindex ? `  <meta name="robots" content="noindex" />\n` : "") +
+      (isTool ? alternates(origin, page.path) : "") +
+      (hi ? `  <script>try{localStorage.setItem("shubhly.lang",'\"hi\"')}catch(e){}</script>\n` : "") +
       `  <script type="application/ld+json">${JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebSite",
         name: "Kundli Kaka",
         url: origin + "/",
-      })}</script>\n</head>`
+      })}</script>\n` + (isTool ? seoLd(key, lang, origin, path, page.title) : "") + "</head>"
   );
 
   // words in English, so the page reads fully before any script runs
   out = out.replace(/(<([a-z0-9]+)\b[^>]*\bdata-i="([\w]+)"[^>]*>)(<\/\2>)/g, (m, open, tag, key, close) =>
-    typeof STR.en[key] === "string" && !STR.en[key].includes("{") ? open + esc(STR.en[key]) + close : m);
+    typeof S[key] === "string" && !S[key].includes("{") ? open + esc(S[key]) + close : m);
 
   // which sections show
   for (const id of ALL) {
@@ -149,6 +158,7 @@ export function renderPage(html, page, { origin, reading = "", noindex = false }
     tail.startsWith(" class") ? `<a href="${navPath}" class="nav-premium active" aria-current="page"` : `<a class="active" aria-current="page" href="${navPath}"${tail}`
   );
 
+  if (isTool) out = out.replace("  </main>", seoBlock(key, lang) + "\n  </main>");
   out = out.replace("<body>", `<body data-page="${esc(Object.keys(PAGES).find((k) => PAGES[k].path === navPath) || "home")}"${page.sign != null ? ` data-sign="${page.sign}"` : ""}>`);
   if (reading) out = out.replace('<div id="reading"></div>', `<div id="reading">${reading}</div>`);
   return out;
@@ -159,7 +169,7 @@ function headingId(main) {
 }
 
 export function sitemap(origin, posts = [], extra = []) {
-  const urls = [...Object.values(PAGES).map((p) => p.path), ...SLUGS.map((s) => `/rashifal/${s}`), ...(posts.length ? ["/blog"] : []), ...posts.map((p) => `/blog/${p.slug}`), ...extra];
+  const urls = [...Object.values(PAGES).map((p) => p.path), ...["/", "/kundli", "/match", "/rashifal", "/panchang", "/tarot"].map(hiPath), ...SLUGS.map((s) => `/rashifal/${s}`), ...(posts.length ? ["/blog"] : []), ...posts.map((p) => `/blog/${p.slug}`), ...extra];
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
     urls.map((u) => `  <url><loc>${origin}${u === "/" ? "/" : u}</loc><changefreq>${u.startsWith("/rashifal") || u === "/panchang" || u === "/" ? "daily" : "weekly"}</changefreq></url>`).join("\n") + `\n</urlset>\n`;
 }

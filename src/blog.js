@@ -183,7 +183,8 @@ const fmt = (d) => new Date(d + "T00:00:00Z").toLocaleDateString("en-IN", { day:
 export function renderBlogIndex(origin) {
   const url = origin + "/blog";
   const cards = POSTS.map((p) => `<a class="post-card" href="/blog/${p.slug}"><img src="${p.img}" width="1200" height="630" alt="" loading="lazy" /><span class="post-meta">${fmt(p.date)} · ${p.read} min read</span><h2>${esc(p.title)}</h2><p>${esc(p.desc)}</p></a>`).join("\n");
-  return HEAD("Kundli Kaka Blog: Kundli, Rashifal and Vedic Astrology Explained", "Plain-language articles on Sade Sati, Manglik Dosh, Kundli Milan, Moon sign and more from Kundli Kaka.", url) +
+  const ld = `  <script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "Kundli Kaka Blog", url, description: "Plain-language articles on Sade Sati, Manglik Dosh, Kundli Milan, Moon sign and more.", isPartOf: { "@type": "WebSite", name: "Kundli Kaka", url: origin + "/" }, hasPart: POSTS.map((x) => ({ "@type": "Article", headline: x.title, url: `${origin}/blog/${x.slug}` })) })}</script>\n`;
+  return HEAD("Kundli Kaka Blog: Kundli, Rashifal and Vedic Astrology Explained", "Plain-language articles on Sade Sati, Manglik Dosh, Kundli Milan, Moon sign and more from Kundli Kaka.", url, ld) +
     TOP + `<main class="wrap post-wrap"><h1>Astrology, explained simply</h1><p class="post-lead">Plain answers to the questions people actually ask about their kundli.</p><div class="post-cards">${cards}</div></main>` + FOOT;
 }
 

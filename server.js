@@ -25,8 +25,9 @@ import { verseClip } from "./src/gita-audio.js";
 import { chapterArt, gitaCover } from "./src/gita-art.js";
 import { renderGitaIndex, renderChapter, chapterOf, GITA_PATHS, krishnaReply } from "./src/gita.js";
 import { buildMyDay } from "./src/myday.js";
-import { renderPujaIndex, renderPuja, pujaOf, PUJA_PATHS } from "./src/puja.js";
+import { renderPujaIndex, renderPuja, pujaOf, PUJA_PATHS, PUJA_HI_PATHS } from "./src/puja.js";
 import { signReply, verifyReply, speakKrishna, FREE_LISTENS } from "./src/voice.js";
+import { hiPath } from "./src/seo.js";
 import { PAGES, SLUGS, signPage, loadShell, renderPage, sitemap } from "./src/pages.js";
 import {
   InputError,
@@ -499,6 +500,11 @@ function sendPage(req, res, page, extra = {}) {
   res.type("html").send(renderPage(loadShell(SHELL), page, { origin: originOf(req), ...extra }));
 }
 for (const page of Object.values(PAGES)) app.get(page.path, (req, res) => sendPage(req, res, page));
+// Hindi versions of the main pages, each at its own address
+for (const k of ["home", "kundli", "match", "rashifal", "panchang", "tarot"]) {
+  const page = PAGES[k];
+  app.get(hiPath(page.path), (req, res) => sendPage(req, res, page, { lang: "hi" }));
+}
 app.get("/blog", (req, res) => res.type("html").send(renderBlogIndex(originOf(req))));
 app.get("/blog/:slug", (req, res, next) => {
   const post = Object.hasOwn(POST_BY_SLUG, req.params.slug) ? POST_BY_SLUG[req.params.slug] : null;
@@ -526,6 +532,13 @@ app.get("/puja/:slug", (req, res, next) => {
   res.setHeader("Cache-Control", "no-cache");
   res.type("html").send(renderPuja(p, originOf(req)));
 });
+app.get("/hi/puja", (req, res) => { res.setHeader("Cache-Control", "no-cache"); res.type("html").send(renderPujaIndex(originOf(req), "hi")); });
+app.get("/hi/puja/:slug", (req, res, next) => {
+  const p = pujaOf(String(req.params.slug).toLowerCase());
+  if (!p) return next();
+  res.setHeader("Cache-Control", "no-cache");
+  res.type("html").send(renderPuja(p, originOf(req), "hi"));
+});
 app.get("/index.html", (_req, res) => res.redirect(301, "/"));
 
 // Each sign has its own address, with today's reading in the page itself.
@@ -547,7 +560,7 @@ app.get("/rashifal/:sign", (req, res, next) => {
 app.get("/robots.txt", (req, res) => {
   res.type("text/plain").send(`User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${originOf(req)}/sitemap.xml\n`);
 });
-app.get("/sitemap.xml", (req, res) => res.type("application/xml").send(sitemap(originOf(req), POSTS, [...GITA_PATHS(), ...PUJA_PATHS()])));
+app.get("/sitemap.xml", (req, res) => res.type("application/xml").send(sitemap(originOf(req), POSTS, [...GITA_PATHS(), ...PUJA_PATHS(), ...PUJA_HI_PATHS()])));
 
 // ---- static site ---------------------------------------------------------
 app.use(

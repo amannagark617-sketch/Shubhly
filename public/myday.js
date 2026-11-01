@@ -6,7 +6,7 @@ const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<
 const KEY = "kk.me";
 const rd = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } };
 const wr = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* private mode */ } };
-const lang = () => { try { return localStorage.getItem("shubhly.lang") === "hi" ? "hi" : "en"; } catch { return "en"; } };
+const lang = () => { try { const v = localStorage.getItem("shubhly.lang"); return v === "hi" || v === "\"hi\"" ? "hi" : "en"; } catch { return "en"; } };
 
 const S = {
   en: {

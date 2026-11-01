@@ -34,7 +34,7 @@ test("English words are in the HTML before any script runs", () => {
   assert.match(renderPage(shell, PAGES.kundli, { origin }), /Make your kundli<\/h1>/);
 });
 
-test("sitemap lists every page and sign", () => {
+test("sitemap lists every page, sign and Hindi page", () => {
   const x = sitemap(origin);
-  assert.equal((x.match(/<loc>/g) || []).length, Object.keys(PAGES).length + 12);
+  assert.equal((x.match(/<loc>/g) || []).length, Object.keys(PAGES).length + 12 + 6);
 });

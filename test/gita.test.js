@@ -131,3 +131,44 @@ test("my day gives do, avoid, wear and times", () => {
     assert.ok(d.do.length >= 4 && d.avoid.length >= 4 && d.wear.colours.length >= 1 && d.best.length >= 1);
   }
 });
+
+// ---- search: own content, Hindi addresses, language alternates ----
+import { renderPage as _rp, PAGES as _PAGES, loadShell as _ls, sitemap as _sm } from "../src/pages.js";
+import { renderPuja as _rpj, pujaOf as _pof, ORDER as _ORD } from "../src/puja.js";
+import { SEO_TEXT as _ST } from "../src/seo-text.js";
+
+test("every main page has its own questions in English and Hindi", () => {
+  for (const k of ["home", "kundli", "match", "rashifal", "panchang", "tarot"]) {
+    for (const l of ["en", "hi"]) assert.ok(_ST[k][l].faq.length >= 4 && _ST[k][l].intro.length >= 2, `${k} ${l}`);
+    assert.equal(_ST[k].en.faq.length, _ST[k].hi.faq.length, k);
+  }
+});
+
+test("main pages render their own block, FAQ data and language alternates", () => {
+  const shell = _ls(new URL("../public/index.html", import.meta.url).pathname);
+  for (const k of ["kundli", "match", "rashifal", "panchang", "tarot"]) {
+    const en = _rp(shell, _PAGES[k], { origin: "https://x.in" });
+    assert.match(en, /class="seo-block"/);
+    assert.match(en, /"@type":"FAQPage"/);
+    assert.match(en, new RegExp(`hreflang="hi" href="https://x.in/hi${_PAGES[k].path}"`));
+    const hi = _rp(shell, _PAGES[k], { origin: "https://x.in", lang: "hi" });
+    assert.match(hi, /<html lang="hi">/);
+    assert.match(hi, new RegExp(`rel="canonical" href="https://x.in/hi${_PAGES[k].path}"`));
+  }
+});
+
+test("puja pages have a Hindi address with Hindi markup only", () => {
+  for (const s of _ORD) {
+    const p = _pof(s);
+    const hi = _rpj(p, "https://x.in", "hi");
+    assert.match(hi, /<html lang="hi">/);
+    assert.match(hi, new RegExp(`rel="canonical" href="https://x.in/hi/puja/${s}"`));
+    assert.doesNotMatch(hi, /class="l-en"/);
+    assert.match(_rpj(p, "https://x.in", "en"), new RegExp(`hreflang="hi" href="https://x.in/hi/puja/${s}"`));
+  }
+});
+
+test("sitemap lists the Hindi pages", () => {
+  const x = _sm("https://x.in", [], []);
+  for (const u of ["/hi", "/hi/kundli", "/hi/match", "/hi/tarot"]) assert.ok(x.includes(`https://x.in${u}</loc>`), u);
+});

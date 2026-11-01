@@ -119,9 +119,10 @@ const photo = (slug) => {
 const panel = (c1, c2, p) => { const im = idolImg(p.slug); return `<div class="pj-panel${im ? " pj-panel--idol" : ""}" style="background:${c2};color:${c1}">${im ? `<img src="${im}" alt="${esc(p.en)}" width="480" height="480">` : ""}<b lang="hi">${esc(p.hi)}</b><span>${esc(p.en)}</span></div>`; };
 
 // Text that shows in whichever language the visitor picked
-const T = (en, hi) => `<span class="l-en">${esc(en)}</span><span class="l-hi" lang="hi">${esc(hi)}</span>`;
+let MODE = "both";
+const T = (en, hi) => MODE === "hi" ? `<span class="l-hi" lang="hi">${esc(hi)}</span>` : `<span class="l-en">${esc(en)}</span><span class="l-hi" lang="hi">${esc(hi)}</span>`;
 
-const LANG_JS = `<script>(function(){var l="en";try{var s=localStorage.getItem("shubhly.lang");if(s==="hi")l="hi";var q=localStorage.getItem("kk.puja.lang");if(q)l=q}catch(e){}
+const LANG_JS = `<script>(function(){var l="en";try{var s=localStorage.getItem("shubhly.lang");if(s==="hi"||s==="\"hi\"")l="hi";var q=localStorage.getItem("kk.puja.lang");if(q)l=q}catch(e){}
 function set(v){document.documentElement.setAttribute("data-pl",v);try{localStorage.setItem("kk.puja.lang",v)}catch(e){}[].forEach.call(document.querySelectorAll("[data-setl]"),function(b){b.setAttribute("aria-pressed",String(b.dataset.setl===v))})}
 document.documentElement.setAttribute("data-pl",l);
 document.addEventListener("DOMContentLoaded",function(){set(l);document.addEventListener("click",function(e){var b=e.target.closest("[data-setl]");if(b)set(b.dataset.setl)})})})();</script>`;
@@ -130,7 +131,7 @@ const TOGGLE = `<div class="pj-lang" role="group" aria-label="Language"><button 
 
 const PAGE_JS = `<script type="module" src="/puja.js"></script>`;
 
-export function renderPujaIndex(origin) {
+function renderPujaIndexBase(origin) {
   const all = loadPujas();
   const url = origin + "/puja";
   const cards = ORDER.map((s) => {
@@ -165,7 +166,7 @@ ${godsRow()}
 
 const list = (arr, hiArr) => arr.map((e, i) => `<li>${T(e, hiArr[i])}</li>`).join("");
 
-export function renderPuja(p, origin) {
+function renderPujaBase(p, origin) {
   const url = `${origin}/puja/${p.slug}`;
   const [c1, c2] = ACCENT[p.slug];
   const ph = photo(p.slug);
@@ -215,3 +216,49 @@ ${TOGGLE}
 <script type="application/json" id="pj-share">${JSON.stringify({ title: p.en, hi: p.hi, url, share, tag_en: p.tag_en, tag_hi: p.tag_hi, time_en: p.time_en, time_hi: p.time_hi, steps: p.steps.length, photo: ph, c1, c2, names_en: p.samagri.map((s) => s.en), names_hi: p.samagri.map((s) => s.hi), pics: p.samagri.map((s) => itemImg(s.en)), idol: idolImg(p.slug), items_en: p.samagri.map((s) => `${s.en} (${s.qty_en})`), items_hi: p.samagri.map((s) => `${s.hi} (${s.qty_hi})`) }).replace(/</g, "\\u003c")}</script>
 </main>` + FOOT.replace("</body>", PAGE_JS + "\n</body>");
 }
+
+// ---- Search: Hindi addresses, language alternates and breadcrumbs ----
+const qs = (u) => encodeURIComponent(u);
+const alt = (origin, enPath) => `  <link rel="alternate" hreflang="en" href="${origin}${enPath}" />\n  <link rel="alternate" hreflang="hi" href="${origin}/hi${enPath}" />\n  <link rel="alternate" hreflang="x-default" href="${origin}${enPath}" />\n`;
+const crumb = (items) => `  <script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: items.map(([name, item], i) => ({ "@type": "ListItem", position: i + 1, name, item })) }).replace(/</g, "\\u003c")}</script>\n`;
+const setMeta = (h, title, desc) => h
+  .replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(title)}</title>`)
+  .replace(/<meta name="description"[^>]*>/, `<meta name="description" content="${esc(desc)}" />`)
+  .replace(/<meta property="og:title"[^>]*>/, `<meta property="og:title" content="${esc(title)}" />`)
+  .replace(/<meta property="og:description"[^>]*>/, `<meta property="og:description" content="${esc(desc)}" />`);
+const toHindi = (h, origin) => h
+  .replace('<html lang="en">', '<html lang="hi">')
+  .split(`${origin}/puja`).join(`${origin}/hi/puja`).split(qs(`${origin}/puja`)).join(qs(`${origin}/hi/puja`))
+  .replace(LANG_JS, '<script>document.documentElement.setAttribute("data-pl","hi")</script>')
+  .replace(TOGGLE, '<div class="pj-lang" role="group" aria-label="Language"><a href="__EN__" hreflang="en">English</a><a href="__HI__" aria-current="page" lang="hi">हिंदी</a></div>')
+  .replace(/href="\/puja/g, 'href="/hi/puja');
+
+export function renderPujaIndex(origin, lang = "en") {
+  const hi = lang === "hi";
+  MODE = hi ? "hi" : "both";
+  try {
+    let h = renderPujaIndexBase(origin);
+    if (hi) {
+      h = toHindi(h, origin).replace("__EN__", "/puja").replace("__HI__", "/hi/puja");
+      h = setMeta(h, "पूजा विधि और सामग्री सूची: लक्ष्मी, गणेश, सत्यनारायण और अन्य | कुंडली काका", "घर पर पूजा की सरल, कदम दर कदम गाइड: पूरी सामग्री सूची, मंत्र और सुझाव। लक्ष्मी, गणेश, सत्यनारायण, गृह प्रवेश, सरस्वती, हनुमान, शिव, दुर्गा, कृष्ण, राम, शनि, पार्वती, सूर्य और कार्तिकेय पूजा।");
+    }
+    return h.replace("</head>", alt(origin, "/puja") + crumb([[hi ? "कुंडली काका" : "Kundli Kaka", origin + (hi ? "/hi" : "/")], [hi ? "पूजा गाइड" : "Puja guides", origin + (hi ? "/hi/puja" : "/puja")]]) + "</head>");
+  } finally { MODE = "both"; }
+}
+
+export function renderPuja(p, origin, lang = "en") {
+  const hi = lang === "hi";
+  MODE = hi ? "hi" : "both";
+  try {
+    let h = renderPujaBase(p, origin);
+    const path = `/puja/${p.slug}`;
+    if (hi) {
+      h = toHindi(h, origin).replace("__EN__", path).replace("__HI__", `/hi${path}`);
+      h = setMeta(h, `${p.hi} विधि और सामग्री सूची घर पर | कुंडली काका`, `${p.hi} घर पर: पूरी सामग्री सूची, तैयारी, कदम दर कदम विधि और मंत्र, सरल हिंदी में। ${p.tag_hi}`);
+      const ldHi = `  <script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@type": "HowTo", inLanguage: "hi", name: `${p.hi} घर पर: सामग्री और कदम दर कदम विधि`, description: p.intro_hi, supply: p.samagri.map((s) => ({ "@type": "HowToSupply", name: s.hi })), step: p.steps.map((s, i) => ({ "@type": "HowToStep", position: i + 1, name: s.title_hi, text: s.hi })) }).replace(/</g, "\\u003c")}</script>\n`;
+      h = h.replace(/  <script type="application\/ld\+json">\{"@context":"https:\/\/schema.org","@type":"HowTo"[\s\S]*?<\/script>\n/, ldHi);
+    }
+    return h.replace("</head>", alt(origin, path) + crumb([[hi ? "कुंडली काका" : "Kundli Kaka", origin + (hi ? "/hi" : "/")], [hi ? "पूजा गाइड" : "Puja guides", origin + (hi ? "/hi/puja" : "/puja")], [hi ? p.hi : p.en, origin + (hi ? "/hi" : "") + path]]) + "</head>");
+  } finally { MODE = "both"; }
+}
+export const PUJA_HI_PATHS = () => PUJA_PATHS().map((x) => "/hi" + x);
