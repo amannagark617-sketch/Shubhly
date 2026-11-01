@@ -1564,3 +1564,5 @@ img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
 .pj-god { display: grid; gap: 6px; text-align: center; color: inherit; text-decoration: none; font-weight: 600; }
 .pj-god img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px; border: 1px solid #ececf3; background: #fff; transition: transform .2s, box-shadow .2s; }
 .pj-god:hover img { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(20,20,60,.14); }
+.pj-gods { grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); }
+.pj-god img { height: auto; }
