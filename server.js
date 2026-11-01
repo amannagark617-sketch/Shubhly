@@ -1,5 +1,6 @@
 import express from "express";
 import compression from "compression";
+import zlib from "node:zlib";
 import { srcsetify } from "./src/img.js";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -66,9 +67,32 @@ app.use((_req, res, next) => {
 });
 // Smaller pages, scripts and styles on the wire (the chat and other API calls are left alone)
 app.use(compression({ filter: (req, res) => (req.path.startsWith("/api/") ? false : compression.filter(req, res)) }));
-app.use((_req, res, next) => {
+// Guides, puja and blog pages are the same for everyone, so once built they are kept (already
+// compressed) for ten minutes: less work per visit and a cheaper bill. Off while you are editing locally.
+const PAGE_CACHE = new Map();
+const CACHE_ON = !!(process.env.K_SERVICE || process.env.NODE_ENV === "production");
+const CACHEABLE = /^\/(hi\/)?(puja|gita|blog)(\/|$)/;
+app.use((req, res, next) => {
+  const key = CACHE_ON && req.method === "GET" && CACHEABLE.test(req.path) ? `${req.get("host")}${req.originalUrl}` : null;
+  if (key) {
+    const hit = PAGE_CACHE.get(key);
+    if (hit && Date.now() - hit.at < 600000) {
+      res.type("html").setHeader("Cache-Control", "no-cache");
+      res.vary("Accept-Encoding");
+      if (/\bgzip\b/.test(req.headers["accept-encoding"] || "")) return res.set("Content-Encoding", "gzip").end(hit.gz);
+      return res.end(hit.raw);
+    }
+  }
   const send = res.send.bind(res);
-  res.send = (body) => send(typeof body === "string" && body.startsWith("<!doctype html") ? srcsetify(body) : body);
+  res.send = (body) => {
+    if (typeof body !== "string" || !body.startsWith("<!doctype html")) return send(body);
+    const out = srcsetify(body);
+    if (key && res.statusCode === 200) {
+      if (PAGE_CACHE.size > 300) PAGE_CACHE.clear();
+      PAGE_CACHE.set(key, { at: Date.now(), raw: Buffer.from(out), gz: zlib.gzipSync(out, { level: 6 }) });
+    }
+    return send(out);
+  };
   next();
 });
 app.use(express.json({ limit: "80kb" }));
