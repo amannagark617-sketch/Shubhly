@@ -1566,3 +1566,7 @@ img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
 .pj-god:hover img { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(20,20,60,.14); }
 .pj-gods { grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); }
 .pj-god img { height: auto; }
+.pj-panel--idol { aspect-ratio: auto; padding: 22px 12px 18px; gap: 8px; }
+.pj-panel--idol img { width: min(300px, 62%); height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 12px; border: 1px solid #0001; background: #fff; }
+.pj-card-img .pj-card-idol { width: auto; height: 100%; aspect-ratio: 1; object-fit: cover; }
+.pj-flat { display: block; width: 100%; max-height: 360px; object-fit: cover; border-radius: 10px; margin: 6px 0 4px; }

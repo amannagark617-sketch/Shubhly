@@ -1,0 +1,291 @@
+{
+ "slug": "shani",
+ "en": "Shani Dev Puja",
+ "hi": "शनि देव पूजा",
+ "tag_en": "A calm Saturday puja of patience, honesty and kindness",
+ "tag_hi": "धैर्य, ईमानदारी और दया की शांत शनिवार की पूजा",
+ "when_en": "It is usually done on Saturdays, in the morning or in the evening around sunset, and many families also do it on Shani Amavasya or Shani Jayanti.",
+ "when_hi": "यह आमतौर पर शनिवार को सुबह या सूर्यास्त के आसपास शाम को की जाती है, और कई परिवार शनि अमावस्या या शनि जयंती पर भी करते हैं।",
+ "time_en": "About 30 to 40 minutes",
+ "time_hi": "लगभग 30 से 40 मिनट",
+ "intro_en": "Shani Dev is remembered as the god of justice, patience and hard work. Saturday puja is a quiet family moment to slow down, be honest with ourselves, and do some good for someone who needs it. There is nothing to be afraid of here; simple offerings, a steady mind and a little charity are enough. Families and regions do it a little differently, so wherever your own family or pandit's way differs from this guide, please follow theirs.",
+ "intro_hi": "शनि देव को न्याय, धैर्य और मेहनत के देवता के रूप में याद किया जाता है। शनिवार की पूजा परिवार के साथ ठहरकर बैठने, अपने प्रति ईमानदार होने और किसी ज़रूरतमंद के लिए कुछ अच्छा करने का एक शांत अवसर है। इसमें डरने जैसी कोई बात नहीं है; सरल भेंट, स्थिर मन और थोड़ा दान ही काफ़ी हैं। हर परिवार और हर क्षेत्र में तरीक़ा थोड़ा अलग होता है, इसलिए जहाँ आपके परिवार या पंडित जी का तरीक़ा इस गाइड से अलग हो, वहाँ उन्हीं का तरीक़ा अपनाएँ।",
+ "samagri": [
+  {
+   "en": "Shani Dev idol or picture",
+   "hi": "शनि देव की मूर्ति या तस्वीर",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Kept on the altar as the focus of worship",
+   "use_hi": "वेदी पर पूजा के केंद्र में रखी जाती है"
+  },
+  {
+   "en": "Wooden chowki or clean platform",
+   "hi": "लकड़ी की चौकी या साफ़ चबूतरा",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "A raised seat on which the picture or idol is placed",
+   "use_hi": "ऊँचा आसन, जिस पर तस्वीर या मूर्ति रखी जाती है"
+  },
+  {
+   "en": "Blue or black cloth",
+   "hi": "नीला या काला कपड़ा",
+   "qty_en": "1 piece, about 1 metre",
+   "qty_hi": "1 टुकड़ा, लगभग 1 मीटर",
+   "use_en": "Spread over the chowki before placing the idol",
+   "use_hi": "मूर्ति रखने से पहले चौकी पर बिछाया जाता है"
+  },
+  {
+   "en": "Sesame oil (or mustard oil)",
+   "hi": "तिल का तेल (या सरसों का तेल)",
+   "qty_en": "1 small bowl, about 100 ml",
+   "qty_hi": "1 छोटी कटोरी, लगभग 100 मिली",
+   "use_en": "Fuel for the main diya, as is traditional for Shani Dev",
+   "use_hi": "मुख्य दीये के लिए, जैसा शनि देव की पूजा में परंपरा है"
+  },
+  {
+   "en": "Clay diya",
+   "hi": "मिट्टी का दीया",
+   "qty_en": "1 main diya, 1 extra",
+   "qty_hi": "1 मुख्य दीया, 1 अतिरिक्त",
+   "use_en": "Lit in front of Shani Dev as the main lamp",
+   "use_hi": "शनि देव के सामने मुख्य दीये के रूप में जलाया जाता है"
+  },
+  {
+   "en": "Cotton wicks",
+   "hi": "रुई की बत्तियाँ",
+   "qty_en": "5 wicks",
+   "qty_hi": "5 बत्तियाँ",
+   "use_en": "For lighting the diya",
+   "use_hi": "दीया जलाने के लिए"
+  },
+  {
+   "en": "Black sesame seeds (kala til)",
+   "hi": "काले तिल",
+   "qty_en": "1 small bowl, about 50 g",
+   "qty_hi": "1 छोटी कटोरी, लगभग 50 ग्राम",
+   "use_en": "Offered at the feet of Shani Dev",
+   "use_hi": "शनि देव के चरणों में अर्पित किए जाते हैं"
+  },
+  {
+   "en": "Blue flowers (such as aparajita) and garland",
+   "hi": "नीले फूल (जैसे अपराजिता) और माला",
+   "qty_en": "1 garland or 1 handful of flowers",
+   "qty_hi": "1 माला या 1 मुट्ठी फूल",
+   "use_en": "Offered with love; blue is the colour dear to Shani Dev",
+   "use_hi": "प्रेम से अर्पित किए जाते हैं; नीला रंग शनि देव को प्रिय माना जाता है"
+  },
+  {
+   "en": "Whole rice (akshat)",
+   "hi": "साबुत चावल (अक्षत)",
+   "qty_en": "1 small bowl, about 100 g",
+   "qty_hi": "1 छोटी कटोरी, लगभग 100 ग्राम",
+   "use_en": "Offered unbroken and used for tilak",
+   "use_hi": "साबुत चढ़ाने और तिलक में लगाने के लिए"
+  },
+  {
+   "en": "Chandan and kumkum",
+   "hi": "चंदन और कुमकुम",
+   "qty_en": "1 small packet each",
+   "qty_hi": "हर एक का 1 छोटा पैकेट",
+   "use_en": "For tilak on the deity and on the family",
+   "use_hi": "देवता और परिवार के सदस्यों को तिलक लगाने के लिए"
+  },
+  {
+   "en": "Kalash (small brass or copper pot)",
+   "hi": "कलश (छोटा पीतल या तांबे का)",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Filled with water and kept beside the altar",
+   "use_hi": "पानी भरकर वेदी के पास रखा जाता है"
+  },
+  {
+   "en": "Coconut",
+   "hi": "नारियल",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Set on top of the kalash, tied with kalawa",
+   "use_hi": "कलश के ऊपर रखा जाता है, कलावे के साथ"
+  },
+  {
+   "en": "Kalawa (mauli thread)",
+   "hi": "कलावा (मौली)",
+   "qty_en": "1 reel",
+   "qty_hi": "1 गोला",
+   "use_en": "Tied around the kalash and on everyone's wrist",
+   "use_hi": "कलश पर बाँधने और सबकी कलाई पर बाँधने के लिए"
+  },
+  {
+   "en": "Incense sticks",
+   "hi": "अगरबत्ती",
+   "qty_en": "1 packet",
+   "qty_hi": "1 पैकेट",
+   "use_en": "Lit and offered while praying",
+   "use_hi": "प्रार्थना के समय जलाई जाती है"
+  },
+  {
+   "en": "Fruits and sweets such as til laddu or jaggery",
+   "hi": "फल और मिठाई, जैसे तिल के लड्डू या गुड़",
+   "qty_en": "About 250 g in all",
+   "qty_hi": "कुल लगभग 250 ग्राम",
+   "use_en": "Offered as bhog and shared afterwards",
+   "use_hi": "भोग के रूप में चढ़ाकर बाद में बाँटे जाते हैं"
+  },
+  {
+   "en": "Betel leaves and supari",
+   "hi": "पान के पत्ते और सुपारी",
+   "qty_en": "5 leaves, 5 nuts",
+   "qty_hi": "5 पत्ते, 5 सुपारी",
+   "use_en": "Offered along with a coin near the deity",
+   "use_hi": "देवता के पास सिक्के के साथ अर्पित किए जाते हैं"
+  },
+  {
+   "en": "Gangajal or clean water",
+   "hi": "गंगाजल या साफ़ पानी",
+   "qty_en": "1 small bottle",
+   "qty_hi": "1 छोटी शीशी",
+   "use_en": "Sprinkled to purify the space and the items",
+   "use_hi": "स्थान और सामग्री पर छिड़ककर शुद्ध करने के लिए"
+  },
+  {
+   "en": "Camphor",
+   "hi": "कपूर",
+   "qty_en": "1 small packet",
+   "qty_hi": "1 छोटा पैकेट",
+   "use_en": "Lit for the aarti at the end",
+   "use_hi": "अंत में आरती के लिए जलाया जाता है"
+  },
+  {
+   "en": "Puja thali and bell",
+   "hi": "पूजा की थाली और घंटी",
+   "qty_en": "1 thali, 1 bell",
+   "qty_hi": "1 थाली, 1 घंटी",
+   "use_en": "Holds the items; the bell is rung during aarti",
+   "use_hi": "सामग्री रखने के लिए; आरती के समय घंटी बजाई जाती है"
+  },
+  {
+   "en": "Food or useful items for charity",
+   "hi": "दान के लिए भोजन या उपयोगी वस्तुएँ",
+   "qty_en": "Whatever you can comfortably give",
+   "qty_hi": "जितना आराम से दे सकें",
+   "use_en": "Given to someone in need after the puja, such as a meal, urad dal, a blanket or slippers",
+   "use_hi": "पूजा के बाद किसी ज़रूरतमंद को दिया जाता है, जैसे भोजन, उड़द दाल, कंबल या चप्पल"
+  }
+ ],
+ "before_en": [
+  "Bathe, wear clean clothes (dark blue or black if you like), and tidy the puja corner.",
+  "Keep the puja items ready on the thali and fill the diya with sesame oil.",
+  "Decide in advance what you will give in charity, and keep it packed and ready to hand over.",
+  "Keep matchsticks or a lighter safely near the altar, away from children.",
+  "Tell the family the puja time, and ask everyone to sit together calmly."
+ ],
+ "before_hi": [
+  "स्नान करके साफ़ कपड़े पहनें (चाहें तो गहरे नीले या काले) और पूजा के कोने को सुव्यवस्थित कर लें।",
+  "पूजा की सामग्री थाली में तैयार रखें और दीये में तिल का तेल भर लें।",
+  "पहले से तय कर लें कि दान में क्या देंगे, और उसे पैक करके देने के लिए तैयार रखें।",
+  "माचिस या लाइटर वेदी के पास सुरक्षित रखें, बच्चों की पहुँच से दूर।",
+  "परिवार को पूजा का समय बता दें और सबसे कहें कि शांति से साथ बैठें।"
+ ],
+ "steps": [
+  {
+   "title_en": "Clean and get ready",
+   "title_hi": "सफ़ाई और तैयारी",
+   "en": "Clean the puja corner and wipe the altar. Bathe and wear fresh, clean clothes. Sit for a moment and let the mind settle; this puja is about calm, not hurry.",
+   "hi": "पूजा के कोने की सफ़ाई करें और वेदी पोंछ लें। स्नान करके ताज़े, साफ़ कपड़े पहनें। एक पल बैठकर मन को शांत होने दें; यह पूजा हड़बड़ी की नहीं, शांति की है।"
+  },
+  {
+   "title_en": "Set the altar",
+   "title_hi": "वेदी सजाएँ",
+   "en": "Place the chowki and spread the blue or black cloth. Keep the Shani Dev picture or idol on it with a little rice beneath. Place the thali and all the items within easy reach.",
+   "hi": "चौकी रखें और उस पर नीला या काला कपड़ा बिछाएँ। उस पर शनि देव की तस्वीर या मूर्ति रखें और नीचे थोड़े चावल रखें। थाली और सारी सामग्री पास में रखें।"
+  },
+  {
+   "title_en": "Place the kalash",
+   "title_hi": "कलश रखें",
+   "en": "Fill the kalash with water, add a coin and a pinch of rice, and set the coconut on top with kalawa tied around it. Keep it beside the altar.",
+   "hi": "कलश में पानी भरें, उसमें एक सिक्का और चुटकी भर चावल डालें, ऊपर नारियल रखें और उसके चारों ओर कलावा बाँधें। इसे वेदी के पास रखें।"
+  },
+  {
+   "title_en": "Light the sesame-oil diya",
+   "title_hi": "तिल के तेल का दीया जलाएँ",
+   "en": "Pour sesame oil into the clay diya, place a cotton wick and light it in front of Shani Dev. Light the incense too. Sprinkle a few drops of Gangajal on yourself and the items, and say in your own words that you are doing this puja with a calm and honest heart.",
+   "hi": "मिट्टी के दीये में तिल का तेल डालें, रुई की बत्ती रखें और शनि देव के सामने जलाएँ। अगरबत्ती भी जलाएँ। अपने ऊपर और सामग्री पर गंगाजल की कुछ बूँदें छिड़कें और अपने शब्दों में कहें कि आप शांत और ईमानदार मन से यह पूजा कर रहे हैं।"
+  },
+  {
+   "title_en": "Welcome Shani Dev",
+   "title_hi": "शनि देव का स्वागत",
+   "en": "Fold your hands and invite Shani Dev with respect. Offer a little water, then apply a tilak of chandan and kumkum, and sprinkle a few grains of rice. Speak to him as to a wise elder.",
+   "hi": "हाथ जोड़कर आदर से शनि देव को आमंत्रित करें। थोड़ा जल अर्पित करें, फिर चंदन और कुमकुम का तिलक लगाएँ और कुछ चावल के दाने चढ़ाएँ। उनसे ऐसे बात करें जैसे किसी समझदार बड़े से करते हैं।"
+  },
+  {
+   "title_en": "Offer black sesame",
+   "title_hi": "काले तिल अर्पित करें",
+   "en": "Offer a pinch of black sesame at the feet of Shani Dev. Each family member can offer a few seeds with folded hands and a quiet wish to be more patient and truthful.",
+   "hi": "शनि देव के चरणों में चुटकी भर काले तिल अर्पित करें। परिवार का हर सदस्य हाथ जोड़कर कुछ दाने चढ़ा सकता है और मन में और धैर्यवान तथा सच्चे बनने की इच्छा रख सकता है।"
+  },
+  {
+   "title_en": "Offer flowers",
+   "title_hi": "फूल अर्पित करें",
+   "en": "Place blue flowers and a garland at the feet of Shani Dev. If blue flowers are not available, any fresh flowers are fine. Offer the betel leaves with supari and a coin.",
+   "hi": "शनि देव के चरणों में नीले फूल और माला रखें। नीले फूल न मिलें तो कोई भी ताज़े फूल ठीक हैं। पान के पत्ते सुपारी और एक सिक्के के साथ चढ़ाएँ।"
+  },
+  {
+   "title_en": "Offer bhog",
+   "title_hi": "भोग लगाएँ",
+   "en": "Set the fruits and sweets, such as til laddu or jaggery, before the deity. Sprinkle a few drops of water around the plate and offer it with folded hands for a minute. Keep it covered until the puja ends.",
+   "hi": "फल और मिठाई, जैसे तिल के लड्डू या गुड़, देवता के सामने रखें। थाली के चारों ओर पानी की कुछ बूँदें छिड़कें और हाथ जोड़कर एक मिनट के लिए अर्पित करें। पूजा पूरी होने तक इसे ढककर रखें।"
+  },
+  {
+   "title_en": "Chant the mantra",
+   "title_hi": "मंत्र जाप",
+   "en": "Sit calmly and chant \"Om Sham Shanaishcharaya Namah\" 11 or 108 times. You can count on a mala or with grains of rice. Keep your voice soft; children can simply repeat after you.",
+   "hi": "शांति से बैठकर \"ॐ शं शनैश्चराय नमः\" 11 या 108 बार बोलें। गिनती माला से या चावल के दानों से कर सकते हैं। आवाज़ धीमी रखें; बच्चे बस आपके पीछे दोहरा सकते हैं।"
+  },
+  {
+   "title_en": "Do the aarti",
+   "title_hi": "आरती करें",
+   "en": "Light the camphor on the thali and sing the Shani Dev aarti, or simply sing a simple aarti your family knows. Move the thali slowly in a clockwise circle and ring the bell gently. Then everyone passes their hands over the flame and touches them to the eyes.",
+   "hi": "थाली में कपूर जलाएँ और शनि देव की आरती गाएँ, या कोई सरल आरती जो आपके परिवार को आती हो। थाली को धीरे-धीरे घड़ी की दिशा में घुमाएँ और घंटी हल्के से बजाएँ। फिर सब लौ के ऊपर से हाथ घुमाकर आँखों से लगाएँ।"
+  },
+  {
+   "title_en": "Give in charity and share prasad",
+   "title_hi": "दान करें और प्रसाद बाँटें",
+   "en": "Bow down, ask forgiveness for any mistake in the puja, and say thank you. Share the prasad with everyone and tie kalawa on the wrists. Then give the food or items you kept ready to someone in need, such as feeding a hungry person, with kindness and without expecting anything back. Let the diya burn down safely.",
+   "hi": "प्रणाम करें, पूजा में हुई किसी भी भूल के लिए क्षमा माँगें और धन्यवाद कहें। सबको प्रसाद बाँटें और कलाई पर कलावा बाँधें। फिर जो भोजन या वस्तुएँ तैयार रखी थीं, वे किसी ज़रूरतमंद को दें, जैसे किसी भूखे को खाना खिलाना, दया के भाव से और बदले में कुछ चाहे बिना। दीये को सुरक्षित रूप से अपने आप जल जाने दें।"
+  }
+ ],
+ "mantra": {
+  "sa": "ॐ शं शनैश्चराय नमः",
+  "tr": "Om Sham Shanaishcharaya Namah",
+  "en": "Om, I bow to Shani Dev, the slow-moving one.",
+  "hi": "ॐ, मैं धीमी गति से चलने वाले शनि देव को प्रणाम करता हूँ।"
+ },
+ "tips_en": [
+  "Saturday morning, or the evening around sunset, are the usual times; choose whichever suits your family.",
+  "Keep the mood quiet and kind. Shani Dev is remembered for patience, honesty and fairness, so these are the best things to bring.",
+  "Charity is the heart of this day: a meal for someone hungry, or a useful item for someone in need, is enough.",
+  "Involve children: let them offer the sesame seeds and hand over the food to the person in need.",
+  "Use what you can comfortably afford; sincere offerings matter more than a long list of items.",
+  "If you forget a step, simply carry on calmly; the spirit of the puja is devotion."
+ ],
+ "tips_hi": [
+  "शनिवार की सुबह या सूर्यास्त के आसपास की शाम सामान्य समय हैं; जो आपके परिवार को सुविधाजनक हो, वही चुनें।",
+  "माहौल शांत और दयालु रखें। शनि देव को धैर्य, ईमानदारी और न्याय के लिए याद किया जाता है, इसलिए यही सबसे अच्छी भेंट हैं।",
+  "दान इस दिन का मूल भाव है: किसी भूखे के लिए एक समय का भोजन, या किसी ज़रूरतमंद के लिए कोई उपयोगी वस्तु काफ़ी है।",
+  "बच्चों को शामिल करें: वे तिल अर्पित कर सकते हैं और ज़रूरतमंद व्यक्ति को भोजन सौंप सकते हैं।",
+  "जितना आराम से हो सके उतना ही चढ़ाएँ; सच्चे मन की भेंट लंबी सूची से ज़्यादा मायने रखती है।",
+  "कोई चरण भूल जाएँ तो शांति से आगे बढ़ें; पूजा का असली भाव श्रद्धा है।"
+ ],
+ "avoid_en": [
+  "Do not leave burning diyas or camphor unattended, especially near curtains or children.",
+  "Do not feel worried or afraid; this is a day of patience and service, and small mistakes do not need repeating.",
+  "Try not to give stale or spoiled food in charity; give what you would happily eat yourself.",
+  "Avoid rushing through the puja or checking phones in the middle of it."
+ ],
+ "avoid_hi": [
+  "जलते दीये या कपूर को अकेला न छोड़ें, ख़ासकर पर्दों या बच्चों के पास।",
+  "चिंता या डर न रखें; यह धैर्य और सेवा का दिन है, और छोटी भूलों को दोहराने की ज़रूरत नहीं है।",
+  "दान में बासी या ख़राब खाना न दें; वही दें जो आप ख़ुद ख़ुशी से खा सकें।",
+  "पूजा जल्दबाज़ी में न करें और बीच में फ़ोन देखने से बचें।"
+ ]
+}

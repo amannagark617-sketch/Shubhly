@@ -12,11 +12,12 @@ const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DIR = path.join(ROOT, "data", "puja");
 const IMG = path.join(ROOT, "public", "img", "puja");
 
-export const ORDER = ["lakshmi", "ganesh", "satyanarayan", "griha-pravesh", "saraswati", "hanuman", "shiv", "durga"];
+export const ORDER = ["lakshmi", "ganesh", "satyanarayan", "griha-pravesh", "saraswati", "hanuman", "shiv", "durga", "krishna", "ram", "shani", "parvati", "surya", "kartikeya"];
 const ACCENT = {
   lakshmi: ["#b8326b", "#fbe9f1"], ganesh: ["#d4651a", "#fdeedd"], satyanarayan: ["#c79200", "#fbf3d4"],
   "griha-pravesh": ["#2f7d4f", "#e3f3e8"], saraswati: ["#2b6cb0", "#e4eefa"], hanuman: ["#c0392b", "#fbe4e0"],
   shiv: ["#4a4fa3", "#e8e9f8"], durga: ["#a8261f", "#fbe3e1"],
+  krishna: ["#1f5f9e", "#e3eefa"], ram: ["#b8570f", "#fbeadb"], shani: ["#2c3e66", "#e6eaf4"], parvati: ["#b5306a", "#fbe6ef"], surya: ["#c46a00", "#fdefd6"], kartikeya: ["#8a2f2f", "#f8e5e2"],
 };
 
 let cache = null;
@@ -29,6 +30,12 @@ export const PUJA_PATHS = () => ["/puja", ...ORDER.map((s) => `/puja/${s}`)];
 
 // Small pictures for samagri items: public/img/puja/items/<key>.jpg (or .webp/.png). Prompts: docs/puja-image-prompts.md
 export const ITEMS = [
+  ["idol-shani", /shani.*(idol|picture)/i, "a small black iron Shani Dev murti seated on a crow, with blue flowers and a small sesame-oil diya beside it"],
+  ["idol-parvati", /parvati.*(idol|picture)/i, "a small brass Goddess Parvati murti seated with a lotus, with red flowers at the base"],
+  ["idol-surya", /surya.*(idol|picture)/i, "a small brass Surya Dev murti with a sun-ray halo seated on a chariot, with red flowers at the base"],
+  ["idol-kartikeya", /kartikeya.*(idol|picture)/i, "a small brass Kartikeya (Murugan) murti with a spear, standing beside a peacock, with marigold flowers"],
+  ["idol-krishna", /krishna.*(idol|picture)|laddu gopal/i, "a small brass Krishna murti playing a flute, with a peacock feather and a few white flowers at the base"],
+  ["idol-ram", /ram.*(idol|picture)/i, "a small brass murti of Lord Ram with a bow, standing, with marigold flowers at the base"],
   ["idol-ganesh", /ganesh.*(idol|photo|picture)|lakshmi-ganesh/i, "a small brass Ganesh murti seated on a lotus base with an offering of two modaks beside it"],
   ["idol-lakshmi", /lakshmi.*(idol|photo|picture)/i, "a small brass Goddess Lakshmi murti seated on a lotus, with pink lotus petals around the base"],
   ["idol-saraswati", /saraswati.*(idol|photo|picture)/i, "a small white marble Goddess Saraswati murti seated with a veena, with white flowers at the base"],
@@ -82,7 +89,11 @@ export const ITEMS = [
   ["matchbox", /matchbox|matches/i, "a matchbox with a few matchsticks beside a small brass diya"],
 ];
 const GODS = [["ganesh", "Ganesh", "गणेश", "idol-ganesh"], ["lakshmi", "Lakshmi", "लक्ष्मी", "idol-lakshmi"], ["saraswati", "Saraswati", "सरस्वती", "idol-saraswati"],
-  ["hanuman", "Hanuman", "हनुमान", "idol-hanuman"], ["shiv", "Shiv", "शिव", "shivling"], ["durga", "Durga", "दुर्गा", "idol-durga"], ["satyanarayan", "Vishnu", "विष्णु", "idol-vishnu"]];
+  ["hanuman", "Hanuman", "हनुमान", "idol-hanuman"], ["shiv", "Shiv", "शिव", "shivling"], ["durga", "Durga", "दुर्गा", "idol-durga"], ["satyanarayan", "Vishnu", "विष्णु", "idol-vishnu"],
+  ["krishna", "Krishna", "कृष्ण", "idol-krishna"], ["ram", "Ram", "राम", "idol-ram"], ["shani", "Shani", "शनि", "idol-shani"], ["parvati", "Parvati", "पार्वती", "idol-parvati"], ["surya", "Surya", "सूर्य", "idol-surya"], ["kartikeya", "Kartikeya", "कार्तिकेय", "idol-kartikeya"]];
+const IDOL = Object.fromEntries(GODS.map(([slug, , , key]) => [slug, key]));
+const idolImg = (slug) => { const k = IDOL[slug]; if (!k) return null; for (const ext of ["jpg", "webp", "png"]) if (fs.existsSync(path.join(IMG, "items", `${k}.${ext}`))) return `/img/puja/items/${k}.${ext}`; return null; };
+const flat = () => fs.existsSync(path.join(IMG, "samagri-1.jpg")) ? `<img class="pj-flat" src="/img/puja/samagri-1.jpg" alt="${esc("Puja samagri laid out on a table")}" width="900" height="900" loading="lazy">` : "";
 const godsRow = () => {
   const found = GODS.map(([slug, en, hi, key]) => {
     for (const ext of ["jpg", "webp", "png"]) if (fs.existsSync(path.join(IMG, "items", `${key}.${ext}`))) return `<a class="pj-god" href="/puja/${slug}"><img src="/img/puja/items/${key}.${ext}" alt="" width="240" height="240" loading="lazy"><span>${T(en, hi)}</span></a>`;
@@ -105,7 +116,7 @@ const photo = (slug) => {
 };
 
 // Until a real photo is added, the page shows a plain colour panel with the puja name (no drawing).
-const panel = (c1, c2, p) => `<div class="pj-panel" style="background:${c2};color:${c1}"><b lang="hi">${esc(p.hi)}</b><span>${esc(p.en)}</span></div>`;
+const panel = (c1, c2, p) => { const im = idolImg(p.slug); return `<div class="pj-panel${im ? " pj-panel--idol" : ""}" style="background:${c2};color:${c1}">${im ? `<img src="${im}" alt="${esc(p.en)}" width="480" height="480">` : ""}<b lang="hi">${esc(p.hi)}</b><span>${esc(p.en)}</span></div>`; };
 
 // Text that shows in whichever language the visitor picked
 const T = (en, hi) => `<span class="l-en">${esc(en)}</span><span class="l-hi" lang="hi">${esc(hi)}</span>`;
@@ -127,7 +138,7 @@ export function renderPujaIndex(origin) {
     const [c1, c2] = ACCENT[s];
     const ph = photo(s);
     return `<a class="pj-card" href="/puja/${s}" style="--pj:${c1};--pj2:${c2}">
-  <span class="pj-card-img">${ph ? `<img src="${ph}" alt="" width="1600" height="700" loading="lazy">` : `<b lang="hi">${esc(p.hi.split(" ")[0])}</b>`}</span>
+  <span class="pj-card-img">${ph ? `<img src="${ph}" alt="" width="1600" height="700" loading="lazy">` : idolImg(s) ? `<img class="pj-card-idol" src="${idolImg(s)}" alt="" width="480" height="480" loading="lazy">` : `<b lang="hi">${esc(p.hi.split(" ")[0])}</b>`}</span>
   <span class="pj-card-t"><strong>${T(p.en, p.hi)}</strong><small>${T(p.tag_en, p.tag_hi)}</small><em>${T(p.time_en, p.time_hi)} · ${p.samagri.length} ${T("items", "सामग्री")}</em></span></a>`;
   }).join("\n");
   const ld = `  <script type="application/ld+json">${JSON.stringify({
@@ -143,6 +154,7 @@ export function renderPujaIndex(origin) {
 ${TOGGLE}
 <h1>${T("Puja at home, step by step", "घर पर पूजा, एक-एक कदम")}</h1>
 <p class="post-lead">${T("Choose a puja to see exactly what you need, how to prepare the day before, and every step in order. No priest needed, and no Sanskrit you cannot read.", "कोई भी पूजा चुनिए और देखिए कि क्या-क्या चाहिए, एक दिन पहले क्या तैयारी करनी है, और हर कदम क्रम से। पंडित जी की ज़रूरत नहीं, और कोई कठिन संस्कृत नहीं।")}</p>
+${flat()}
 ${godsRow()}
 <h2>${T("All pujas", "सभी पूजा")}</h2>
 <div class="pj-grid">${cards}</div>

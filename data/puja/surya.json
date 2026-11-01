@@ -1,0 +1,283 @@
+{
+ "slug": "surya",
+ "en": "Surya Dev Puja",
+ "hi": "सूर्य देव पूजा",
+ "tag_en": "A calm sunrise puja and arghya to thank Surya Dev",
+ "tag_hi": "सूर्य देव को धन्यवाद देने की शांत सुबह की पूजा और अर्घ्य",
+ "when_en": "It is usually done at sunrise on Sundays, and many families also do it on Makar Sankranti and Ratha Saptami.",
+ "when_hi": "यह आमतौर पर रविवार को सूर्योदय के समय की जाती है, और कई परिवार मकर संक्रांति और रथ सप्तमी पर भी इसे करते हैं।",
+ "time_en": "About 20 to 30 minutes",
+ "time_hi": "लगभग 20 से 30 मिनट",
+ "intro_en": "Surya Puja is a quiet morning moment in which we thank the Sun for light, warmth and a new day. You do not need a priest; fresh water, a few flowers and a calm mind are enough. Families and regions do it a little differently, so wherever your own family or pandit's way differs from this guide, please follow theirs.",
+ "intro_hi": "सूर्य पूजा सुबह का एक शांत पल है, जिसमें हम रोशनी, गर्मी और नए दिन के लिए सूर्य देव को धन्यवाद देते हैं। इसके लिए पंडित जी ज़रूरी नहीं; ताज़ा जल, कुछ फूल और शांत मन काफ़ी हैं। हर परिवार और हर क्षेत्र में तरीक़ा थोड़ा अलग होता है, इसलिए जहाँ आपके परिवार या पंडित जी का तरीक़ा इस गाइड से अलग हो, वहाँ उन्हीं का तरीक़ा अपनाएँ।",
+ "samagri": [
+  {
+   "en": "Surya Dev picture or idol",
+   "hi": "सूर्य देव की तस्वीर या मूर्ति",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Kept on a small altar if you also want to worship indoors",
+   "use_hi": "घर के अंदर पूजा करनी हो तो छोटी वेदी पर रखी जाती है"
+  },
+  {
+   "en": "Copper lota with water",
+   "hi": "तांबे का लोटा, पानी के साथ",
+   "qty_en": "1 lota, filled with clean water",
+   "qty_hi": "1 लोटा, साफ़ पानी से भरा",
+   "use_en": "Used to offer arghya to the rising Sun",
+   "use_hi": "उगते सूर्य को अर्घ्य देने के लिए"
+  },
+  {
+   "en": "Red flowers",
+   "hi": "लाल फूल",
+   "qty_en": "A few, such as hibiscus or marigold",
+   "qty_hi": "कुछ, जैसे गुड़हल या गेंदा",
+   "use_en": "Dropped into the water or offered at the altar",
+   "use_hi": "जल में डालने या वेदी पर चढ़ाने के लिए"
+  },
+  {
+   "en": "Red chandan or kumkum",
+   "hi": "लाल चंदन या कुमकुम",
+   "qty_en": "1 small packet",
+   "qty_hi": "1 छोटा पैकेट",
+   "use_en": "Mixed into the arghya water and used for tilak",
+   "use_hi": "अर्घ्य के जल में मिलाने और तिलक लगाने के लिए"
+  },
+  {
+   "en": "Whole rice (akshat)",
+   "hi": "साबुत चावल (अक्षत)",
+   "qty_en": "1 small bowl, about 50 g",
+   "qty_hi": "1 छोटी कटोरी, लगभग 50 ग्राम",
+   "use_en": "A pinch goes in the arghya and some is offered at the altar",
+   "use_hi": "एक चुटकी अर्घ्य में डाली जाती है और कुछ वेदी पर चढ़ाया जाता है"
+  },
+  {
+   "en": "Sesame (til)",
+   "hi": "तिल",
+   "qty_en": "1 small bowl, about 50 g",
+   "qty_hi": "1 छोटी कटोरी, लगभग 50 ग्राम",
+   "use_en": "Offered in the arghya, especially on Makar Sankranti",
+   "use_hi": "अर्घ्य में डालने के लिए, ख़ासकर मकर संक्रांति पर"
+  },
+  {
+   "en": "Jaggery",
+   "hi": "गुड़",
+   "qty_en": "1 small piece, about 100 g",
+   "qty_hi": "1 छोटा टुकड़ा, लगभग 100 ग्राम",
+   "use_en": "Offered as bhog; a traditional sweet for Surya Dev",
+   "use_hi": "भोग के रूप में चढ़ाया जाता है; सूर्य देव की पारंपरिक मिठास"
+  },
+  {
+   "en": "Sweets or fruits",
+   "hi": "मिठाई या फल",
+   "qty_en": "Whatever you have, 1 small plate",
+   "qty_hi": "जो उपलब्ध हो, 1 छोटी थाली",
+   "use_en": "Offered as bhog and shared as prasad",
+   "use_hi": "भोग लगाकर प्रसाद के रूप में बाँटे जाते हैं"
+  },
+  {
+   "en": "Clay diya",
+   "hi": "मिट्टी का दीया",
+   "qty_en": "1 or 2",
+   "qty_hi": "1 या 2",
+   "use_en": "The main lamp for the puja",
+   "use_hi": "पूजा का मुख्य दीया"
+  },
+  {
+   "en": "Ghee and cotton wicks",
+   "hi": "घी और रुई की बत्तियाँ",
+   "qty_en": "1 small bowl ghee, 4 wicks",
+   "qty_hi": "1 छोटी कटोरी घी, 4 बत्तियाँ",
+   "use_en": "Fuel and wicks for the diya",
+   "use_hi": "दीया जलाने के लिए घी और बत्तियाँ"
+  },
+  {
+   "en": "Incense sticks",
+   "hi": "अगरबत्ती",
+   "qty_en": "3 to 5 sticks",
+   "qty_hi": "3 से 5 अगरबत्तियाँ",
+   "use_en": "Lit and offered during the puja",
+   "use_hi": "पूजा के समय जलाकर अर्पित की जाती हैं"
+  },
+  {
+   "en": "Camphor",
+   "hi": "कपूर",
+   "qty_en": "2 or 3 tablets",
+   "qty_hi": "2 या 3 टिकियाँ",
+   "use_en": "Lit for the aarti at the end",
+   "use_hi": "अंत में आरती के लिए जलाया जाता है"
+  },
+  {
+   "en": "Coconut",
+   "hi": "नारियल",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Offered at the altar on festival days like Makar Sankranti",
+   "use_hi": "मकर संक्रांति जैसे पर्वों पर वेदी पर चढ़ाया जाता है"
+  },
+  {
+   "en": "Kalawa (mauli thread)",
+   "hi": "कलावा (मौली)",
+   "qty_en": "1 reel",
+   "qty_hi": "1 गोला",
+   "use_en": "Tied on the wrist at the end of the puja",
+   "use_hi": "पूजा के अंत में कलाई पर बाँधने के लिए"
+  },
+  {
+   "en": "Gangajal or clean water",
+   "hi": "गंगाजल या साफ़ पानी",
+   "qty_en": "1 small bottle",
+   "qty_hi": "1 छोटी शीशी",
+   "use_en": "Sprinkled to purify the space and the items",
+   "use_hi": "स्थान और सामग्री पर छिड़ककर शुद्ध करने के लिए"
+  },
+  {
+   "en": "Betel leaves and supari",
+   "hi": "पान के पत्ते और सुपारी",
+   "qty_en": "2 leaves, 2 nuts",
+   "qty_hi": "2 पत्ते, 2 सुपारी",
+   "use_en": "Offered at the altar with a coin",
+   "use_hi": "सिक्के के साथ वेदी पर अर्पित किए जाते हैं"
+  },
+  {
+   "en": "Clean cloth or mat",
+   "hi": "साफ़ कपड़ा या आसन",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "A clean seat, and a cloth to spread under the altar items",
+   "use_hi": "बैठने के लिए साफ़ आसन, और वेदी की सामग्री के नीचे बिछाने के लिए कपड़ा"
+  },
+  {
+   "en": "Bell",
+   "hi": "घंटी",
+   "qty_en": "1 small bell",
+   "qty_hi": "1 छोटी घंटी",
+   "use_en": "Rung gently during the aarti",
+   "use_hi": "आरती के समय धीरे से बजाई जाती है"
+  },
+  {
+   "en": "Puja thali",
+   "hi": "पूजा की थाली",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Holds the items and is used for the aarti",
+   "use_hi": "सामग्री रखने और आरती उतारने के काम आती है"
+  }
+ ],
+ "before_en": [
+  "Wake a little before sunrise and check the sunrise time for your city the night before.",
+  "Bathe and wear clean clothes; many families like to wear red or orange on Sundays.",
+  "Fill the copper lota with fresh water and keep the thali ready with flowers, rice and kumkum.",
+  "Keep the diya wicks ready with ghee, and matchsticks safely near the altar.",
+  "Pick a spot where you can stand facing east, such as a balcony, terrace or open window."
+ ],
+ "before_hi": [
+  "सूर्योदय से थोड़ा पहले उठें और एक रात पहले अपने शहर का सूर्योदय का समय देख लें।",
+  "स्नान करके साफ़ कपड़े पहनें; कई परिवार रविवार को लाल या नारंगी कपड़े पहनना पसंद करते हैं।",
+  "तांबे के लोटे में ताज़ा पानी भर लें और थाली में फूल, चावल और कुमकुम तैयार रखें।",
+  "दीये में घी और बत्ती तैयार रखें, और माचिस वेदी के पास सुरक्षित रखें।",
+  "ऐसी जगह चुनें जहाँ पूर्व की ओर मुँह करके खड़े हो सकें, जैसे बालकनी, छत या खुली खिड़की।"
+ ],
+ "steps": [
+  {
+   "title_en": "Wake early and get ready",
+   "title_hi": "जल्दी उठें और तैयार हों",
+   "en": "Wake up before sunrise, bathe and wear clean clothes. Keep your mind quiet and your phone away. A few slow breaths help you start the day calmly.",
+   "hi": "सूर्योदय से पहले उठकर स्नान करें और साफ़ कपड़े पहनें। मन शांत रखें और फ़ोन दूर रख दें। कुछ धीमी साँसें दिन की शांत शुरुआत में मदद करती हैं।"
+  },
+  {
+   "title_en": "Prepare the thali and the lota",
+   "title_hi": "थाली और लोटा तैयार करें",
+   "en": "Fill the copper lota with clean water. Add a pinch of rice, a few sesame seeds, a little red chandan or kumkum and one red flower. Place the diya, incense, flowers and sweets on the thali.",
+   "hi": "तांबे के लोटे में साफ़ पानी भरें। उसमें चुटकी भर चावल, थोड़े तिल, थोड़ा लाल चंदन या कुमकुम और एक लाल फूल डालें। थाली में दीया, अगरबत्ती, फूल और मिठाई सजा लें।"
+  },
+  {
+   "title_en": "Set the small altar",
+   "title_hi": "छोटी वेदी सजाएँ",
+   "en": "Spread a clean cloth on a low stool or in your puja corner and place the picture of Surya Dev, facing east if you can. Sprinkle a few drops of Gangajal on yourself and on the items.",
+   "hi": "नीची चौकी पर या पूजा के कोने में साफ़ कपड़ा बिछाएँ और सूर्य देव की तस्वीर रखें, हो सके तो मुख पूर्व की ओर रखें। अपने ऊपर और सामग्री पर गंगाजल की कुछ बूँदें छिड़कें।"
+  },
+  {
+   "title_en": "Light the diya and incense",
+   "title_hi": "दीया और अगरबत्ती जलाएँ",
+   "en": "Light the ghee diya and the incense sticks. Fold your hands and say in your own words that you are doing this puja to thank Surya Dev for light and a new day.",
+   "hi": "घी का दीया और अगरबत्ती जलाएँ। हाथ जोड़कर अपने शब्दों में कहें कि आप प्रकाश और नए दिन के लिए सूर्य देव को धन्यवाद देने यह पूजा कर रहे हैं।"
+  },
+  {
+   "title_en": "Offer tilak and flowers",
+   "title_hi": "तिलक और फूल अर्पित करें",
+   "en": "Apply a little red chandan or kumkum and a few grains of rice to the picture. Offer red flowers at the feet. Then put a small tilak on your own forehead.",
+   "hi": "तस्वीर पर थोड़ा लाल चंदन या कुमकुम और कुछ चावल के दाने लगाएँ। चरणों में लाल फूल चढ़ाएँ। फिर अपने माथे पर भी छोटा-सा तिलक लगाएँ।"
+  },
+  {
+   "title_en": "Go out and face the Sun",
+   "title_hi": "बाहर जाएँ और सूर्य की ओर मुख करें",
+   "en": "Take the lota and stand facing east as the Sun rises. Stand straight with your feet together, hold the lota with both hands and take a quiet moment of thanks. Do not stare at the Sun itself.",
+   "hi": "लोटा लेकर पूर्व की ओर मुँह करके खड़े हों जब सूर्य उग रहा हो। सीधे खड़े रहें, पैर साथ रखें, दोनों हाथों से लोटा पकड़ें और एक शांत पल धन्यवाद के लिए लें। सूर्य को सीधे घूरकर न देखें।"
+  },
+  {
+   "title_en": "Offer arghya",
+   "title_hi": "अर्घ्य दें",
+   "en": "Raise the lota to about chest or forehead height and pour the water slowly in a thin stream, so that it falls on a plate or a plant pot. Chant the mantra as you pour. If you wish, look at the soft morning light through the falling water, not directly at the Sun.",
+   "hi": "लोटे को छाती या माथे की ऊँचाई तक उठाएँ और पानी को धीरे-धीरे पतली धार में डालें, जो किसी थाली या गमले में गिरे। जल डालते समय मंत्र बोलें। चाहें तो गिरती धार के बीच से सुबह की कोमल रोशनी देखें, सीधे सूर्य को नहीं।"
+  },
+  {
+   "title_en": "Turn around and bow",
+   "title_hi": "परिक्रमा और प्रणाम",
+   "en": "Turn slowly clockwise on the spot, folding your hands. Then bow to the Sun with a short prayer for your family's good health and peace. Do not step on the water you poured.",
+   "hi": "हाथ जोड़कर अपनी जगह पर ही धीरे-धीरे घड़ी की दिशा में घूमें। फिर परिवार के स्वास्थ्य और शांति की छोटी प्रार्थना के साथ सूर्य को प्रणाम करें। डाले हुए जल पर पैर न रखें।"
+  },
+  {
+   "title_en": "Offer bhog and chant",
+   "title_hi": "भोग और मंत्र जाप",
+   "en": "Come back to the altar, place the jaggery, fruits and sweets before the picture, and sprinkle a few drops of water around them. Sit calmly and chant the mantra 11 or 108 times, counting on a mala or with rice grains.",
+   "hi": "वेदी पर लौटकर गुड़, फल और मिठाई तस्वीर के सामने रखें और उनके चारों ओर पानी की कुछ बूँदें छिड़कें। शांति से बैठकर मंत्र 11 या 108 बार बोलें, गिनती माला या चावल के दानों से करें।"
+  },
+  {
+   "title_en": "Do the aarti",
+   "title_hi": "आरती करें",
+   "en": "Light the camphor on the thali and sing the Surya aarti, \"Om Jai Surya Bhagwan\", together. Move the thali slowly in a clockwise circle in front of the picture, ringing the bell gently. Everyone passes their hands over the flame and touches them to the eyes.",
+   "hi": "थाली में कपूर जलाएँ और सब मिलकर सूर्य आरती, \"ॐ जय सूर्य भगवान\", गाएँ। घंटी धीरे से बजाते हुए थाली को तस्वीर के सामने घड़ी की दिशा में धीरे-धीरे घुमाएँ। सब लौ के ऊपर से हाथ घुमाकर आँखों से लगाएँ।"
+  },
+  {
+   "title_en": "Close and share prasad",
+   "title_hi": "समापन और प्रसाद",
+   "en": "Bow down, ask forgiveness for any mistake and say thank you. Share the prasad with everyone and tie kalawa on the wrists. On Makar Sankranti, many families share til-gud and khichdi, and on Ratha Saptami some make a rangoli of the Sun's chariot; do what your family does.",
+   "hi": "प्रणाम करें, किसी भी भूल के लिए क्षमा माँगें और धन्यवाद कहें। सबको प्रसाद बाँटें और कलाई पर कलावा बाँधें। मकर संक्रांति पर कई परिवार तिल-गुड़ और खिचड़ी बाँटते हैं, और रथ सप्तमी पर कुछ लोग सूर्य के रथ की रंगोली बनाते हैं; आपके परिवार में जो होता है वही करें।"
+  }
+ ],
+ "mantra": {
+  "sa": "ॐ घृणि सूर्याय नमः",
+  "tr": "Om Ghrini Suryaya Namah",
+  "en": "Om, I bow to Surya, the radiant Sun.",
+  "hi": "ॐ, मैं तेजस्वी सूर्य को प्रणाम करता हूँ।"
+ },
+ "tips_en": [
+  "Offer arghya within the first hour after sunrise, when the light is soft and gentle on the eyes.",
+  "If the Sun is behind clouds or buildings, simply face east and offer the water; the thanks is what matters.",
+  "Pour the arghya water into a plant pot or a plate so that nobody steps on it.",
+  "Involve children: let them pick the flowers, hold the lota with you and say the mantra along.",
+  "On Makar Sankranti keep sesame and jaggery ready, and on Ratha Saptami a simple rangoli or a few extra flowers are lovely additions.",
+  "If you miss sunrise one Sunday, simply do it a little later in the morning, or try again next week."
+ ],
+ "tips_hi": [
+  "सूर्योदय के बाद पहले एक घंटे में अर्घ्य दें, जब रोशनी कोमल होती है और आँखों को चुभती नहीं।",
+  "सूर्य बादलों या इमारतों के पीछे हो तो भी पूर्व की ओर मुँह करके जल अर्पित करें; भाव ही मायने रखता है।",
+  "अर्घ्य का जल गमले या थाली में डालें, ताकि उस पर किसी का पैर न पड़े।",
+  "बच्चों को शामिल करें: वे फूल चुन सकते हैं, आपके साथ लोटा पकड़ सकते हैं और मंत्र दोहरा सकते हैं।",
+  "मकर संक्रांति पर तिल और गुड़ तैयार रखें, और रथ सप्तमी पर सरल रंगोली या कुछ अतिरिक्त फूल सुंदर जुड़ाव हैं।",
+  "किसी रविवार सूर्योदय छूट जाए तो सुबह थोड़ी देर बाद कर लें, या अगले हफ़्ते फिर से कोशिश करें।"
+ ],
+ "avoid_en": [
+  "Do not stare directly at the Sun, especially through the water or any glass; it can hurt the eyes.",
+  "Do not leave burning diyas or camphor unattended, especially near curtains or children.",
+  "Avoid pouring the water where people walk, and avoid rushing or checking phones in the middle of the puja.",
+  "Do not feel worried about small mistakes or a missed day; there is no need to repeat the puja."
+ ],
+ "avoid_hi": [
+  "सूर्य को सीधे न घूरें, ख़ासकर जल या किसी काँच के बीच से; इससे आँखों को नुकसान हो सकता है।",
+  "जलते दीये या कपूर को अकेला न छोड़ें, ख़ासकर पर्दों या बच्चों के पास।",
+  "जल ऐसी जगह न डालें जहाँ लोग चलते हों, और पूजा जल्दबाज़ी में न करें या बीच में फ़ोन न देखें।",
+  "छोटी-मोटी भूलों या छूटे हुए दिन की चिंता न करें; पूजा को दोबारा करने की ज़रूरत नहीं है।"
+ ]
+}

@@ -1,0 +1,297 @@
+{
+ "slug": "krishna",
+ "en": "Krishna Puja",
+ "hi": "कृष्ण पूजा",
+ "tag_en": "A loving home puja for Krishna, with Laddu Gopal seva",
+ "tag_hi": "कृष्ण जी की प्रेम भरी घरेलू पूजा, लड्डू गोपाल सेवा सहित",
+ "when_en": "It is done at midnight or in the evening on Janmashtami, and many families also do it on Thursdays or any day they feel like offering devotion.",
+ "when_hi": "यह जन्माष्टमी पर आधी रात या शाम को की जाती है, और कई परिवार इसे गुरुवार को या किसी भी दिन भक्ति भाव से करते हैं।",
+ "time_en": "About 40 minutes",
+ "time_hi": "लगभग 40 मिनट",
+ "intro_en": "Krishna Puja is a gentle, joyful puja in which we welcome Lord Krishna like a dear child of the house, bathe him, dress him, offer him butter and sweets, and sing to him. You do not need a priest; a happy heart and simple offerings are enough. Families and regions do it a little differently, so wherever your own family or pandit's way differs from this guide, please follow theirs.",
+ "intro_hi": "कृष्ण पूजा एक कोमल और आनंद भरी पूजा है, जिसमें हम भगवान कृष्ण का घर के प्यारे बच्चे की तरह स्वागत करते हैं, उन्हें स्नान कराते हैं, वस्त्र पहनाते हैं, माखन-मिश्री का भोग लगाते हैं और भजन गाते हैं। इसके लिए पंडित जी ज़रूरी नहीं; प्रसन्न मन और सरल भेंट काफ़ी हैं। हर परिवार और हर क्षेत्र में तरीक़ा थोड़ा अलग होता है, इसलिए जहाँ आपके परिवार या पंडित जी का तरीक़ा इस गाइड से अलग हो, वहाँ उन्हीं का तरीक़ा अपनाएँ।",
+ "samagri": [
+  {
+   "en": "Krishna idol, picture or Laddu Gopal",
+   "hi": "कृष्ण जी की मूर्ति, तस्वीर या लड्डू गोपाल",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Kept on the altar as the focus of worship",
+   "use_hi": "वेदी पर पूजा के केंद्र में रखे जाते हैं"
+  },
+  {
+   "en": "Wooden chowki or clean platform",
+   "hi": "लकड़ी की चौकी या साफ़ चबूतरा",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "A raised seat for the deity",
+   "use_hi": "देवता के लिए ऊँचा आसन"
+  },
+  {
+   "en": "Yellow cloth",
+   "hi": "पीला कपड़ा",
+   "qty_en": "1 piece, about 1 metre, plus a small piece for Laddu Gopal",
+   "qty_hi": "1 टुकड़ा, लगभग 1 मीटर, और लड्डू गोपाल के लिए एक छोटा टुकड़ा",
+   "use_en": "Spread on the chowki; the small piece is used to dress Laddu Gopal",
+   "use_hi": "चौकी पर बिछाने के लिए; छोटा टुकड़ा लड्डू गोपाल को पहनाने के लिए"
+  },
+  {
+   "en": "Whole rice (akshat)",
+   "hi": "साबुत चावल (अक्षत)",
+   "qty_en": "1 small bowl, about 100 g",
+   "qty_hi": "1 छोटी कटोरी, लगभग 100 ग्राम",
+   "use_en": "Offered unbroken and used with tilak",
+   "use_hi": "साबुत चढ़ाने और तिलक में लगाने के लिए"
+  },
+  {
+   "en": "Kumkum (roli)",
+   "hi": "कुमकुम (रोली)",
+   "qty_en": "1 small packet",
+   "qty_hi": "1 छोटा पैकेट",
+   "use_en": "For tilak on the family and the puja items",
+   "use_hi": "परिवार और पूजा की चीज़ों पर तिलक के लिए"
+  },
+  {
+   "en": "Chandan (sandalwood paste)",
+   "hi": "चंदन",
+   "qty_en": "1 small packet or tube",
+   "qty_hi": "1 छोटा पैकेट या ट्यूब",
+   "use_en": "A cool, fragrant tilak applied to Krishna",
+   "use_hi": "कृष्ण जी को लगाने के लिए शीतल, सुगंधित तिलक"
+  },
+  {
+   "en": "Tulsi leaves",
+   "hi": "तुलसी के पत्ते",
+   "qty_en": "15 to 20 fresh leaves",
+   "qty_hi": "15 से 20 ताज़े पत्ते",
+   "use_en": "Dear to Krishna; placed on the bhog and at his feet",
+   "use_hi": "कृष्ण जी को प्रिय हैं; भोग पर और चरणों में रखे जाते हैं"
+  },
+  {
+   "en": "Fresh flowers and garland",
+   "hi": "ताज़े फूल और माला",
+   "qty_en": "1 garland, 1 handful petals",
+   "qty_hi": "1 माला, 1 मुट्ठी पंखुड़ियाँ",
+   "use_en": "Offered at his feet and used to decorate",
+   "use_hi": "चरणों में अर्पित करने और सजावट के लिए"
+  },
+  {
+   "en": "Panchamrit (milk, curd, honey, ghee, sugar)",
+   "hi": "पंचामृत (दूध, दही, शहद, घी, चीनी)",
+   "qty_en": "1 small bowl",
+   "qty_hi": "1 छोटी कटोरी",
+   "use_en": "Used for the ritual bath of the deity and shared as prasad",
+   "use_hi": "देवता के अभिषेक के लिए, और फिर प्रसाद के रूप में बाँटने के लिए"
+  },
+  {
+   "en": "Gangajal or clean water",
+   "hi": "गंगाजल या साफ़ पानी",
+   "qty_en": "1 small bottle",
+   "qty_hi": "1 छोटी शीशी",
+   "use_en": "For the bath, and to sprinkle and purify the space",
+   "use_hi": "स्नान कराने और स्थान पर छिड़कने के लिए"
+  },
+  {
+   "en": "Clay diya, ghee and cotton wicks",
+   "hi": "मिट्टी का दीया, घी और रुई की बत्तियाँ",
+   "qty_en": "2 diyas, 1 small bowl ghee, 5 wicks",
+   "qty_hi": "2 दीये, 1 छोटी कटोरी घी, 5 बत्तियाँ",
+   "use_en": "The main lamp for the puja and the aarti",
+   "use_hi": "पूजा और आरती का मुख्य दीया"
+  },
+  {
+   "en": "Incense sticks",
+   "hi": "अगरबत्ती",
+   "qty_en": "1 packet",
+   "qty_hi": "1 पैकेट",
+   "use_en": "Lit and offered while praying",
+   "use_hi": "प्रार्थना के समय जलाई जाती है"
+  },
+  {
+   "en": "Camphor",
+   "hi": "कपूर",
+   "qty_en": "1 small packet",
+   "qty_hi": "1 छोटा पैकेट",
+   "use_en": "Lit for the aarti at the end",
+   "use_hi": "अंत में आरती के लिए जलाया जाता है"
+  },
+  {
+   "en": "Sweets or fruits (makhan mishri, laddu, seasonal fruits)",
+   "hi": "मिठाई या फल (माखन-मिश्री, लड्डू, मौसमी फल)",
+   "qty_en": "About 250 g, or what you have",
+   "qty_hi": "लगभग 250 ग्राम, या जो उपलब्ध हो",
+   "use_en": "Offered as bhog and shared afterwards",
+   "use_hi": "भोग के रूप में चढ़ाकर बाद में बाँटे जाते हैं"
+  },
+  {
+   "en": "Betel leaves and supari",
+   "hi": "पान के पत्ते और सुपारी",
+   "qty_en": "2 leaves, 2 nuts",
+   "qty_hi": "2 पत्ते, 2 सुपारी",
+   "use_en": "Offered near the deity along with a coin",
+   "use_hi": "सिक्के के साथ देवता के पास अर्पित किए जाते हैं"
+  },
+  {
+   "en": "Coins",
+   "hi": "सिक्के",
+   "qty_en": "5 coins",
+   "qty_hi": "5 सिक्के",
+   "use_en": "Placed at his feet as a small offering",
+   "use_hi": "छोटी भेंट के रूप में चरणों में रखे जाते हैं"
+  },
+  {
+   "en": "Kalawa (mauli thread)",
+   "hi": "कलावा (मौली)",
+   "qty_en": "1 reel",
+   "qty_hi": "1 गोला",
+   "use_en": "Tied on everyone's wrist at the end",
+   "use_hi": "अंत में सबकी कलाई पर बाँधने के लिए"
+  },
+  {
+   "en": "Small bell",
+   "hi": "छोटी घंटी",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Rung gently during the welcome and the aarti",
+   "use_hi": "स्वागत और आरती के समय हल्के से बजाई जाती है"
+  },
+  {
+   "en": "Conch (shankh)",
+   "hi": "शंख",
+   "qty_en": "1, optional",
+   "qty_hi": "1, वैकल्पिक",
+   "use_en": "Blown softly at the aarti if your family has one",
+   "use_hi": "परिवार में हो तो आरती के समय धीरे से बजाया जाता है"
+  },
+  {
+   "en": "Puja thali",
+   "hi": "पूजा की थाली",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Holds the items and is used for aarti",
+   "use_hi": "सामग्री रखने और आरती उतारने के काम आती है"
+  }
+ ],
+ "before_en": [
+  "Clean the house and the puja corner, and keep the altar space neat and bright.",
+  "Buy fresh flowers, tulsi leaves, makhan mishri and fruits, and check every item on the list.",
+  "If you have a Laddu Gopal, keep his small clothes, a soft towel and a bowl ready for his bath.",
+  "Prepare the diya wicks, and keep matchsticks or a lighter safely near the altar.",
+  "On Janmashtami, many families keep a fast and do the puja at midnight; decide the time together and let children rest beforehand."
+ ],
+ "before_hi": [
+  "घर और पूजा के कोने की सफ़ाई कर लें, और वेदी की जगह को साफ़-सुथरा व रोशन रखें।",
+  "ताज़े फूल, तुलसी के पत्ते, माखन-मिश्री और फल ले आएँ, और सूची की हर चीज़ देख लें।",
+  "घर में लड्डू गोपाल हों तो उनके छोटे वस्त्र, मुलायम तौलिया और स्नान के लिए कटोरी तैयार रखें।",
+  "दीये की बत्तियाँ तैयार कर लें, और माचिस या लाइटर वेदी के पास सुरक्षित रखें।",
+  "जन्माष्टमी पर कई परिवार व्रत रखते हैं और आधी रात को पूजा करते हैं; समय मिलकर तय कर लें और बच्चों को पहले थोड़ा आराम करा लें।"
+ ],
+ "steps": [
+  {
+   "title_en": "Clean and get ready",
+   "title_hi": "सफ़ाई और तैयारी",
+   "en": "Clean the puja corner and bathe before you begin. Wear fresh, clean clothes; yellow is a lovely choice. Wash your hands before touching the idol and the food items.",
+   "hi": "पूजा शुरू करने से पहले पूजा का कोना साफ़ करें और स्नान कर लें। साफ़, ताज़े कपड़े पहनें; पीला रंग बहुत सुंदर रहता है। मूर्ति और भोग की चीज़ों को छूने से पहले हाथ धो लें।"
+  },
+  {
+   "title_en": "Set the altar",
+   "title_hi": "वेदी सजाएँ",
+   "en": "Place the chowki in the puja corner and spread the yellow cloth. Seat Krishna in the centre, with a little rice under him. Keep the thali, flowers, tulsi and bhog items within easy reach.",
+   "hi": "पूजा के कोने में चौकी रखें और उस पर पीला कपड़ा बिछाएँ। कृष्ण जी को बीच में बिठाएँ और उनके नीचे थोड़े चावल रखें। थाली, फूल, तुलसी और भोग की चीज़ें पास में रखें।"
+  },
+  {
+   "title_en": "Light the lamp and settle",
+   "title_hi": "दीया जलाएँ और बैठें",
+   "en": "Light the ghee diya and the incense. Sit on a mat, take a few quiet breaths, and sprinkle a few drops of Gangajal on yourself and the items. Say in your own words that you are doing this puja with love.",
+   "hi": "घी का दीया और अगरबत्ती जलाएँ। आसन पर बैठकर कुछ शांत साँसें लें और अपने ऊपर तथा सामग्री पर गंगाजल की कुछ बूँदें छिड़कें। अपने शब्दों में कहें कि आप प्रेम से यह पूजा कर रहे हैं।"
+  },
+  {
+   "title_en": "Welcome Krishna",
+   "title_hi": "कृष्ण जी का स्वागत",
+   "en": "Fold your hands and invite Krishna into your home like a beloved child. Ring the bell softly and offer a little water at his feet. You can sing a short bhajan or simply say \"Welcome, Kanha\".",
+   "hi": "हाथ जोड़कर कृष्ण जी को घर के प्यारे बच्चे की तरह निमंत्रण दें। घंटी हल्के से बजाएँ और उनके चरणों में थोड़ा जल अर्पित करें। आप कोई छोटा भजन गा सकते हैं या बस \"स्वागत है, कान्हा\" कह सकते हैं।"
+  },
+  {
+   "title_en": "Give him a bath",
+   "title_hi": "स्नान कराएँ",
+   "en": "For a Laddu Gopal, place him in a clean plate or bowl and pour a little milk or panchamrit gently, then rinse with Gangajal or clean water. Wipe him softly with a clean cloth. For a picture or a large idol, just sprinkle a few drops and wipe gently.",
+   "hi": "लड्डू गोपाल को साफ़ थाली या कटोरी में रखकर थोड़ा दूध या पंचामृत धीरे से डालें, फिर गंगाजल या साफ़ पानी से धो लें। साफ़ कपड़े से हल्के से पोंछ दें। तस्वीर या बड़ी मूर्ति हो तो बस कुछ बूँदें छिड़ककर हल्के से पोंछ दें।"
+  },
+  {
+   "title_en": "Dress and decorate",
+   "title_hi": "वस्त्र और श्रृंगार",
+   "en": "Dress him in fresh clothes, and place a peacock feather, a small flute or a garland if you have them. Apply a light chandan tilak. Seat him on the chowki and let the family see him together.",
+   "hi": "उन्हें ताज़े वस्त्र पहनाएँ, और मोरपंख, छोटी बाँसुरी या माला हो तो सजाएँ। हल्का चंदन का तिलक लगाएँ। उन्हें चौकी पर विराजमान करें और पूरा परिवार साथ मिलकर दर्शन करे।"
+  },
+  {
+   "title_en": "Offer flowers and tulsi",
+   "title_hi": "फूल और तुलसी अर्पित करें",
+   "en": "Place flowers and the garland at his feet and offer a few tulsi leaves. Put the coins, betel leaf and supari nearby. Each family member can offer a flower, and children enjoy doing this.",
+   "hi": "फूल और माला उनके चरणों में रखें और कुछ तुलसी के पत्ते चढ़ाएँ। सिक्के, पान का पत्ता और सुपारी पास में रखें। परिवार का हर सदस्य एक-एक फूल चढ़ा सकता है, बच्चों को यह करना अच्छा लगता है।"
+  },
+  {
+   "title_en": "Offer bhog",
+   "title_hi": "भोग लगाएँ",
+   "en": "Place makhan mishri, sweets and fruits on a clean plate and put a tulsi leaf on top. Keep the food simple and freshly made, usually without onion and garlic. Offer it with folded hands for a minute and keep it covered until the puja ends.",
+   "hi": "साफ़ थाली में माखन-मिश्री, मिठाई और फल रखें और ऊपर एक तुलसी का पत्ता रखें। भोजन सादा और ताज़ा बना हो, आमतौर पर बिना प्याज़-लहसुन के। हाथ जोड़कर एक मिनट के लिए अर्पित करें और पूजा पूरी होने तक ढककर रखें।"
+  },
+  {
+   "title_en": "Chant the mantra",
+   "title_hi": "मंत्र जाप",
+   "en": "Sit calmly and chant \"Om Namo Bhagavate Vasudevaya\" 11 or 108 times. You can count on a mala or with grains of rice. The whole family can chant together, and children can simply repeat after you.",
+   "hi": "शांति से बैठकर \"ॐ नमो भगवते वासुदेवाय\" 11 या 108 बार बोलें। गिनती माला से या चावल के दानों से कर सकते हैं। पूरा परिवार साथ बोल सकता है, और बच्चे बस आपके पीछे दोहरा सकते हैं।"
+  },
+  {
+   "title_en": "Do the aarti",
+   "title_hi": "आरती करें",
+   "en": "Light the camphor on the thali and sing the Krishna aarti, such as \"Aarti Kunj Bihari Ki\", together. Move the thali slowly in a clockwise circle before him, and blow the conch softly if you have one. Then everyone gently passes their hands over the flame and touches them to the eyes.",
+   "hi": "थाली में कपूर जलाएँ और सब मिलकर कृष्ण जी की आरती, जैसे \"आरती कुंज बिहारी की\", गाएँ। थाली को उनके सामने धीरे-धीरे घड़ी की दिशा में घुमाएँ, और शंख हो तो हल्के से बजाएँ। फिर सब लौ के ऊपर से हाथ घुमाकर हल्के से आँखों से लगाएँ।"
+  },
+  {
+   "title_en": "Close and share prasad",
+   "title_hi": "समापन और प्रसाद",
+   "en": "Bow down, ask forgiveness for any mistake in the puja, and thank Krishna. On Janmashtami, many families gently rock a small cradle after midnight and sing a birth song. Share the prasad with everyone and tie kalawa on the wrists.",
+   "hi": "प्रणाम करें, पूजा में हुई किसी भी भूल के लिए क्षमा माँगें और कृष्ण जी को धन्यवाद कहें। जन्माष्टमी पर कई परिवार आधी रात के बाद छोटे झूले को हल्के से झुलाते हैं और जन्म के गीत गाते हैं। सबको प्रसाद बाँटें और कलाई पर कलावा बाँधें।"
+  },
+  {
+   "title_en": "Laddu Gopal daily seva",
+   "title_hi": "लड्डू गोपाल की रोज़ की सेवा",
+   "en": "If Laddu Gopal lives in your home, many families care for him like a child: wake him gently in the morning, bathe and dress him, offer simple bhog at meal times, and put him to rest at night. Keep it simple and do only what your family can do regularly with love.",
+   "hi": "यदि आपके घर में लड्डू गोपाल हैं, तो कई परिवार उनकी बच्चे की तरह देखभाल करते हैं: सुबह धीरे से जगाना, स्नान और वस्त्र, भोजन के समय सादा भोग, और रात को विश्राम कराना। इसे सरल रखें और केवल उतना ही करें जितना आपका परिवार प्रेम से नियमित रूप से कर सके।"
+  }
+ ],
+ "mantra": {
+  "sa": "ॐ नमो भगवते वासुदेवाय",
+  "tr": "Om Namo Bhagavate Vasudevaya",
+  "en": "Om, I bow to Lord Vasudeva, Krishna.",
+  "hi": "ॐ, मैं भगवान वासुदेव, श्रीकृष्ण को प्रणाम करता हूँ।"
+ },
+ "tips_en": [
+  "On Janmashtami, the midnight hour is the usual time; on other days, morning or evening both work well.",
+  "Keep the mood light and joyful; Krishna is worshipped with songs, stories and a little play.",
+  "Involve children: let them dress a small Laddu Gopal with help, offer flowers and sing the aarti.",
+  "Offer what you can comfortably afford; sincere love matters more than a long list of items.",
+  "Keep a bowl of water and a soft cloth nearby for the bath and for any spills.",
+  "If you forget a step, simply carry on calmly; the spirit of the puja is devotion."
+ ],
+ "tips_hi": [
+  "जन्माष्टमी पर आधी रात का समय प्रचलित है; अन्य दिनों में सुबह या शाम दोनों ठीक रहते हैं।",
+  "माहौल हल्का और आनंद भरा रखें; कृष्ण जी की पूजा गीत, कहानियों और थोड़ी मस्ती के साथ की जाती है।",
+  "बच्चों को शामिल करें: वे बड़ों की मदद से छोटे लड्डू गोपाल को सजा सकते हैं, फूल चढ़ा सकते हैं और आरती गा सकते हैं।",
+  "जितना आराम से हो सके उतना ही चढ़ाएँ; सच्चा प्रेम लंबी सूची से ज़्यादा मायने रखता है।",
+  "स्नान और गिरी चीज़ों के लिए पास में पानी की कटोरी और मुलायम कपड़ा रखें।",
+  "कोई चरण भूल जाएँ तो शांति से आगे बढ़ें; पूजा का असली भाव श्रद्धा है।"
+ ],
+ "avoid_en": [
+  "Do not leave burning diyas or camphor unattended, especially near curtains or children.",
+  "Try not to use wilted flowers or stale food; fresh and simple is best.",
+  "Avoid rushing through the puja or checking phones in the middle of it.",
+  "Do not feel worried about small mistakes; there is no need to repeat the puja."
+ ],
+ "avoid_hi": [
+  "जलते दीये या कपूर को अकेला न छोड़ें, ख़ासकर पर्दों या बच्चों के पास।",
+  "मुरझाए फूल या बासी भोजन चढ़ाने से बचें; ताज़ा और सादा सबसे अच्छा रहता है।",
+  "पूजा जल्दबाज़ी में न करें और बीच में फ़ोन देखने से बचें।",
+  "छोटी-मोटी भूलों की चिंता न करें; पूजा को दोबारा करने की ज़रूरत नहीं है।"
+ ]
+}

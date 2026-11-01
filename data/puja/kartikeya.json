@@ -1,0 +1,283 @@
+{
+ "slug": "kartikeya",
+ "en": "Kartikeya Puja",
+ "hi": "कार्तिकेय पूजा",
+ "tag_en": "A simple home puja to Lord Kartikeya, also called Murugan",
+ "tag_hi": "भगवान कार्तिकेय, जिन्हें मुरुगन भी कहते हैं, की सरल घरेलू पूजा",
+ "when_en": "It is usually done on Tuesdays, and many families also do it on Skanda Shashthi and Thaipusam.",
+ "when_hi": "यह आमतौर पर मंगलवार को की जाती है, और कई परिवार स्कंद षष्ठी और थाईपूसम पर भी इसे करते हैं।",
+ "time_en": "About 30 to 40 minutes",
+ "time_hi": "लगभग 30 से 40 मिनट",
+ "intro_en": "Lord Kartikeya, known as Murugan, Skanda or Subramanya in different parts of India, is remembered as the young god of courage, discipline and learning. This puja is a calm family moment of thanks, and you do not need a priest; a clean corner and simple offerings are enough. Families and regions do it a little differently, so wherever your own family or pandit's way differs from this guide, please follow theirs.",
+ "intro_hi": "भगवान कार्तिकेय, जिन्हें भारत के अलग-अलग हिस्सों में मुरुगन, स्कंद या सुब्रमण्य कहा जाता है, साहस, अनुशासन और विद्या के युवा देवता के रूप में स्मरण किए जाते हैं। यह पूजा परिवार के साथ धन्यवाद का एक शांत पल है, इसके लिए पंडित जी ज़रूरी नहीं; साफ़ कोना और सरल भेंट काफ़ी हैं। हर परिवार और हर क्षेत्र में तरीक़ा थोड़ा अलग होता है, इसलिए जहाँ आपके परिवार या पंडित जी का तरीक़ा इस गाइड से अलग हो, वहाँ उन्हीं का तरीक़ा अपनाएँ।",
+ "samagri": [
+  {
+   "en": "Kartikeya (Murugan) picture or idol",
+   "hi": "कार्तिकेय (मुरुगन) की तस्वीर या मूर्ति",
+   "qty_en": "1, ideally with his vel (spear) and peacock",
+   "qty_hi": "1, हो सके तो वेल (भाला) और मोर के साथ",
+   "use_en": "Kept on the altar as the focus of worship",
+   "use_hi": "वेदी पर पूजा के केंद्र में रखी जाती है"
+  },
+  {
+   "en": "Wooden chowki or clean platform",
+   "hi": "लकड़ी की चौकी या साफ़ चबूतरा",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "A raised seat on which the picture or idol is placed",
+   "use_hi": "ऊँचा आसन, जिस पर तस्वीर या मूर्ति रखी जाती है"
+  },
+  {
+   "en": "Red cloth",
+   "hi": "लाल कपड़ा",
+   "qty_en": "1 piece, about 1 metre",
+   "qty_hi": "1 टुकड़ा, लगभग 1 मीटर",
+   "use_en": "Spread over the chowki before placing the picture",
+   "use_hi": "तस्वीर रखने से पहले चौकी पर बिछाया जाता है"
+  },
+  {
+   "en": "Kalash with water",
+   "hi": "कलश, पानी के साथ",
+   "qty_en": "1 small brass or copper pot",
+   "qty_hi": "1 छोटा पीतल या तांबे का कलश",
+   "use_en": "Filled with water and kept beside the picture",
+   "use_hi": "पानी भरकर तस्वीर के पास रखा जाता है"
+  },
+  {
+   "en": "Coconut",
+   "hi": "नारियल",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Set on the kalash, and offered as prasad afterwards",
+   "use_hi": "कलश पर रखा जाता है, और बाद में प्रसाद के रूप में बाँटा जाता है"
+  },
+  {
+   "en": "Kalawa (mauli thread)",
+   "hi": "कलावा (मौली)",
+   "qty_en": "1 reel",
+   "qty_hi": "1 गोला",
+   "use_en": "Tied around the kalash and on everyone's wrist",
+   "use_hi": "कलश पर बाँधने और सबकी कलाई पर बाँधने के लिए"
+  },
+  {
+   "en": "Whole rice (akshat)",
+   "hi": "साबुत चावल (अक्षत)",
+   "qty_en": "1 small bowl, about 100 g",
+   "qty_hi": "1 छोटी कटोरी, लगभग 100 ग्राम",
+   "use_en": "Offered unbroken to the deity and used for tilak",
+   "use_hi": "देवता को चढ़ाने और तिलक में लगाने के लिए"
+  },
+  {
+   "en": "Kumkum and chandan",
+   "hi": "कुमकुम और चंदन",
+   "qty_en": "1 small packet each",
+   "qty_hi": "हर एक का 1 छोटा पैकेट",
+   "use_en": "For tilak on the deity and on the family",
+   "use_hi": "देवता और परिवार के सभी सदस्यों को तिलक लगाने के लिए"
+  },
+  {
+   "en": "Red flowers and garland",
+   "hi": "लाल फूल और माला",
+   "qty_en": "1 garland, 1 handful petals",
+   "qty_hi": "1 माला, 1 मुट्ठी पंखुड़ियाँ",
+   "use_en": "Offered at the feet; red hibiscus and marigold are commonly used",
+   "use_hi": "चरणों में अर्पित किए जाते हैं; लाल गुड़हल और गेंदा आम तौर पर चढ़ाए जाते हैं"
+  },
+  {
+   "en": "Clay diya",
+   "hi": "मिट्टी का दीया",
+   "qty_en": "2",
+   "qty_hi": "2",
+   "use_en": "The main lamp for the puja",
+   "use_hi": "पूजा का मुख्य दीया"
+  },
+  {
+   "en": "Ghee and cotton wicks",
+   "hi": "घी और रुई की बत्तियाँ",
+   "qty_en": "1 small bowl ghee, 5 wicks",
+   "qty_hi": "1 छोटी कटोरी घी, 5 बत्तियाँ",
+   "use_en": "Fuel and wicks for the diya; some families use sesame oil",
+   "use_hi": "दीया जलाने के लिए घी और बत्तियाँ; कुछ परिवार तिल का तेल भी इस्तेमाल करते हैं"
+  },
+  {
+   "en": "Incense sticks",
+   "hi": "अगरबत्ती",
+   "qty_en": "1 packet",
+   "qty_hi": "1 पैकेट",
+   "use_en": "Lit and offered while welcoming and praying",
+   "use_hi": "स्वागत और प्रार्थना के समय जलाई जाती है"
+  },
+  {
+   "en": "Camphor",
+   "hi": "कपूर",
+   "qty_en": "1 small packet",
+   "qty_hi": "1 छोटा पैकेट",
+   "use_en": "Lit for the aarti at the end",
+   "use_hi": "अंत में आरती के लिए जलाया जाता है"
+  },
+  {
+   "en": "Jaggery",
+   "hi": "गुड़",
+   "qty_en": "1 small piece, about 100 g",
+   "qty_hi": "1 छोटा टुकड़ा, लगभग 100 ग्राम",
+   "use_en": "Offered as bhog; a simple sweet loved by children too",
+   "use_hi": "भोग के रूप में चढ़ाया जाता है; बच्चों को भी प्रिय साधारण मिठास"
+  },
+  {
+   "en": "Sweets or fruits such as banana",
+   "hi": "मिठाई या फल, जैसे केला",
+   "qty_en": "Whatever you have, 1 plate",
+   "qty_hi": "जो उपलब्ध हो, 1 थाली",
+   "use_en": "Offered as bhog, then shared as prasad",
+   "use_hi": "भोग लगाकर प्रसाद के रूप में बाँटे जाते हैं"
+  },
+  {
+   "en": "Betel leaves and supari",
+   "hi": "पान के पत्ते और सुपारी",
+   "qty_en": "5 leaves, 5 nuts",
+   "qty_hi": "5 पत्ते, 5 सुपारी",
+   "use_en": "Offered along with a coin near the deity",
+   "use_hi": "देवता के पास सिक्के के साथ अर्पित किए जाते हैं"
+  },
+  {
+   "en": "Gangajal or clean water",
+   "hi": "गंगाजल या साफ़ पानी",
+   "qty_en": "1 small bottle",
+   "qty_hi": "1 छोटी शीशी",
+   "use_en": "Sprinkled to purify the space and the items",
+   "use_hi": "स्थान और सामग्री पर छिड़ककर शुद्ध करने के लिए"
+  },
+  {
+   "en": "Bell",
+   "hi": "घंटी",
+   "qty_en": "1 small bell",
+   "qty_hi": "1 छोटी घंटी",
+   "use_en": "Rung gently during the aarti",
+   "use_hi": "आरती के समय धीरे से बजाई जाती है"
+  },
+  {
+   "en": "Puja thali",
+   "hi": "पूजा की थाली",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Holds the items and is used for the aarti",
+   "use_hi": "सामग्री रखने और आरती उतारने के काम आती है"
+  }
+ ],
+ "before_en": [
+  "Clean the house and the puja corner, and wash or wipe the picture or idol gently.",
+  "Buy flowers, fruits and jaggery, and check that every item on the list is ready.",
+  "Bathe and wear fresh clothes; many families like to wear red or yellow on Tuesdays.",
+  "Keep the chowki and red cloth ready, with the diya wicks filled and matchsticks safely nearby.",
+  "If you plan to fast on Skanda Shashthi or Thaipusam, decide beforehand in the way your family does, and eat lightly if you are unwell."
+ ],
+ "before_hi": [
+  "घर और पूजा के कोने की सफ़ाई कर लें, और तस्वीर या मूर्ति को हल्के से धो या पोंछ लें।",
+  "फूल, फल और गुड़ ले आएँ और देख लें कि सूची की हर चीज़ तैयार है।",
+  "स्नान करके ताज़े कपड़े पहनें; कई परिवार मंगलवार को लाल या पीले कपड़े पहनना पसंद करते हैं।",
+  "चौकी और लाल कपड़ा तैयार रखें, दीये में बत्ती लगा लें और माचिस पास में सुरक्षित रखें।",
+  "स्कंद षष्ठी या थाईपूसम पर व्रत रखना हो तो अपने परिवार के तरीक़े से पहले तय कर लें, और तबीयत ठीक न हो तो हल्का भोजन करें।"
+ ],
+ "steps": [
+  {
+   "title_en": "Clean and get ready",
+   "title_hi": "सफ़ाई और तैयारी",
+   "en": "Clean the puja corner, bathe and wear fresh, clean clothes. Sit for a minute with a quiet mind before you begin.",
+   "hi": "पूजा के कोने की सफ़ाई करें, स्नान करके ताज़े, साफ़ कपड़े पहनें। शुरू करने से पहले एक मिनट शांत मन से बैठें।"
+  },
+  {
+   "title_en": "Set the altar",
+   "title_hi": "वेदी सजाएँ",
+   "en": "Place the chowki in the puja corner and spread the red cloth. Seat Kartikeya on it, facing east or north if possible, with a little rice beneath. Keep the thali and all items within easy reach.",
+   "hi": "पूजा के कोने में चौकी रखें और उस पर लाल कपड़ा बिछाएँ। कार्तिकेय जी को उस पर बिठाएँ, हो सके तो मुख पूर्व या उत्तर की ओर रखें, और नीचे थोड़े चावल रखें। थाली और सारी सामग्री पास में रखें।"
+  },
+  {
+   "title_en": "Place the kalash",
+   "title_hi": "कलश स्थापित करें",
+   "en": "Fill the kalash with water, add a coin and a pinch of rice, and tie kalawa around it. Set the coconut on top and keep it beside the picture.",
+   "hi": "कलश में पानी भरें, उसमें एक सिक्का और चुटकी भर चावल डालें और चारों ओर कलावा बाँधें। ऊपर नारियल रखें और इसे तस्वीर के पास रखें।"
+  },
+  {
+   "title_en": "Light the lamp and settle",
+   "title_hi": "दीया जलाएँ और बैठें",
+   "en": "Light the ghee diya and the incense. Sit on a mat, take a few quiet breaths and sprinkle a few drops of Gangajal on yourself and the items. Say in your own words that you are doing the puja with a calm heart.",
+   "hi": "घी का दीया और अगरबत्ती जलाएँ। आसन पर बैठकर कुछ शांत साँसें लें और अपने ऊपर तथा सामग्री पर गंगाजल की कुछ बूँदें छिड़कें। अपने शब्दों में कहें कि आप शांत मन से यह पूजा कर रहे हैं।"
+  },
+  {
+   "title_en": "Begin with Ganesh",
+   "title_hi": "पहले गणेश जी को याद करें",
+   "en": "Fold your hands and say \"Om Gam Ganapataye Namah\" three times. It is a tradition to remember Ganesh first, so that the puja goes smoothly.",
+   "hi": "हाथ जोड़कर तीन बार \"ॐ गं गणपतये नमः\" बोलें। परंपरा है कि सबसे पहले गणेश जी को याद किया जाता है, ताकि पूजा शांति से पूरी हो।"
+  },
+  {
+   "title_en": "Welcome Kartikeya",
+   "title_hi": "कार्तिकेय जी का स्वागत",
+   "en": "Invite Lord Kartikeya into your home in your own words. Offer a little water, then apply tilak of kumkum, chandan and rice. If the idol is metal, you may gently wipe it with water and a clean cloth first.",
+   "hi": "अपने शब्दों में भगवान कार्तिकेय को घर आने का निमंत्रण दें। थोड़ा जल अर्पित करें, फिर कुमकुम, चंदन और चावल का तिलक लगाएँ। मूर्ति धातु की हो तो पहले उसे पानी और साफ़ कपड़े से हल्के से पोंछ सकते हैं।"
+  },
+  {
+   "title_en": "Offer flowers and betel leaves",
+   "title_hi": "फूल और पान अर्पित करें",
+   "en": "Place the garland and red flowers at his feet. Offer the betel leaves with supari and a coin. Each family member can offer a flower too.",
+   "hi": "माला और लाल फूल उनके चरणों में रखें। पान के पत्ते सुपारी और एक सिक्के के साथ चढ़ाएँ। परिवार का हर सदस्य एक-एक फूल भी चढ़ा सकता है।"
+  },
+  {
+   "title_en": "Offer bhog",
+   "title_hi": "भोग लगाएँ",
+   "en": "Place the jaggery, bananas or other fruits and sweets on the thali and set them before the deity. Sprinkle a few drops of water around the plate and offer it with folded hands for a minute. Keep it covered until the puja ends.",
+   "hi": "गुड़, केले या अन्य फल और मिठाई थाली में सजाकर देवता के सामने रखें। थाली के चारों ओर पानी की कुछ बूँदें छिड़कें और हाथ जोड़कर एक मिनट के लिए अर्पित करें। पूजा पूरी होने तक इसे ढककर रखें।"
+  },
+  {
+   "title_en": "Chant the mantra",
+   "title_hi": "मंत्र जाप",
+   "en": "Sit calmly and chant \"Om Sharavana Bhavaya Namah\" 11 or 108 times. You can count on a mala or with grains of rice. The whole family can chant together, and children can simply repeat after you. On Thaipusam, many families also sing Murugan songs or say \"Vel Vel\".",
+   "hi": "शांति से बैठकर \"ॐ शरवणभवाय नमः\" 11 या 108 बार बोलें। गिनती माला से या चावल के दानों से कर सकते हैं। पूरा परिवार साथ बोल सकता है, और बच्चे बस आपके पीछे दोहरा सकते हैं। थाईपूसम पर कई परिवार मुरुगन के भजन भी गाते हैं या \"वेल वेल\" बोलते हैं।"
+  },
+  {
+   "title_en": "Do the aarti",
+   "title_hi": "आरती करें",
+   "en": "Light the camphor on the thali and sing the Kartikeya aarti, \"Jai Jai Aarti Veer Kumara\", together or any aarti your family knows. Move the thali slowly in a clockwise circle in front of the deity, ringing the bell gently. Then everyone passes their hands over the flame and touches them to the eyes.",
+   "hi": "थाली में कपूर जलाएँ और सब मिलकर कार्तिकेय आरती, \"जय जय आरती वीर कुमारा\", या कोई भी आरती जो आपके परिवार को आती हो, गाएँ। घंटी धीरे से बजाते हुए थाली को देवता के सामने धीरे-धीरे घड़ी की दिशा में घुमाएँ। फिर सब लौ के ऊपर से हाथ घुमाकर हल्के से आँखों से लगाएँ।"
+  },
+  {
+   "title_en": "Close and share prasad",
+   "title_hi": "समापन और प्रसाद",
+   "en": "Bow down, ask forgiveness for any mistake in the puja and say thank you. Share the prasad with everyone and tie kalawa on the wrists. On Skanda Shashthi or Thaipusam, break your fast the way your family does. Let the main diya burn down safely.",
+   "hi": "प्रणाम करें, पूजा में हुई किसी भी भूल के लिए क्षमा माँगें और धन्यवाद कहें। सबको प्रसाद बाँटें और कलाई पर कलावा बाँधें। स्कंद षष्ठी या थाईपूसम पर अपने परिवार के तरीक़े से व्रत खोलें। मुख्य दीये को सुरक्षित रूप से अपने आप जल जाने दें।"
+  }
+ ],
+ "mantra": {
+  "sa": "ॐ शरवणभवाय नमः",
+  "tr": "Om Sharavana Bhavaya Namah",
+  "en": "Om, I bow to Lord Kartikeya, born in the Sharavana reeds.",
+  "hi": "ॐ, मैं शरवण वन में जन्मे भगवान कार्तिकेय को प्रणाम करता हूँ।"
+ },
+ "tips_en": [
+  "Tuesday morning or evening both work; choose the time that is calm for your family.",
+  "On Skanda Shashthi and Thaipusam, many families keep a simple fast or eat only light food; follow your own family's custom and your health.",
+  "Keep the puja area bright and clean, with the main lamp lit before you start.",
+  "Involve children: let them place flowers, say the mantra and share the prasad.",
+  "Use what you can comfortably afford; sincere offerings matter more than a long list of items.",
+  "If you forget a step, simply carry on calmly; the spirit of the puja is devotion."
+ ],
+ "tips_hi": [
+  "मंगलवार की सुबह या शाम दोनों ठीक हैं; वह समय चुनें जो आपके परिवार के लिए शांत हो।",
+  "स्कंद षष्ठी और थाईपूसम पर कई परिवार सरल व्रत रखते हैं या हल्का भोजन करते हैं; अपने परिवार की रीति और अपनी सेहत के अनुसार चलें।",
+  "पूजा का स्थान साफ़ और रोशन रखें, और शुरू करने से पहले मुख्य दीया जला लें।",
+  "बच्चों को शामिल करें: वे फूल रख सकते हैं, मंत्र बोल सकते हैं और प्रसाद बाँट सकते हैं।",
+  "जितना आराम से हो सके उतना ही चढ़ाएँ; सच्चे मन की भेंट लंबी सूची से ज़्यादा मायने रखती है।",
+  "कोई चरण भूल जाएँ तो शांति से आगे बढ़ें; पूजा का असली भाव श्रद्धा है।"
+ ],
+ "avoid_en": [
+  "Do not leave burning diyas or camphor unattended, especially near curtains or children.",
+  "Try not to offer broken rice or wilted flowers; fresh and whole is best.",
+  "Avoid rushing through the puja or checking phones in the middle of it.",
+  "Do not fast if it does not suit your health, and do not feel worried about small mistakes; there is no need to repeat the puja."
+ ],
+ "avoid_hi": [
+  "जलते दीये या कपूर को अकेला न छोड़ें, ख़ासकर पर्दों या बच्चों के पास।",
+  "टूटे चावल या मुरझाए फूल चढ़ाने से बचें; ताज़े और साबुत सबसे अच्छे रहते हैं।",
+  "पूजा जल्दबाज़ी में न करें और बीच में फ़ोन देखने से बचें।",
+  "सेहत के अनुकूल न हो तो व्रत न रखें, और छोटी-मोटी भूलों की चिंता न करें; पूजा को दोबारा करने की ज़रूरत नहीं है।"
+ ]
+}
