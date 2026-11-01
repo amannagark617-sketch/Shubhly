@@ -63,7 +63,7 @@ if (sg && dataEl) {
     const idol = ph ? null : await img(d.idol);
     if (ph) {
       const r = Math.max(W / ph.width, PH / ph.height), w = ph.width * r, h = ph.height * r;
-      x.drawImage(ph, (W - w) / 2, (PH - h) / 2, w, h);
+      x.save(); x.beginPath(); x.rect(0, 0, W, PH); x.clip(); x.drawImage(ph, (W - w) / 2, (PH - h) / 2, w, h); x.restore();
     } else {
       x.fillStyle = d.c2; x.fillRect(0, 0, W, PH);
       if (idol) { const sz = PH - 40; x.drawImage(idol, W - sz - 60, 20, sz, sz); }
