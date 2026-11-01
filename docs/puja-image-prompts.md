@@ -408,3 +408,42 @@ File: `public/img/puja/samagri-1.jpg`
 
 Top-down flat lay of Indian puja samagri neatly arranged on a plain light wooden table: brass kalash, coconut, a bowl of rice, kumkum and haldi in small brass bowls, camphor, incense sticks, cotton wicks, a small bottle of ghee, betel leaves and betel nuts, fresh marigold flowers, a banana, a copper tumbler, loose rice and a red cloth. Realistic editorial photograph, shot straight down from above, soft natural window light, true-to-life colours, genuine imperfections, clean uncluttered background, looks like a real photograph and not an illustration, square 1:1 aspect ratio image, ultra high quality, no text, no letters, no watermark, no borders, no people.
 
+
+
+## Main pictures for the six new puja pages (wide hero photos)
+
+### Krishna Puja
+
+File: `public/img/puja/krishna.jpg`
+
+A home Krishna puja set-up on a low wooden chowki with a yellow cloth: a small brass Laddu Gopal murti in a tiny swing or on a lotus base with a peacock feather and a flute beside it, a brass plate of tulsi leaves, white flowers and chandan, a small silver bowl of makhan mishri and panchamrit, a conch, two lit clay diyas and incense smoke curling up, soft morning light from a window. Realistic editorial photograph, shot on a full-frame camera with a 50mm lens, natural soft window light mixed with the warm glow of a real brass diya, shallow depth of field, true-to-life colours and textures, genuine slight imperfections like real flower petals and ghee marks on brass, clean uncluttered background, authentic Indian home setting, looks like a real photograph and not an illustration or a 3D render, wide 16:9 aspect ratio image (about 1600x700), ultra high quality, no text, no letters, no watermark, no logo, no borders, no people's faces.
+
+### Ram Puja
+
+File: `public/img/puja/ram.jpg`
+
+A home Ram Darbar puja set-up on a low wooden chowki with a saffron cloth: a small brass or marble Ram Darbar murti (Ram, Sita, Lakshman and Hanuman) on a bed of marigold petals, a brass kalash with a coconut and mango leaves, a plate of tulsi leaves, kumkum and rice, a small bow-shaped brass ornament, two lit clay diyas, a saffron flag at the edge, soft morning light. Realistic editorial photograph, shot on a full-frame camera with a 50mm lens, natural soft window light mixed with the warm glow of a real brass diya, shallow depth of field, true-to-life colours and textures, genuine slight imperfections like real flower petals and ghee marks on brass, clean uncluttered background, authentic Indian home setting, looks like a real photograph and not an illustration or a 3D render, wide 16:9 aspect ratio image (about 1600x700), ultra high quality, no text, no letters, no watermark, no logo, no borders, no people's faces.
+
+### Shani Puja
+
+File: `public/img/puja/shani.jpg`
+
+A home Shani Dev puja set-up on a low wooden stool with a dark blue cloth: a small black iron or stone Shani Dev murti with a crow, a clay diya filled with mustard oil beside it, a small bowl of black sesame seeds, black urad dal, blue flowers, an iron nail and a lemon, a few leaves of peepal, early evening light with a calm dusky mood. Realistic editorial photograph, shot on a full-frame camera with a 50mm lens, natural soft window light mixed with the warm glow of a real brass diya, shallow depth of field, true-to-life colours and textures, genuine slight imperfections like real flower petals and ghee marks on brass, clean uncluttered background, authentic Indian home setting, looks like a real photograph and not an illustration or a 3D render, wide 16:9 aspect ratio image (about 1600x700), ultra high quality, no text, no letters, no watermark, no logo, no borders, no people's faces.
+
+### Parvati Puja
+
+File: `public/img/puja/parvati.jpg`
+
+A home Goddess Parvati puja set-up on a low wooden chowki with a red cloth: a small brass Parvati murti on a bed of red hibiscus and pink lotus petals, a red chunri, bangles, sindoor, a small mirror and mehendi cone on a brass plate, a brass kalash with a coconut, two lit clay diyas, soft warm window light. Realistic editorial photograph, shot on a full-frame camera with a 50mm lens, natural soft window light mixed with the warm glow of a real brass diya, shallow depth of field, true-to-life colours and textures, genuine slight imperfections like real flower petals and ghee marks on brass, clean uncluttered background, authentic Indian home setting, looks like a real photograph and not an illustration or a 3D render, wide 16:9 aspect ratio image (about 1600x700), ultra high quality, no text, no letters, no watermark, no logo, no borders, no people's faces.
+
+### Surya Arghya Puja
+
+File: `public/img/puja/surya.jpg`
+
+A calm sunrise Surya arghya set-up on a terrace: a polished copper lota pouring water in a thin stream into a copper plate, red hibiscus flowers, red sandalwood paste in a small bowl, a small brass diya and a few grains of rice, the low golden sun glowing behind soft haze and a city skyline blurred in the background, early morning golden light. Realistic editorial photograph, shot on a full-frame camera with a 50mm lens, natural soft window light mixed with the warm glow of a real brass diya, shallow depth of field, true-to-life colours and textures, genuine slight imperfections like real flower petals and ghee marks on brass, clean uncluttered background, authentic Indian home setting, looks like a real photograph and not an illustration or a 3D render, wide 16:9 aspect ratio image (about 1600x700), ultra high quality, no text, no letters, no watermark, no logo, no borders, no people's faces.
+
+### Kartikeya Puja
+
+File: `public/img/puja/kartikeya.jpg`
+
+A home Lord Kartikeya (Murugan) puja set-up on a low wooden chowki with a deep red cloth: a small brass Kartikeya murti with a spear (vel) and a peacock beside him, a brass plate of red flowers, turmeric, kumkum and bananas, a small bowl of panchamrit, a few lit clay diyas and a peacock feather, soft morning light. Realistic editorial photograph, shot on a full-frame camera with a 50mm lens, natural soft window light mixed with the warm glow of a real brass diya, shallow depth of field, true-to-life colours and textures, genuine slight imperfections like real flower petals and ghee marks on brass, clean uncluttered background, authentic Indian home setting, looks like a real photograph and not an illustration or a 3D render, wide 16:9 aspect ratio image (about 1600x700), ultra high quality, no text, no letters, no watermark, no logo, no borders, no people's faces.
