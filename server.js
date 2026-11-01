@@ -1,4 +1,6 @@
 import express from "express";
+import compression from "compression";
+import { srcsetify } from "./src/img.js";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { computeKundli } from "./src/kundli.js";
@@ -60,6 +62,13 @@ app.use((req, res, next) => {
 app.use((_req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  next();
+});
+// Smaller pages, scripts and styles on the wire (the chat and other API calls are left alone)
+app.use(compression({ filter: (req, res) => (req.path.startsWith("/api/") ? false : compression.filter(req, res)) }));
+app.use((_req, res, next) => {
+  const send = res.send.bind(res);
+  res.send = (body) => send(typeof body === "string" && body.startsWith("<!doctype html") ? srcsetify(body) : body);
   next();
 });
 app.use(express.json({ limit: "80kb" }));
@@ -563,14 +572,26 @@ app.get("/robots.txt", (req, res) => {
 app.get("/sitemap.xml", (req, res) => res.type("application/xml").send(sitemap(originOf(req), POSTS, [...GITA_PATHS(), ...PUJA_PATHS(), ...PUJA_HI_PATHS()])));
 
 // ---- static site ---------------------------------------------------------
+// Photos: browsers that can show AVIF get the much lighter AVIF copy at the same address
+// (made by scripts/optimize-images.py); everyone else, and WhatsApp previews, get the JPG.
+const PUB = path.join(__dirname, "public");
+app.use("/img", (req, res, next) => {
+  if ((req.method !== "GET" && req.method !== "HEAD") || !/\.jpe?g$/i.test(req.path)) return next();
+  res.vary("Accept");
+  if (!/image\/avif/.test(req.headers.accept || "")) return next();
+  const file = path.join(PUB, "img", decodeURIComponent(req.path).replace(/\.jpe?g$/i, ".avif"));
+  if (!file.startsWith(path.join(PUB, "img"))) return next();
+  res.type("image/avif").sendFile(file, { headers: { "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400", Vary: "Accept" } }, (err) => { if (err && !res.headersSent) next(); });
+});
 app.use(
   express.static(path.join(__dirname, "public"), {
     index: false,
     setHeaders(res, file) {
       // Code and pages are always revalidated so updates show up at once;
-      // images too, so a replaced picture shows up at once (304 when unchanged);
+      // pictures are kept for an hour (and refreshed quietly after that), so pages load fast;
       // only fonts are kept for a day.
-      if (/\.(html|css|js|jpg|jpeg|png|svg|webp|webmanifest)$/.test(file)) res.setHeader("Cache-Control", "no-cache");
+      if (/\.(jpg|jpeg|png|svg|webp|avif)$/.test(file)) res.setHeader("Cache-Control", "public, max-age=3600, stale-while-revalidate=86400");
+      else if (/\.(html|css|js|webmanifest)$/.test(file)) res.setHeader("Cache-Control", "no-cache");
       else res.setHeader("Cache-Control", "public, max-age=86400");
     },
   })
