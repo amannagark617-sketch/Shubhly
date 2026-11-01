@@ -59,40 +59,46 @@ if (sg && dataEl) {
     try { await document.fonts.load('400 40px "Yatra One"'); await document.fonts.load('600 30px "Hind"'); } catch { /* fonts optional */ }
     x.fillStyle = "#fff"; x.fillRect(0, 0, W, H);
     // picture
-    const ph = await img(d.photo), PH = 560;
+    const ph = await img(d.photo), PH = 440;
+    const idol = ph ? null : await img(d.idol);
     if (ph) {
       const r = Math.max(W / ph.width, PH / ph.height), w = ph.width * r, h = ph.height * r;
       x.drawImage(ph, (W - w) / 2, (PH - h) / 2, w, h);
-    } else { x.fillStyle = d.c2; x.fillRect(0, 0, W, PH); x.fillStyle = d.c1; let fs = 120; x.textAlign = "center"; do { x.font = `400 ${fs}px "Yatra One", serif`; fs -= 6; } while (x.measureText(d.hi).width > W - 120 && fs > 40); x.fillText(d.hi, W / 2, PH / 2 - 20); }
-    const g = x.createLinearGradient(0, PH - 220, 0, PH); g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, "rgba(0,0,0,.55)");
-    x.fillStyle = g; x.fillRect(0, PH - 220, W, 220);
-    x.textAlign = "left"; x.fillStyle = "#fff"; x.font = '400 78px "Yatra One","Hind",serif';
-    x.fillText(hi ? d.hi : d.title, 56, PH - 56);
-    // tagline and facts
-    x.fillStyle = "#1b1b3a"; x.font = '600 36px "Hind",system-ui,sans-serif';
-    let y = PH + 70;
-    for (const l of lines(x, hi ? d.tag_hi : d.tag_en, W - 112).slice(0, 2)) { x.fillText(l, 56, y); y += 48; }
-    x.fillStyle = d.c1; x.font = '700 30px "Hind",system-ui,sans-serif';
-    const items = hi ? d.names_hi : d.names_en;
-    x.fillText(`${items.length} ${hi ? "सामग्री" : "items"}  ·  ${d.steps} ${hi ? "कदम" : "steps"}  ·  ${hi ? d.time_hi : d.time_en}`, 56, y + 8);
-    // what you need
-    y += 70;
-    x.fillStyle = "#1b1b3a"; x.font = '700 34px "Hind",system-ui,sans-serif'; x.fillText(hi ? "ज़रूरी सामग्री" : "What you need", 56, y); y += 18;
-    x.font = '500 29px "Hind",system-ui,sans-serif';
-    const show = items.slice(0, 12), colW = (W - 112) / 2;
-    const wrapped = show.map((it) => lines(x, it, colW - 40).slice(0, 2));
-    let ry = y + 44;
-    for (let r = 0; r < show.length; r += 2) {
-      const rows = Math.max(wrapped[r].length, (wrapped[r + 1] || []).length);
-      [r, r + 1].forEach((k, j) => {
-        if (!wrapped[k]) return;
-        const cx = 56 + j * colW;
-        x.fillStyle = d.c1; x.fillRect(cx, ry - 22, 10, 10);
-        x.fillStyle = "#333"; wrapped[k].forEach((l, li) => x.fillText(l, cx + 26, ry + li * 34));
-      });
-      ry += (rows - 1) * 34 + 50;
+    } else {
+      x.fillStyle = d.c2; x.fillRect(0, 0, W, PH);
+      if (idol) { const sz = PH - 40; x.drawImage(idol, W - sz - 60, 20, sz, sz); }
     }
-    if (items.length > show.length) { x.fillStyle = "#666"; x.font = '600 26px "Hind",system-ui,sans-serif'; x.fillText(hi ? `और ${items.length - show.length} चीज़ें पूरी सूची में` : `+ ${items.length - show.length} more in the full list`, 56, ry + 4); }
+    const g = x.createLinearGradient(0, PH - 200, 0, PH); g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, ph ? "rgba(0,0,0,.55)" : "rgba(0,0,0,.0)");
+    x.fillStyle = g; x.fillRect(0, PH - 200, W, 200);
+    x.textAlign = "left"; x.fillStyle = ph ? "#fff" : d.c1;
+    let fs = 78; const ttl = hi ? d.hi : d.title, maxT = idol ? W - 560 : W - 112;
+    do { x.font = `400 ${fs}px "Yatra One","Hind",serif`; fs -= 4; } while (x.measureText(ttl).width > maxT && fs > 36);
+    if (idol) { lines(x, ttl, maxT).slice(0, 3).forEach((l, i) => x.fillText(l, 56, 150 + i * (fs + 20))); } else x.fillText(ttl, 56, PH - 48);
+    // tagline and facts
+    x.fillStyle = "#1b1b3a"; x.font = '600 34px "Hind",system-ui,sans-serif';
+    let y = PH + 62;
+    for (const l of lines(x, hi ? d.tag_hi : d.tag_en, W - 112).slice(0, 2)) { x.fillText(l, 56, y); y += 44; }
+    x.fillStyle = d.c1; x.font = '700 28px "Hind",system-ui,sans-serif';
+    const items = hi ? d.names_hi : d.names_en;
+    x.fillText(`${items.length} ${hi ? "सामग्री" : "items"}  ·  ${d.steps} ${hi ? "कदम" : "steps"}  ·  ${hi ? d.time_hi : d.time_en}`, 56, y + 4);
+    // what you need, as small pictures
+    y += 52;
+    x.fillStyle = "#1b1b3a"; x.font = '700 32px "Hind",system-ui,sans-serif'; x.fillText(hi ? "ज़रूरी सामग्री" : "What you need", 56, y);
+    if (items.length > 12) { x.fillStyle = "#666"; x.font = '600 24px "Hind",system-ui,sans-serif'; x.textAlign = "right"; x.fillText(hi ? `और ${items.length - 12} पूरी सूची में` : `+ ${items.length - 12} more in full list`, W - 56, y); x.textAlign = "left"; }
+    const top0 = y + 18, FT = H - 150, rowH = Math.min(190, Math.floor((FT - top0 - 10) / 3)), th = rowH - 44, colW = (W - 112) / 4;
+    const show = items.slice(0, 12), pics = await Promise.all(show.map((_, i) => img((d.pics || [])[i])));
+    x.font = '500 22px "Hind",system-ui,sans-serif';
+    show.forEach((name, i) => {
+      const cx = 56 + (i % 4) * colW, cy = top0 + Math.floor(i / 4) * rowH, mid = cx + colW / 2;
+      const bx = mid - th / 2;
+      if (pics[i]) { x.save(); x.beginPath(); x.rect(bx, cy, th, th); x.clip(); const r = Math.max(th / pics[i].width, th / pics[i].height), w = pics[i].width * r, h = pics[i].height * r; x.drawImage(pics[i], mid - w / 2, cy + th / 2 - h / 2, w, h); x.restore(); }
+      else { x.fillStyle = d.c2; x.fillRect(bx, cy, th, th); x.fillStyle = d.c1; x.fillRect(mid - 6, cy + th / 2 - 6, 12, 12); }
+      x.fillStyle = "#333"; x.textAlign = "center";
+      const base = name.replace(/\s*\(.*$/, "").split(/,| or | and | या | और /)[0].trim();
+      let nm = base; while (x.measureText(nm).width > colW - 36 && nm.length > 4) nm = nm.slice(0, -1);
+      x.fillText(nm === base ? nm : nm.trim() + "…", mid, cy + th + 28);
+    });
+    x.textAlign = "left";
     // footer
     x.fillStyle = "#1b1b3a"; x.fillRect(0, H - 150, W, 150);
     const lg = await img("/img/logo-mark.png");
