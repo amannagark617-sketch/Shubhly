@@ -42,8 +42,9 @@ function starfield() {
     ctx.restore();
   };
 
+  let running = false;
   const frame = (ts) => {
-    if (!visible) { requestAnimationFrame(frame); return; }
+    if (!visible || document.hidden) { running = false; return; }
     const dt = Math.min((ts - last) / 1000, 0.05); last = ts;
     px += (tx - px) * 0.06; py += (ty - py) * 0.06;
     ctx.clearRect(0, 0, w, h);
@@ -54,11 +55,14 @@ function starfield() {
     }
     requestAnimationFrame(frame);
   };
+  // the loop stops completely when the picture is off screen or the tab is hidden, and starts again when it comes back
+  const wake = () => { if (!running && visible && !document.hidden && !reduce) { running = true; last = performance.now(); requestAnimationFrame(frame); } };
 
   size();
   window.addEventListener("resize", size);
   if ("IntersectionObserver" in window) {
-    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(cv.parentElement);
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; wake(); }).observe(cv.parentElement);
+    document.addEventListener("visibilitychange", wake);
   }
   if (fine) {
     window.addEventListener("pointermove", (e) => {
@@ -67,6 +71,7 @@ function starfield() {
     }, { passive: true });
   }
   if (reduce) { frame(0); return; }
+  running = true;
   requestAnimationFrame(frame);
 }
 
