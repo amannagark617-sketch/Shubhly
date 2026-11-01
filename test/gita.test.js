@@ -188,3 +188,10 @@ test("every blog post has tags, a good description and unique address", () => {
   }
   assert.ok(_POSTS.length >= 14);
 });
+
+test("inline scripts on puja pages are valid JavaScript", () => {
+  const check = (html, what) => { const re = /<script>([\s\S]*?)<\/script>/g; let m; while ((m = re.exec(html))) assert.doesNotThrow(() => new Function(m[1]), what); };
+  check(_rpj(_pof("lakshmi"), "https://x.in", "en"), "puja en");
+  check(_rpj(_pof("lakshmi"), "https://x.in", "hi"), "puja hi");
+  import("../src/puja.js").then((m) => { check(m.renderPujaIndex("https://x.in", "en"), "index en"); check(m.renderPujaIndex("https://x.in", "hi"), "index hi"); });
+});

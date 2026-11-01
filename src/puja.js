@@ -122,7 +122,7 @@ const panel = (c1, c2, p) => { const im = idolImg(p.slug); return `<div class="p
 let MODE = "both";
 const T = (en, hi) => MODE === "hi" ? `<span class="l-hi" lang="hi">${esc(hi)}</span>` : `<span class="l-en">${esc(en)}</span><span class="l-hi" lang="hi">${esc(hi)}</span>`;
 
-const LANG_JS = `<script>(function(){var l="en";try{var s=localStorage.getItem("shubhly.lang");if(s==="hi"||s==="\"hi\"")l="hi";var q=localStorage.getItem("kk.puja.lang");if(q)l=q}catch(e){}
+const LANG_JS = `<script>(function(){var l="en";try{var s=localStorage.getItem("shubhly.lang");if(s==="hi"||s==='"hi"')l="hi";var q=localStorage.getItem("kk.puja.lang");if(q)l=q}catch(e){}
 function set(v){document.documentElement.setAttribute("data-pl",v);try{localStorage.setItem("kk.puja.lang",v)}catch(e){}[].forEach.call(document.querySelectorAll("[data-setl]"),function(b){b.setAttribute("aria-pressed",String(b.dataset.setl===v))})}
 document.documentElement.setAttribute("data-pl",l);
 document.addEventListener("DOMContentLoaded",function(){set(l);document.addEventListener("click",function(e){var b=e.target.closest("[data-setl]");if(b)set(b.dataset.setl)})})})();</script>`;
