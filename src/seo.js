@@ -51,7 +51,7 @@ export function seoLd(key, lang, origin, urlPath, pageTitle) {
   const url = origin + urlPath;
   if (t) out.push({ "@context": "https://schema.org", "@type": "FAQPage", inLanguage: lang, mainEntity: t.faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) });
   if (APP_NAMES[key]) out.push({ "@context": "https://schema.org", "@type": "WebApplication", name: APP_NAMES[key][lang], url, inLanguage: lang, applicationCategory: "LifestyleApplication", operatingSystem: "Any", offers: { "@type": "Offer", price: "0", priceCurrency: "INR" }, provider: { "@type": "Organization", name: "Kundli Kaka", url: origin + "/" } });
-  if (key === "home") out.push({ "@context": "https://schema.org", "@type": "Organization", name: "Kundli Kaka", url: origin + "/", logo: origin + "/img/logo-mark.png" });
+  if (key === "home") out.push({ "@context": "https://schema.org", "@type": "Organization", name: "Kundli Kaka", url: origin + "/", logo: origin + "/icons/icon-512.png" });
   if (key !== "home") out.push({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
     { "@type": "ListItem", position: 1, name: lang === "hi" ? "कुंडली काका" : "Kundli Kaka", item: origin + (lang === "hi" ? "/hi" : "/") },
     { "@type": "ListItem", position: 2, name: APP_NAMES[key]?.[lang] || pageTitle, item: url },

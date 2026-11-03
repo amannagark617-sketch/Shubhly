@@ -260,7 +260,8 @@ export const HEAD = (title, desc, url, extra = "", img = "/img/og-image.jpg") =>
   <meta property="og:image" content="${esc(img)}" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="icon" href="/icons/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/icons/favicon-96.png" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
   <link rel="preload" href="/fonts/yatra-one-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/hind-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/style.css" />
@@ -295,7 +296,7 @@ export function renderPost(p, origin) {
     datePublished: p.date, dateModified: p.date, mainEntityOfPage: { "@type": "WebPage", "@id": url },
     image: [origin + p.img], keywords: p.tags.join(", "), articleSection: p.tags[0], wordCount: words,
     author: { "@type": "Organization", name: "Kundli Kaka", url: origin + "/" },
-    publisher: { "@type": "Organization", name: "Kundli Kaka", logo: { "@type": "ImageObject", url: origin + "/img/logo-mark.png" } },
+    publisher: { "@type": "Organization", name: "Kundli Kaka", logo: { "@type": "ImageObject", url: origin + "/icons/icon-512.png" } },
   })}</script>
   <script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
     { "@type": "ListItem", position: 1, name: "Kundli Kaka", item: origin + "/" },
