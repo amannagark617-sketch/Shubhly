@@ -289,6 +289,7 @@ async function loadToday() {
     renderVrat(data.panchang.upcoming || []);
     renderNow();
     buildTicker(data.panchang);
+    loadFestivals();
   } catch (e) {
     $("panchang").innerHTML = `<div class="fail">${esc(e.message)}</div>`;
     $("moonBox").innerHTML = "";
@@ -1500,4 +1501,52 @@ if ("IntersectionObserver" in window && $("s3d")) {
   new IntersectionObserver(([e], o) => {
     if (e.isIntersecting) { s3dWanted = true; o.disconnect(); mountSection(); }
   }, { rootMargin: "500px 0px" }).observe($("s3d"));
+}
+
+// ---------- festival countdown and shubh choghadiya for the coming festivals ----------
+// Dates are for India (source: HinduTone / Drik Panchang). Change here if they move.
+const FESTIVALS = [
+  { date: "2026-11-06", part: "day", en: "Dhanteras", hi: "धनतेरस",
+    note_en: "Naya bartan, sone-chaandi ki khareedari aur nayi shuruaat ke liye.", note_hi: "नया बर्तन, सोने-चांदी की खरीदारी और नई शुरुआत के लिए।" },
+  { date: "2026-11-08", part: "night", en: "Lakshmi Puja (Diwali)", hi: "लक्ष्मी पूजा (दिवाली)",
+    note_en: "Pradosh kaal mein puja. Raat ke shubh chaughadiye dekhiye.", note_hi: "प्रदोष काल में पूजा। रात के शुभ चौघड़िये देखिए।" },
+  { date: "2026-11-10", part: "day", en: "Govardhan Puja", hi: "गोवर्धन पूजा",
+    note_en: "Annakut aur gaay ki puja ke liye.", note_hi: "अन्नकूट और गाय की पूजा के लिए।" },
+  { date: "2026-11-11", part: "day", en: "Bhai Dooj", hi: "भाई दूज",
+    note_en: "Tika lagane ka shubh samay.", note_hi: "टीका लगाने का शुभ समय।" },
+];
+const FEST_END = "2026-11-12";
+const istToday = () => todayIn("Asia/Kolkata");
+const daysBetween = (from, to) => Math.round((Date.parse(to + "T00:00:00Z") - Date.parse(from + "T00:00:00Z")) / 86400000);
+
+async function loadFestivals() {
+  const root = $("festival");
+  if (!root) return;
+  const today = istToday();
+  if (today > FEST_END) { show(root, false); return; }
+  show(root, true);
+  const next = FESTIVALS.find((f) => f.date >= today);
+  const left = next ? daysBetween(today, next.date) : null;
+  $("festKicker").textContent = next
+    ? `${L(next.en, next.hi)}: ${left === 0 ? L("aaj hai", "आज है") : L(`${left} din baaki`, `${left} दिन बाकी`)}`
+    : "";
+  $("fest-h").textContent = L("Festival ka shubh samay", "त्योहार का शुभ समय");
+  $("festSub").textContent = L(`Aapke shehar (${loc.name}) ke hisaab se`, `आपके शहर (${loc.name}) के हिसाब से`);
+  $("festNote").textContent = L("Shehar badalne ke liye upar ki location box use karein. Times panchang se hain, puja ke liye apne pandit ya panchang se bhi check karein.", "शहर बदलने के लिए ऊपर का लोकेशन बॉक्स इस्तेमाल करें। समय पंचांग से हैं, पूजा से पहले अपने पंडित या पंचांग से भी मिलाएं।");
+  const rows = await Promise.all(FESTIVALS.map(async (f) => {
+    try {
+      const d = await api(`/api/today?${q({ date: f.date })}`);
+      const slots = (d.panchang.choghadiya[f.part] || []).filter((c) => c.quality === "good").slice(0, 3);
+      return { f, slots };
+    } catch { return { f, slots: [] }; }
+  }));
+  $("festList").innerHTML = rows.map(({ f, slots }) => `<li class="fest-row">
+      <div class="fest-date"><b>${Number(f.date.slice(8))}</b><span>${dateLabel(f.date, { month: "short" })}</span></div>
+      <div>
+        <h3>${esc(L(f.en, f.hi))}</h3>
+        <p>${esc(L(f.note_en, f.note_hi))}</p>
+        <div class="fest-slots">${slots.length
+          ? slots.map((c) => `<span class="fest-slot">${esc(L(c.name, c.nameHi))} · ${c.from}–${c.to}</span>`).join("")
+          : `<span class="fest-none">${esc(L("Shubh chaughadiya nahi mila", "शुभ चौघड़िया नहीं मिला"))}</span>`}</div>
+      </div></li>`).join("");
 }

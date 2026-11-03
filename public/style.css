@@ -1583,3 +1583,21 @@ img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
 .pj-lang a[aria-current="page"] { background: #1b1b3a; color: #fff; }
 .post-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; }
 .post-tags span { font-size: .82rem; color: #444; border: 1px solid #d9d9e3; border-radius: 6px; padding: 3px 10px; background: #fff; }
+
+/* festival countdown and shubh choghadiya */
+.festival { background: #fffdf7; border-top: 3px solid #f6b81c; border-bottom: 3px solid #f6b81c; }
+.fest-head { margin-bottom: 18px; }
+.fest-kicker { margin: 0 0 6px; font-weight: 700; color: #d8321a; font-size: 1.05rem; }
+.fest-sub, .fest-note { color: #555; margin: 6px 0 0; }
+.fest-note { font-size: .92rem; }
+.fest-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.fest-row { display: grid; grid-template-columns: 72px 1fr; gap: 16px; background: #fff; border: 2px solid #1b1b3a; border-radius: 14px; padding: 16px; }
+.fest-date { text-align: center; border-right: 2px solid #f6b81c; padding-right: 12px; }
+.fest-date b { display: block; font-size: 2rem; line-height: 1; color: #1b1b3a; }
+.fest-date span { font-size: .85rem; color: #555; text-transform: uppercase; }
+.fest-row h3 { margin: 0 0 4px; font-size: 1.15rem; color: #1b1b3a; }
+.fest-row p { margin: 0 0 10px; color: #444; font-size: .95rem; }
+.fest-slots { display: flex; flex-wrap: wrap; gap: 8px; }
+.fest-slot { border: 1px solid #1b1b3a; border-radius: 8px; padding: 4px 10px; font-size: .9rem; color: #1b1b3a; background: #fff8e1; }
+.fest-none { color: #777; font-size: .9rem; }
+.festival[hidden] { display: none; }
