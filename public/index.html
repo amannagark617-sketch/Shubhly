@@ -218,6 +218,71 @@
         </div>
         <ol class="fest-list" id="festList"></ol>
         <p class="fest-note" id="festNote"></p>
+
+        <div class="fest-corner" id="festCorner">
+          <article class="fest-tool" data-tool="diya">
+            <h3 data-i18n="fest.diyaH">Virtual diya</h3>
+            <p class="fest-tool-sub" data-i18n="fest.diyaSub">Ek click mein diya jalaiye aur tasveer save karein.</p>
+            <div class="diya-stage" data-diya-stage aria-hidden="true"></div>
+            <p class="fest-count" data-diya-count></p>
+            <div class="fest-bar">
+              <button type="button" class="fest-btn fest-btn--main" data-diya-light data-i18n="fest.diyaBtn">Diya jalaiye</button>
+              <button type="button" class="fest-btn" data-diya-save data-i18n="fest.save">Tasveer save karein</button>
+            </div>
+          </article>
+
+          <article class="fest-tool" data-tool="rangoli">
+            <h3 data-i18n="fest.rangoliH">Rangoli banaiye</h3>
+            <p class="fest-tool-sub" data-i18n="fest.rangoliSub">Screen par drag karke rang bhariye.</p>
+            <canvas class="rangoli-cv" data-rangoli-canvas width="540" height="540" aria-label="Rangoli canvas"></canvas>
+            <div class="fest-colors" data-rangoli-colors></div>
+            <div class="fest-bar">
+              <button type="button" class="fest-btn" data-rangoli-clear data-i18n="fest.clear">Saaf karein</button>
+              <button type="button" class="fest-btn fest-btn--main" data-rangoli-save data-i18n="fest.save">Tasveer save karein</button>
+            </div>
+          </article>
+
+          <article class="fest-tool" data-tool="wish">
+            <h3 data-i18n="fest.wishH">Shubh kamna card</h3>
+            <p class="fest-tool-sub" data-i18n="fest.wishSub">Naam aur rashi likhiye, card banakar WhatsApp pe bhejiye.</p>
+            <div class="fest-form">
+              <label><span data-i18n="fest.name">Naam</span>
+                <input type="text" maxlength="30" data-wish-name autocomplete="given-name" /></label>
+              <label><span data-i18n="fest.rashi">Rashi</span>
+                <select data-wish-rashi></select></label>
+              <label><span data-i18n="fest.fest">Tyohaar</span>
+                <select data-wish-fest></select></label>
+            </div>
+            <button type="button" class="fest-btn fest-btn--main" data-wish-make data-i18n="fest.makeCard">Card banaiye</button>
+            <div class="wish-out" data-wish-out></div>
+          </article>
+
+          <article class="fest-tool" data-tool="checklist">
+            <h3 data-i18n="fest.checkH">Dhanteras checklist</h3>
+            <p class="fest-tool-sub" data-i18n="fest.checkSub">Ye kaam is phone mein save rahenge.</p>
+            <ul class="fest-check" data-check-list></ul>
+            <p class="fest-count" data-check-count></p>
+            <div class="fest-bar">
+              <button type="button" class="fest-btn fest-btn--main" data-check-share data-i18n="fest.waShare">WhatsApp pe bhejiye</button>
+            </div>
+          </article>
+
+          <article class="fest-tool" data-tool="remind">
+            <h3 data-i18n="fest.remindH">Puja ka reminder</h3>
+            <p class="fest-tool-sub" data-i18n="fest.remindSub">WhatsApp pe khud ek message bhejiye, phir hum shubh samay yaad dilayenge.</p>
+            <div class="fest-bar">
+              <a class="fest-btn fest-btn--main" data-remind href="#" data-i18n="fest.remindBtn">WhatsApp reminder</a>
+            </div>
+          </article>
+
+          <article class="fest-tool" data-tool="sound">
+            <h3 data-i18n="fest.soundH">Tyohaar ki awaaz</h3>
+            <p class="fest-tool-sub" data-i18n="fest.soundSub">Diya aur card ke saath halki awaaz. Dafault roop se band hai.</p>
+            <div class="fest-bar">
+              <button type="button" class="fest-btn" data-sound aria-pressed="false">Awaaz chalu karo</button>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 

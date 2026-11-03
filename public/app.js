@@ -8,6 +8,7 @@ import { initFx, fillMarquee } from "/fx.js";
 import { SIGN_EN, planetName, signName, nakName, dayName, pickName, DATE_LOCALE } from "/names.js";
 import { initLiveSky } from "/livesky.js";
 import { initGuides } from "/chat.js";
+import { initFestivalCorner } from "/festival.js";
 import { GUIDES, isResting } from "/guides.js";
 
 // Display guide image or SVG avatar
@@ -1385,6 +1386,7 @@ if ("serviceWorker" in navigator) window.addEventListener("load", () => navigato
     $("storeWa").target = "_blank";
     $("storeWa").rel = "noopener";
   }
+  initFestivalCorner({ L, toast, config });
   loadToday();
   loadHoroscope();
 })();
