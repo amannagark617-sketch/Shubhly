@@ -91,16 +91,15 @@ function initWish(root, L, toast) {
     ["Deepak ki roshni aapke jeevan ka andhera mitaye aur Maa Lakshmi ki kripa sada bani rahe.", "दीपक की रोशनी आपके जीवन का अंधेरा मिटाए और माँ लक्ष्मी की कृपा सदा बनी रहे।"],
     ["Bhai-behen ka pyaar yunhi bana rahe, aur har din tyohaar jaisi khushiyon se bhara ho.", "भाई-बहन का प्यार यूँ ही बना रहे, और हर दिन त्योहार जैसी खुशियों से भरा हो।"],
   ];
-  // Optional artwork: drop a 1080x1350 image at public/img/cards/diwali-card.(jpg|png|webp)
+  // Artwork: public/img/cards/diwali-card.webp (1080x1350)
   // with a clear centre; without it the built-in design is used.
+  // Fetched once, only when someone makes a card (not on page load); one small WebP.
   let bgPromise = null;
-  const loadBg = () => bgPromise || (bgPromise = (async () => {
-    for (const ext of ["jpg", "png", "webp"]) {
-      const img = await new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = `/img/cards/diwali-card.${ext}`; });
-      if (img) return img;
-    }
-    return null;
-  })());
+  const loadBg = () => bgPromise || (bgPromise = new Promise((res) => {
+    const i = new Image(); i.decoding = "async";
+    i.onload = () => res(i); i.onerror = () => res(null);
+    i.src = "/img/cards/diwali-card.webp";
+  }));
   const draw = async () => {
     try { await document.fonts?.ready; } catch { /* ignore */ }
     const bg = await loadBg();
