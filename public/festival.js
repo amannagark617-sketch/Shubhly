@@ -4,9 +4,9 @@
 
 import { drawDiya, initDiya, initRangoli } from "/festart.js";
 const RASHI = [
-  ["Mesh", "मेष", "लाल"], ["Vrishabh", "वृषभ", "सफ़ेद"], ["Mithun", "मिथुन", "हरा"], ["Kark", "कर्क", "चांदी जैसा"],
-  ["Simha", "सिंह", "नारंगी"], ["Kanya", "कन्या", "हरा"], ["Tula", "तुला", "गुलाबी"], ["Vrishchik", "वृश्चिक", "मैरून"],
-  ["Dhanu", "धनु", "पीला"], ["Makar", "मकर", "भूरा"], ["Kumbh", "कुंभ", "नीला"], ["Meen", "मीन", "सी-ग्रीन"],
+  ["Mesh", "मेष", "लाल", "Red"], ["Vrishabh", "वृषभ", "सफ़ेद", "White"], ["Mithun", "मिथुन", "हरा", "Green"], ["Kark", "कर्क", "चांदी जैसा", "Silver"],
+  ["Simha", "सिंह", "नारंगी", "Orange"], ["Kanya", "कन्या", "हरा", "Green"], ["Tula", "तुला", "गुलाबी", "Pink"], ["Vrishchik", "वृश्चिक", "मैरून", "Maroon"],
+  ["Dhanu", "धनु", "पीला", "Yellow"], ["Makar", "मकर", "भूरा", "Brown"], ["Kumbh", "कुंभ", "नीला", "Blue"], ["Meen", "मीन", "सी-ग्रीन", "Sea green"],
 ];
 const CHECKLIST = [
   ["Naya kaam ya business shuru karo", "नया काम या बिज़नेस शुरू करो"],
@@ -86,37 +86,59 @@ function initWish(root, L, toast) {
   rashi.innerHTML = RASHI.map(([en, hi], i) => `<option value="${i}">${L(en, hi)}</option>`).join("");
   const festivals = [["Shubh Dhanteras", "शुभ धनतेरस"], ["Shubh Diwali", "शुभ दिवाली"], ["Shubh Bhai Dooj", "शुभ भाई दूज"]];
   fest.innerHTML = festivals.map(([en, hi], i) => `<option value="${i}">${L(en, hi)}</option>`).join("");
-  const draw = () => {
+  const BLESS = [
+    ["Maa Lakshmi aur Bhagwan Dhanvantari aapke ghar mein sukh, swasthya aur samriddhi bharein.", "माँ लक्ष्मी और भगवान धन्वंतरि आपके घर में सुख, स्वास्थ्य और समृद्धि भरें।"],
+    ["Deepak ki roshni aapke jeevan ka andhera mitaye aur Maa Lakshmi ki kripa sada bani rahe.", "दीपक की रोशनी आपके जीवन का अंधेरा मिटाए और माँ लक्ष्मी की कृपा सदा बनी रहे।"],
+    ["Bhai-behen ka pyaar yunhi bana rahe, aur har din tyohaar jaisi khushiyon se bhara ho.", "भाई-बहन का प्यार यूँ ही बना रहे, और हर दिन त्योहार जैसी खुशियों से भरा हो।"],
+  ];
+  // Optional artwork: drop a 1080x1350 image at public/img/cards/diwali-card.(jpg|png|webp)
+  // with a clear centre; without it the built-in design is used.
+  let bgPromise = null;
+  const loadBg = () => bgPromise || (bgPromise = (async () => {
+    for (const ext of ["jpg", "png", "webp"]) {
+      const img = await new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = `/img/cards/diwali-card.${ext}`; });
+      if (img) return img;
+    }
+    return null;
+  })());
+  const draw = async () => {
+    try { await document.fonts?.ready; } catch { /* ignore */ }
+    const bg = await loadBg();
     const c = document.createElement("canvas"); c.width = 1080; c.height = 1350;
     const x = c.getContext("2d");
-    x.fillStyle = "#fff"; x.fillRect(0, 0, 1080, 1350);
-    x.strokeStyle = "#f6b81c"; x.lineWidth = 16; x.strokeRect(40, 40, 1000, 1270);
-    x.strokeStyle = "#1b1b3a"; x.lineWidth = 3; x.strokeRect(70, 70, 940, 1210);
-    drawDiya(x, 540, 330, 290, 1, 0.3);
-    x.textAlign = "center"; x.fillStyle = "#d8321a";
-    x.font = '700 92px "Hind",sans-serif';
-    x.fillText(festivals[fest.value][1], 540, 450);
-    x.fillStyle = "#1b1b3a"; x.font = '600 64px "Hind",sans-serif';
+    x.textAlign = "center";
+    const ink = "#1b1b3a", accent = bg ? "#8a1c1c" : "#d8321a", gold = "#c8921f";
+    if (bg) {
+      x.drawImage(bg, 0, 0, 1080, 1350);
+    } else {
+      x.fillStyle = "#fff"; x.fillRect(0, 0, 1080, 1350);
+      x.strokeStyle = "#f6b81c"; x.lineWidth = 16; x.strokeRect(40, 40, 1000, 1270);
+      x.strokeStyle = ink; x.lineWidth = 3; x.strokeRect(70, 70, 940, 1210);
+      drawDiya(x, 540, 330, 290, 1, 0.3);
+    }
+    const f = Number(fest.value);
+    x.fillStyle = accent; x.font = '700 96px "Hind",sans-serif';
+    x.fillText(festivals[f][1], 540, bg ? 440 : 450);
+    x.strokeStyle = gold; x.lineWidth = 3; x.beginPath(); x.moveTo(380, bg ? 485 : 490); x.lineTo(700, bg ? 485 : 490); x.stroke();
     const who = name.value.trim() || L("Aap", "आप");
-    wrap(x, who, 880).slice(0, 2).forEach((l, i) => x.fillText(l, 540, 560 + i * 80));
-    const [ren, rhi, col] = RASHI[rashi.value];
-    x.fillStyle = "#555"; x.font = '500 46px "Hind",sans-serif';
-    x.fillText(`${rhi} (${ren})`, 540, 740);
-    x.fillText(`Shubh rang: ${col}`, 540, 806);
-    x.strokeStyle = "#f6b81c"; x.lineWidth = 3; x.beginPath(); x.moveTo(300, 870); x.lineTo(780, 870); x.stroke();
-    x.fillStyle = "#1b1b3a"; x.font = '500 46px "Hind",sans-serif';
-    wrap(x, "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन", 860).forEach((l, i) => x.fillText(l, 540, 960 + i * 62));
-    x.fillStyle = "#555"; x.font = '400 36px "Hind",sans-serif';
-    x.fillText("Bhagavad Gita 2.47", 540, 1100);
-    x.fillStyle = "#d8321a"; x.font = '700 50px "Hind",sans-serif';
-    x.fillText("Kundli Kaka", 540, 1160);
-    x.fillStyle = "#1b1b3a"; x.font = '500 40px "Hind",sans-serif';
-    x.fillText("kundlikaka.in", 540, 1215);
+    x.fillStyle = ink; x.font = '600 66px "Hind",sans-serif';
+    const nameLines = wrap(x, who, 860).slice(0, 2);
+    nameLines.forEach((l, i) => x.fillText(l, 540, 580 + i * 80));
+    const y0 = 580 + (nameLines.length - 1) * 80 + 90;
+    x.fillStyle = "#444"; x.font = '500 44px "Hind",sans-serif';
+    wrap(x, L(BLESS[f][0], BLESS[f][1]), 820).slice(0, 4).forEach((l, i) => x.fillText(l, 540, y0 + i * 62));
+    const [ren, rhi, colHi, colEn] = RASHI[rashi.value];
+    x.fillStyle = ink; x.font = '600 42px "Hind",sans-serif';
+    x.fillText(`${L(ren, rhi)}  |  ${L("Shubh rang", "शुभ रंग")}: ${L(colEn, colHi)}`, 540, bg ? 1040 : 1060);
+    x.fillStyle = accent; x.font = '700 44px "Hind",sans-serif';
+    x.fillText("Kundli Kaka", 540, bg ? 1105 : 1170);
+    x.fillStyle = "#555"; x.font = '500 36px "Hind",sans-serif';
+    x.fillText("kundlikaka.in", 540, bg ? 1150 : 1220);
     return c;
   };
-  root.querySelector("[data-wish-make]").addEventListener("click", () => {
+  root.querySelector("[data-wish-make]").addEventListener("click", async () => {
     if (soundOn()) bell();
-    const c = draw();
+    const c = await draw();
     const out = root.querySelector("[data-wish-out]");
     out.innerHTML = "";
     out.append(c);
