@@ -2,7 +2,7 @@
 // WhatsApp reminder link and festive sounds. Everything runs in the visitor's
 // browser; nothing here is sent to our server except the normal page view.
 
-const W = 1080;
+import { drawDiya, initDiya, initRangoli } from "/festart.js";
 const RASHI = [
   ["Mesh", "मेष", "लाल"], ["Vrishabh", "वृषभ", "सफ़ेद"], ["Mithun", "मिथुन", "हरा"], ["Kark", "कर्क", "चांदी जैसा"],
   ["Simha", "सिंह", "नारंगी"], ["Kanya", "कन्या", "हरा"], ["Tula", "तुला", "गुलाबी"], ["Vrishchik", "वृश्चिक", "मैरून"],
@@ -25,13 +25,13 @@ const store = {
 // ---------- sound (opt-in, off by default) ----------
 let audio = null;
 const soundOn = () => store.get("kk.sound", false);
-function ctx() {
+function actx() {
   if (!audio) { try { audio = new (window.AudioContext || window.webkitAudioContext)(); } catch { return null; } }
   if (audio.state === "suspended") audio.resume();
   return audio;
 }
 function bell() {
-  const a = ctx(); if (!a) return;
+  const a = actx(); if (!a) return;
   [1318, 1976].forEach((f, i) => {
     const o = a.createOscillator(), g = a.createGain();
     o.frequency.value = f; o.connect(g); g.connect(a.destination);
@@ -42,7 +42,7 @@ function bell() {
   });
 }
 function crackle() {
-  const a = ctx(); if (!a) return;
+  const a = actx(); if (!a) return;
   const len = a.sampleRate * 0.35, buf = a.createBuffer(1, len, a.sampleRate), d = buf.getChannelData(0);
   for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
   const s = a.createBufferSource(), g = a.createGain(); s.buffer = buf; g.gain.value = 0.25;
@@ -78,97 +78,6 @@ function shareCanvas(canvas, text, name, toast) {
   }, "image/png");
 }
 
-// ---------- 1. virtual diya ----------
-function initDiya(root, L, toast) {
-  const btn = root.querySelector("[data-diya-light]");
-  const stage = root.querySelector("[data-diya-stage]");
-  const count = root.querySelector("[data-diya-count]");
-  const save = root.querySelector("[data-diya-save]");
-  const today = new Date().toISOString().slice(0, 10);
-  let rec = store.get("kk.diya", { day: today, n: 0 });
-  if (rec.day !== today) rec = { day: today, n: 0 };
-  const show = () => { count.textContent = L(`Aapne aaj ${rec.n} diye jalaaye.`, `आपने आज ${rec.n} दीये जलाए।`); };
-  show();
-  btn.addEventListener("click", () => {
-    rec.n += 1; store.set("kk.diya", rec); show();
-    const f = document.createElement("span");
-    f.className = "diya-flame";
-    f.style.left = `${12 + Math.random() * 76}%`;
-    stage.append(f);
-    if (soundOn()) crackle();
-    if (stage.childElementCount > 40) stage.firstElementChild.remove();
-  });
-  save.addEventListener("click", () => {
-    const c = document.createElement("canvas"); c.width = 1080; c.height = 1080;
-    const x = c.getContext("2d");
-    x.fillStyle = "#fff"; x.fillRect(0, 0, 1080, 1080);
-    const g = x.createRadialGradient(540, 470, 10, 540, 520, 380);
-    g.addColorStop(0, "rgba(246,184,28,.9)"); g.addColorStop(1, "rgba(246,184,28,0)");
-    x.fillStyle = g; x.fillRect(0, 0, 1080, 1080);
-    x.fillStyle = "#b5651d"; x.beginPath(); x.ellipse(540, 680, 260, 90, 0, 0, Math.PI * 2); x.fill();
-    x.fillStyle = "#ffd36b"; x.beginPath(); x.ellipse(540, 660, 230, 60, 0, 0, Math.PI * 2); x.fill();
-    const fl = x.createRadialGradient(540, 470, 5, 540, 500, 120);
-    fl.addColorStop(0, "#fff7d1"); fl.addColorStop(0.4, "#ffb020"); fl.addColorStop(1, "rgba(216,50,26,0)");
-    x.fillStyle = fl; x.beginPath(); x.ellipse(540, 490, 80, 150, 0, 0, Math.PI * 2); x.fill();
-    x.fillStyle = "#1b1b3a"; x.textAlign = "center"; x.font = '700 60px "Hind",sans-serif';
-    x.fillText(L("Mera diya", "मेरा दीया"), 540, 880);
-    x.fillStyle = "#d8321a"; x.font = '600 44px "Hind",sans-serif';
-    x.fillText("kundlikaka.in", 540, 960);
-    shareCanvas(c, L("Maine apna diya jalaya. Aap bhi jalaaiye: kundlikaka.in", "मैंने अपना दीया जलाया। आप भी जलाइए: kundlikaka.in"), "mera-diya.png", toast);
-  });
-}
-
-// ---------- 2. rangoli maker ----------
-function initRangoli(root, L, toast) {
-  const cv = root.querySelector("[data-rangoli-canvas]");
-  const x = cv.getContext("2d");
-  const colors = ["#d8321a", "#f6b81c", "#e0508a", "#ff7a1a", "#2e8b57"];
-  let color = colors[0];
-  const sw = root.querySelector("[data-rangoli-colors]");
-  sw.innerHTML = colors.map((c, i) => `<button type="button" class="sw${i === 0 ? " on" : ""}" style="background:${c}" data-c="${c}" aria-label="${c}"></button>`).join("");
-  sw.addEventListener("click", (e) => {
-    const b = e.target.closest("[data-c]"); if (!b) return;
-    color = b.dataset.c;
-    sw.querySelectorAll(".sw").forEach((s) => s.classList.toggle("on", s === b));
-  });
-  const reset = () => {
-    x.fillStyle = "#fff"; x.fillRect(0, 0, cv.width, cv.height);
-    x.strokeStyle = "#eee"; x.lineWidth = 1;
-    for (let i = 0; i <= 12; i++) { const p = (cv.width / 12) * i; x.beginPath(); x.moveTo(p, 0); x.lineTo(p, cv.height); x.stroke(); x.beginPath(); x.moveTo(0, p); x.lineTo(cv.width, p); x.stroke(); }
-  };
-  reset();
-  const pos = (e) => { const r = cv.getBoundingClientRect(); return [((e.clientX - r.left) / r.width) * cv.width, ((e.clientY - r.top) / r.height) * cv.height]; };
-  const petal = (px, py) => {
-    const r = 18 + Math.random() * 8;
-    for (let k = 0; k < 8; k++) {
-      const a = (Math.PI / 4) * k;
-      x.fillStyle = color; x.beginPath(); x.ellipse(px + Math.cos(a) * r, py + Math.sin(a) * r, r * 0.55, r * 0.28, a, 0, Math.PI * 2); x.fill();
-    }
-    x.fillStyle = "#f6b81c"; x.beginPath(); x.arc(px, py, 6, 0, Math.PI * 2); x.fill();
-  };
-  let drawing = false, last = null;
-  cv.addEventListener("pointerdown", (e) => { drawing = true; const [px, py] = pos(e); petal(px, py); last = [px, py]; cv.setPointerCapture(e.pointerId); });
-  cv.addEventListener("pointermove", (e) => {
-    if (!drawing) return;
-    const [px, py] = pos(e);
-    if (!last || Math.hypot(px - last[0], py - last[1]) > 26) { petal(px, py); last = [px, py]; }
-  });
-  const stop = () => { drawing = false; last = null; };
-  cv.addEventListener("pointerup", stop); cv.addEventListener("pointercancel", stop);
-  root.querySelector("[data-rangoli-clear]").addEventListener("click", reset);
-  root.querySelector("[data-rangoli-save]").addEventListener("click", () => {
-    const c = document.createElement("canvas"); c.width = 1080; c.height = 1200;
-    const y = c.getContext("2d");
-    y.fillStyle = "#fff"; y.fillRect(0, 0, 1080, 1200);
-    y.drawImage(cv, 0, 0, 1080, 1080);
-    y.fillStyle = "#1b1b3a"; y.textAlign = "center"; y.font = '700 56px "Hind",sans-serif';
-    y.fillText(L("Meri rangoli", "मेरी रंगोली"), 540, 1135);
-    y.fillStyle = "#d8321a"; y.font = '600 40px "Hind",sans-serif';
-    y.fillText("kundlikaka.in", 540, 1185);
-    shareCanvas(c, L("Meri Diwali rangoli. Aap bhi banaiye: kundlikaka.in", "मेरी दिवाली रंगोली। आप भी बनाइए: kundlikaka.in"), "meri-rangoli.png", toast);
-  });
-}
-
 // ---------- 3. wish card ----------
 function initWish(root, L, toast) {
   const name = root.querySelector("[data-wish-name]");
@@ -183,21 +92,22 @@ function initWish(root, L, toast) {
     x.fillStyle = "#fff"; x.fillRect(0, 0, 1080, 1350);
     x.strokeStyle = "#f6b81c"; x.lineWidth = 16; x.strokeRect(40, 40, 1000, 1270);
     x.strokeStyle = "#1b1b3a"; x.lineWidth = 3; x.strokeRect(70, 70, 940, 1210);
+    drawDiya(x, 540, 330, 290, 1, 0.3);
     x.textAlign = "center"; x.fillStyle = "#d8321a";
     x.font = '700 92px "Hind",sans-serif';
-    x.fillText(festivals[fest.value][1], 540, 330);
+    x.fillText(festivals[fest.value][1], 540, 450);
     x.fillStyle = "#1b1b3a"; x.font = '600 64px "Hind",sans-serif';
     const who = name.value.trim() || L("Aap", "आप");
-    wrap(x, who, 880).slice(0, 2).forEach((l, i) => x.fillText(l, 540, 470 + i * 80));
+    wrap(x, who, 880).slice(0, 2).forEach((l, i) => x.fillText(l, 540, 560 + i * 80));
     const [ren, rhi, col] = RASHI[rashi.value];
     x.fillStyle = "#555"; x.font = '500 46px "Hind",sans-serif';
-    x.fillText(`${rhi} (${ren})`, 540, 680);
-    x.fillText(`Shubh rang: ${col}`, 540, 748);
-    x.strokeStyle = "#f6b81c"; x.lineWidth = 3; x.beginPath(); x.moveTo(300, 820); x.lineTo(780, 820); x.stroke();
+    x.fillText(`${rhi} (${ren})`, 540, 740);
+    x.fillText(`Shubh rang: ${col}`, 540, 806);
+    x.strokeStyle = "#f6b81c"; x.lineWidth = 3; x.beginPath(); x.moveTo(300, 870); x.lineTo(780, 870); x.stroke();
     x.fillStyle = "#1b1b3a"; x.font = '500 46px "Hind",sans-serif';
-    wrap(x, "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन", 860).forEach((l, i) => x.fillText(l, 540, 920 + i * 62));
+    wrap(x, "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन", 860).forEach((l, i) => x.fillText(l, 540, 960 + i * 62));
     x.fillStyle = "#555"; x.font = '400 36px "Hind",sans-serif';
-    x.fillText("Bhagavad Gita 2.47", 540, 1060);
+    x.fillText("Bhagavad Gita 2.47", 540, 1100);
     x.fillStyle = "#d8321a"; x.font = '700 50px "Hind",sans-serif';
     x.fillText("Kundli Kaka", 540, 1160);
     x.fillStyle = "#1b1b3a"; x.font = '500 40px "Hind",sans-serif';
@@ -261,11 +171,22 @@ function initSound(root, L) {
 // ---------- entry ----------
 const FEST_TEXT = {
   "fest.diyaH": ["Virtual diya", "वर्चुअल दीया"],
-  "fest.diyaSub": ["Tap karke diya jalaiye and picture save karein.", "टैप करके दीया जलाइए और तस्वीर सेव करें।"],
+  "fest.diyaSub": ["Diye par tap karke jalaiye, kamna likhiye aur tasveer bhejiye.", "दीये पर टैप करके जलाइए, कामना लिखिए और तस्वीर भेजिए।"],
+  "fest.diyaLight": ["Ek diya jalaiye", "एक दीया जलाइए"],
+  "fest.diyaAll": ["Saare diye jalaiye", "सारे दीये जलाइए"],
+  "fest.diyaOut": ["Diye bujhaiye", "दीये बुझाइए"],
+  "fest.wishLine": ["Apni kamna likhiye (zaroori nahi)", "अपनी कामना लिखिए (ज़रूरी नहीं)"],
+  "fest.undo": ["Wapas", "वापस"],
+  "fest.auto": ["Khud banao", "खुद बनाओ"],
+  "fest.sym": ["Symmetry", "सिमेट्री"],
+  "fest.size": ["Brush ka size", "ब्रश का साइज़"],
+  "fest.erase": ["Mitaiye", "मिटाइए"],
+  "fest.guide": ["Guide dikhaiye", "गाइड दिखाइए"],
+  "fest.colors": ["Rang", "रंग"],
   "fest.diyaBtn": ["Diya jalaiye", "दीया जलाइए"],
   "fest.save": ["Picture save karein", "तस्वीर सेव करें"],
   "fest.rangoliH": ["Rangoli banaiye", "रंगोली बनाइए"],
-  "fest.rangoliSub": ["Screen par drag karke rang bhariye.", "स्क्रीन पर ड्रैग करके रंग भरिए।"],
+  "fest.rangoliSub": ["Ungli se rang bhariye. Symmetry apne aap lagti hai.", "उंगली से रंग भरिए। सिमेट्री अपने आप लगती है।"],
   "fest.clear": ["Saaf karein", "साफ़ करें"],
   "fest.wishH": ["Shubh kamna card", "शुभ कामना कार्ड"],
   "fest.wishSub": ["Naam aur rashi chunkar card banaiye.", "नाम और राशि चुनकर कार्ड बनाइए।"],
@@ -290,8 +211,9 @@ export function initFestivalCorner({ L, toast, config }) {
     const pair = FEST_TEXT[el.dataset.i18n];
     if (pair) el.textContent = L(pair[0], pair[1]);
   });
-  initDiya(root.querySelector("[data-tool=diya]"), L, toast);
-  initRangoli(root.querySelector("[data-tool=rangoli]"), L, toast);
+  const helpers = { L, toast, store, soundOn, crackle, shareCanvas };
+  initDiya(root.querySelector("[data-tool=diya]"), helpers);
+  initRangoli(root.querySelector("[data-tool=rangoli]"), helpers);
   initWish(root.querySelector("[data-tool=wish]"), L, toast);
   initChecklist(root.querySelector("[data-tool=checklist]"), L, toast);
   initReminder(root.querySelector("[data-tool=remind]"), L, config);

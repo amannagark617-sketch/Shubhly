@@ -1603,31 +1603,47 @@ img.kr-mark { object-fit: cover; background: #fff; border: 2px solid #f6b81c; }
 .festival[hidden] { display: none; }
 
 /* festival corner: diya, rangoli, wish card, checklist, reminder, sound */
-.fest-corner { display: grid; gap: 16px; margin-top: 24px; grid-template-columns: 1fr; }
-@media (min-width: 720px) { .fest-corner { grid-template-columns: 1fr 1fr; } }
-.fest-tool { background: #fff; border: 1px solid #f6b81c; border-radius: 14px; padding: 18px; }
-.fest-tool h3 { margin: 0 0 4px; font-size: 1.15rem; color: #1b1b3a; }
-.fest-tool-sub { margin: 0 0 12px; color: #555; font-size: .92rem; }
-.fest-count { margin: 8px 0 0; color: #555; font-size: .9rem; }
-.fest-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.fest-btn { font: inherit; font-size: .95rem; padding: 9px 14px; border-radius: 10px; border: 1px solid #1b1b3a; background: #fff; color: #1b1b3a; cursor: pointer; text-decoration: none; display: inline-block; }
+.fest-corner { display: grid; gap: 18px; margin-top: 28px; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .fest-corner { grid-template-columns: 1fr 1fr; } }
+.fest-tool { background: #fff; border: 1px solid #e8d9a8; border-top: 3px solid #f6b81c; border-radius: 12px; padding: 20px; min-width: 0; }
+.fest-tool--wide { grid-column: 1 / -1; }
+.fest-tool h3 { margin: 0 0 4px; font-size: 1.2rem; color: #1b1b3a; }
+.fest-tool-sub { margin: 0 0 14px; color: #555; font-size: .95rem; }
+.fest-count { margin: 10px 0 0; color: #555; font-size: .92rem; }
+.fest-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.fest-bar--tight { margin-top: 0; }
+.fest-btn { font: inherit; font-size: .95rem; padding: 10px 14px; border-radius: 8px; border: 1px solid #1b1b3a; background: #fff; color: #1b1b3a; cursor: pointer; text-decoration: none; display: inline-block; }
+.fest-btn:hover { background: #f7f4ea; }
 .fest-btn--main { background: #d8321a; border-color: #d8321a; color: #fff; }
-.fest-btn:focus-visible, .fest-form input:focus-visible, .fest-form select:focus-visible, .fest-check input:focus-visible, .sw:focus-visible { outline: 3px solid #1b1b3a; outline-offset: 2px; }
-.fest-btn[hidden] { display: none; }
-.diya-stage { position: relative; height: 120px; border-radius: 14px; background: linear-gradient(#1b1b3a, #2c2c55); overflow: hidden; }
-.diya-stage::after { content: ""; position: absolute; left: 50%; bottom: 14px; width: 120px; height: 26px; transform: translateX(-50%); border-radius: 0 0 60px 60px; background: #b5651d; }
-.diya-flame { position: absolute; bottom: 36px; width: 14px; height: 26px; transform: translateX(-50%); border-radius: 50% 50% 40% 40%; background: radial-gradient(#fff7d1, #ffb020 60%, rgba(216,50,26,0)); animation: flick .9s ease-in-out infinite alternate; }
-@keyframes flick { from { transform: translateX(-50%) scale(1); } to { transform: translateX(-50%) scale(1.12, .92); } }
-@media (prefers-reduced-motion: reduce) { .diya-flame { animation: none; } }
-.rangoli-cv { display: block; width: 100%; max-width: 360px; aspect-ratio: 1; border-radius: 14px; border: 1px solid #ddd; touch-action: none; cursor: crosshair; background: #fff; }
-.fest-colors { display: flex; gap: 8px; margin-top: 10px; }
-.sw { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px #1b1b3a; cursor: pointer; padding: 0; }
-.sw.on { box-shadow: 0 0 0 3px #1b1b3a; }
+.fest-btn--main:hover { background: #bf2a15; }
+.fest-btn.on, .fest-btn[aria-pressed="true"] { background: #1b1b3a; color: #fff; }
+.fest-btn[hidden], .fest-tool[hidden] { display: none; }
+.fest-btn:focus-visible, .fest-form input:focus-visible, .fest-form select:focus-visible, .fest-field input:focus-visible, .fest-check input:focus-visible, .sw:focus-visible, .seg button:focus-visible { outline: 3px solid #1b1b3a; outline-offset: 2px; }
+.fest-field { display: grid; gap: 4px; margin-top: 12px; font-size: .9rem; color: #333; }
+.fest-field input { font: inherit; padding: 10px; border: 1px solid #1b1b3a; border-radius: 8px; color: #1b1b3a; background: #fff; }
+.diya-cv { display: block; width: 100%; height: auto; border-radius: 10px; cursor: pointer; touch-action: manipulation; background: #0f0d24; }
+.rg-layout { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .rg-layout { grid-template-columns: minmax(0, 1fr) 250px; align-items: start; } }
+.rg-wrap { position: relative; width: 100%; max-width: 560px; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: radial-gradient(circle at 50% 45%, #2e2a38, #15131b); }
+.rg-wrap canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.rg-cv { touch-action: none; cursor: crosshair; }
+.rg-guide { pointer-events: none; }
+.rg-panel { display: grid; gap: 16px; align-content: start; }
+.rg-group { display: grid; gap: 8px; }
+.rg-label { font-size: .88rem; color: #555; }
+.fest-colors { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-width: 220px; }
+.sw { aspect-ratio: 1; border-radius: 6px; border: 1px solid #1b1b3a33; cursor: pointer; padding: 0; }
+.sw.on { outline: 3px solid #1b1b3a; outline-offset: 2px; }
+.seg { display: flex; gap: 6px; }
+.seg button { flex: 1; font: inherit; padding: 8px 0; border: 1px solid #1b1b3a; background: #fff; color: #1b1b3a; border-radius: 8px; cursor: pointer; }
+.seg button.on { background: #1b1b3a; color: #fff; }
+.rg-panel input[type=range] { width: 100%; accent-color: #d8321a; }
+.rg-check { display: flex; gap: 8px; align-items: center; font-size: .92rem; color: #333; }
 .fest-form { display: grid; gap: 10px; margin-bottom: 12px; }
 .fest-form label { display: grid; gap: 4px; font-size: .9rem; color: #333; }
-.fest-form input, .fest-form select { font: inherit; padding: 9px 10px; border: 1px solid #1b1b3a; border-radius: 10px; background: #fff; color: #1b1b3a; }
-.wish-out { margin-top: 12px; }
-.wish-out canvas { border-radius: 14px; border: 1px solid #ddd; }
-.fest-check { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.fest-check label { display: flex; gap: 10px; align-items: flex-start; font-size: .95rem; color: #222; cursor: pointer; }
+.fest-form input, .fest-form select { font: inherit; padding: 10px; border: 1px solid #1b1b3a; border-radius: 8px; background: #fff; color: #1b1b3a; }
+.wish-out { margin-top: 14px; }
+.wish-out canvas { border-radius: 10px; border: 1px solid #ddd; }
+.fest-check { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.fest-check label { display: flex; gap: 10px; align-items: flex-start; font-size: .97rem; color: #222; cursor: pointer; }
 .fest-check input { margin-top: 4px; width: 18px; height: 18px; accent-color: #d8321a; }

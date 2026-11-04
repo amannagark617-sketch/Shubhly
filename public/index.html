@@ -220,25 +220,42 @@
         <p class="fest-note" id="festNote"></p>
 
         <div class="fest-corner" id="festCorner">
-          <article class="fest-tool" data-tool="diya">
+          <article class="fest-tool fest-tool--wide" data-tool="diya">
             <h3 data-i18n="fest.diyaH">Virtual diya</h3>
-            <p class="fest-tool-sub" data-i18n="fest.diyaSub">Ek click mein diya jalaiye aur tasveer save karein.</p>
-            <div class="diya-stage" data-diya-stage aria-hidden="true"></div>
+            <p class="fest-tool-sub" data-i18n="fest.diyaSub">Diye par tap karke jalaiye, kamna likhiye aur tasveer bhejiye.</p>
+            <canvas class="diya-cv" data-diya-canvas width="900" height="420" role="img" aria-label="Five diyas on a brass plate. Tap to light them."></canvas>
             <p class="fest-count" data-diya-count></p>
+            <label class="fest-field"><span data-i18n="fest.wishLine">Apni kamna likhiye (zaroori nahi)</span>
+              <input type="text" maxlength="70" data-diya-wish /></label>
             <div class="fest-bar">
-              <button type="button" class="fest-btn fest-btn--main" data-diya-light data-i18n="fest.diyaBtn">Diya jalaiye</button>
-              <button type="button" class="fest-btn" data-diya-save data-i18n="fest.save">Tasveer save karein</button>
+              <button type="button" class="fest-btn fest-btn--main" data-diya-light data-i18n="fest.diyaLight">Ek diya jalaiye</button>
+              <button type="button" class="fest-btn" data-diya-all data-i18n="fest.diyaAll">Saare diye jalaiye</button>
+              <button type="button" class="fest-btn" data-diya-out data-i18n="fest.diyaOut">Diye bujhaiye</button>
+              <button type="button" class="fest-btn fest-btn--main" data-diya-save data-i18n="fest.save">Picture save karein</button>
             </div>
           </article>
 
-          <article class="fest-tool" data-tool="rangoli">
+          <article class="fest-tool fest-tool--wide" data-tool="rangoli">
             <h3 data-i18n="fest.rangoliH">Rangoli banaiye</h3>
-            <p class="fest-tool-sub" data-i18n="fest.rangoliSub">Screen par drag karke rang bhariye.</p>
-            <canvas class="rangoli-cv" data-rangoli-canvas width="540" height="540" aria-label="Rangoli canvas"></canvas>
-            <div class="fest-colors" data-rangoli-colors></div>
-            <div class="fest-bar">
-              <button type="button" class="fest-btn" data-rangoli-clear data-i18n="fest.clear">Saaf karein</button>
-              <button type="button" class="fest-btn fest-btn--main" data-rangoli-save data-i18n="fest.save">Tasveer save karein</button>
+            <p class="fest-tool-sub" data-i18n="fest.rangoliSub">Ungli se rang bhariye. Symmetry apne aap lagti hai.</p>
+            <div class="rg-layout">
+              <div class="rg-wrap">
+                <canvas class="rg-cv" data-rangoli-canvas aria-label="Rangoli canvas"></canvas>
+                <canvas class="rg-guide" data-rangoli-guide aria-hidden="true"></canvas>
+              </div>
+              <div class="rg-panel">
+                <div class="rg-group"><span class="rg-label" data-i18n="fest.colors">Rang</span><div class="fest-colors" data-rangoli-colors></div></div>
+                <div class="rg-group"><span class="rg-label" data-i18n="fest.sym">Symmetry</span><div class="seg" data-rangoli-sym></div></div>
+                <div class="rg-group"><span class="rg-label" data-i18n="fest.size">Brush ka size</span><input type="range" min="6" max="34" value="16" data-rangoli-size /></div>
+                <label class="rg-check"><input type="checkbox" checked data-rangoli-guide-toggle /> <span data-i18n="fest.guide">Guide dikhaiye</span></label>
+                <div class="fest-bar fest-bar--tight">
+                  <button type="button" class="fest-btn" data-rangoli-erase aria-pressed="false" data-i18n="fest.erase">Mitaiye</button>
+                  <button type="button" class="fest-btn" data-rangoli-undo data-i18n="fest.undo">Wapas</button>
+                  <button type="button" class="fest-btn" data-rangoli-clear data-i18n="fest.clear">Saaf karein</button>
+                  <button type="button" class="fest-btn" data-rangoli-auto data-i18n="fest.auto">Khud banao</button>
+                </div>
+                <button type="button" class="fest-btn fest-btn--main" data-rangoli-save data-i18n="fest.save">Picture save karein</button>
+              </div>
             </div>
           </article>
 
