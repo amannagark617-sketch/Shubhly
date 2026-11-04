@@ -101,7 +101,14 @@ function initWish(root, L, toast) {
     i.src = "/img/cards/diwali-card.webp";
   }));
   const draw = async () => {
-    try { await document.fonts?.ready; } catch { /* ignore */ }
+    try {
+      await Promise.all([
+        document.fonts.load('700 60px "Noto Serif Devanagari"', "शुभ दिवाली राशि"),
+        document.fonts.load('500 40px "Noto Serif Devanagari"', "शुभ रंग"),
+        document.fonts.load('700 60px "Cormorant Garamond"'), document.fonts.load('600 40px "Cormorant Garamond"'),
+        document.fonts.load('italic 600 40px "Cormorant Garamond"'),
+      ]);
+    } catch { /* fall back to system serif */ }
     const bg = await loadBg();
     const c = document.createElement("canvas"); c.width = 1080; c.height = 1350;
     const x = c.getContext("2d");
@@ -116,23 +123,29 @@ function initWish(root, L, toast) {
       drawDiya(x, 540, 330, 290, 1, 0.3);
     }
     const f = Number(fest.value);
-    x.fillStyle = accent; x.font = '700 96px "Hind",sans-serif';
-    x.fillText(festivals[f][1], 540, bg ? 440 : 450);
-    x.strokeStyle = gold; x.lineWidth = 3; x.beginPath(); x.moveTo(380, bg ? 485 : 490); x.lineTo(700, bg ? 485 : 490); x.stroke();
+    const hiLang = L("a", "b") === "b";
+    const SERIF = '"Cormorant Garamond","Noto Serif Devanagari",Georgia,serif';
+    const DEV = '"Noto Serif Devanagari","Cormorant Garamond",Georgia,serif';
+    x.fillStyle = accent; x.font = `700 104px ${DEV}`;
+    x.fillText(festivals[f][1], 540, bg ? 445 : 450);
+    x.strokeStyle = gold; x.lineWidth = 2.5; x.beginPath(); x.moveTo(400, 490); x.lineTo(680, 490); x.stroke();
+    x.fillStyle = gold; x.beginPath(); x.arc(540, 490, 5, 0, Math.PI * 2); x.fill();
     const who = name.value.trim() || L("Aap", "आप");
-    x.fillStyle = ink; x.font = '600 66px "Hind",sans-serif';
+    x.fillStyle = ink; x.font = hiLang ? `700 66px ${DEV}` : `700 84px ${SERIF}`;
     const nameLines = wrap(x, who, 860).slice(0, 2);
-    nameLines.forEach((l, i) => x.fillText(l, 540, 580 + i * 80));
-    const y0 = 580 + (nameLines.length - 1) * 80 + 90;
-    x.fillStyle = "#444"; x.font = '500 44px "Hind",sans-serif';
-    wrap(x, L(BLESS[f][0], BLESS[f][1]), 820).slice(0, 4).forEach((l, i) => x.fillText(l, 540, y0 + i * 62));
+    nameLines.forEach((l, i) => x.fillText(l, 540, 590 + i * 88));
+    const y0 = 590 + (nameLines.length - 1) * 88 + 92;
+    x.fillStyle = "#4a4458"; x.font = hiLang ? `500 42px ${DEV}` : `italic 600 50px ${SERIF}`;
+    wrap(x, L(BLESS[f][0], BLESS[f][1]), 820).slice(0, 4).forEach((l, i) => x.fillText(l, 540, y0 + i * (hiLang ? 68 : 60)));
     const [ren, rhi, colHi, colEn] = RASHI[rashi.value];
-    x.fillStyle = ink; x.font = '600 42px "Hind",sans-serif';
-    x.fillText(`${L(ren, rhi)}  |  ${L("Shubh rang", "शुभ रंग")}: ${L(colEn, colHi)}`, 540, bg ? 1040 : 1060);
-    x.fillStyle = accent; x.font = '700 44px "Hind",sans-serif';
-    x.fillText("Kundli Kaka", 540, bg ? 1105 : 1170);
-    x.fillStyle = "#555"; x.font = '500 36px "Hind",sans-serif';
-    x.fillText("kundlikaka.in", 540, bg ? 1150 : 1220);
+    x.fillStyle = accent; x.font = hiLang ? `700 58px ${DEV}` : `700 64px ${SERIF}`;
+    x.fillText(L(`${ren} Rashi`, `${rhi} राशि`), 540, 915);
+    x.fillStyle = ink; x.font = hiLang ? `500 42px ${DEV}` : `600 48px ${SERIF}`;
+    x.fillText(L(`Shubh Rang: ${colEn}`, `शुभ रंग: ${colHi}`), 540, 985);
+    x.fillStyle = accent; x.font = `700 54px ${SERIF}`;
+    x.fillText("Kundli Kaka", 540, bg ? 1090 : 1170);
+    x.fillStyle = "#5a5468"; x.font = `600 34px ${SERIF}`;
+    x.fillText("kundlikaka.in", 540, bg ? 1135 : 1220);
     return c;
   };
   root.querySelector("[data-wish-make]").addEventListener("click", async () => {
