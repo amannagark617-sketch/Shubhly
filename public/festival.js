@@ -3,11 +3,6 @@
 // browser; nothing here is sent to our server except the normal page view.
 
 import { drawDiya, initDiya, initRangoli } from "/festart.js";
-const RASHI = [
-  ["Mesh", "मेष", "लाल", "Red"], ["Vrishabh", "वृषभ", "सफ़ेद", "White"], ["Mithun", "मिथुन", "हरा", "Green"], ["Kark", "कर्क", "चांदी जैसा", "Silver"],
-  ["Simha", "सिंह", "नारंगी", "Orange"], ["Kanya", "कन्या", "हरा", "Green"], ["Tula", "तुला", "गुलाबी", "Pink"], ["Vrishchik", "वृश्चिक", "मैरून", "Maroon"],
-  ["Dhanu", "धनु", "पीला", "Yellow"], ["Makar", "मकर", "भूरा", "Brown"], ["Kumbh", "कुंभ", "नीला", "Blue"], ["Meen", "मीन", "सी-ग्रीन", "Sea green"],
-];
 const CHECKLIST = [
   ["Naya kaam ya business shuru karo", "नया काम या बिज़नेस शुरू करो"],
   ["Shaam ko Lakshmi puja, darwaze par diya", "शाम को लक्ष्मी पूजा, दरवाज़े पर दीया"],
@@ -81,14 +76,14 @@ function shareCanvas(canvas, text, name, toast) {
 // ---------- 3. wish card ----------
 function initWish(root, L, toast) {
   const name = root.querySelector("[data-wish-name]");
-  const rashi = root.querySelector("[data-wish-rashi]");
   const fest = root.querySelector("[data-wish-fest]");
-  rashi.innerHTML = RASHI.map(([en, hi], i) => `<option value="${i}">${L(en, hi)}</option>`).join("");
-  const festivals = [["Shubh Dhanteras", "शुभ धनतेरस"], ["Shubh Diwali", "शुभ दिवाली"], ["Shubh Bhai Dooj", "शुभ भाई दूज"]];
+  const festivals = [["Shubh Dhanteras", "शुभ धनतेरस"], ["Shubh Diwali", "शुभ दिवाली"], ["Shubh Govardhan Puja", "शुभ गोवर्धन पूजा"], ["Shubh Bhai Dooj", "शुभ भाई दूज"]];
   fest.innerHTML = festivals.map(([en, hi], i) => `<option value="${i}">${L(en, hi)}</option>`).join("");
+  fest.value = "1";
   const BLESS = [
     ["Maa Lakshmi aur Bhagwan Dhanvantari aapke ghar mein sukh, swasthya aur samriddhi bharein.", "माँ लक्ष्मी और भगवान धन्वंतरि आपके घर में सुख, स्वास्थ्य और समृद्धि भरें।"],
     ["Deepak ki roshni aapke jeevan ka andhera mitaye aur Maa Lakshmi ki kripa sada bani rahe.", "दीपक की रोशनी आपके जीवन का अंधेरा मिटाए और माँ लक्ष्मी की कृपा सदा बनी रहे।"],
+    ["Bhagwan Krishna ki kripa se aapke parivar mein sada sukh aur anand bana rahe.", "भगवान कृष्ण की कृपा से आपके परिवार में सदा सुख और आनंद बना रहे।"],
     ["Bhai-behen ka pyaar yunhi bana rahe, aur har din tyohaar jaisi khushiyon se bhara ho.", "भाई-बहन का प्यार यूँ ही बना रहे, और हर दिन त्योहार जैसी खुशियों से भरा हो।"],
   ];
   // Artwork: public/img/cards/diwali-card.webp (1080x1350)
@@ -130,22 +125,19 @@ function initWish(root, L, toast) {
     x.fillText(festivals[f][1], 540, bg ? 445 : 450);
     x.strokeStyle = gold; x.lineWidth = 2.5; x.beginPath(); x.moveTo(400, 490); x.lineTo(680, 490); x.stroke();
     x.fillStyle = gold; x.beginPath(); x.arc(540, 490, 5, 0, Math.PI * 2); x.fill();
-    const who = name.value.trim() || L("Aap", "आप");
-    x.fillStyle = ink; x.font = hiLang ? `700 66px ${DEV}` : `700 84px ${SERIF}`;
-    const nameLines = wrap(x, who, 860).slice(0, 2);
-    nameLines.forEach((l, i) => x.fillText(l, 540, 590 + i * 88));
-    const y0 = 590 + (nameLines.length - 1) * 88 + 92;
-    x.fillStyle = "#4a4458"; x.font = hiLang ? `500 42px ${DEV}` : `italic 600 50px ${SERIF}`;
-    wrap(x, L(BLESS[f][0], BLESS[f][1]), 820).slice(0, 4).forEach((l, i) => x.fillText(l, 540, y0 + i * (hiLang ? 68 : 60)));
-    const [ren, rhi, colHi, colEn] = RASHI[rashi.value];
-    x.fillStyle = accent; x.font = hiLang ? `700 58px ${DEV}` : `700 64px ${SERIF}`;
-    x.fillText(L(`${ren} Rashi`, `${rhi} राशि`), 540, 915);
-    x.fillStyle = ink; x.font = hiLang ? `500 42px ${DEV}` : `600 48px ${SERIF}`;
-    x.fillText(L(`Shubh Rang: ${colEn}`, `शुभ रंग: ${colHi}`), 540, 985);
+    x.fillStyle = "#4a4458"; x.font = hiLang ? `500 50px ${DEV}` : `italic 600 58px ${SERIF}`;
+    wrap(x, L(BLESS[f][0], BLESS[f][1]), 800).slice(0, 5).forEach((l, i) => x.fillText(l, 540, 620 + i * (hiLang ? 78 : 70)));
+    const who = name.value.trim();
+    if (who) {
+      x.fillStyle = "#7a7488"; x.font = hiLang ? `500 38px ${DEV}` : `italic 600 42px ${SERIF}`;
+      x.fillText(L("Shubhkamnaon ke saath", "शुभकामनाओं सहित"), 540, 920);
+      x.fillStyle = ink; x.font = hiLang ? `700 66px ${DEV}` : `700 84px ${SERIF}`;
+      wrap(x, who, 860).slice(0, 2).forEach((l, i) => x.fillText(l, 540, 1008 + i * 84));
+    }
     x.fillStyle = accent; x.font = `700 54px ${SERIF}`;
-    x.fillText("Kundli Kaka", 540, bg ? 1090 : 1170);
+    x.fillText("Kundli Kaka", 540, bg ? 1118 : 1170);
     x.fillStyle = "#5a5468"; x.font = `600 34px ${SERIF}`;
-    x.fillText("kundlikaka.in", 540, bg ? 1135 : 1220);
+    x.fillText("kundlikaka.in", 540, bg ? 1156 : 1220);
     return c;
   };
   root.querySelector("[data-wish-make]").addEventListener("click", async () => {
@@ -223,9 +215,8 @@ const FEST_TEXT = {
   "fest.rangoliSub": ["Ungli se rang bhariye. Symmetry apne aap lagti hai.", "उंगली से रंग भरिए। सिमेट्री अपने आप लगती है।"],
   "fest.clear": ["Saaf karein", "साफ़ करें"],
   "fest.wishH": ["Shubh kamna card", "शुभ कामना कार्ड"],
-  "fest.wishSub": ["Naam aur rashi chunkar card banaiye.", "नाम और राशि चुनकर कार्ड बनाइए।"],
+  "fest.wishSub": ["Apna naam likhiye, tyohaar chuniye aur card dost-parivaar ko bhejiye.", "अपना नाम लिखिए, त्योहार चुनिए और कार्ड दोस्त-परिवार को भेजिए।"],
   "fest.name": ["Naam", "नाम"],
-  "fest.rashi": ["Rashi", "राशि"],
   "fest.fest": ["Tyohaar", "त्योहार"],
   "fest.makeCard": ["Card banaiye", "कार्ड बनाइए"],
   "fest.checkH": ["Dhanteras checklist", "धनतेरस चेकलिस्ट"],
