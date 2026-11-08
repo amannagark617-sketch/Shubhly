@@ -641,6 +641,29 @@ function renderAnswer(data, western, timeUnknown) {
   $("answerReport").onclick = () => document.getElementById("reportBtn")?.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
+// ---- the free taste of the ₹99 report, and the price on its button ----
+function priceLabel() {
+  const w = window.kkWallet;
+  const p = w?.enabled ? w.prices?.report : null;
+  const btn = $("reportBtn");
+  if (btn && !btn.disabled) btn.textContent = t("rep_btn") + (p ? ` · ₹${p / 100}` : "");
+}
+document.addEventListener("kk:wallet", priceLabel);
+document.addEventListener("kk:lang", priceLabel);
+async function loadPreview(payload, western) {
+  const box = $("reportPreview");
+  if (!box) return;
+  show(box, false);
+  if (western) return;
+  try {
+    const res = await fetch("/api/report/preview", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
+    const d = await res.json();
+    if (!res.ok || !d.months?.length) return;
+    box.innerHTML = `<h4>${esc(t("pv_h"))}</h4>` + d.months.map((m) => `<div class="rr rr--${m.tag}"><div class="rr-h"><b>${esc(m.label)}</b><span class="pv-tag">${esc(t("pv_" + m.tag))}</span><span class="rr-bar" style="--w:${m.score * 20}%" aria-hidden="true"></span></div></div>`).join("") + `<p class="pv-more">${esc(t("pv_more"))}</p>`;
+    show(box, true);
+  } catch { /* the preview is a bonus; the page works without it */ }
+}
+
 function renderAbout(data, western) {
   const box = $("aboutCard");
   const a = data.about;
@@ -745,6 +768,8 @@ function renderResult(data, payload, { scroll = true } = {}) {
   renderLifeReading(data, payload, western);
   renderAbout(data, western);
   renderAnswer(data, western, payload.timeUnknown);
+  loadPreview(payload, western);
+  priceLabel();
 
   const s = data.sadeSati;
   const sb = $("satiBox");
@@ -1137,6 +1162,7 @@ $("reportBtn").addEventListener("click", async () => {
     show(err);
   } finally {
     setBusy(btn, false, t("rep_btn"));
+    priceLabel();
   }
 });
 $("pdfBtn").addEventListener("click", async () => {

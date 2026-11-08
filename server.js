@@ -31,6 +31,7 @@ import { buildMyDay } from "./src/myday.js";
 import { renderPujaIndex, renderPuja, pujaOf, PUJA_PATHS, PUJA_HI_PATHS } from "./src/puja.js";
 import { signReply, verifyReply, speakKrishna, FREE_LISTENS } from "./src/voice.js";
 import { accountsFromEnv } from "./src/accounts.js";
+import { buildFacts } from "./src/report-facts.js";
 import { generateFullReport } from "./src/report-full.js";
 import { pricesFromEnv, VOICE_DAILY_CAP } from "./src/pricing.js";
 import { hiPath } from "./src/seo.js";
@@ -369,6 +370,18 @@ app.post("/api/pdf", kundliLimit, async (req, res, next) => {
       "Cache-Control": "no-store",
     });
     res.send(pdf);
+  } catch (e) {
+    next(e);
+  }
+});
+
+// A free taste of the full report: the next three months, worked out by the chart engine (no AI, no charge).
+app.post("/api/report/preview", kundliLimit, (req, res, next) => {
+  try {
+    const birth = parseBirthInput(req.body);
+    if (birth.tradition === "western") return res.json({ months: [] });
+    const facts = buildFacts(computeKundli(birth), { timeUnknown: birth.timeUnknown });
+    res.json({ months: facts.months.slice(0, 3).map(({ label, tag, score }) => ({ label, tag, score })) });
   } catch (e) {
     next(e);
   }

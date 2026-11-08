@@ -377,9 +377,9 @@ export const BIG3 = {
 };
 
 export const SUBPERIOD = {
-  en: "Right now you are in the {sub} sub-period of {main}, until {until}.",
-  hi: "अभी आप {main} की {sub} उप-अवधि में हैं, {until} तक।",
-  hn: "Abhi aap {main} ki {sub} sub-period mein ho, {until} tak.",
+  en: "Right now you are in a smaller {sub} stretch inside a longer {main} chapter of your life. This stretch lasts until {until}.",
+  hi: "अभी आप जीवन के लंबे {main} दौर के अंदर छोटे {sub} दौर में हैं। यह {until} तक चलेगा।",
+  hn: "Abhi aap life ke lambe {main} daur ke andar chhote {sub} daur mein ho. Yeh {until} tak chalega.",
 };
 
 export const ORD = {
