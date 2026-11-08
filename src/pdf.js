@@ -724,25 +724,23 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     }
   }
 
-  // ---- a closing thought from the Gita
+  // ---- the back cover: a closing thought from the Gita and the logo
   {
-    const meaning = lang === "hi" || lang === "hn" ? "कर्म करने में ही तुम्हारा अधिकार है, फल में कभी नहीं।" : "You have the right to do your work, but never to its fruits.";
-    const h = 128;
-    ensure(h + 12);
-    y += 8;
-    const gr = doc.linearGradient(L, y, L + W, y + h); gr.stop(0, "#6e1a30").stop(1, "#2a0a14");
-    doc.rect(L, y, W, h).fill(gr);
-    mandala(doc, PW / 2, y + h / 2, 150, { color: GOLDL, opacity: 0.18, lw: 0.5 });
-    doc.rect(L + 6, y + 6, W - 12, h - 12).lineWidth(0.5).stroke(GOLD);
-    rich(doc, "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।", L + 20, y + 26, { size: 15, bold: true, color: GOLDL, width: W - 40, align: "center" });
-    rich(doc, meaning, L + 30, y + 58, { size: 10.5, color: "#ffffff", width: W - 60, align: "center" });
-    rich(doc, "Bhagavad Gita 2.47", L + 20, y + 88, { size: 8.5, bold: true, color: GOLDL, width: W - 40, align: "center" });
-    rich(doc, "kundlikaka.in", L + 20, y + 104, { size: 8.5, color: "#ead9dc", width: W - 40, align: "center" });
-    y += h + 10;
-    // the full logo on white, as a signature
-    ensure(90);
-    doc.image(LOGO_FULL, PW / 2 - 90, y + 14, { width: 180 });
-    y += 80;
+    const hiLang = lang === "hi" || lang === "hn";
+    const meaning = hiLang ? "कर्म करने में ही तुम्हारा अधिकार है, फल में कभी नहीं।" : "You have the right to do your work, but never to its fruits.";
+    doc.addPage();
+    const gr = doc.linearGradient(0, 0, PW, PH); gr.stop(0, "#6e1a30").stop(1, "#2a0a14");
+    doc.rect(0, 0, PW, PH).fill(gr);
+    doc.rect(26, 26, PW - 52, PH - 52).lineWidth(0.8).stroke(GOLD);
+    doc.rect(32, 32, PW - 64, PH - 64).lineWidth(0.3).stroke(GOLD);
+    mandala(doc, PW / 2, PH / 2 - 40, 230, { color: GOLDL, opacity: 0.4, lw: 0.55 });
+    rich(doc, "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।", L, PH / 2 - 78, { size: 19, bold: true, color: GOLDL, width: W, align: "center" });
+    rich(doc, meaning, L + 40, PH / 2 - 36, { size: 12, color: "#ffffff", width: W - 80, align: "center" });
+    rich(doc, "Bhagavad Gita 2.47", L, PH / 2 - 4, { size: 9.5, bold: true, color: GOLDL, width: W, align: "center" });
+    doc.rect(PW / 2 - 115, PH - 210, 230, 84).fill("#ffffff");
+    doc.rect(PW / 2 - 111, PH - 206, 222, 76).lineWidth(0.5).stroke(GOLD);
+    doc.image(LOGO_FULL, PW / 2 - 100, PH - 202, { width: 200 });
+    rich(doc, "kundlikaka.in", L, PH - 100, { size: 10.5, bold: true, color: GOLDL, width: W, align: "center" });
   }
 
   // ---- the contents page (page 2), now that every page number is known
@@ -777,7 +775,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
 
   // ---- running header and footer on every inner page
   const range = doc.bufferedPageRange();
-  for (let i = 1; i < range.count; i++) {
+  for (let i = 1; i < range.count - 1; i++) {
     doc.switchToPage(range.start + i);
     const bottom = doc.page.margins.bottom;
     doc.page.margins.bottom = 0;
