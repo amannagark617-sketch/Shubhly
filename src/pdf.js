@@ -411,6 +411,54 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     if (rep.focus.length) row(card(L, W, rep.focusTitle || T("rep_focus"), rep.focus, CREAM));
     if (rep.now) note(lab("now", T("ab_sub")), rep.now);
     if (rep.tips.length) row(card(L, W, lab("tips", T("rd_ahead")), rep.tips, "#eaf1ff"));
+    // ---- the longer sections of the full report (tables, month by month, favourable periods, doshas, remedies)
+    const TAGC = { good: "#2b7a4b", steady: "#c08a12", careful: "#b3261e" };
+    for (const sec of rep.sections || []) {
+      section(sec.title);
+      for (const b of sec.blocks) {
+        if (b.type === "p") {
+          const hh = heightOf(doc, b.text, 10, W); ensure(hh + 8);
+          rich(doc, b.text, L, y, { size: 10, width: W }); y += hh + 8;
+        } else if (b.type === "list") {
+          for (const it of b.items) {
+            const hh = heightOf(doc, it, 10, W - 14); ensure(hh + 6);
+            doc.circle(L + 4, y + 6, 2).fill(GOLD);
+            rich(doc, it, L + 14, y, { size: 10, width: W - 14 }); y += hh + 5;
+          }
+          y += 4;
+        } else if (b.type === "table") {
+          const n = Math.max(b.head.length, ...b.rows.map((r) => r.length));
+          const cw = [W * (n === 2 ? 0.45 : n === 3 ? 0.4 : 0.3), ...Array(n - 1).fill((W - W * (n === 2 ? 0.45 : n === 3 ? 0.4 : 0.3)) / (n - 1))];
+          const xs = cw.map((_, i) => L + cw.slice(0, i).reduce((a, c) => a + c, 0));
+          if (b.head.length) {
+            ensure(24);
+            b.head.forEach((h, i) => rich(doc, h, xs[i], y, { size: 9, bold: true, color: MUTED, width: cw[i] - 6 }));
+            y += 16; doc.moveTo(L, y - 3).lineTo(L + W, y - 3).lineWidth(0.5).stroke(GOLD);
+          }
+          for (const r of b.rows) {
+            const hh = Math.max(...r.map((c, i) => heightOf(doc, c, 9.5, cw[i] - 6, i === 0)));
+            ensure(hh + 6);
+            r.forEach((c, i) => rich(doc, c, xs[i], y, { size: 9.5, bold: i === 0, width: cw[i] - 6 }));
+            y += hh + 5;
+          }
+          y += 6;
+        } else if (b.type === "rows") {
+          for (const r of b.rows) {
+            const hh = heightOf(doc, r.text || " ", 10, W);
+            ensure(hh + 26);
+            rich(doc, r.h, L, y, { size: 10.5, bold: true, color: r.tag ? TAGC[r.tag] : NAVY, width: W - 110 });
+            if (r.score) {
+              const bx = L + W - 96;
+              doc.rect(bx, y + 3, 90, 7).fill("#e3e3ea");
+              doc.rect(bx, y + 3, 18 * r.score, 7).fill(TAGC[r.tag] || NAVY);
+            }
+            y += 17;
+            if (r.text) { rich(doc, r.text, L, y, { size: 10, width: W }); y += hh; }
+            y += 8;
+          }
+        }
+      }
+    }
     if (rep.closing) { const hh = heightOf(doc, rep.closing, 10.5, W, true); ensure(hh + 10); rich(doc, rep.closing, L, y, { size: 10.5, bold: true, width: W, align: "center" }); y += hh + 8; }
   } else {
     const blocks = plainMarkdown(typeof report === "string" ? report : report?.markdown);

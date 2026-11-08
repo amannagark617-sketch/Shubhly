@@ -1015,6 +1015,20 @@ const REP_DEFAULT = {
   strengths: "Your strengths", watch: "Room to grow", now: "The time you are in", tips: "Simple tips",
   elements: "Your elements", timeline: "Your life periods", fire: "Fire", earth: "Earth", air: "Air", water: "Water",
 };
+function renderBlock(b) {
+  if (b.type === "p") return `<p>${esc(b.text)}</p>`;
+  if (b.type === "list") return `<ul>${b.items.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`;
+  if (b.type === "table") {
+    const head = b.head.length ? `<thead><tr>${b.head.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead>` : "";
+    return `<div class="rt-wrap"><table class="rt">${head}<tbody>${b.rows.map((r) => `<tr>${r.map((c) => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  }
+  if (b.type === "rows") {
+    return b.rows.map((r) => `<div class="rr${r.tag ? " rr--" + r.tag : ""}"><div class="rr-h"><b>${esc(r.h)}</b>${r.score ? `<span class="rr-bar" style="--w:${r.score * 20}%" aria-hidden="true"></span>` : ""}</div>${r.text ? `<p>${esc(r.text)}</p>` : ""}</div>`).join("");
+  }
+  return "";
+}
+const renderSections = (secs) => (secs || []).map((s) => `<section class="rc rc--sec"><h4>${esc(s.title)}</h4>${s.blocks.map(renderBlock).join("")}</section>`).join("");
+
 function renderReport(r, chart, timeUnknown) {
   if (!r || typeof r === "string") return renderMarkdown(r || "");
   if (r.markdown) return renderMarkdown(r.markdown);
@@ -1038,6 +1052,7 @@ function renderReport(r, chart, timeUnknown) {
     </div>
     ${!dasha && r.now ? card("rc--now", L("now"), `<p>${esc(r.now)}</p>`) : ""}
     ${card("rc--tips", L("tips"), r.tips.length ? `<ul>${li(r.tips)}</ul>` : "")}
+    ${renderSections(r.sections)}
     ${r.closing ? `<p class="rc-close">${esc(r.closing)}</p>` : ""}
     <button type="button" class="btn btn-primary" id="reportPdf">${esc(t("rep_pdf"))}</button>
   </div>`;

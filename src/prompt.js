@@ -36,7 +36,7 @@ export function languageRule(language) {
   return `Write the whole report, headings included, in simple, warm ${name}, in its own native script. Common English words (career, relationship) are fine. Keep planet and sign names the way ${name} speakers normally say them.`;
 }
 
-const SHARED_RULES = `STRICT RULES
+export const SHARED_RULES = `STRICT RULES
 1. Use ONLY the chart data given in the user message. Never calculate or guess planetary positions, degrees, houses or dates. If something is not in the data, do not state it.
 2. Never predict death, lifespan, serious illness, accidents, pregnancy outcomes, or exact money, job or marriage dates. Never promise or guarantee any outcome. Use words of tendency and possibility (such as "tends to", "may", "possibility").
 3. Never use fear. No curses, no "your life will be ruined", no scary warnings.

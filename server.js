@@ -31,6 +31,7 @@ import { buildMyDay } from "./src/myday.js";
 import { renderPujaIndex, renderPuja, pujaOf, PUJA_PATHS, PUJA_HI_PATHS } from "./src/puja.js";
 import { signReply, verifyReply, speakKrishna, FREE_LISTENS } from "./src/voice.js";
 import { accountsFromEnv } from "./src/accounts.js";
+import { generateFullReport } from "./src/report-full.js";
 import { pricesFromEnv, VOICE_DAILY_CAP } from "./src/pricing.js";
 import { hiPath } from "./src/seo.js";
 import { PAGES, SLUGS, signPage, loadShell, renderPage, sitemap } from "./src/pages.js";
@@ -386,7 +387,7 @@ app.post("/api/report", reportLimit, async (req, res, next) => {
     const topic = parseTopic(req.body?.topic);
     const language = parseLanguage(req.body?.language);
     const chart = computeKundli(birth);
-    const job = await paidJob(req, res, { kind: "report", amountPaise: PRICES.report, label: "Kundli report" }, () => generateReport({
+    const job = await paidJob(req, res, { kind: "report", amountPaise: PRICES.report, label: "Kundli report" }, () => generateFullReport({
       name,
       topic,
       language,
