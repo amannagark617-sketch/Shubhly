@@ -237,6 +237,9 @@ const TAGS = {
   "marriage-delay-kundli-and-practical-steps": ["Marriage", "Kundli", "Seventh house", "Kundli Milan", "Saturn"],
   "rahu-kaal-and-choghadiya-explained-simply": ["Rahu Kaal", "Choghadiya", "Panchang", "Muhurat", "Vedic astrology"],
   "how-to-read-your-kundli-a-beginners-guide": ["Kundli", "Lagna", "Dasha", "Nakshatra", "Vedic astrology"],
+  "money-not-staying-kundli-and-gita": ["Money", "Kundli", "Bhagavad Gita", "Saturn", "Jupiter"],
+  "family-problems-astrology-and-gita": ["Family", "Kundli", "Bhagavad Gita", "Mental peace", "Moon sign"],
+  "relationship-problems-kundli-and-practical-steps": ["Relationship", "Love", "Kundli", "Kundli Milan", "Venus"],
   "how-kundli-kaka-works": ["Kundli Kaka", "AI astrology", "Pricing", "Trust", "Refunds"],
   "three-card-tarot-how-to-read-past-present-next": ["Tarot", "Three card spread", "Love", "Career", "Money"],
 };

@@ -175,6 +175,7 @@ export const MORE_POSTS = [
 <h2>What a kundli cannot do</h2>
 <p>It cannot guarantee a result or tell you the exact day you will get a job. Use it to understand the season you are in and plan your effort accordingly.</p>
 <p>See your own tenth house, dasha and a simple reading free at <a href="/kundli">Make your free kundli</a>.</p>
+<p>Want to see your own timing? <a href="/kundli?p=job">Get your free answer for job or career problems</a>.</p>
 `,
   },
   {
@@ -200,6 +201,7 @@ export const MORE_POSTS = [
 <h2>A calm view</h2>
 <p>A chart shows tendencies, not a closed door. Many people who marry later say the wait led them to a better fit. Use the kundli for understanding and timing, and let real conversation decide.</p>
 <p>See your seventh house and your dasha in your <a href="/kundli">free kundli</a>.</p>
+<p>Want to see your own timing? <a href="/kundli?p=marriage">Get your free answer for a delayed marriage</a>.</p>
 `,
   },
   {
@@ -322,6 +324,102 @@ export const MORE_POSTS = [
 </ul>
 <p>Astrology is a way to think about timing. It is not a promise. For health, money or legal trouble, please also talk to a doctor, an adviser or a lawyer.</p>
 <p>Ready to start? <a href="/kundli">Make your free kundli</a>.</p>
+`,
+  },
+  {
+    slug: "money-not-staying-kundli-and-gita",
+    title: "Money Not Staying? What Your Kundli and the Gita Say",
+    desc: "Money comes and goes? A calm look at what your kundli can show about earning and saving, what the Gita says about effort, and a simple plan you can start this week.",
+    date: D, read: 6,
+    lead: "Many people earn well and still feel the money slips away. Some earn little and worry every month. Here is a calm way to look at it, using your kundli for the timing and the Gita for the mind, with a few small steps that do not need any puja or purchase.",
+    body: `
+<h2>First, the honest part</h2>
+<p>A kundli cannot make money appear, and no remedy replaces earning, saving and planning. What a kundli can do is show <b>timing</b>: which stretches of life tend to favour earning, which ask for patience, and which need extra care with spending. That helps you decide when to push and when to hold.</p>
+<h2>What your kundli can show about money</h2>
+<ul>
+<li><b>The current period of life (dasha).</b> Some periods favour steady income and savings. Others favour spending on comfort, travel or family. Knowing which one you are in explains a lot.</li>
+<li><b>Where Jupiter and Saturn are now.</b> Jupiter years often bring openings and support. Saturn years ask for discipline and slow, honest work.</li>
+<li><b>The second and eleventh houses.</b> The second shows what you save and keep. The eleventh shows gains and income. Their planets show your natural money habits.</li>
+</ul>
+<p>You can see your own current period and a plain-language answer for money free at <a href="/kundli?p=money">Kundli Kaka: money problems</a>.</p>
+<h2>What the Gita says that helps</h2>
+<p>The Gita does not promise wealth. It gives a way to stay steady while you work for it. The best-known line (2.47) says you have a right to your effort, but not to the fruit. That sounds hard, but it is practical: put your energy into the work you can control, such as the skill, the sale, the saving, and stop checking your worth against every result.</p>
+<p>Verse 6.17 speaks of moderation: balance in eating, sleeping, working and rest. Money habits follow the same rule. A steady, boring routine usually beats a big push followed by a crash.</p>
+<h2>A simple seven day plan</h2>
+<ul>
+<li><b>Day 1:</b> Write down everything that came in and went out last month. Just look at it without judging.</li>
+<li><b>Day 2:</b> Mark three things you spent on that you would not choose again.</li>
+<li><b>Day 3:</b> Move a small fixed amount to savings on the day your money arrives, even if it is only a few hundred rupees.</li>
+<li><b>Day 4:</b> List one skill or one extra source of income you could build in the next three months.</li>
+<li><b>Day 5:</b> Settle or plan the smallest debt first.</li>
+<li><b>Day 6:</b> Read a few lines of the Gita and sit quietly for five minutes to calm money worry.</li>
+<li><b>Day 7:</b> Check your kundli answer for the next few months and plan around the favourable ones.</li>
+</ul>
+<h2>What we will not say</h2>
+<p>We will not tell you that a stone, a ring or an expensive puja will fix your finances. If someone does, please be careful. For serious debt or a financial emergency, also speak to a trusted adviser or a bank.</p>
+<p>Ready to see your own timing? <a href="/kundli?p=money">Get your free answer for money problems</a>.</p>
+`,
+  },
+  {
+    slug: "family-problems-astrology-and-gita",
+    title: "Trouble at Home? A Calm Way to Use Your Kundli and the Gita",
+    desc: "Quarrels, tension or distance at home? What your kundli can and cannot say about family trouble, what the Gita teaches about patience, and steps to try this week.",
+    date: D, read: 6,
+    lead: "When the home feels heavy, everything else gets harder. People often look to the kundli for an answer. It cannot fix a relationship, but it can help you understand the phase you are in and respond with more patience. Here is how, with a few practical steps.",
+    body: `
+<h2>Start with what astrology can honestly offer</h2>
+<p>A kundli does not decide who is right in a family argument. It can show the kind of phase you are going through. Some stretches of life make a person more sensitive, tired or short-tempered. Knowing that can help you pause before reacting, and remember that the phase will pass.</p>
+<h2>What to look at</h2>
+<ul>
+<li><b>Your current period (dasha).</b> Saturn periods can feel heavy and slow. Mars periods can bring anger and quick reactions. Moon periods bring feeling and mood swings.</li>
+<li><b>The Moon sign.</b> It shows how you handle emotions and what calms you down.</li>
+<li><b>The fourth house.</b> This is the house of home and inner peace. Its condition describes how settled you feel at home.</li>
+</ul>
+<p>You can see your current phase and a plain answer for your situation free at <a href="/kundli?p=family">Kundli Kaka: trouble at home</a>.</p>
+<h2>What the Gita offers</h2>
+<p>The Gita is set on a battlefield, but its main teaching is about the mind. Verse 2.14 says that pleasure and pain come and go like summer and winter, and the wise learn to bear them. Verse 12.13 describes a person who bears ill will towards no one and is friendly and kind. In a family argument, those two lines are a very practical guide: do not let one bad hour define the whole relationship, and answer with kindness even if you are hurt.</p>
+<h2>Small steps for this week</h2>
+<ul>
+<li>When a quarrel starts, wait ten slow breaths before replying.</li>
+<li>Have one short, calm talk with the person you are in conflict with. Start with "I feel" instead of "you always".</li>
+<li>Eat at least one meal a day together, without phones.</li>
+<li>Light a diya in the evening and spend two quiet minutes as a family, if your family does this.</li>
+<li>Listen to the other person fully once before you explain yourself.</li>
+</ul>
+<h2>When to ask for more help</h2>
+<p>If there is violence, fear, or serious harm, please do not wait for a better period. Talk to a trusted family member, a counsellor or the local helpline. Astrology is not the right tool for that.</p>
+<p>Want to understand your own phase? <a href="/kundli?p=family">Get your free answer for trouble at home</a>.</p>
+`,
+  },
+  {
+    slug: "relationship-problems-kundli-and-practical-steps",
+    title: "Relationship Problems: What Your Kundli Can and Cannot Tell You",
+    desc: "Fights, distance or doubts in a relationship? What a kundli can show about your own patterns, what it cannot decide for you, and practical steps to try.",
+    date: D, read: 6,
+    lead: "When a relationship is going through a rough patch, it is natural to ask the stars. Your kundli can tell you something useful about your own patterns and your current phase. It cannot tell you to stay or to leave. Here is how to use it well.",
+    body: `
+<h2>What a kundli can show</h2>
+<ul>
+<li><b>Your own style in love.</b> Your Moon sign and the planet Venus describe what you need to feel loved and how you tend to show it.</li>
+<li><b>Your current phase.</b> A heavy Saturn period can make a relationship feel cold or slow. A Venus period often brings warmth and attachment, and a Mars period brings heat and quarrels.</li>
+<li><b>Timing.</b> Some stretches are better for important conversations, and some are better for waiting.</li>
+</ul>
+<p>You can see your own style and phase, in plain words, at <a href="/kundli?p=love">Kundli Kaka: relationship problem</a>.</p>
+<p>If you are thinking about marriage with a particular person, you can compare both charts with <a href="/match">Kundli Milan</a>. Treat the score as one input. A good score does not guarantee a good marriage, and a low score does not rule one out.</p>
+<h2>What a kundli cannot do</h2>
+<p>It cannot tell you what is in another person's heart. It cannot decide whether you should stay or leave, and nobody should tell you to end a relationship only because of a chart. That decision comes from how you are treated, how you feel, and what you both are ready to change.</p>
+<h2>What the Gita adds</h2>
+<p>Verse 6.5 says a person should lift themselves by their own effort and not let themselves down. In relationships this means looking at what you can change in yourself first: how you listen, how you speak when angry, and what you expect from the other person. Verse 12.13 praises the one who is friendly and compassionate towards everyone, which is a good measure for how we treat the people closest to us.</p>
+<h2>Practical steps</h2>
+<ul>
+<li>Write down the real issue in one sentence. Many fights are about something smaller.</li>
+<li>Choose a calm time to talk, not the middle of an argument.</li>
+<li>Say what you need clearly instead of expecting the other person to guess.</li>
+<li>Give each other a week of kind behaviour, with no scorekeeping, and see what changes.</li>
+<li>If the same problem keeps returning, consider talking to a counsellor together.</li>
+</ul>
+<p>If you ever feel unsafe or controlled in a relationship, please speak to someone you trust or a helpline. That matters more than any chart.</p>
+<p>Curious about your own pattern? <a href="/kundli?p=love">Get your free answer for relationship problems</a>.</p>
 `,
   },
 ];
