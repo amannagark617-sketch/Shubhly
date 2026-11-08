@@ -96,16 +96,17 @@
           <h1 id="hero-h" data-i="hero_h"></h1>
           <p class="hero-lead" data-i="hero_lead"></p>
           <p class="live-pill" id="livePill" hidden></p>
-          <div class="hero-cta">
-            <a class="btn btn-primary" href="/kundli" data-i="hero_cta1"></a>
-            <a class="btn btn-line" href="/rashifal" data-i="hero_cta2"></a>
-            <button type="button" class="btn btn-line install-btn" data-install hidden data-i="pwa_install"></button>
-          </div>
-          <ul class="trust">
-            <li data-i="trust1"></li>
-            <li data-i="trust2"></li>
-            <li data-i="trust3"></li>
+          <ul class="picks" aria-label="Choose what is troubling you">
+            <li><a class="pick" href="/kundli?p=marriage" data-i="pk_marriage"></a></li>
+            <li><a class="pick" href="/kundli?p=job" data-i="pk_job"></a></li>
+            <li><a class="pick" href="/kundli?p=money" data-i="pk_money"></a></li>
+            <li><a class="pick" href="/kundli?p=family" data-i="pk_family"></a></li>
+            <li><a class="pick" href="/kundli?p=love" data-i="pk_love"></a></li>
+            <li><a class="pick" href="/kundli?p=health" data-i="pk_health"></a></li>
+            <li><a class="pick" href="/kundli?p=confused" data-i="pk_confused"></a></li>
           </ul>
+          <p class="pick-note" data-i="pk_note"></p>
+          <button type="button" class="btn btn-line install-btn" data-install hidden data-i="pwa_install"></button>
         </div>
         <aside class="moon-card" aria-live="polite">
           <div class="orbit" id="orbit"><div id="moonBox"></div></div>
@@ -308,6 +309,7 @@
 
         <div class="saved" id="saved" hidden></div>
 
+        <p class="problem-banner" id="problemBanner" hidden><span id="problemText"></span> <a href="/" id="problemChange" data-i="pk_change"></a></p>
         <form class="card" id="form" novalidate>
           <div class="field">
             <span data-i="tr_label"></span>
@@ -344,6 +346,7 @@
         </form>
 
         <div id="result" hidden>
+          <section class="answer" id="answerBox" hidden></section>
           <div class="card who">
             <h2 id="resName"></h2>
             <p class="muted" id="resMeta"></p>

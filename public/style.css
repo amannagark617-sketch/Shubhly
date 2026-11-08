@@ -1681,3 +1681,21 @@ html { scroll-padding-top: 84px; }
 .rr-bar { flex: 0 0 90px; height: 8px; border-radius: 2px; background: linear-gradient(90deg, #2b7a4b var(--w), #e3e3ea var(--w)); }
 .rr--steady .rr-bar { background: linear-gradient(90deg, #c08a12 var(--w), #e3e3ea var(--w)); }
 .rr--careful .rr-bar { background: linear-gradient(90deg, #b3261e var(--w), #e3e3ea var(--w)); }
+
+/* ---------- home: what is troubling you ---------- */
+.picks { list-style: none; margin: 22px 0 10px; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.pick { display: flex; align-items: center; min-height: 64px; padding: 12px 14px; background: #fff; color: var(--ink); border: 1.5px solid #d6d6e0; border-radius: 8px; font-weight: 700; font-size: 1.02rem; line-height: 1.25; text-decoration: none; box-shadow: 0 1px 2px rgba(20, 20, 40, 0.06); }
+.pick:hover, .pick:focus-visible { border-color: #1b1b3a; box-shadow: 0 2px 8px rgba(20, 20, 40, 0.14); }
+.pick-note { margin: 4px 0 12px; color: #55537a; font-size: 0.92rem; }
+@media (min-width: 640px) { .picks { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.problem-banner { margin: 0 0 14px; padding: 12px 14px; background: #fff4d6; border-radius: 8px; color: #5a4300; font-weight: 600; }
+.problem-banner a { margin-left: 8px; color: #1b1b3a; text-decoration: underline; }
+.answer { margin: 0 0 18px; padding: 18px; background: #fff; border: 1.5px solid #1b1b3a; border-radius: 8px; }
+.answer h3 { margin: 0 0 10px; font-size: 1.25rem; }
+.answer h4 { margin: 16px 0 6px; font-size: 1rem; }
+.answer p { line-height: 1.6; margin: 6px 0; }
+.answer-main { font-size: 1.08rem; }
+.answer-cta { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 6px; }
+.answer-fine { color: #55537a; font-size: 0.88rem; }
+/* the hero is for the visitor's problem: no "astrologers online" badge (the guides are AI) and no live-sky strip */
+.hero .online-pill, .hero .live-pill { display: none !important; }

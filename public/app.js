@@ -595,6 +595,52 @@ function renderLifeReading(data, payload, western) {
   show(box, true);
 }
 
+// ---- the visitor's problem: chosen on the home page, answered first in plain words ----
+const PROBLEMS = {
+  marriage: { key: "pk_marriage", topic: "marriage", guide: "marriage", pick: ["love", "sub"] },
+  job: { key: "pk_job", topic: "career", guide: "job", pick: ["career", "sub"] },
+  money: { key: "pk_money", topic: "career", guide: "money", pick: ["money", "sub"] },
+  family: { key: "pk_family", topic: "general", guide: "family", pick: ["focus", "sub"] },
+  love: { key: "pk_love", topic: "marriage", guide: "love", pick: ["love", "sub"] },
+  health: { key: "pk_health", topic: "general", guide: "health", pick: ["health", "sub"] },
+  confused: { key: "pk_confused", topic: "general", guide: "tarot", pick: ["focus", "sub"] },
+};
+let problem = null;
+function setProblem(id) {
+  problem = PROBLEMS[id] ? id : null;
+  try { problem ? localStorage.setItem("kk.problem", problem) : localStorage.removeItem("kk.problem"); } catch { /* private mode */ }
+  const banner = $("problemBanner");
+  if (!banner) return;
+  if (problem) {
+    $("problemText").textContent = t("pk_banner", { p: t(PROBLEMS[problem].key) });
+    $("topic").value = PROBLEMS[problem].topic;
+  }
+  show(banner, !!problem);
+}
+function renderAnswer(data, western, timeUnknown) {
+  const box = $("answerBox");
+  if (!box) return;
+  const P = PROBLEMS[problem];
+  const a = data.about;
+  if (!P || !a || western) { show(box, false); return; }
+  const text = (k) => (k === "health" ? t("ans_health") : a[k]?.text);
+  const main = text(P.pick[0]);
+  const sub = a.sub;
+  if (!main) { show(box, false); return; }
+  const dos = sub ? `<p><b>${esc(t("rd_bring"))}:</b> ${esc(sub.bring)}</p><p><b>${esc(t("rd_watch"))}:</b> ${esc(sub.watch)}</p>` : "";
+  box.innerHTML = `<h3>${esc(t("ans_h", { p: t(P.key) }))}</h3>
+    <p class="answer-main">${esc(main)}</p>
+    ${sub && !timeUnknown ? `<h4>${esc(t("ans_phase"))}</h4><p>${esc(sub.text)}</p>${dos}` : ""}
+    <div class="answer-cta">
+      <button type="button" class="btn btn-primary" id="answerChat">${esc(t("ans_chat"))}</button>
+      <button type="button" class="btn btn-line" id="answerReport">${esc(t("ans_report"))}</button>
+    </div>
+    <p class="answer-fine">${esc(t("ans_fine"))}</p>`;
+  show(box, true);
+  $("answerChat").onclick = () => guides?.ask?.("", P.guide);
+  $("answerReport").onclick = () => document.getElementById("reportBtn")?.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
 function renderAbout(data, western) {
   const box = $("aboutCard");
   const a = data.about;
@@ -698,6 +744,7 @@ function renderResult(data, payload, { scroll = true } = {}) {
 
   renderLifeReading(data, payload, western);
   renderAbout(data, western);
+  renderAnswer(data, western, payload.timeUnknown);
 
   const s = data.sadeSati;
   const sb = $("satiBox");
@@ -1372,6 +1419,13 @@ if ("serviceWorker" in navigator) window.addEventListener("load", () => navigato
   const saved = store.get("shubhly.lang", "en");
   setLanguage(LANGS.includes(saved) ? saved : "en", { first: true });
   guides = initGuides({ t, getLang, store, toast, getPeople: chatPeople, getBrief: chartBrief, share: shareKundli });
+  {
+    let p = new URLSearchParams(location.search).get("p");
+    if (!p) { try { p = localStorage.getItem("kk.problem"); } catch { /* private mode */ } }
+    if (p && $("problemBanner")) setProblem(p);
+    $("problemChange")?.addEventListener("click", () => { try { localStorage.removeItem("kk.problem"); } catch { /* private mode */ } });
+    document.addEventListener("kk:lang", () => { if (problem) setProblem(problem); });
+  }
   openSharedKundli();
   const askHash = location.hash.match(/^#ask=(love|money|job|marriage|family|health)$/);
   if (askHash) { history.replaceState(null, "", location.pathname + location.search); guides.ask(t("wl_q_" + askHash[1]), askHash[1]); }
