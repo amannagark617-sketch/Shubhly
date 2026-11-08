@@ -10,7 +10,7 @@ const D = {
   en: {
     login_btn: "Login", wallet: "Wallet", close: "Close",
     e_captcha: "We could not check that you are not a robot. Please refresh the page and try again.", e_storage: "Your browser is blocking storage. Turn off private mode or allow cookies, then try again.",
-    prices_h: "What things cost", p_chat: "Astrologer reply", p_krishna: "Krishna reply", p_voice: "Krishna's voice (extra)", p_report: "Kundli report with PDF",
+    prices_h: "What things cost", p_chat: "Astrologer reply", p_krishna: "Krishna reply", p_voice: "Krishna's voice (extra)", p_report: "Kundli report with PDF", p_milan: "Couple's Milan report with PDF", my_reports: "My reports",
     per_reply: "per reply", bonus_tag: "+{a} extra", welcome_note: "New here? Log in with your mobile number to get a {a} welcome credit.",
     h_spend: "Used", h_refund: "Returned (reply failed)", h_welcome: "Welcome credit", h_bonus: "incl. {a} bonus",
     need_login: "Please log in to continue. Your wallet is used for replies and reports.", need_money: "Your wallet needs {a} for this. Add money to continue.",
@@ -50,7 +50,7 @@ const D = {
     soon: "पैसे जोड़ने की सुविधा जल्द आ रही है।",
     hist: "इतिहास", hist_empty: "अभी कुछ नहीं।",
     added: "वॉलेट में जोड़े गए", balance_after: "बैलेंस {a}",
-    logout: "लॉग आउट", edit_name: "नाम बदलें",
+    my_reports: "मेरी रिपोर्ट", p_milan: "जोड़ी मिलान रिपोर्ट PDF के साथ", logout: "लॉग आउट", edit_name: "नाम बदलें",
     added_toast: "{a} आपके वॉलेट में जुड़ गए",
     pending: "भुगतान मिल गया। वॉलेट कुछ ही देर में अपडेट होगा।",
     failed: "भुगतान पूरा नहीं हुआ। कृपया फिर से कोशिश करें।",
@@ -288,7 +288,7 @@ export function initAccount({ toast, config }) {
   };
   const priceList = () => {
     const p = cfg.prices; if (!p) return "";
-    return `<h3>${tr("prices_h")}</h3><ul class="acc-prices"><li><span>${tr("p_chat")}</span><b>${inr(p.chat)}</b></li><li><span>${tr("p_krishna")}</span><b>${inr(p.krishna)}</b></li><li><span>${tr("p_voice")}</span><b>+${inr(p.voice)}</b></li><li><span>${tr("p_report")}</span><b>${inr(p.report)}</b></li></ul>`;
+    return `<h3>${tr("prices_h")}</h3><ul class="acc-prices"><li><span>${tr("p_chat")}</span><b>${inr(p.chat)}</b></li><li><span>${tr("p_krishna")}</span><b>${inr(p.krishna)}</b></li><li><span>${tr("p_voice")}</span><b>+${inr(p.voice)}</b></li><li><span>${tr("p_report")}</span><b>${inr(p.report)}</b></li>${p.milan ? `<li><span>${tr("p_milan")}</span><b>${inr(p.milan)}</b></li>` : ""}</ul>`;
   };
   const bonusFor = (rupees) => (cfg.bonus || []).filter((b) => rupees >= b.topup).pop()?.bonus || 0;
 
@@ -308,7 +308,7 @@ export function initAccount({ toast, config }) {
       <div class="acc-balance"><span>${tr("bal")}</span><strong>${esc(inr(bal()))}</strong></div>${state.notice ? `<p class="acc-notice">${esc(state.notice)}</p>` : ""}${err()}${add}
       ${priceList()}
       <h3>${tr("hist")}</h3>${rows}
-      <div class="acc-links"><button type="button" class="acc-link" id="accEdit">${tr("edit_name")}</button><button type="button" class="acc-link" id="accOut">${tr("logout")}</button></div>`);
+      <div class="acc-links"><a class="acc-link" href="/my-reports">${tr("my_reports")}</a><button type="button" class="acc-link" id="accEdit">${tr("edit_name")}</button><button type="button" class="acc-link" id="accOut">${tr("logout")}</button></div>`);
     body.querySelector("#accEdit").onclick = viewName;
     body.querySelector("#accOut").onclick = async () => { await state.fb.A.signOut(state.fb.auth); state.view = "login"; state.confirmation = null; close(); };
     if (state.history == null) loadHistory().then(() => { if (!back.hidden && state.view === "wallet" && state.user) viewWallet(); });

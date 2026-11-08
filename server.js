@@ -25,6 +25,7 @@ import { buildMatch } from "./src/match.js";
 import { generateMatchReport, cleanMatchReport } from "./src/match-report.js";
 import { skyRange, MEANING } from "./src/sky.js";
 import { POSTS, POST_BY_SLUG, renderBlogIndex, renderPost } from "./src/blog.js";
+import { renderMyReports } from "./src/my-reports.js";
 import { verseClip } from "./src/gita-audio.js";
 import { chapterArt, gitaCover } from "./src/gita-art.js";
 import { renderGitaIndex, renderChapter, chapterOf, GITA_PATHS, krishnaReply } from "./src/gita.js";
@@ -309,6 +310,10 @@ app.post("/api/match/report", reportLimit, async (req, res, next) => {
       names: people.map((x) => x.name), chartA: people[0].chart, chartB: people[1].chart, language, timeUnknown: people.map((x) => x.timeUnknown),
     }));
     if (!job) return;
+    if (walletOn && req.store) {
+      const inputs = { a: req.body?.a, b: req.body?.b, lang: req.body?.lang };
+      await req.store.saveReport(req.user.uid, { type: "milan", title: people.map((x) => x.name || "").filter(Boolean).join(" & ") || "Kundli Milan", lang: language, inputs, report: job.value, paidPaise: PRICES.milan }).catch((e) => console.error("saving the report failed:", e?.message || e));
+    }
     res.json({ report: job.value, balancePaise: job.balancePaise });
   } catch (e) {
     const m = aiProblem(e);
@@ -451,6 +456,10 @@ app.post("/api/report", reportLimit, async (req, res, next) => {
       timeUnknown: birth.timeUnknown,
     }));
     if (!job) return;
+    if (walletOn && req.store) {
+      const inputs = { ...req.body }; delete inputs.topic; delete inputs.language;
+      await req.store.saveReport(req.user.uid, { type: "kundli", title: name || "Kundli report", lang: language, inputs, report: job.value, chart, paidPaise: PRICES.report }).catch((e) => console.error("saving the report failed:", e?.message || e));
+    }
     res.json({ name, topic, language, chart, report: job.value, balancePaise: job.balancePaise });
   } catch (e) {
     const m = aiProblem(e);
@@ -637,6 +646,7 @@ for (const k of ["home", "kundli", "match", "rashifal", "panchang", "tarot"]) {
   const page = PAGES[k];
   app.get(hiPath(page.path), (req, res) => sendPage(req, res, page, { lang: "hi" }));
 }
+app.get("/my-reports", (req, res) => res.type("html").send(renderMyReports(originOf(req))));
 app.get("/blog", (req, res) => res.type("html").send(renderBlogIndex(originOf(req))));
 app.get("/blog/:slug", (req, res, next) => {
   const post = Object.hasOwn(POST_BY_SLUG, req.params.slug) ? POST_BY_SLUG[req.params.slug] : null;

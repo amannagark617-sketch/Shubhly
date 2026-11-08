@@ -1733,3 +1733,27 @@ body[data-page="kundli"] { background: #fff; }
 /* header on the blog, Gita and puja pages is the same as the main pages */
 body.blog-page { padding-top: 64px; }
 body.blog-page header.nav { position: fixed; }
+
+/* ---- the downloads card: free and paid PDFs, side by side and clearly named ---- */
+.dl { border: 2px solid var(--ink); border-radius: 4px; }
+.dl-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 0; border-top: 1px solid #e3dde0; }
+.dl-row:first-of-type { border-top: 0; }
+.dl-paid { background: #fffdf6; margin: 0 -24px -24px; padding: 16px 24px; border-top: 2px solid #8a6a1f; }
+.dl-what { display: grid; gap: 2px; min-width: 0; }
+.dl-what b { font-size: 1.02rem; }
+.dl-what small { color: #6c6571; line-height: 1.35; }
+.dl-tag { justify-self: start; font-size: 0.78rem; font-weight: 800; color: #2b7a4b; border: 1.5px solid #2b7a4b; padding: 1px 7px; border-radius: 3px; }
+.dl-price { color: #5a4310; border-color: #8a6a1f; }
+.dl .btn { flex: 0 0 auto; min-width: 150px; text-align: center; }
+@media (max-width: 560px) { .dl-row { flex-direction: column; align-items: stretch; } .dl .btn { width: 100%; } }
+
+/* My reports page */
+.my-reports { padding-top: 24px; padding-bottom: 40px; }
+.my-reports .card { margin: 16px 0; padding: 18px; background: #fff; border: 1px solid #ddd; border-radius: 0; }
+.my-reports h2 { margin: 0 0 10px; font-size: 20px; }
+.my-reports .dl-row { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 0; border-top: 1px solid #eee; flex-wrap: wrap; }
+.my-reports .dl-what { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.my-reports .dl-what small { color: #666; }
+.my-reports .btn { display: inline-block; padding: 10px 16px; border: 1px solid #5c1426; border-radius: 0; text-decoration: none; cursor: pointer; font: inherit; }
+.my-reports .btn-primary { background: #5c1426; color: #fff; }
+.my-reports .btn-outline { background: #fff; color: #5c1426; }

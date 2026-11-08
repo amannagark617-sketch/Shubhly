@@ -121,6 +121,16 @@ export function createAccounts({ getDeps, razorpay, publicConfig, limits = topup
     res.json({ credited: r.credited, balancePaise: r.balancePaise });
   }));
 
+  // Bought reports, kept on the server so they can be opened again on any device.
+  router.get("/reports", auth, handle(async (req, res) => {
+    res.json({ reports: await req.store.listReports(req.user.uid, 50) });
+  }));
+  router.get("/reports/:id", auth, handle(async (req, res) => {
+    const r = await req.store.getReport(req.user.uid, req.params.id);
+    if (!r) return res.status(404).json({ error: "Report not found." });
+    res.json({ report: r });
+  }));
+
   router.get("/transactions", auth, handle(async (req, res) => {
     res.json({ transactions: await req.store.listTransactions(req.user.uid, 50) });
   }));

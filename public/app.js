@@ -654,6 +654,7 @@ function priceLabel() {
   const p = w?.enabled ? w.prices?.report : null;
   const btn = $("reportBtn");
   if (btn && !btn.disabled) btn.textContent = t("rep_btn") + (p ? ` · ₹${p / 100}` : "");
+  updateDl();
   const go = $("scrollReport");
   if (go) go.textContent = t("next_rep_go") + (p ? ` · ₹${p / 100}` : "");
 }
@@ -810,6 +811,13 @@ function renderResult(data, payload, { scroll = true } = {}) {
     show($("reportError"), false);
     $("reportOut").innerHTML = "";
     setBusy($("reportBtn"), false, t("rep_btn"));
+    const bought = paidGet(paidKey("k", JSON.stringify(payload)));
+    if (bought) {
+      reportText = bought.report; reportLang = bought.lang;
+      $("reportOut").innerHTML = renderReport(bought.report, bought.chart || chart, payload.timeUnknown);
+      show($("reportOut"), true);
+    }
+    updateDl();
     $("result").scrollIntoView({ behavior: "smooth", block: "start" });
 
     const idx = chart.moonSign.index ?? chart.moonSign.signIndex;
@@ -1050,7 +1058,10 @@ function matchPriceLabel() {
   const b = $("matchRepBtn");
   if (!b || b.disabled) return;
   const p = window.kkWallet?.enabled ? window.kkWallet.prices?.milan : null;
-  b.textContent = t("m_rep_btn") + (p ? ` · ₹${p / 100}` : "");
+  const pr = p ? `₹${p / 100}` : "";
+  b.textContent = matchReport ? t("dl_btn") : t("dl_get") + (pr ? ` · ${pr}` : "");
+  const tag = $("matchPrice");
+  if (tag) tag.textContent = matchReport ? t("dl_bought") : pr;
 }
 document.addEventListener("kk:wallet", matchPriceLabel);
 document.addEventListener("kk:lang", matchPriceLabel);
@@ -1091,6 +1102,11 @@ $("matchForm").addEventListener("submit", async (e) => {
     out.innerHTML = `<div class="match-score"><div class="ring" style="--p:${(r.total / r.outOf * 100).toFixed(1)}"><b>${esc(num(r.total))}</b><small>/ ${r.outOf}</small></div>
       <div><h3>${esc(n1)} &amp; ${esc(n2)}</h3><p class="match-verdict">${esc(r.verdict)}</p>
       <p class="muted">${esc(t("m_of", { n: num(r.total) }))}</p></div></div>
+      <div class="card dl" id="matchDl"><h3 class="card-h">${esc(t("dl_h"))}</h3>
+        <div class="dl-row"><div class="dl-what"><b>${esc(t("dl_m_free"))}</b><span class="dl-tag">${esc(t("next_free"))}</span><small>${esc(t("dl_m_free_n"))}</small></div><button type="button" class="btn btn-outline" id="matchPdf">${esc(t("dl_btn"))}</button></div>
+        <div class="dl-row dl-paid"><div class="dl-what"><b>${esc(t("dl_m_paid"))}</b><span class="dl-tag dl-price" id="matchPrice"></span><small>${esc(t("dl_m_paid_n"))}</small></div><button type="button" class="btn btn-primary" id="matchRepBtn"></button></div>
+      </div>
+      <div id="matchRepOut" hidden></div>
       <h3 class="read-sub">${esc(t("m_areas"))}</h3>
       <ul class="koota">${r.areas.map((i) => `<li class="koota--${i.level}">
         <div class="koota-top"><b>${esc(i.name)}</b><span>${i.pct}%</span></div>
@@ -1109,9 +1125,10 @@ $("matchForm").addEventListener("submit", async (e) => {
         <div class="bar" aria-hidden="true"><i style="width:${(i.score / i.max * 100).toFixed(0)}%"></i></div>
         <small>${esc(i.measures)}</small><p>${esc(i.text)}</p></li>`).join("")}</ul>
       <p class="fine">${esc(r.summary)}</p>
-      <div class="next-main" id="matchRepBox"><h4>${esc(t("m_rep_t"))}</h4><p class="muted">${esc(t("m_rep_in"))}</p><button type="button" class="btn btn-primary next-go" id="matchRepBtn"></button></div><div id="matchRepOut" hidden></div>
-      <div class="match-actions"><button type="button" class="btn btn-outline" id="matchPdf">${esc(t("m_pdf"))}</button> <button type="button" class="btn btn-outline" id="matchShare">${esc(t("m_share"))}</button></div>`;
+      <button type="button" class="btn btn-outline" id="matchShare">${esc(t("m_share"))}</button>`;
     matchText = `${n1} & ${n2}: ${num(r.total)}/36 (${r.verdict})\nKundli Kaka Kundli Milan: https://kundlikaka.in/match`;
+    const boughtM = paidGet(paidKey("m", matchBody));
+    if (boughtM) { matchReport = boughtM.report; $("matchRepOut").innerHTML = renderMatchReport(boughtM.report); show($("matchRepOut"), true); }
     matchPriceLabel();
     show(out, true);
     out.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1121,9 +1138,22 @@ $("matchForm").addEventListener("submit", async (e) => {
     setBusy(btn, false, t("m_go"));
   }
 });
+async function downloadMatchPdf(btn, withReport) {
+  setBusy(btn, true, t("pdf_busy"));
+  let cancelled = false;
+  try {
+    const r = await fetch("/api/match/pdf", { method: "POST", headers: { "content-type": "application/json" }, body: withReport && matchReport ? JSON.stringify({ ...JSON.parse(matchBody), report: matchReport }) : matchBody });
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || "PDF failed");
+    cancelled = (await deliverFile(await r.blob(), withReport ? "kundlikaka-couple-report.pdf" : "kundlikaka-kundli-milan.pdf")) === "cancelled";
+    if (!cancelled) toast(t("pdf_done"));
+  } catch (ex) { toast(ex.message); }
+  setBusy(btn, false, "");
+  if (withReport) matchPriceLabel(); else btn.textContent = t("dl_btn");
+}
 $("matchOut").addEventListener("click", async (e) => {
   const pb = e.target.closest("#matchPdf");
   const rb = e.target.closest("#matchRepBtn");
+  if (rb && matchBody && matchReport) { await downloadMatchPdf(rb, true); return; }
   if (rb && matchBody) {
     setBusy(rb, true, t("rep_busy"));
     try {
@@ -1138,25 +1168,15 @@ $("matchOut").addEventListener("click", async (e) => {
       if (!res.ok) throw new Error(data?.error || t("err_generic"));
       if (W && data.balancePaise != null) W.setBalance(data.balancePaise);
       matchReport = data.report;
+      paidPut(paidKey("m", matchBody), { report: data.report });
       $("matchRepOut").innerHTML = renderMatchReport(data.report);
       show($("matchRepOut"), true);
-      show($("matchRepBox"), false);
       $("matchRepOut").scrollIntoView({ behavior: "smooth", block: "start" });
     } catch (ex) { toast(ex.message); }
-    finally { setBusy(rb, false, t("m_rep_btn")); matchPriceLabel(); }
+    finally { setBusy(rb, false, ""); matchPriceLabel(); }
     return;
   }
-  if (pb && matchBody) {
-    setBusy(pb, true, t("pdf_busy"));
-    try {
-      const r = await fetch("/api/match/pdf", { method: "POST", headers: { "content-type": "application/json" }, body: matchReport ? JSON.stringify({ ...JSON.parse(matchBody), report: matchReport }) : matchBody });
-      if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || "PDF failed");
-      if (await deliverFile(await r.blob(), "kundlikaka-kundli-milan.pdf") === "cancelled") { setBusy(pb, false, t("m_pdf")); return; }
-      toast(t("pdf_done"));
-    } catch (ex) { toast(ex.message); }
-    setBusy(pb, false, t("m_pdf"));
-    return;
-  }
+  if (pb && matchBody) { await downloadMatchPdf(pb, false); return; }
   if (!e.target.closest("#matchShare")) return;
   if (navigator.share) { try { await navigator.share({ text: matchText }); return; } catch { /* cancelled */ } }
   try { await navigator.clipboard.writeText(matchText); toast(t("rf_copy_ok")); } catch { toast(t("rf_copy_fail")); }
@@ -1209,7 +1229,7 @@ function renderReport(r, chart, timeUnknown) {
     <button type="button" class="btn btn-primary" id="reportPdf">${esc(t("rep_pdf"))}</button>
   </div>`;
 }
-$("reportOut").addEventListener("click", (e) => { if (e.target.closest("#reportPdf")) $("pdfBtn").click(); });
+$("reportOut").addEventListener("click", (e) => { if (e.target.closest("#reportPdf")) $("dlPaidBtn").click(); });
 
 $("reportBtn").addEventListener("click", async () => {
   if (!lastPayload) return;
@@ -1236,6 +1256,8 @@ $("reportBtn").addEventListener("click", async () => {
     show($("reportOut"), true);
     reportText = data.report;
     reportLang = lang;
+    paidPut(paidKey("k", JSON.stringify(lastPayload)), { report: data.report, lang, chart: data.chart });
+    updateDl();
     $("reportOut").scrollIntoView({ behavior: "smooth", block: "start" });
   } catch (ex) {
     err.textContent = ex.message;
@@ -1245,15 +1267,15 @@ $("reportBtn").addEventListener("click", async () => {
     priceLabel();
   }
 });
-$("pdfBtn").addEventListener("click", async () => {
-  if (!lastPayload) return;
-  const btn = $("pdfBtn");
+// The two kundli downloads are kept apart: the free PDF never contains the paid report, and the paid PDF only exists once the report is bought.
+async function downloadKundliPdf(btn, label, withReport) {
+  if (!lastPayload || (withReport && !reportText)) return;
   setBusy(btn, true, t("pdf_busy"));
   try {
     const res = await fetch("/api/pdf", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ ...lastPayload, lang: reportText ? reportLang : getLang(), report: reportText }),
+      body: JSON.stringify({ ...lastPayload, lang: withReport ? reportLang : getLang(), report: withReport ? reportText : "" }),
     });
     if (!res.ok) {
       let msg = t("err_generic");
@@ -1261,14 +1283,32 @@ $("pdfBtn").addEventListener("click", async () => {
       throw new Error(msg);
     }
     const blob = await res.blob();
-    if (await deliverFile(blob, "kundlikaka-kundli.pdf") === "cancelled") return;
+    if (await deliverFile(blob, withReport ? "kundlikaka-full-report.pdf" : "kundlikaka-kundli.pdf") === "cancelled") return;
     toast(t("pdf_done"));
   } catch (ex) {
     toast(ex.message);
   } finally {
-    setBusy(btn, false, t("pdf_free"));
+    setBusy(btn, false, label());
   }
+}
+$("pdfBtn").addEventListener("click", () => downloadKundliPdf($("pdfBtn"), () => t("dl_btn"), false));
+$("dlPaidBtn").addEventListener("click", () => {
+  if (reportText) downloadKundliPdf($("dlPaidBtn"), () => t("dl_btn"), true);
+  else $("reportBtn").click();
 });
+// Bought reports are kept on this device, so a refresh does not lose a report that was paid for.
+const paidKey = (kind, body) => { let h = 5381; const str = kind + body; for (let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0; return kind + ":" + (h >>> 0).toString(36); };
+const paidGet = (k) => { try { return (JSON.parse(localStorage.getItem("kk.paid") || "[]").find((x) => x.k === k)) || null; } catch { return null; } };
+const paidPut = (k, value) => { try { const all = JSON.parse(localStorage.getItem("kk.paid") || "[]").filter((x) => x.k !== k); all.unshift({ k, ...value }); localStorage.setItem("kk.paid", JSON.stringify(all.slice(0, 6))); } catch { /* storage full or blocked */ } };
+function updateDl() {
+  const w = window.kkWallet?.enabled ? window.kkWallet : null;
+  const pr = w?.prices?.report ? `₹${w.prices.report / 100}` : "";
+  const tag = $("dlPrice"), b = $("dlPaidBtn");
+  if (tag) tag.textContent = reportText ? t("dl_bought") : pr;
+  if (b && !b.disabled) b.textContent = reportText ? t("dl_btn") : t("dl_get") + (pr ? ` · ${pr}` : "");
+}
+document.addEventListener("kk:wallet", updateDl);
+document.addEventListener("kk:lang", updateDl);
 
 // Analytics lives in analytics.js (loaded above). window.track(name, params) sends an event.
 

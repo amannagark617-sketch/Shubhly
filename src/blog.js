@@ -281,7 +281,7 @@ export const TOP = `<body class="blog-page">
     <nav class="nav-links" aria-label="Main">
       <a href="/kundli">Free kundli</a><a href="/rashifal">Daily horoscope</a><a href="/guides">Ask an astrologer</a><a href="/store">Puja store</a>
       <div class="nav-dropdown"><button type="button" class="nav-btn" aria-haspopup="menu">More</button>
-        <ul class="nav-menu" role="menu"><li><a href="/panchang" role="menuitem">Today's panchang</a></li><li><a href="/match" role="menuitem">Kundli Milan</a></li><li><a href="/tarot" role="menuitem">Tarot</a></li><li><a href="/gita" role="menuitem">Bhagavad Gita</a></li><li><a href="/puja" role="menuitem">Puja guides</a></li><li><a href="/blog" role="menuitem">Blog</a></li></ul>
+        <ul class="nav-menu" role="menu"><li><a href="/panchang" role="menuitem">Today's panchang</a></li><li><a href="/match" role="menuitem">Kundli Milan</a></li><li><a href="/tarot" role="menuitem">Tarot</a></li><li><a href="/gita" role="menuitem">Bhagavad Gita</a></li><li><a href="/puja" role="menuitem">Puja guides</a></li><li><a href="/my-reports" role="menuitem">My reports</a></li><li><a href="/blog" role="menuitem">Blog</a></li></ul>
       </div>
     </nav>
     <div class="nav-end">
@@ -292,7 +292,7 @@ export const TOP = `<body class="blog-page">
     <nav class="drawer-nav" aria-label="Navigation">
       <div class="drawer-section" id="drawerAcct"></div>
       <div class="drawer-section"><a href="/kundli">Free kundli</a><a href="/rashifal">Daily horoscope</a><a href="/guides">Ask an astrologer</a><a href="/store">Puja store</a></div>
-      <div class="drawer-section"><a href="/panchang">Today's panchang</a><a href="/match">Kundli Milan</a><a href="/tarot">Tarot</a><a href="/gita">Bhagavad Gita</a><a href="/puja">Puja guides</a><a href="/blog">Blog</a></div>
+      <div class="drawer-section"><a href="/panchang">Today's panchang</a><a href="/match">Kundli Milan</a><a href="/tarot">Tarot</a><a href="/gita">Bhagavad Gita</a><a href="/puja">Puja guides</a><a href="/my-reports">My reports</a><a href="/blog">Blog</a></div>
     </nav>
   </div>
 </header>`;

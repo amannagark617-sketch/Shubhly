@@ -44,6 +44,13 @@ function moveRow(type, { amountPaise, balanceAfterPaise, kind = "", label = "", 
   return { id: newId(type[0]), type, status: "success", amountPaise, bonusPaise: 0, balanceAfterPaise, kind, label, ref, createdAt: nowIso() };
 }
 
+
+/** A bought report, kept so it can be opened again on any device. type is "kundli" or "milan". */
+function reportRow({ type, title = "", lang = "en", inputs = {}, report = null, chart = null, paidPaise = 0 }) {
+  return { id: newId("r"), type, title: String(title).slice(0, 120), lang, inputs, report, chart, paidPaise, createdAt: nowIso() };
+}
+const reportMeta = ({ id, type, title, lang, paidPaise, createdAt }) => ({ id, type, title, lang, paidPaise, createdAt });
+
 function checkCredit(order, amountPaise) {
   if (!order) throw new Error("unknown order");
   if (amountPaise != null && amountPaise !== order.amountPaise) throw new Error("amount mismatch");
@@ -51,7 +58,7 @@ function checkCredit(order, amountPaise) {
 
 // ---- in memory (tests, and local work with no database) ----------------------------------------
 export function memoryStore() {
-  const users = new Map(), orders = new Map(), txs = new Map(), welcomes = new Set();
+  const users = new Map(), orders = new Map(), txs = new Map(), welcomes = new Set(), reports = new Map();
   return {
     kind: "memory",
     async upsertUser(uid, p) {
@@ -84,6 +91,13 @@ export function memoryStore() {
       txs.set(o.uid, [row, ...(txs.get(o.uid) || [])]);
       return { credited: true, uid: o.uid, balancePaise: u.balancePaise };
     },
+    async saveReport(uid, rec) {
+      const row = reportRow(rec);
+      reports.set(uid, [row, ...(reports.get(uid) || [])].slice(0, 100));
+      return row.id;
+    },
+    async listReports(uid, limit = 50) { return (reports.get(uid) || []).slice(0, limit).map(reportMeta); },
+    async getReport(uid, id) { return (reports.get(uid) || []).find((r) => r.id === id) || null; },
     async listTransactions(uid, limit = 50) { return (txs.get(uid) || []).slice(0, limit); },
     /** Take money for one use. Never goes below zero. Returns { ok, balancePaise, id }. */
     async spend({ uid, amountPaise, kind, label }) {
@@ -163,6 +177,20 @@ export function firestoreStore(db) {
         tx.set(user(o.uid).collection("transactions").doc(row.id), row);
         return { credited: true, uid: o.uid, balancePaise: next };
       });
+    },
+    async saveReport(uid, rec) {
+      const row = reportRow(rec);
+      await user(uid).collection("reports").doc(row.id).set(row);
+      return row.id;
+    },
+    async listReports(uid, limit = 50) {
+      const snap = await user(uid).collection("reports").orderBy("createdAt", "desc").limit(limit).get();
+      return snap.docs.map((d) => reportMeta(d.data()));
+    },
+    async getReport(uid, id) {
+      if (!/^[\w-]{6,60}$/.test(String(id))) return null;
+      const s2 = await user(uid).collection("reports").doc(id).get();
+      return s2.exists ? s2.data() : null;
     },
     async listTransactions(uid, limit = 50) {
       const s = await user(uid).collection("transactions").orderBy("createdAt", "desc").limit(limit).get();
