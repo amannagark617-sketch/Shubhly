@@ -797,13 +797,13 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
 }
 
 // ---- Kundli Milan: a PDF of the match between two people -----------------------------------
-export function buildMatchPdf({ names = ["", ""], r, lang = "en", dates = ["", ""], placeLabels = ["", ""] }) {
+export function buildMatchPdf({ names = ["", ""], r, lang = "en", dates = ["", ""], placeLabels = ["", ""], report = null }) {
   const doc = newDoc();
   const chunks = [];
   doc.on("data", (c) => chunks.push(c));
   const done = new Promise((resolve) => doc.on("end", () => resolve(Buffer.concat(chunks))));
   const T = (k, v) => tr(lang, k, v);
-  const hiLang = lang === "hi" || lang === "hn";
+  const hiLang = lang === "hi";
   const PW = doc.page.width, PH = doc.page.height, L = 46, W = PW - 92, TOP = 60;
   const COL = { good: "#2b7a4b", ok: "#b27d12", low: "#a8321e" };
   const n1 = names[0] || T("m_p1"), n2 = names[1] || T("m_p2");
@@ -898,6 +898,65 @@ export function buildMatchPdf({ names = ["", ""], r, lang = "en", dates = ["", "
   const sh = heightOf(doc, r.summary, 8, W);
   ensure(sh + 10);
   rich(doc, r.summary, L, y + 4, { size: 8, color: MUTED, width: W });
+
+  // ---- the paid couple's report
+  if (report) {
+    const H = hiLang
+      ? { rep: "आपकी जोड़ी की रिपोर्ट", needs: "आप दोनों को क्या चाहिए", talk: "बात करने के आसान तरीके", fam: "पैसा और परिवार", first: "साथ का पहला साल", time: "विवाह के लिए अच्छा समय", both: "दोनों का अच्छा समय एक साथ", care: "इन बातों पर ध्यान रखें" }
+      : { rep: "Your couple's report", needs: "What each of you needs", talk: "Talking it through", fam: "Money and family", first: "Your first year together", time: "Good times for marriage", both: "Good for both of you at the same time", care: "Where to take extra care" };
+    doc.addPage(); y = TOP;
+    section(H.rep, MAROON, "report");
+    if (report.headline) { const hh = heightOf(doc, report.headline, 16, W, true); ensure(hh + 10); rich(doc, report.headline, L, y, { size: 16, bold: true, width: W }); y += hh + 8; }
+    if (report.glance) { const hh = heightOf(doc, report.glance, 10, W); ensure(hh + 10); rich(doc, report.glance, L, y, { size: 10, color: MUTED, width: W }); y += hh + 14; }
+    if (report.needs.length) row2(...report.needs.map((n, i) => tile(L + i * (half + 14), half, n.name || (i ? n2 : n1), n.text, i ? GOLD : MAROON)));
+    const bullets = (title, items, accent) => {
+      if (!items.length) return;
+      const inner = W - 36;
+      let h = 14 + heightOf(doc, title, 10.5, W - 20, true) + 8;
+      for (const it of items) h += heightOf(doc, it, 9.5, inner) + 5;
+      h += 6; ensure(h + 8);
+      doc.rect(L, y, W, h).fillAndStroke("#ffffff", "#e3dde0"); doc.rect(L, y, W, 3).fill(accent);
+      let cy = y + 13;
+      rich(doc, title, L + 10, cy, { size: 10.5, bold: true, color: accent, width: W - 20 });
+      cy += heightOf(doc, title, 10.5, W - 20, true) + 8;
+      for (const it of items) { doc.rect(L + 12, cy + 4, 4.5, 4.5).fill(accent); rich(doc, it, L + 24, cy, { size: 9.5, color: "#3a343f", width: inner }); cy += heightOf(doc, it, 9.5, inner) + 5; }
+      y += h + 12;
+    };
+    bullets(H.talk, report.talk, "#2b7a4b");
+    bullets(H.fam, report.family, "#b27d12");
+    if (report.first) {
+      const th = heightOf(doc, report.first, 10, W - 36), hh = heightOf(doc, H.first, 9.5, W - 36, true) + 4, h = th + hh + 24;
+      ensure(h + 8);
+      doc.rect(L, y, W, h).fill(NAVY); doc.rect(L, y, 4, h).fill(GOLD);
+      rich(doc, H.first, L + 18, y + 11, { size: 9.5, bold: true, color: GOLDL, width: W - 36 });
+      rich(doc, report.first, L + 18, y + 11 + hh, { size: 10, color: "#ffffff", width: W - 36 });
+      y += h + 14;
+    }
+    const tm = report.timing;
+    section(H.time, "#2e5e73", "months");
+    if (tm.note) { const hh = heightOf(doc, tm.note, 10, W); ensure(hh + 8); rich(doc, tm.note, L, y, { size: 10, color: "#3a343f", width: W }); y += hh + 12; }
+    if (tm.shared.length) {
+      rich(doc, H.both, L, y, { size: 10.5, bold: true, color: COL.good, width: W }); y += 20;
+      for (const w of tm.shared) { ensure(34); doc.rect(L, y, W, 26).fillAndStroke("#ffffff", "#e3dde0"); doc.rect(L, y, 118, 26).fill(COL.good); rich(doc, w.range, L + 9, y + 7.5, { size: 10, bold: true, color: "#ffffff", width: 105 }); y += 32; }
+      y += 4;
+    }
+    if (tm.a.length || tm.b.length) {
+      const colw = (rows, name, accent) => { const h = 34 + rows.length * 22; return { h, draw(y0) { doc.rect(L + (accent === MAROON ? 0 : half + 14), y0, half, h).fillAndStroke("#ffffff", "#e3dde0"); const x = L + (accent === MAROON ? 0 : half + 14); doc.rect(x, y0, half, 3).fill(accent); rich(doc, name, x + 10, y0 + 12, { size: 10, bold: true, color: accent, width: half - 20 }); rows.forEach((w, k) => rich(doc, w.range, x + 10, y0 + 32 + k * 22, { size: 9.5, width: half - 20 })); } }; };
+      row2(colw(tm.a, n1, MAROON), colw(tm.b, n2, GOLD));
+    }
+    if (report.remedies.length) {
+      section(H.care, "#b27d12", "remedies");
+      for (const rm of report.remedies) {
+        const th = heightOf(doc, rm.text, 9.5, W - 36), h = th + 34;
+        ensure(h + 8);
+        doc.rect(L, y, W, h).fillAndStroke("#ffffff", "#e3dde0"); doc.rect(L, y, 4, h).fill("#b27d12");
+        rich(doc, rm.name, L + 16, y + 9, { size: 10.5, bold: true, width: W - 32 });
+        rich(doc, rm.text, L + 16, y + 26, { size: 9.5, color: "#3a343f", width: W - 32 });
+        y += h + 8;
+      }
+    }
+    if (report.closing) { const hh = heightOf(doc, report.closing, 11, W - 60, true); ensure(hh + 40); y += 8; doc.moveTo(PW / 2 - 20, y).lineTo(PW / 2 + 20, y).lineWidth(1).stroke(GOLD); rich(doc, report.closing, L + 30, y + 14, { size: 11, bold: true, color: MAROON, width: W - 60, align: "center" }); y += hh + 28; }
+  }
 
   // ---- back cover
   backCover(doc, hiLang, { L, W, PW, PH });

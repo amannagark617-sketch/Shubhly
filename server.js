@@ -22,6 +22,7 @@ import { buildReading } from "./src/reading.js";
 import { buildAbout } from "./src/about.js";
 import { aiProblem } from "./src/aierror.js";
 import { buildMatch } from "./src/match.js";
+import { generateMatchReport, cleanMatchReport } from "./src/match-report.js";
 import { skyRange, MEANING } from "./src/sky.js";
 import { POSTS, POST_BY_SLUG, renderBlogIndex, renderPost } from "./src/blog.js";
 import { verseClip } from "./src/gita-audio.js";
@@ -295,6 +296,27 @@ app.post("/api/match", kundliLimit, (req, res, next) => {
   }
 });
 
+// The paid couple's report (₹169 by default): the match plus advice, shared good periods and simple fixes.
+app.post("/api/match/report", reportLimit, async (req, res, next) => {
+  try {
+    if (!aiConfigured()) return res.status(503).json({ error: "The astrologer is not switched on yet. The free match result is ready, the couple's report will be available soon." + noKeyNote(req) });
+    const language = parseLanguage(req.body?.language ?? req.body?.lang);
+    const people = [req.body?.a, req.body?.b].map((x) => {
+      const birth = parseBirthInput({ ...x, tradition: "vedic" });
+      return { name: cleanName(x?.name), chart: computeKundli(birth), timeUnknown: birth.timeUnknown };
+    });
+    const job = await paidJob(req, res, { kind: "milan", amountPaise: PRICES.milan, label: "Kundli Milan report" }, () => generateMatchReport({
+      names: people.map((x) => x.name), chartA: people[0].chart, chartB: people[1].chart, language, timeUnknown: people.map((x) => x.timeUnknown),
+    }));
+    if (!job) return;
+    res.json({ report: job.value, balancePaise: job.balancePaise });
+  } catch (e) {
+    const m = aiProblem(e);
+    if (m) return res.status(m[0]).json({ error: m[1] });
+    next(e);
+  }
+});
+
 // The Kundli Milan result as a PDF. The match is worked out again here from the two birth details.
 app.post("/api/match/pdf", kundliLimit, async (req, res, next) => {
   try {
@@ -307,7 +329,7 @@ app.post("/api/match/pdf", kundliLimit, async (req, res, next) => {
       return { name: cleanName(x?.name), chart: computeKundli(birth), timeUnknown: birth.timeUnknown, date: when.setLocale(locale).toLocaleString({ day: "numeric", month: "long", year: "numeric" }), place: birth.placeLabel };
     });
     const r = buildMatch(people[0].chart, people[1].chart, { lang, timeUnknown: [people[0].timeUnknown, people[1].timeUnknown] });
-    const pdf = await buildMatchPdf({ names: people.map((x) => x.name), r, lang: language, dates: people.map((x) => x.date), placeLabels: people.map((x) => x.place) });
+    const pdf = await buildMatchPdf({ names: people.map((x) => x.name), r, lang: language, dates: people.map((x) => x.date), placeLabels: people.map((x) => x.place), report: cleanMatchReport(req.body?.report) });
     res.set({ "Content-Type": "application/pdf", "Content-Disposition": 'attachment; filename="kundlikaka-kundli-milan.pdf"', "Cache-Control": "no-store" });
     res.send(pdf);
   } catch (e) {

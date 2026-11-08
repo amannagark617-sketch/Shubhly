@@ -12,6 +12,7 @@ export function pricesFromEnv(env = process.env) {
     krishna: rupees(env, "PRICE_KRISHNA_RUPEES", 200), // one reply from Krishna
     voice: rupees(env, "PRICE_VOICE_RUPEES", 900), // Krishna's spoken voice, on top of the text
     report: rupees(env, "PRICE_REPORT_RUPEES", 9900), // kundli report with PDF
+    milan: rupees(env, "PRICE_MILAN_RUPEES", 16900), // couple's Kundli Milan report with PDF
   };
 }
 

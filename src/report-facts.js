@@ -136,7 +136,7 @@ export function buildFacts(chart, { now = new Date(), timeUnknown = false } = {}
       }).filter((x) => x.rel.score >= 1).sort((a, b) => b.score - a.score).slice(0, 3).sort((a, b) => a.s.start - b.s.start);
       const ranked = pick(near).length ? pick(near) : pick(far); // nothing close by: look further ahead
       windows[topic] = ranked.map((x) => ({
-        startLabel: label(x.s.start), endLabel: label(x.s.end), range: `${label(x.s.start)} to ${label(x.s.end)}`,
+        startMs: x.s.start.getTime(), endMs: x.s.end.getTime(), startLabel: label(x.s.start), endLabel: label(x.s.end), range: `${label(x.s.start)} to ${label(x.s.end)}`,
         period: `${x.s.mahadasha}-${x.s.lord}`, why: [...x.rel.reasons, ...(x.mood.pts > 0 ? [`Jupiter/Saturn transits are supportive (Jupiter in house ${x.mood.jup} from the Moon)`] : [])],
       }));
     }

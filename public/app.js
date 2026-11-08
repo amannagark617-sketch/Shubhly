@@ -1045,7 +1045,29 @@ $("mUseMine").addEventListener("click", () => {
   $("maPicked").textContent = t("f_selected", { label: p.place.label });
   show($("maPicked"), true);
 });
-let matchText = "", matchBody = null;
+let matchText = "", matchBody = null, matchReport = null;
+function matchPriceLabel() {
+  const b = $("matchRepBtn");
+  if (!b || b.disabled) return;
+  const p = window.kkWallet?.enabled ? window.kkWallet.prices?.milan : null;
+  b.textContent = t("m_rep_btn") + (p ? ` · ₹${p / 100}` : "");
+}
+document.addEventListener("kk:wallet", matchPriceLabel);
+document.addEventListener("kk:lang", matchPriceLabel);
+function renderMatchReport(rp) {
+  const li = (a) => `<ul>${a.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`;
+  const rg = (a) => `<ul>${a.map((x) => `<li>${esc(x.range)}</li>`).join("")}</ul>`;
+  const tm = rp.timing || {};
+  return `<h3 class="read-sub">${esc(rp.headline)}</h3><p>${esc(rp.glance)}</p>
+    <div class="read-cols">${rp.needs.map((n) => `<section class="about-block"><h3>${esc(n.name)}</h3><p>${esc(n.text)}</p></section>`).join("")}</div>
+    ${rp.talk.length ? `<section class="read-good"><ul>${rp.talk.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></section>` : ""}
+    ${rp.family.length ? `<section class="read-grow"><ul>${rp.family.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></section>` : ""}
+    ${rp.first ? `<p><b>${esc(rp.first)}</b></p>` : ""}
+    ${tm.note ? `<p>${esc(tm.note)}</p>` : ""}${tm.shared?.length ? rg(tm.shared) : ""}
+    ${tm.a?.length || tm.b?.length ? `<div class="read-cols"><section class="about-block">${rg(tm.a || [])}</section><section class="about-block">${rg(tm.b || [])}</section></div>` : ""}
+    ${rp.remedies.length ? li(rp.remedies.map((x) => `${x.name}: ${x.text}`)) : ""}
+    <p><b>${esc(rp.closing)}</b></p>`;
+}
 $("matchForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const err = $("matchError"), btn = $("matchGo");
@@ -1056,6 +1078,7 @@ $("matchForm").addEventListener("submit", async (e) => {
   try {
     const lang = getLang();
     matchBody = JSON.stringify({ a, b, lang });
+    matchReport = null;
     const r = await api("/api/match", {
       method: "POST", headers: { "content-type": "application/json" },
       body: matchBody,
@@ -1086,8 +1109,10 @@ $("matchForm").addEventListener("submit", async (e) => {
         <div class="bar" aria-hidden="true"><i style="width:${(i.score / i.max * 100).toFixed(0)}%"></i></div>
         <small>${esc(i.measures)}</small><p>${esc(i.text)}</p></li>`).join("")}</ul>
       <p class="fine">${esc(r.summary)}</p>
-      <div class="match-actions"><button type="button" class="btn btn-primary" id="matchPdf">${esc(t("m_pdf"))}</button> <button type="button" class="btn btn-outline" id="matchShare">${esc(t("m_share"))}</button></div>`;
+      <div class="next-main" id="matchRepBox"><h4>${esc(t("m_rep_t"))}</h4><p class="muted">${esc(t("m_rep_in"))}</p><button type="button" class="btn btn-primary next-go" id="matchRepBtn"></button></div><div id="matchRepOut" hidden></div>
+      <div class="match-actions"><button type="button" class="btn btn-outline" id="matchPdf">${esc(t("m_pdf"))}</button> <button type="button" class="btn btn-outline" id="matchShare">${esc(t("m_share"))}</button></div>`;
     matchText = `${n1} & ${n2}: ${num(r.total)}/36 (${r.verdict})\nKundli Kaka Kundli Milan: https://kundlikaka.in/match`;
+    matchPriceLabel();
     show(out, true);
     out.scrollIntoView({ behavior: "smooth", block: "start" });
   } catch (ex) {
@@ -1098,10 +1123,33 @@ $("matchForm").addEventListener("submit", async (e) => {
 });
 $("matchOut").addEventListener("click", async (e) => {
   const pb = e.target.closest("#matchPdf");
+  const rb = e.target.closest("#matchRepBtn");
+  if (rb && matchBody) {
+    setBusy(rb, true, t("rep_busy"));
+    try {
+      const W = window.kkWallet?.enabled ? window.kkWallet : null;
+      const res = await fetch("/api/match/report", { method: "POST", headers: { "content-type": "application/json", ...(W ? await W.headers() : {}) }, body: matchBody });
+      const data = await res.json().catch(() => null);
+      if (W && (res.status === 401 || res.status === 402)) {
+        if (data?.balancePaise != null) W.setBalance(data.balancePaise);
+        W.prompt(res.status === 401 ? "login" : "funds", data?.needPaise);
+        return;
+      }
+      if (!res.ok) throw new Error(data?.error || t("err_generic"));
+      if (W && data.balancePaise != null) W.setBalance(data.balancePaise);
+      matchReport = data.report;
+      $("matchRepOut").innerHTML = renderMatchReport(data.report);
+      show($("matchRepOut"), true);
+      show($("matchRepBox"), false);
+      $("matchRepOut").scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (ex) { toast(ex.message); }
+    finally { setBusy(rb, false, t("m_rep_btn")); matchPriceLabel(); }
+    return;
+  }
   if (pb && matchBody) {
     setBusy(pb, true, t("pdf_busy"));
     try {
-      const r = await fetch("/api/match/pdf", { method: "POST", headers: { "content-type": "application/json" }, body: matchBody });
+      const r = await fetch("/api/match/pdf", { method: "POST", headers: { "content-type": "application/json" }, body: matchReport ? JSON.stringify({ ...JSON.parse(matchBody), report: matchReport }) : matchBody });
       if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || "PDF failed");
       if (await deliverFile(await r.blob(), "kundlikaka-kundli-milan.pdf") === "cancelled") { setBusy(pb, false, t("m_pdf")); return; }
       toast(t("pdf_done"));
