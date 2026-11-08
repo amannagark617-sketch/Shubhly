@@ -311,13 +311,15 @@
 
         <p class="problem-banner" id="problemBanner" hidden><span id="problemText"></span> <a href="/" id="problemChange" data-i="pk_change"></a></p>
         <form class="card" id="form" novalidate>
-          <div class="field">
-            <span data-i="tr_label"></span>
-            <div class="seg" role="radiogroup" data-i-aria="tr_label">
-              <label><input type="radio" name="tradition" value="vedic" checked /><span data-i="tr_vedic"></span></label>
-              <label><input type="radio" name="tradition" value="western" /><span data-i="tr_western"></span></label>
+          <div class="field tr-field">
+            <p class="tr-line"><span data-i="tr_default"></span> <button type="button" class="link-btn" id="trToggle" data-i="tr_change"></button></p>
+            <div id="trBox" hidden>
+              <div class="seg" role="radiogroup" data-i-aria="tr_label">
+                <label><input type="radio" name="tradition" value="vedic" checked /><span data-i="tr_vedic"></span></label>
+                <label><input type="radio" name="tradition" value="western" /><span data-i="tr_western"></span></label>
+              </div>
+              <small class="hint" id="trHint" data-i="tr_vedic_sub"></small>
             </div>
-            <small class="hint" id="trHint" data-i="tr_vedic_sub"></small>
           </div>
           <label class="field">
             <span data-i="f_name"></span>

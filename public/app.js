@@ -505,8 +505,17 @@ function renderSaved() {
 $("saved").addEventListener("click", (e) => {
   const o = e.target.closest("[data-open]");
   const d = e.target.closest("[data-del]");
-  if (o) {
-    const p = profiles[Number(o.dataset.open)];
+  if (o) openProfile(Number(o.dataset.open));
+  else if (d) {
+    profiles.splice(Number(d.dataset.del), 1);
+    store.set("shubhly.profiles", profiles);
+    renderSaved();
+  }
+});
+function openProfile(i) {
+  {
+    const p = profiles[i];
+    if (!p) return;
     $("name").value = p.name || "";
     $("date").value = p.date;
     $("timeUnknown").checked = !!p.timeUnknown;
@@ -514,13 +523,10 @@ $("saved").addEventListener("click", (e) => {
     $("time").value = p.time;
     setTradition(p.tradition);
     pickBirthPlace(p.place);
+    if (p.tradition === "western") { show($("trBox"), true); show($("trToggle"), false); }
     $("form").requestSubmit();
-  } else if (d) {
-    profiles.splice(Number(d.dataset.del), 1);
-    store.set("shubhly.profiles", profiles);
-    renderSaved();
   }
-});
+}
 
 function saveProfile(payload) {
   if (!$("remember").checked) return;
@@ -548,6 +554,7 @@ function setTradition(v) {
   if (r) r.checked = true;
   $("trHint").textContent = t(tradition() === "western" ? "tr_western_sub" : "tr_vedic_sub");
 }
+$("trToggle")?.addEventListener("click", () => { show($("trBox"), true); show($("trToggle"), false); });
 document.querySelectorAll('input[name="tradition"]').forEach((r) => r.addEventListener("change", () => setTradition(tradition())));
 
 const monthYear = (iso) => dateLabel(iso, { month: "short", year: "numeric" });
@@ -1463,6 +1470,8 @@ if ("serviceWorker" in navigator) window.addEventListener("load", () => navigato
     document.addEventListener("kk:lang", () => { if (problem) setProblem(problem); });
   }
   openSharedKundli();
+  // Picked a problem and this device already knows the kundli: show the answer straight away
+  if (new URLSearchParams(location.search).get("p") && document.body.dataset.page === "kundli" && profiles[0] && !readKundliLink()) openProfile(0);
   const askHash = location.hash.match(/^#ask=(love|money|job|marriage|family|health)$/);
   if (askHash) { history.replaceState(null, "", location.pathname + location.search); guides.ask(t("wl_q_" + askHash[1]), askHash[1]); }
   initFx();
@@ -1617,7 +1626,7 @@ async function loadFestivals() {
   const root = $("festival");
   if (!root) return;
   const today = istToday();
-  if (today > FEST_END) { show(root, false); return; }
+  if (document.body.dataset.page !== "home" || today > FEST_END) { show(root, false); return; }
   show(root, true);
   const next = FESTIVALS.find((f) => f.date >= today);
   const left = next ? daysBetween(today, next.date) : null;
