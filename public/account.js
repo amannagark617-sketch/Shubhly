@@ -8,7 +8,7 @@ const RZP = "https://checkout.razorpay.com/v1/checkout.js";
 
 const D = {
   en: {
-    login_btn: "Login", close: "Close",
+    login_btn: "Login", wallet: "Wallet", close: "Close",
     login_title: "Log in or sign up", login_sub: "Save your details and add money to your Kundli Kaka wallet.",
     google: "Continue with Google", or: "or", mobile: "Mobile number", send_otp: "Send OTP", sending: "Sending…",
     otp_title: "Enter the code", otp_sub: "We sent a 6-digit code to {n}.", verify: "Verify", verifying: "Checking…",
@@ -90,17 +90,22 @@ export function initAccount({ toast, config }) {
   document.querySelector(".nav-end")?.insertBefore(btn, document.getElementById("menuBtn"));
   const drawerLink = document.createElement("a");
   drawerLink.href = "#account"; drawerLink.className = "acc-drawer";
-  [...document.querySelectorAll(".drawer-heading")].find((h) => /account/i.test(h.textContent))?.after(drawerLink);
+  document.getElementById("drawerAcct")?.appendChild(drawerLink);
 
+  const PERSON = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
   function paintButton() {
     const u = state.user || hint();
     if (u?.name || u?.balancePaise != null) {
       const first = (u.name || "?").trim().charAt(0).toUpperCase() || "?";
-      btn.innerHTML = `<span class="acc-av" aria-hidden="true">${esc(first)}</span><span class="acc-bal">${esc(inr(u.balancePaise || 0))}</span>`;
-      btn.setAttribute("aria-label", `${u.name || ""} ${inr(u.balancePaise || 0)}`.trim());
-      drawerLink.textContent = `${u.name || tr("login_btn")} · ${inr(u.balancePaise || 0)}`;
+      btn.className = "acc-btn is-in";
+      btn.innerHTML = `<span class="acc-av" aria-hidden="true">${esc(first)}</span><span class="acc-lbl"><small>${esc(tr("wallet"))}</small><b>${esc(inr(u.balancePaise || 0))}</b></span>`;
+      btn.setAttribute("aria-label", `${u.name || ""} ${tr("wallet")} ${inr(u.balancePaise || 0)}`.trim());
+      drawerLink.textContent = `${u.name || tr("wallet")}: ${tr("wallet")} ${inr(u.balancePaise || 0)}`;
     } else {
-      btn.textContent = tr("login_btn"); btn.removeAttribute("aria-label"); drawerLink.textContent = tr("login_btn");
+      btn.className = "acc-btn";
+      btn.innerHTML = `${PERSON}<span>${esc(tr("login_btn"))}</span>`;
+      btn.removeAttribute("aria-label");
+      drawerLink.textContent = tr("login_btn");
     }
   }
 

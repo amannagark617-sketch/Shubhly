@@ -11,6 +11,7 @@ export default {
   pdf_h_vedic: "వైదిక జాతకం", pdf_h_western: "పాశ్చాత్య జన్మ చార్ట్", pdf_report: "మీ నివేదిక",
   lang_label: "భాష",
   nav_today: "నేటి పంచాంగం", nav_rashifal: "రాశి ఫలాలు", nav_kundli: "జాతకం", nav_premium: "ప్రీమియం",
+  nav_ask: "జ్యోతిష్కుడిని అడగండి", nav_more: "మరిన్ని", nav_gita: "గీత మరియు కృష్ణుడు", nav_pujaguides: "పూజా గైడ్లు", nav_today_sub: "తిథి, నక్షత్రం మరియు శుభ సమయాలు", nav_match_sub: "ఇద్దరి జాతకాలు కలుస్తాయో చూడండి", nav_login: "లాగిన్", nav_wallet: "వాలెట్",
   nav_store: "పూజా స్టోర్", nav_faq: "ప్రశ్నలు", nav_cta: "ఉచిత జాతకం",
   tab_today: "నేడు", tab_rashifal: "రాశి ఫలాలు", tab_kundli: "జాతకం", tab_premium: "ప్రీమియం",
   hero_h: "Your kundli, your puja, your vibe.",

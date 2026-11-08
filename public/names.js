@@ -88,7 +88,8 @@ export function dayName(lang, en, hi) {
 
 // Names with no table of their own (tithi, yoga, karana, choghadiya, festivals):
 // Hindi and Marathi share the Devanagari wording; the rest show the roman name.
-export function pickName(lang, en, hi) {
+export function pickName(lang, en, hi, hn) {
+  if (lang === "hn" && hn !== undefined) return hn;
   return lang === "hi" || lang === "mr" ? hi : en;
 }
 

@@ -11,6 +11,7 @@ export default {
   pdf_h_vedic: "வைதீக ஜாதகம்", pdf_h_western: "மேற்கத்திய பிறப்பு விளக்கப்படம்", pdf_report: "உங்கள் அறிக்கை",
   lang_label: "மொழி",
   nav_today: "இன்றைய பஞ்சாங்கம்", nav_rashifal: "ராசி பலன்", nav_kundli: "ஜாதகம்", nav_premium: "பிரீமியம்",
+  nav_ask: "ஜோதிடரிடம் கேளுங்கள்", nav_more: "மேலும்", nav_gita: "கீதை மற்றும் கிருஷ்ணர்", nav_pujaguides: "பூஜை வழிகாட்டிகள்", nav_today_sub: "திதி, நட்சத்திரம் மற்றும் நல்ல நேரம்", nav_match_sub: "இருவரின் ஜாதகம் பொருந்துமா எனப் பாருங்கள்", nav_login: "உள்நுழைக", nav_wallet: "வாலட்",
   nav_store: "பூஜை கடை", nav_faq: "கேள்விகள்", nav_cta: "இலவச ஜாதகம்",
   tab_today: "இன்று", tab_rashifal: "ராசி பலன்", tab_kundli: "ஜாதகம்", tab_premium: "பிரீமியம்",
   hero_h: "Your kundli, your puja, your vibe.",

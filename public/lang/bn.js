@@ -11,6 +11,7 @@ export default {
   pdf_h_vedic: "বৈদিক কুণ্ডলী", pdf_h_western: "পাশ্চাত্য জন্মছক", pdf_report: "আপনার রিপোর্ট",
   lang_label: "ভাষা",
   nav_today: "আজকের পঞ্জিকা", nav_rashifal: "রাশিফল", nav_kundli: "কুণ্ডলী", nav_premium: "প্রিমিয়াম",
+  nav_ask: "জ্যোতিষীকে জিজ্ঞাসা করুন", nav_more: "আরও", nav_gita: "গীতা ও কৃষ্ণ", nav_pujaguides: "পূজার নির্দেশিকা", nav_today_sub: "তিথি, নক্ষত্র ও শুভ সময়", nav_match_sub: "দুজনের কুণ্ডলী মেলে কি না দেখুন", nav_login: "লগইন", nav_wallet: "ওয়ালেট",
   nav_store: "পূজার দোকান", nav_faq: "প্রশ্নোত্তর", nav_cta: "বিনামূল্যে কুণ্ডলী",
   tab_today: "আজ", tab_rashifal: "রাশিফল", tab_kundli: "কুণ্ডলী", tab_premium: "প্রিমিয়াম",
   hero_h: "Your kundli, your puja, your vibe.",

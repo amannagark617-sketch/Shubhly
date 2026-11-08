@@ -136,7 +136,7 @@ export function initDiya(root, h) {
   const today = new Date().toISOString().slice(0, 10);
   let rec = store.get("kk.diya", { day: today, n: 0 });
   if (rec.day !== today) rec = { day: today, n: 0 };
-  const paint = () => { count.textContent = rec.n ? L(`Aapne aaj ${rec.n} diye jalaaye.`, `आपने आज ${rec.n} दीये जलाए।`) : L("Kisi bhi diye par tap kijiye.", "किसी भी दीये पर टैप कीजिए।"); };
+  const paint = () => { count.textContent = rec.n ? L(`You lit ${rec.n} ${rec.n === 1 ? "diya" : "diyas"} today.`, `आपने आज ${rec.n} दीये जलाए।`, `Aapne aaj ${rec.n} diye jalaaye.`) : L("Tap any diya.", "किसी भी दीये पर टैप कीजिए।", "Kisi bhi diye par tap kijiye."); };
   paint();
 
   let raf = 0, last = 0, vis = true;
@@ -179,7 +179,7 @@ export function initDiya(root, h) {
   });
   root.querySelector("[data-diya-light]").addEventListener("click", () => {
     const i = [2, 1, 3, 0, 4].find((k) => !slots[k].target);
-    if (i === undefined) { toast(L("Sab diye jal rahe hain.", "सारे दीये जल रहे हैं।")); return; }
+    if (i === undefined) { toast(L("All the diyas are lit.", "सारे दीये जल रहे हैं।", "Sab diye jal rahe hain.")); return; }
     light(i);
   });
   root.querySelector("[data-diya-all]").addEventListener("click", () => {
@@ -188,7 +188,7 @@ export function initDiya(root, h) {
   root.querySelector("[data-diya-out]").addEventListener("click", () => { slots.forEach((s) => { s.target = 0; }); kick(); });
 
   root.querySelector("[data-diya-save]").addEventListener("click", async () => {
-    if (!slots.some((s) => s.target)) { toast(L("Pehle ek diya jalaiye.", "पहले एक दीया जलाइए।")); return; }
+    if (!slots.some((s) => s.target)) { toast(L("Light a diya first.", "पहले एक दीया जलाइए।", "Pehle ek diya jalaiye.")); return; }
     try { await document.fonts?.ready; } catch { /* ignore */ }
     const sc = document.createElement("canvas"); sc.width = SW; sc.height = SH;
     drawScene(sc.getContext("2d"), slots.map((s) => ({ lit: s.target ? 1 : 0 })), 0.4);
@@ -197,7 +197,7 @@ export function initDiya(root, h) {
     g.fillStyle = "#fff"; g.fillRect(0, 0, 1080, 1350);
     g.fillStyle = "#d8321a"; g.fillRect(0, 0, 1080, 14);
     g.textAlign = "center"; g.fillStyle = "#1b1b3a"; g.font = '700 76px "Hind",sans-serif';
-    g.fillText(L("Mera Diwali ka diya", "मेरा दिवाली का दीया"), 540, 150);
+    g.fillText(L("My Diwali diya", "मेरा दिवाली का दीया", "Mera Diwali ka diya"), 540, 150);
     g.drawImage(sc, 60, 200, 960, 448);
     const text = wish.value.trim();
     g.fillStyle = "#1b1b3a"; g.font = '600 52px "Hind",sans-serif';
@@ -206,18 +206,18 @@ export function initDiya(root, h) {
       for (const w of words) { const tt = line ? `${line} ${w}` : w; if (g.measureText(tt).width > 880 && line) { lines.push(line); line = w; } else line = tt; }
       if (line) lines.push(line);
       g.fillStyle = "#777"; g.font = '500 38px "Hind",sans-serif';
-      g.fillText(L("Meri kamna", "मेरी कामना"), 540, 770);
+      g.fillText(L("My wish", "मेरी कामना", "Meri kamna"), 540, 770);
       g.fillStyle = "#1b1b3a"; g.font = '600 54px "Hind",sans-serif';
       lines.slice(0, 4).forEach((l, i) => g.fillText(l, 540, 850 + i * 74));
     } else {
       g.fillStyle = "#d8321a"; g.font = '700 70px "Hind",sans-serif';
-      g.fillText(L("Shubh Deepawali", "शुभ दीपावली"), 540, 820);
+      g.fillText(L("Happy Deepawali", "शुभ दीपावली", "Shubh Deepawali"), 540, 820);
     }
     g.fillStyle = "#d8321a"; g.font = '700 46px "Hind",sans-serif';
     g.fillText("Kundli Kaka", 540, 1210);
     g.fillStyle = "#1b1b3a"; g.font = '500 38px "Hind",sans-serif';
     g.fillText("kundlikaka.in", 540, 1264);
-    shareCanvas(c, L("Maine apna diya jalaya. Aap bhi jalaaiye: kundlikaka.in", "मैंने अपना दीया जलाया। आप भी जलाइए: kundlikaka.in"), "mera-diya.png", toast);
+    shareCanvas(c, L("I lit my diya. Light yours too: kundlikaka.in", "मैंने अपना दीया जलाया। आप भी जलाइए: kundlikaka.in", "Maine apna diya jalaya. Aap bhi jalaaiye: kundlikaka.in"), "mera-diya.png", toast);
   });
 }
 
@@ -354,13 +354,13 @@ export function initRangoli(root, h) {
     g.fillStyle = "#fff"; g.fillRect(0, 0, 1080, 1350);
     g.fillStyle = "#d8321a"; g.fillRect(0, 0, 1080, 14);
     g.textAlign = "center"; g.fillStyle = "#1b1b3a"; g.font = '700 76px "Hind",sans-serif';
-    g.fillText(L("Meri Diwali Rangoli", "मेरी दिवाली रंगोली"), 540, 150);
+    g.fillText(L("My Diwali Rangoli", "मेरी दिवाली रंगोली", "Meri Diwali Rangoli"), 540, 150);
     const fl = g.createRadialGradient(540, 700, 40, 540, 700, 500);
     fl.addColorStop(0, "#2e2a38"); fl.addColorStop(1, "#15131b");
     g.fillStyle = fl; g.fillRect(60, 200, 960, 960);
     g.drawImage(cv, 60, 200, 960, 960);
     g.fillStyle = "#d8321a"; g.font = '700 46px "Hind",sans-serif'; g.fillText("Kundli Kaka", 540, 1240);
     g.fillStyle = "#1b1b3a"; g.font = '500 38px "Hind",sans-serif'; g.fillText("kundlikaka.in", 540, 1294);
-    shareCanvas(c, L("Meri Diwali rangoli. Aap bhi banaiye: kundlikaka.in", "मेरी दिवाली रंगोली। आप भी बनाइए: kundlikaka.in"), "meri-rangoli.png", toast);
+    shareCanvas(c, L("My Diwali rangoli. Make yours too: kundlikaka.in", "मेरी दिवाली रंगोली। आप भी बनाइए: kundlikaka.in", "Meri Diwali rangoli. Aap bhi banaiye: kundlikaka.in"), "meri-rangoli.png", toast);
   });
 }

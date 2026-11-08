@@ -66,7 +66,7 @@ let profiles = store.get("shubhly.profiles", []);
 let config = { whatsappUrl: null };
 
 // names in the chosen language (tables live in names.js)
-const L = (en, hi) => pickName(getLang(), en, hi);
+const L = (en, hi, hn) => pickName(getLang(), en, hi, hn);
 const planet = (key) => planetName(getLang(), key);
 const sn = (en, hi, short = false) => signName(getLang(), en, hi, short);
 const nak = (en, hi) => nakName(getLang(), en, hi);
@@ -1511,13 +1511,13 @@ if ("IntersectionObserver" in window && $("s3d")) {
 // Dates are for India (source: HinduTone / Drik Panchang). Change here if they move.
 const FESTIVALS = [
   { date: "2026-11-06", part: "day", en: "Dhanteras", hi: "धनतेरस",
-    note_en: "Naya bartan, sone-chaandi ki khareedari aur nayi shuruaat ke liye.", note_hi: "नया बर्तन, सोने-चांदी की खरीदारी और नई शुरुआत के लिए।" },
+    note_en: "For buying new utensils and gold or silver, and for fresh starts.", note_hi: "नया बर्तन, सोने-चांदी की खरीदारी और नई शुरुआत के लिए।", note_hn: "Naya bartan, sone-chaandi ki khareedari aur nayi shuruaat ke liye." },
   { date: "2026-11-08", part: "night", en: "Lakshmi Puja (Diwali)", hi: "लक्ष्मी पूजा (दिवाली)",
-    note_en: "Pradosh kaal mein puja. Raat ke shubh chaughadiye dekhiye.", note_hi: "प्रदोष काल में पूजा। रात के शुभ चौघड़िये देखिए।" },
+    note_en: "Puja in the evening (Pradosh Kaal). See the good timings for the night.", note_hi: "प्रदोष काल में पूजा। रात के शुभ चौघड़िये देखिए।", note_hn: "Pradosh kaal mein puja. Raat ke shubh chaughadiye dekhiye." },
   { date: "2026-11-10", part: "day", en: "Govardhan Puja", hi: "गोवर्धन पूजा",
-    note_en: "Annakut aur gaay ki puja ke liye.", note_hi: "अन्नकूट और गाय की पूजा के लिए।" },
+    note_en: "For Annakut and cow worship.", note_hi: "अन्नकूट और गाय की पूजा के लिए।", note_hn: "Annakut aur gaay ki puja ke liye." },
   { date: "2026-11-11", part: "day", en: "Bhai Dooj", hi: "भाई दूज",
-    note_en: "Tika lagane ka shubh samay.", note_hi: "टीका लगाने का शुभ समय।" },
+    note_en: "Good timings for applying the tilak.", note_hi: "टीका लगाने का शुभ समय।", note_hn: "Tika lagane ka shubh samay." },
 ];
 const FEST_END = "2026-11-12";
 const istToday = () => todayIn("Asia/Kolkata");
@@ -1532,11 +1532,11 @@ async function loadFestivals() {
   const next = FESTIVALS.find((f) => f.date >= today);
   const left = next ? daysBetween(today, next.date) : null;
   $("festKicker").textContent = next
-    ? `${L(next.en, next.hi)}: ${left === 0 ? L("aaj hai", "आज है") : L(`${left} din baaki`, `${left} दिन बाकी`)}`
+    ? `${L(next.en, next.hi)}: ${left === 0 ? L("today", "आज है", "aaj hai") : L(`${left} ${left === 1 ? "day" : "days"} to go`, `${left} दिन बाकी`, `${left} din baaki`)}`
     : "";
-  $("fest-h").textContent = L("Festival ka shubh samay", "त्योहार का शुभ समय");
-  $("festSub").textContent = L(`Aapke shehar (${loc.name}) ke hisaab se`, `आपके शहर (${loc.name}) के हिसाब से`);
-  $("festNote").textContent = L("Shehar badalne ke liye upar ki location box use karein. Times panchang se hain, puja ke liye apne pandit ya panchang se bhi check karein.", "शहर बदलने के लिए ऊपर का लोकेशन बॉक्स इस्तेमाल करें। समय पंचांग से हैं, पूजा से पहले अपने पंडित या पंचांग से भी मिलाएं।");
+  $("fest-h").textContent = L("Good timings for the festivals", "त्योहार का शुभ समय", "Festival ka shubh samay");
+  $("festSub").textContent = L(`For your city (${loc.name})`, `आपके शहर (${loc.name}) के हिसाब से`, `Aapke shehar (${loc.name}) ke hisaab se`);
+  $("festNote").textContent = L("To change the city, use the location box above. Times come from the panchang; for puja, please also check with your priest or local calendar.", "शहर बदलने के लिए ऊपर का लोकेशन बॉक्स इस्तेमाल करें। समय पंचांग से हैं, पूजा से पहले अपने पंडित या पंचांग से भी मिलाएं।", "Shehar badalne ke liye upar ki location box use karein. Times panchang se hain, puja ke liye apne pandit ya panchang se bhi check karein.");
   const rows = await Promise.all(FESTIVALS.map(async (f) => {
     try {
       const d = await api(`/api/today?${q({ date: f.date })}`);
@@ -1548,9 +1548,9 @@ async function loadFestivals() {
       <div class="fest-date"><b>${Number(f.date.slice(8))}</b><span>${dateLabel(f.date, { month: "short" })}</span></div>
       <div>
         <h3>${esc(L(f.en, f.hi))}</h3>
-        <p>${esc(L(f.note_en, f.note_hi))}</p>
+        <p>${esc(L(f.note_en, f.note_hi, f.note_hn))}</p>
         <div class="fest-slots">${slots.length
           ? slots.map((c) => `<span class="fest-slot">${esc(L(c.name, c.nameHi))} · ${c.from}–${c.to}</span>`).join("")
-          : `<span class="fest-none">${esc(L("Shubh chaughadiya nahi mila", "शुभ चौघड़िया नहीं मिला"))}</span>`}</div>
+          : `<span class="fest-none">${esc(L("No good timing found", "शुभ चौघड़िया नहीं मिला", "Shubh chaughadiya nahi mila"))}</span>`}</div>
       </div></li>`).join("");
 }

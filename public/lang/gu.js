@@ -11,6 +11,7 @@ export default {
   pdf_h_vedic: "વૈદિક કુંડળી", pdf_h_western: "પાશ્ચાત્ય જન્મ ચાર્ટ", pdf_report: "તમારો રિપોર્ટ",
   lang_label: "ભાષા",
   nav_today: "આજનું પંચાંગ", nav_rashifal: "રાશિફળ", nav_kundli: "કુંડળી", nav_premium: "પ્રીમિયમ",
+  nav_ask: "જ્યોતિષીને પૂછો", nav_more: "વધુ", nav_gita: "ગીતા અને કૃષ્ણ", nav_pujaguides: "પૂજા માર્ગદર્શિકા", nav_today_sub: "તિથિ, નક્ષત્ર અને શુભ સમય", nav_match_sub: "બંનેની કુંડળી મળે છે કે નહીં તે જુઓ", nav_login: "લૉગિન", nav_wallet: "વૉલેટ",
   nav_store: "પૂજા સ્ટોર", nav_faq: "પ્રશ્નો", nav_cta: "મફત કુંડળી",
   tab_today: "આજે", tab_rashifal: "રાશિફળ", tab_kundli: "કુંડળી", tab_premium: "પ્રીમિયમ",
   hero_h: "Your kundli, your puja, your vibe.",

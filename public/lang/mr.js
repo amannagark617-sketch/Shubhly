@@ -11,6 +11,7 @@ export default {
   pdf_h_vedic: "वैदिक कुंडली", pdf_h_western: "पाश्चात्य जन्मपत्रिका", pdf_report: "तुमचा अहवाल",
   lang_label: "भाषा",
   nav_today: "आजचे पंचांग", nav_rashifal: "राशीभविष्य", nav_kundli: "कुंडली", nav_premium: "प्रीमियम",
+  nav_ask: "ज्योतिषाला विचारा", nav_more: "आणखी", nav_gita: "गीता आणि कृष्ण", nav_pujaguides: "पूजा मार्गदर्शक", nav_today_sub: "तिथी, नक्षत्र आणि शुभ वेळा", nav_match_sub: "दोघांची कुंडली जुळते का ते पहा", nav_login: "लॉगिन", nav_wallet: "वॉलेट",
   nav_store: "पूजा स्टोअर", nav_faq: "प्रश्नोत्तरे", nav_cta: "मोफत कुंडली",
   tab_today: "आज", tab_rashifal: "राशीभविष्य", tab_kundli: "कुंडली", tab_premium: "प्रीमियम",
   hero_h: "Your kundli, your puja, your vibe.",
