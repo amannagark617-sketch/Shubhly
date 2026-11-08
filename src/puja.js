@@ -182,8 +182,8 @@ function renderPujaBase(p, origin) {
     supply: p.samagri.map((s) => ({ "@type": "HowToSupply", name: s.en })),
     step: p.steps.map((s, i) => ({ "@type": "HowToStep", position: i + 1, name: s.title_en, text: s.en })),
   })}</script>\n`;
-  return HEAD(`${p.en} Vidhi & Samagri List at Home | Kundli Kaka`,
-    `${p.en} at home: full samagri list, preparation, step by step vidhi and mantra, in simple English and Hindi. ${p.tag_en}`,
+  return HEAD(`${p.en} Samagri List, Pooja Saman & Vidhi | Kundli Kaka`,
+    `${p.en} samagri (pooja saman) list for home: everything you need, step by step vidhi and mantra, in simple English and Hindi. ${p.tag_en}`,
     url, ld + LANG_JS, ph ? origin + ph : "/img/og-image.jpg") +
     TOP.replace("blog-page", "blog-page puja-page") +
     `<main class="wrap puja-wrap" style="--pj:${c1};--pj2:${c2}">
@@ -211,6 +211,7 @@ ${TOGGLE}
 <h2>${T("Common mistakes to avoid", "इन बातों का ध्यान रखें")}</h2>
 <ul class="pj-plain pj-avoid">${list(p.avoid_en, p.avoid_hi)}</ul>
 <aside class="pj-cta"><h2>${T("Choose a good day for it", "शुभ दिन चुनिए")}</h2><p>${T("A pandit or a trusted calendar can confirm the best date and time for your family. You can also check today's panchang and choghadiya here.", "आपके परिवार के लिए सबसे अच्छी तिथि और समय पंडित जी या भरोसेमंद पंचांग से पक्का करें। आज का पंचांग और चौघड़िया यहाँ भी देख सकते हैं।")}</p><a class="btn btn-primary" href="/panchang">${T("Today's panchang", "आज का पंचांग")}</a> <a class="btn" href="/kundli">${T("Make my kundli", "मेरी कुंडली बनाएँ")}</a></aside>
+<aside class="pj-cta pj-trouble"><h2>${T("Is something troubling you?", "कोई परेशानी चल रही है?")}</h2><p>${T("Puja brings calm. Your kundli can also show what is going on in your life right now and what to do about it. Pick your problem and get a free answer in plain words.", "पूजा से मन को शांति मिलती है। आपकी कुंडली यह भी बता सकती है कि अभी जीवन में क्या चल रहा है और क्या करना चाहिए। अपनी परेशानी चुनिए और सरल शब्दों में मुफ़्त जवाब पाइए।")}</p><div class="pj-problems"><a href="/kundli?p=marriage">${T("Marriage is delayed", "विवाह में देरी")}</a><a href="/kundli?p=job">${T("Job or career is stuck", "नौकरी या करियर अटका है")}</a><a href="/kundli?p=money">${T("Money problems", "पैसों की परेशानी")}</a><a href="/kundli?p=family">${T("Trouble at home", "घर में तनाव")}</a><a href="/kundli?p=love">${T("Relationship problem", "रिश्ते की परेशानी")}</a><a href="/kundli?p=confused">${T("Feeling lost or confused", "मन उलझन में है")}</a></div></aside>
 <nav class="pj-more" aria-label="More pujas"><h2>${T("More pujas", "और पूजा")}</h2><div>${others}</div></nav>
 <p class="pj-note">${T("Families and regions do this a little differently. Follow your own family's or pandit's way where it differs.", "परिवार और क्षेत्र के अनुसार तरीका थोड़ा अलग हो सकता है। जहाँ अलग हो, वहाँ अपने परिवार या पंडित जी का तरीका मानिए।")}</p>
 <script type="application/json" id="pj-share">${JSON.stringify({ title: p.en, hi: p.hi, url, share, tag_en: p.tag_en, tag_hi: p.tag_hi, time_en: p.time_en, time_hi: p.time_hi, steps: p.steps.length, photo: ph, c1, c2, names_en: p.samagri.map((s) => s.en), names_hi: p.samagri.map((s) => s.hi), pics: p.samagri.map((s) => itemImg(s.en)), idol: idolImg(p.slug), items_en: p.samagri.map((s) => `${s.en} (${s.qty_en})`), items_hi: p.samagri.map((s) => `${s.hi} (${s.qty_hi})`) }).replace(/</g, "\\u003c")}</script>
@@ -231,7 +232,8 @@ const toHindi = (h, origin) => h
   .split(`${origin}/puja`).join(`${origin}/hi/puja`).split(qs(`${origin}/puja`)).join(qs(`${origin}/hi/puja`))
   .replace(LANG_JS, '<script>document.documentElement.setAttribute("data-pl","hi")</script>')
   .replace(TOGGLE, '<div class="pj-lang" role="group" aria-label="Language"><a href="__EN__" hreflang="en">English</a><a href="__HI__" aria-current="page" lang="hi">हिंदी</a></div>')
-  .replace(/href="\/puja/g, 'href="/hi/puja');
+  .replace(/href="\/puja/g, 'href="/hi/puja')
+  .replace(/href="\/kundli\?p=/g, 'href="/hi/kundli?p=');
 
 export function renderPujaIndex(origin, lang = "en") {
   const hi = lang === "hi";
@@ -254,7 +256,7 @@ export function renderPuja(p, origin, lang = "en") {
     const path = `/puja/${p.slug}`;
     if (hi) {
       h = toHindi(h, origin).replace("__EN__", path).replace("__HI__", `/hi${path}`);
-      h = setMeta(h, `${p.hi} विधि और सामग्री सूची घर पर | कुंडली काका`, `${p.hi} घर पर: पूरी सामग्री सूची, तैयारी, कदम दर कदम विधि और मंत्र, सरल हिंदी में। ${p.tag_hi}`);
+      h = setMeta(h, `${p.hi} का सामान और विधि: पूरी सामग्री लिस्ट | कुंडली काका`, `${p.hi} का सामान (सामग्री) की पूरी लिस्ट, घर पर पूजा विधि कदम दर कदम और मंत्र, सरल हिंदी में। ${p.tag_hi}`);
       const ldHi = `  <script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@type": "HowTo", inLanguage: "hi", name: `${p.hi} घर पर: सामग्री और कदम दर कदम विधि`, description: p.intro_hi, supply: p.samagri.map((s) => ({ "@type": "HowToSupply", name: s.hi })), step: p.steps.map((s, i) => ({ "@type": "HowToStep", position: i + 1, name: s.title_hi, text: s.hi })) }).replace(/</g, "\\u003c")}</script>\n`;
       h = h.replace(/  <script type="application\/ld\+json">\{"@context":"https:\/\/schema.org","@type":"HowTo"[\s\S]*?<\/script>\n/, ldHi);
     }
