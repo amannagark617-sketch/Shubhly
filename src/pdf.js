@@ -181,6 +181,25 @@ function mandala(doc, cx, cy, R, { color = GOLD, opacity = 1, lw = 0.5 } = {}) {
   doc.restore();
 }
 
+// Small round badges for the section headings.
+function badge(doc, id, cx, cy, color) {
+  doc.save();
+  doc.circle(cx, cy, 11).fill(color);
+  doc.fillColor("#ffffff").strokeColor("#ffffff").lineWidth(1.1);
+  const r = (x, y, w, h) => doc.rect(cx + x, cy + y, w, h);
+  if (id === "now") { doc.circle(cx, cy, 3.4).fill(); for (let k = 0; k < 8; k++) { const a = (k * Math.PI) / 4; doc.moveTo(cx + Math.cos(a) * 5.4, cy + Math.sin(a) * 5.4).lineTo(cx + Math.cos(a) * 7.6, cy + Math.sin(a) * 7.6).stroke(); } }
+  else if (id === "periods") { doc.moveTo(cx - 5, cy - 6).lineTo(cx + 5, cy - 6).lineTo(cx, cy).closePath().fill(); doc.moveTo(cx - 5, cy + 6).lineTo(cx + 5, cy + 6).lineTo(cx, cy).closePath().fill(); }
+  else if (id === "months") { r(-6, -5, 12, 11).stroke(); r(-6, -5, 12, 3.5).fill(); doc.circle(cx - 2.4, cy + 2, 1).fill(); doc.circle(cx + 2.4, cy + 2, 1).fill(); }
+  else if (id === "career") { r(-6, -3, 12, 8.5).fill(); doc.moveTo(cx - 2.5, cy - 3).lineTo(cx - 2.5, cy - 5.5).lineTo(cx + 2.5, cy - 5.5).lineTo(cx + 2.5, cy - 3).stroke(); }
+  else if (id === "money") { doc.circle(cx, cy, 6).stroke(); doc.circle(cx, cy, 2.6).fill(); }
+  else if (id === "love") { doc.moveTo(cx, cy + 6).bezierCurveTo(cx - 9, cy - 1, cx - 5, cy - 8, cx, cy - 3).bezierCurveTo(cx + 5, cy - 8, cx + 9, cy - 1, cx, cy + 6).fill(); }
+  else if (id === "doshas") { doc.moveTo(cx - 5.5, cy - 5).lineTo(cx + 5.5, cy - 5).lineTo(cx + 5.5, cy + 1).lineTo(cx, cy + 7).lineTo(cx - 5.5, cy + 1).closePath().fill(); }
+  else if (id === "remedies") { doc.moveTo(cx - 6, cy + 1).bezierCurveTo(cx - 5, cy + 7, cx + 5, cy + 7, cx + 6, cy + 1).closePath().fill(); doc.moveTo(cx, cy - 6.5).bezierCurveTo(cx + 3.5, cy - 2, cx + 2.5, cy, cx, cy).bezierCurveTo(cx - 2.5, cy, cx - 3.5, cy - 2, cx, cy - 6.5).fill(); }
+  else if (id === "kit" || id === "report") { for (let k = 0; k < 5; k++) { const a = -Math.PI / 2 + (k * 4 * Math.PI) / 5, b = -Math.PI / 2 + ((k + 1) * 4 * Math.PI) / 5; if (k === 0) doc.moveTo(cx + Math.cos(a) * 6.5, cy + Math.sin(a) * 6.5); doc.lineTo(cx + Math.cos(b) * 6.5, cy + Math.sin(b) * 6.5); } doc.closePath().fill(); }
+  else { doc.moveTo(cx, cy - 6).lineTo(cx + 5, cy).lineTo(cx, cy + 6).lineTo(cx - 5, cy).closePath().fill(); }
+  doc.restore();
+}
+
 // A twelve-sign wheel with the planets placed where they stand in the sky.
 function skyWheel(doc, chart, cx, cy, R, { asc, moon, labelOf }) {
   const th = (lonDeg) => Math.PI - (lonDeg * Math.PI) / 180;
@@ -290,12 +309,12 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
   const toc = [];
   const bottomEdge = () => PH - 62;
   const ensure = (h) => { if (y + h > bottomEdge()) { doc.addPage(); y = TOP; } };
-  const section = (title, color = GOLD, need = 130) => {
+  const section = (title, color = GOLD, need = 130, id = "") => {
     ensure(need);
     toc.push({ title, page: doc.bufferedPageRange().count, color });
     y += 6;
-    doc.rect(L, y + 2, 5, 17).fill(color);
-    rich(doc, title, L + 14, y, { size: 15, bold: true, width: W - 14 });
+    badge(doc, id, L + 11, y + 10, color);
+    rich(doc, title, L + 30, y, { size: 15, bold: true, width: W - 34 });
     y += 28;
     doc.moveTo(L, y - 5).lineTo(L + W - 14, y - 5).lineWidth(0.5).stroke("#e3dde0");
     doc.moveTo(L + W - 7, y - 10).lineTo(L + W - 2, y - 5).lineTo(L + W - 7, y).lineTo(L + W - 12, y - 5).closePath().fill(GOLD);
@@ -371,7 +390,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
 
   // ---- planets: one clean table
   {
-    section(T("t_graha"), NAVY);
+    section(T("t_graha"), NAVY, 130, "planets");
     const cols = western ? [0.3, 0.3, 0.2, 0.2] : [0.22, 0.2, 0.12, 0.1, 0.36];
     const heads = western ? [T("t_graha"), T("t_rashi"), T("t_deg"), T("t_house")] : [T("t_graha"), T("t_rashi"), T("t_deg"), T("t_house"), T("t_nak")];
     const rowH = 19;
@@ -396,7 +415,30 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     const lg = `${legend}. ${T(western ? "r_legend_w" : "r_legend")}`;
     const lh = heightOf(doc, lg, 7.5, W);
     rich(doc, lg, L, y, { size: 7.5, color: MUTED, width: W });
-    y += lh + 14;
+    y += lh + 16;
+
+    // where the planets sit: a column for each of the twelve houses
+    if (!timeUnknown) {
+      const byHouse = Array.from({ length: 12 }, () => []);
+      chart.planets.forEach((p) => { if (p.house >= 1 && p.house <= 12) byHouse[p.house - 1].push(p); });
+      const tall = Math.max(2, ...byHouse.map((a) => a.length)), cw = W / 12, sq = 17;
+      const gh = tall * (sq + 3) + 52;
+      ensure(gh + 20);
+      rich(doc, lang === "hi" || lang === "hn" ? "आपके ग्रह किस भाव में बैठे हैं" : "Where your planets sit", L, y, { size: 11, bold: true, color: MAROON, width: W });
+      y += 24;
+      const base = y + tall * (sq + 3);
+      doc.rect(L, y - 4, W, tall * (sq + 3) + 30).fill("#f7f4f5");
+      byHouse.forEach((list, i) => {
+        const x = L + i * cw + (cw - sq) / 2;
+        list.forEach((p, k) => {
+          doc.rect(x, base - (k + 1) * (sq + 3) + 3, sq, sq).fillAndStroke(PLANET_COLOR[p.key] || NAVY, "#ffffff");
+          doc.save().fillColor("#ffffff").fontSize(6.4).font("latin-b").text(SHORT[p.key], x - 2, base - (k + 1) * (sq + 3) + 3 + 5.5, { width: sq + 4, align: "center", lineBreak: false }).restore();
+        });
+        rich(doc, String(i + 1), L + i * cw, base + 8, { size: 8.5, bold: true, color: list.length ? MAROON : MUTED, width: cw, align: "center" });
+      });
+      doc.moveTo(L, base + 4).lineTo(L + W, base + 4).lineWidth(0.6).stroke(GOLD);
+      y = base + 40;
+    }
   }
 
   // ---- the current period (Vedic) or aspects (Western)
@@ -448,7 +490,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
   // ---- about you (Vedic): short cards, two per row
   const about = western ? null : buildAbout(chart, { lang: lang === "hi" || lang === "hn" ? lang : "en", timeUnknown });
   if (about) {
-    section(T("ab_h"), MAROON);
+    section(T("ab_h"), MAROON, 130, "about");
     const list = [];
     if (about.big3) {
       const b = about.big3;
@@ -476,7 +518,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
   // ---- the written report
   const SEC_COLOR = { now: MAROON, periods: NAVY, months: "#2b7a4b", career: "#2e5e73", money: "#2b7a4b", love: "#9a3b5a", windows: NAVY, doshas: MAROON, remedies: "#b27d12", kit: GOLD };
   if (rep) {
-    section(T("pdf_report"), MAROON);
+    section(T("pdf_report"), MAROON, 130, "report");
     if (rep.headline) { const hh = heightOf(doc, rep.headline, 16, W, true); ensure(hh + 10); rich(doc, rep.headline, L, y, { size: 16, bold: true, width: W }); y += hh + 8; }
     if (rep.glance) { const hh = heightOf(doc, rep.glance, 10, W); ensure(hh + 10); rich(doc, rep.glance, L, y, { size: 10, color: MUTED, width: W }); y += hh + 14; }
     row(rep.strengths.length ? card(L, half, lab("strengths", T("rd_shine")), rep.strengths, "#2b7a4b") : null, rep.watch.length ? card(L + half + 14, half, lab("watch", T("rd_grow")), rep.watch, "#b27d12") : null);
@@ -486,8 +528,14 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
 
     for (const sec of rep.sections || []) {
       if (sec.id === "snap" || sec.id === "planets") continue; // already shown above
-      section(sec.title, SEC_COLOR[sec.id] || GOLD, sec.id === "months" ? 300 : 140);
+      section(sec.title, SEC_COLOR[sec.id] || GOLD, sec.id === "months" ? 300 : 140, sec.id);
       let listNo = 0;
+      if (sec.id === "periods" && !western && !timeUnknown && chart.dasha?.mahadashas?.length) {
+        const th = W * 92 / 360;
+        ensure(th + 14);
+        SVGtoPDF(doc, skin(timelineSvg(chart)), L, y, { width: W, height: th, ...SVGOPT });
+        y += th + 12;
+      }
       for (const b of sec.blocks) {
         if (b.type === "p") {
           if (sec.id === "now") { callout("", b.text, false); continue; }
@@ -553,12 +601,20 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
           for (const r of rows) if (!word[r.tag]) word[r.tag] = String(r.text).split(/[.।]\s/)[0];
           // the year in three numbers
           {
-            const tw3 = (W - 24) / 3;
+            const GW = 112, tw3 = (W - GW - 36) / 3;
             const tl = ["good", "steady", "careful"].map((tg) => ({ tg, ms: rows.filter((r) => r.tag === tg).map((r) => String(r.h).split(" ")[0].slice(0, 3)) }));
             const th3 = Math.max(...tl.map((o) => heightOf(doc, o.ms.join(", ") || "-", 8.5, tw3 - 20))) + 62;
             ensure(th3 + 170);
+            {
+              const avg = rows.reduce((n, r) => n + (r.score || 0), 0) / rows.length, gcx = L + GW / 2, gcy = y + 62, gr = 46;
+              const arc = (from, to, col, w) => { doc.save().lineWidth(w).strokeColor(col).lineCap("butt"); for (let a = from; a <= to; a += 0.05) { const px = gcx - Math.cos(a) * gr, py = gcy - Math.sin(a) * gr; if (a === from) doc.moveTo(px, py); else doc.lineTo(px, py); } doc.stroke().restore(); };
+              arc(0, Math.PI, "#e8e3e6", 9);
+              arc(0, Math.PI * Math.min(1, avg / 5), avg >= 3.6 ? TAGC.good : avg >= 2.6 ? TAGC.steady : TAGC.careful, 9);
+              rich(doc, avg.toFixed(1), gcx - 30, gcy - 20, { size: 20, bold: true, width: 60, align: "center" });
+              rich(doc, "/ 5", gcx - 30, gcy + 2, { size: 8.5, color: MUTED, width: 60, align: "center" });
+            }
             tl.forEach((o, i) => {
-              const x = L + i * (tw3 + 12);
+              const x = L + GW + 12 + i * (tw3 + 12);
               doc.rect(x, y, tw3, th3).fillAndStroke("#ffffff", "#e3dde0");
               doc.rect(x, y, tw3, 3).fill(TAGC[o.tg]);
               rich(doc, String(o.ms.length), x + 10, y + 10, { size: 24, bold: true, color: TAGC[o.tg] });
