@@ -654,6 +654,8 @@ function priceLabel() {
   const p = w?.enabled ? w.prices?.report : null;
   const btn = $("reportBtn");
   if (btn && !btn.disabled) btn.textContent = t("rep_btn") + (p ? ` · ₹${p / 100}` : "");
+  const go = $("scrollReport");
+  if (go) go.textContent = t("next_rep_go") + (p ? ` · ₹${p / 100}` : "");
 }
 document.addEventListener("kk:wallet", priceLabel);
 document.addEventListener("kk:lang", priceLabel);
@@ -1203,7 +1205,7 @@ $("pdfBtn").addEventListener("click", async () => {
   } catch (ex) {
     toast(ex.message);
   } finally {
-    setBusy(btn, false, t("rep_pdf"));
+    setBusy(btn, false, t("pdf_free"));
   }
 });
 

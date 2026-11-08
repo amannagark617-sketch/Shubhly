@@ -78,6 +78,7 @@ export default {
   t_graha: "ग्रह", t_rashi: "राशी", t_deg: "अंश", t_house: "भाव", t_nak: "नक्षत्र",
   r_dasha: "सध्याची दशा: {md} महादशा, {a} ते {b}.", r_dasha_ad: " अंतर्दशा: {ad}, {c} पर्यंत.",
   r_saturn: "शनी {sign} राशीत आहे, {a} ते {b}.",
+  next_rep_t: "तुमचा संपूर्ण जीवन अहवाल", next_rep_1: "पुढचे 12 महिने, एकेक करून", next_rep_2: "काम, पैसा आणि प्रेमासाठी सर्वोत्तम वेळ", next_rep_3: "तुमच्या आयुष्याचे टप्पे, सोप्या भाषेत", next_rep_4: "दोषांची तपासणी, सोप्या शब्दांत", next_rep_5: "सोपे उपाय आणि तुमचा लकी किट", next_rep_6: "जपून ठेवता येईल अशी PDF", next_rep_go: "संपूर्ण अहवाल घ्या", next_free: "मोफत", pdf_free: "मोफत कुंडली PDF",
   next_h: "आता पुढे?", next_report: "संपूर्ण अहवाल वाचा", next_share: "शेअर कार्ड बनवा", next_wa: "WhatsApp वर जोडा",
   card_title: "{name} यांची कुंडली", card_title_me: "माझी कुंडली", card_sub: "Kundli Kaka वर तुमची कुंडली बनवा",
   card_footer: "Your kundli, your puja, your vibe.", card_done: "कार्ड डाउनलोड झाले", card_text: "माझी कुंडली, Kundli Kaka वर",

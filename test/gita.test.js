@@ -76,7 +76,7 @@ test("Krishna's voice: only signed replies, at most a minute, valid audio file",
   assert.equal(wav.length, 44 + 24000 * 2 * MAX_SECONDS);
   let prompt;
   const out = await speakKrishna("Be calm.", async (p) => { prompt = p; return Buffer.alloc(48000); });
-  assert.match(prompt, /calm, slow, warm and soothing/);
+  assert.match(prompt, /majestic and serene voice/);
   assert.equal(out.length, 44 + 48000);
 });
 

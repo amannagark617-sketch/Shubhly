@@ -78,6 +78,7 @@ export default {
   t_graha: "கிரகம்", t_rashi: "ராசி", t_deg: "பாகை", t_house: "பாவம்", t_nak: "நட்சத்திரம்",
   r_dasha: "தற்போதைய தசை: {md} மகாதசை, {a} முதல் {b} வரை.", r_dasha_ad: " அந்தர்தசை: {ad}, {c} வரை.",
   r_saturn: "சனி {sign} ராசியில், {a} முதல் {b} வரை.",
+  next_rep_t: "உங்கள் முழு வாழ்க்கை அறிக்கை", next_rep_1: "அடுத்த 12 மாதங்களும், ஒவ்வொன்றாக", next_rep_2: "வேலை, பணம், அன்புக்கு சிறந்த நேரம்", next_rep_3: "உங்கள் வாழ்க்கைக் கட்டங்கள், எளிமையாக", next_rep_4: "தோஷங்கள் சோதனை, எளிய சொற்களில்", next_rep_5: "எளிய பரிகாரங்கள் மற்றும் உங்கள் அதிர்ஷ்டக் கிட்", next_rep_6: "வைத்துக்கொள்ள ஒரு PDF", next_rep_go: "முழு அறிக்கையைப் பெறுங்கள்", next_free: "இலவசம்", pdf_free: "இலவச ஜாதக PDF",
   next_h: "அடுத்து என்ன?", next_report: "முழு அறிக்கையைப் படிக்க", next_share: "பகிர்வு அட்டை உருவாக்கு", next_wa: "WhatsApp-இல் இணைய",
   card_title: "{name} அவர்களின் ஜாதகம்", card_title_me: "என் ஜாதகம்", card_sub: "Kundli Kaka-இல் உங்கள் ஜாதகத்தை உருவாக்குங்கள்",
   card_footer: "Your kundli, your puja, your vibe.", card_done: "அட்டை பதிவிறக்கப்பட்டது", card_text: "என் ஜாதகம், Kundli Kaka-இல்",

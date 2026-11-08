@@ -78,6 +78,7 @@ export default {
   t_graha: "গ্রহ", t_rashi: "রাশি", t_deg: "অংশ", t_house: "ভাব", t_nak: "নক্ষত্র",
   r_dasha: "বর্তমান দশা: {md} মহাদশা, {a} থেকে {b}।", r_dasha_ad: " অন্তর্দশা: {ad}, {c} পর্যন্ত।",
   r_saturn: "শনি {sign} রাশিতে, {a} থেকে {b}।",
+  next_rep_t: "আপনার পূর্ণ জীবন রিপোর্ট", next_rep_1: "আগামী ১২ মাস, এক এক করে", next_rep_2: "কাজ, টাকা ও ভালোবাসার সেরা সময়", next_rep_3: "আপনার জীবনের পর্ব, সহজ ভাষায়", next_rep_4: "দোষের পরীক্ষা, সহজ কথায়", next_rep_5: "সহজ উপায় ও আপনার লাকি কিট", next_rep_6: "রেখে দেওয়ার মতো PDF", next_rep_go: "পূর্ণ রিপোর্ট নিন", next_free: "বিনামূল্যে", pdf_free: "বিনামূল্যে কুণ্ডলী PDF",
   next_h: "এরপর কী?", next_report: "পূর্ণ রিপোর্ট পড়ুন", next_share: "শেয়ার কার্ড বানান", next_wa: "WhatsApp-এ যুক্ত হন",
   card_title: "{name}-এর কুণ্ডলী", card_title_me: "আমার কুণ্ডলী", card_sub: "Kundli Kaka-তে আপনার কুণ্ডলী বানান",
   card_footer: "Your kundli, your puja, your vibe.", card_done: "কার্ড ডাউনলোড হয়েছে", card_text: "আমার কুণ্ডলী, Kundli Kaka-তে বানানো",

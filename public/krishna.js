@@ -40,15 +40,18 @@ if (box) {
   const W = () => window.kkWallet?.enabled ? window.kkWallet : null;
   let left = get("shubhly.chatLeft", null);
   let busy = false;
-  const priceTag = () => { const w = W(); return w ? `Each reply is ₹${w.prices.krishna / 100}. Hearing it spoken is ₹${w.prices.voice / 100} more.` : ""; };
+  const priceTag = () => { const w = W(); return w ? `Each reply is ₹${w.prices.krishna / 100}. ${voiceOn ? `Hearing Krishna speak it aloud is ₹${w.prices.voice / 100} more.` : ""}` : ""; };
 
   // ---- Krishna's voice: a calm voice from the server, or the phone's own voice if that is not available ----
-  let audio = null, stopSpeech = null;
+  let audio = null, stopSpeech = null, voiceOn = false;
+  fetch("/api/config").then((r) => r.json()).then((c) => { voiceOn = !!c.voice; log.querySelectorAll(".kr-listen").forEach(setLabel); }).catch(() => {});
+  const listenLabel = () => { const w = W(); return voiceOn && w ? `Hear Krishna speak · ₹${w.prices.voice / 100}` : voiceOn ? "Hear Krishna speak" : "Listen"; };
+  const setLabel = (b) => { if (!b.dataset.on) b.textContent = listenLabel(); };
   const stopAll = () => {
     if (audio) { audio.pause(); audio = null; }
     if (stopSpeech) { stopSpeech(); stopSpeech = null; }
     try { speechSynthesis.cancel(); } catch { /* not supported */ }
-    log.querySelectorAll(".kr-listen").forEach((b) => { b.textContent = "Listen"; b.dataset.on = ""; });
+    log.querySelectorAll(".kr-listen").forEach((b) => { b.dataset.on = ""; b.textContent = listenLabel(); });
   };
   function browserVoice(text, btn) {
     if (!("speechSynthesis" in window)) { btn.textContent = "Voice not available"; return; }
@@ -57,7 +60,7 @@ if (box) {
     u.lang = hi ? "hi-IN" : "en-IN"; u.rate = 0.82; u.pitch = 0.9;
     const all = speechSynthesis.getVoices(), best = (l) => all.filter((x) => x.lang.replace("_", "-") === l).sort((a, b) => (/google|neural|natural|microsoft/i.test(b.name) ? 1 : 0) - (/google|neural|natural|microsoft/i.test(a.name) ? 1 : 0))[0]; const v = best(u.lang) || all.find((x) => x.lang.startsWith(u.lang.slice(0, 2)));
     if (v) u.voice = v;
-    u.onend = u.onerror = () => { btn.textContent = "Listen"; btn.dataset.on = ""; };
+    u.onend = u.onerror = () => { btn.dataset.on = ""; btn.textContent = listenLabel(); };
     stopSpeech = () => speechSynthesis.cancel();
     btn.textContent = "Stop"; btn.dataset.on = "1";
     speechSynthesis.speak(u);
@@ -100,7 +103,7 @@ if (box) {
   };
   function addListen(d, text, sig) {
     const b = document.createElement("button");
-    b.type = "button"; b.className = "kr-listen"; b.textContent = "Listen";
+    b.type = "button"; b.className = "kr-listen"; b.textContent = listenLabel();
     b.addEventListener("click", () => listen(b, text, sig));
     d.appendChild(b);
   }

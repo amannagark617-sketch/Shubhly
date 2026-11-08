@@ -78,6 +78,7 @@ export default {
   t_graha: "గ్రహం", t_rashi: "రాశి", t_deg: "అంశ", t_house: "భావం", t_nak: "నక్షత్రం",
   r_dasha: "ప్రస్తుత దశ: {md} మహాదశ, {a} నుండి {b} వరకు.", r_dasha_ad: " అంతర్దశ: {ad}, {c} వరకు.",
   r_saturn: "శని {sign} రాశిలో, {a} నుండి {b} వరకు.",
+  next_rep_t: "మీ పూర్తి జీవిత నివేదిక", next_rep_1: "రాబోయే 12 నెలలు, ఒక్కొక్కటిగా", next_rep_2: "పని, డబ్బు, ప్రేమకు ఉత్తమ సమయం", next_rep_3: "మీ జీవిత దశలు, సులభంగా", next_rep_4: "దోషాల పరిశీలన, సరళమైన మాటల్లో", next_rep_5: "సులభమైన పరిహారాలు, మీ లక్కీ కిట్", next_rep_6: "దాచుకోదగిన PDF", next_rep_go: "పూర్తి నివేదిక పొందండి", next_free: "ఉచితం", pdf_free: "ఉచిత జాతక PDF",
   next_h: "తరువాత ఏమిటి?", next_report: "పూర్తి నివేదిక చదవండి", next_share: "షేర్ కార్డ్ తయారు చేయండి", next_wa: "WhatsApp లో చేరండి",
   card_title: "{name} జాతకం", card_title_me: "నా జాతకం", card_sub: "Kundli Kaka లో మీ జాతకం తయారు చేయండి",
   card_footer: "Your kundli, your puja, your vibe.", card_done: "కార్డ్ డౌన్‌లోడ్ అయింది", card_text: "నా జాతకం, Kundli Kaka లో",

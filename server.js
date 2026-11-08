@@ -195,7 +195,7 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.get("/api/config", (_req, res) => {
-  res.json({ built: STARTED, whatsappUrl, gaId, accounts: accounts.publicConfig });
+  res.json({ built: STARTED, whatsappUrl, gaId, accounts: accounts.publicConfig, voice: process.env.GEMINI_VOICE === "on" });
 });
 
 // Today's panchang, plus a personal Moon-transit note when `moon` is given.

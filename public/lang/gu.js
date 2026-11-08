@@ -78,6 +78,7 @@ export default {
   t_graha: "ગ્રહ", t_rashi: "રાશિ", t_deg: "અંશ", t_house: "ભાવ", t_nak: "નક્ષત્ર",
   r_dasha: "હાલની દશા: {md} મહાદશા, {a} થી {b}.", r_dasha_ad: " અંતર્દશા: {ad}, {c} સુધી.",
   r_saturn: "શનિ {sign} રાશિમાં છે, {a} થી {b}.",
+  next_rep_t: "તમારો પૂરો જીવન રિપોર્ટ", next_rep_1: "આવતા 12 મહિના, એક-એક કરીને", next_rep_2: "કામ, પૈસા અને પ્રેમ માટે શ્રેષ્ઠ સમય", next_rep_3: "તમારા જીવનના તબક્કા, સરળ ભાષામાં", next_rep_4: "દોષની તપાસ, સીધા શબ્દોમાં", next_rep_5: "સરળ ઉપાય અને તમારી લકી કિટ", next_rep_6: "સાચવી શકાય એવી PDF", next_rep_go: "પૂરો રિપોર્ટ લો", next_free: "મફત", pdf_free: "મફત કુંડળી PDF",
   next_h: "હવે આગળ?", next_report: "પૂરો રિપોર્ટ વાંચો", next_share: "શેર કાર્ડ બનાવો", next_wa: "WhatsApp પર જોડાઓ",
   card_title: "{name} ની કુંડળી", card_title_me: "મારી કુંડળી", card_sub: "Kundli Kaka પર તમારી કુંડળી બનાવો",
   card_footer: "Your kundli, your puja, your vibe.", card_done: "કાર્ડ ડાઉનલોડ થયું", card_text: "મારી કુંડળી, Kundli Kaka પર",

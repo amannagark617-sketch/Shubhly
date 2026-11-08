@@ -8,7 +8,7 @@ import { getClient } from "./chat.js";
 import { geminiKey } from "./report.js";
 
 const TTS_MODEL = process.env.GEMINI_TTS_MODEL || "gemini-2.5-flash-preview-tts";
-const VOICE = process.env.GEMINI_TTS_VOICE || "Algieba"; // smooth and unhurried; try "Umbriel" or "Enceladus" for softer
+const VOICE = process.env.GEMINI_TTS_VOICE || "Charon"; // smooth and unhurried; try "Umbriel" or "Enceladus" for softer
 const RATE = 24000; // Gemini speech comes back as 24 kHz, 16-bit, mono
 export const MAX_SECONDS = 60;
 const MAX_WORDS = 120; // about a minute at a slow, calm pace
@@ -58,6 +58,6 @@ export async function defaultSpeak(prompt) {
 
 export async function speakKrishna(text, speak = defaultSpeak) {
   const say = trimForSpeech(text);
-  const prompt = `Speak the text below as Krishna would: in a very calm, slow, warm and soothing voice, softly, with gentle pauses between sentences, like a quiet blessing. Say only the text, nothing else.\n\n${say}`;
+  const prompt = `Speak the text below as Lord Krishna himself would: a deep, resonant, majestic and serene voice, full of divine authority and boundless compassion, like the Supreme speaking to a beloved devotee. Unhurried and measured, with long, graceful pauses between sentences. Never rushed, never theatrical, never cheerful. Elegant, timeless, and deeply reassuring. Say only the text, nothing else.\n\n${say}`;
   return pcmToWav(await speak(prompt));
 }
