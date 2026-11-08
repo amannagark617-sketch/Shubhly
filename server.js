@@ -31,6 +31,7 @@ import { buildMyDay } from "./src/myday.js";
 import { renderPujaIndex, renderPuja, pujaOf, PUJA_PATHS, PUJA_HI_PATHS } from "./src/puja.js";
 import { signReply, verifyReply, speakKrishna, FREE_LISTENS } from "./src/voice.js";
 import { accountsFromEnv } from "./src/accounts.js";
+import { pricesFromEnv, VOICE_DAILY_CAP } from "./src/pricing.js";
 import { hiPath } from "./src/seo.js";
 import { PAGES, SLUGS, signPage, loadShell, renderPage, sitemap } from "./src/pages.js";
 import {
@@ -99,6 +100,19 @@ app.use((req, res, next) => {
 // Accounts and wallet. Everything stays switched off until the Firebase settings exist (see docs/accounts-setup.md).
 // Razorpay's webhook is signed over the exact bytes it sends, so it is read raw, before the JSON parser below.
 const accounts = accountsFromEnv();
+const PRICES = pricesFromEnv();
+const walletOn = accounts.enabled;
+/** Runs one paid job. With accounts on: take the money first, give it back if the job fails. Returns null when the request was already answered (log in / add money). */
+async function paidJob(req, res, spec, work) {
+  if (!walletOn) return { value: await work(), balancePaise: null };
+  const paid = await accounts.charge(req, res, spec);
+  if (!paid) return null;
+  try { return { value: await work(), balancePaise: paid.balancePaise }; } catch (e) {
+    const back = await paid.refund();
+    e.refundedBalance = back;
+    throw e;
+  }
+}
 app.post("/api/account/razorpay-webhook", express.raw({ type: "*/*", limit: "200kb" }), accounts.webhook);
 app.use(express.json({ limit: "80kb" }));
 app.use("/api/account", accounts.router);
@@ -372,15 +386,16 @@ app.post("/api/report", reportLimit, async (req, res, next) => {
     const topic = parseTopic(req.body?.topic);
     const language = parseLanguage(req.body?.language);
     const chart = computeKundli(birth);
-    const report = await generateReport({
+    const job = await paidJob(req, res, { kind: "report", amountPaise: PRICES.report, label: "Kundli report" }, () => generateReport({
       name,
       topic,
       language,
       tradition: birth.tradition,
       chart,
       timeUnknown: birth.timeUnknown,
-    });
-    res.json({ name, topic, language, chart, report });
+    }));
+    if (!job) return;
+    res.json({ name, topic, language, chart, report: job.value, balancePaise: job.balancePaise });
   } catch (e) {
     const m = aiProblem(e);
     if (m) return res.status(m[0]).json({ error: m[1] });
@@ -419,7 +434,7 @@ app.post("/api/chat", chatLimit, async (req, res, next) => {
         error: `${guide.name} is resting right now and is back at ${backAt(guide)} (India time). Another guide is available.`,
       });
     }
-    if (used(req, cid)) {
+    if (!walletOn && used(req, cid)) {
       return res.status(402).json({
         code: "LIMIT",
         left: 0,
@@ -437,15 +452,17 @@ app.post("/api/chat", chatLimit, async (req, res, next) => {
       const birth = parseBirthInput(x);
       return { name: cleanName(x?.name), chart: computeKundli(birth), timeUnknown: birth.timeUnknown === true, tradition: birth.tradition || "vedic" };
     });
-    const reply = await guideReply({
+    const job = await paidJob(req, res, { kind: "chat", amountPaise: PRICES.chat, label: guide.name }, () => guideReply({
       guide,
       language,
       turns,
       people,
       today: new Date().toISOString().slice(0, 10),
-    });
+    }));
+    if (!job) return;
+    if (walletOn) return res.json({ reply: job.value, left: null, free: null, balancePaise: job.balancePaise });
     const left = spend(req, cid);
-    res.json({ reply, left: Number.isFinite(left) ? left : null, free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null });
+    res.json({ reply: job.value, left: Number.isFinite(left) ? left : null, free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null });
   } catch (e) {
     const m = aiProblem(e);
     if (m) return res.status(m[0]).json({ error: m[1] });
@@ -459,13 +476,16 @@ app.post("/api/krishna", chatLimit, async (req, res, next) => {
     const cid = parseClientId(req.body?.cid);
     const turns = parseMessages(req.body?.messages);
     const language = parseLanguage(req.body?.language);
-    if (used(req, cid)) {
+    if (!walletOn && used(req, cid)) {
       return res.status(402).json({ code: "LIMIT", left: 0, error: "You have used your free messages." });
     }
     if (!aiConfigured()) {
       return res.status(503).json({ error: "Krishna is not switched on yet. Please try again soon." + noKeyNote(req) });
     }
-    const reply = await krishnaReply({ language, turns });
+    const job = await paidJob(req, res, { kind: "krishna", amountPaise: PRICES.krishna, label: "Krishna" }, () => krishnaReply({ language, turns }));
+    if (!job) return;
+    const reply = job.value;
+    if (walletOn) return res.json({ reply, sig: signReply(reply), left: null, free: null, balancePaise: job.balancePaise });
     const left = spend(req, cid);
     res.json({ reply, sig: signReply(reply), left: Number.isFinite(left) ? left : null, free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null });
   } catch (e) {
@@ -477,18 +497,33 @@ app.post("/api/krishna", chatLimit, async (req, res, next) => {
 
 // Krishna's voice: a calm spoken version (up to one minute) of a reply he wrote. A few free listens per device.
 const listens = new FreeChats(FREE_LISTENS);
+const voiceDay = new Map(); // "uid:date" -> spoken replies today
 app.post("/api/krishna/speak", chatLimit, async (req, res, next) => {
   try {
     if (!paidVoice()) return res.status(503).json({ error: "The voice is not switched on." });
     const cid = parseClientId(req.body?.cid);
     const text = String(req.body?.text ?? "").slice(0, 2400);
     if (!text || !verifyReply(text, req.body?.sig)) return res.status(400).json({ error: "That reply cannot be spoken." });
-    if (listens.left(cid) <= 0) return res.status(402).json({ code: "LIMIT", error: "You have used your free listens." });
+    if (!walletOn && listens.left(cid) <= 0) return res.status(402).json({ code: "LIMIT", error: "You have used your free listens." });
     if (!aiConfigured()) return res.status(503).json({ error: "The voice is not switched on yet." });
+    if (walletOn) {
+      const day = new Date().toISOString().slice(0, 10);
+      const job = await paidJob(req, res, { kind: "voice", amountPaise: PRICES.voice, label: "Krishna voice" }, async () => {
+        const key = `${req.user.uid}:${day}`, n = voiceDay.get(key) || 0;
+        if (n >= VOICE_DAILY_CAP) throw Object.assign(new Error("voice cap"), { voiceCap: true });
+        const wav = await speakKrishna(text);
+        voiceDay.set(key, n + 1);
+        if (voiceDay.size > 20000) voiceDay.clear();
+        return wav;
+      });
+      if (!job) return;
+      return res.set({ "Content-Type": "audio/wav", "Cache-Control": "no-store", "X-Balance-Paise": String(job.balancePaise) }).send(job.value);
+    }
     const wav = await speakKrishna(text);
     listens.use(cid);
     res.set({ "Content-Type": "audio/wav", "Cache-Control": "private, max-age=3600", "X-Listens-Left": String(listens.left(cid)) }).send(wav);
   } catch (e) {
+    if (e?.voiceCap) return res.status(429).json({ error: "You have reached today's limit of spoken replies. You were not charged. Please try tomorrow." });
     const m = aiProblem(e);
     if (m) return res.status(m[0]).json({ error: m[1] });
     next(e);
@@ -538,6 +573,8 @@ function sendPage(req, res, page, extra = {}) {
   res.setHeader("Cache-Control", "no-cache");
   res.type("html").send(renderPage(loadShell(SHELL), page, { origin: originOf(req), ...extra }));
 }
+// The old Premium page no longer exists: send visitors (and search engines) to the astrologers.
+app.get("/premium", (_req, res) => res.redirect(301, "/guides"));
 for (const page of Object.values(PAGES)) app.get(page.path, (req, res) => sendPage(req, res, page));
 // Hindi versions of the main pages, each at its own address
 for (const k of ["home", "kundli", "match", "rashifal", "panchang", "tarot"]) {

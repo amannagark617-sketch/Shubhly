@@ -9,6 +9,11 @@ const RZP = "https://checkout.razorpay.com/v1/checkout.js";
 const D = {
   en: {
     login_btn: "Login", wallet: "Wallet", close: "Close",
+    e_captcha: "We could not check that you are not a robot. Please refresh the page and try again.", e_storage: "Your browser is blocking storage. Turn off private mode or allow cookies, then try again.",
+    prices_h: "What things cost", p_chat: "Astrologer reply", p_krishna: "Krishna reply", p_voice: "Krishna's voice (extra)", p_report: "Kundli report with PDF",
+    per_reply: "per reply", bonus_tag: "+{a} extra", welcome_note: "New here? Log in with your mobile number to get a {a} welcome credit.",
+    h_spend: "Used", h_refund: "Returned (reply failed)", h_welcome: "Welcome credit", h_bonus: "incl. {a} bonus",
+    need_login: "Please log in to continue. Your wallet is used for replies and reports.", need_money: "Your wallet needs {a} for this. Add money to continue.",
     login_title: "Log in or sign up", login_sub: "Save your details and add money to your Kundli Kaka wallet.",
     google: "Continue with Google", or: "or", mobile: "Mobile number", send_otp: "Send OTP", sending: "Sending…",
     otp_title: "Enter the code", otp_sub: "We sent a 6-digit code to {n}.", verify: "Verify", verifying: "Checking…",
@@ -17,7 +22,7 @@ const D = {
     hello: "Namaste, {n}", bal: "Wallet balance", add_title: "Add money", other: "Other amount", range: "₹{min} to ₹{max}",
     add_btn: "Add {a}", opening: "Opening payment…", pay_note: "Paid securely through Razorpay: UPI, cards and netbanking.",
     test_note: "Test mode: no real money is charged.", soon: "Adding money will be available soon.",
-    hist: "History", hist_empty: "No top-ups yet.", added: "Added to wallet", balance_after: "Balance {a}",
+    hist: "History", hist_empty: "Nothing here yet.", added: "Added to wallet", balance_after: "Balance {a}",
     logout: "Log out", edit_name: "Edit name",
     added_toast: "{a} added to your wallet", pending: "Payment received. Your wallet will update in a moment.",
     failed: "The payment did not go through. Please try again.",
@@ -43,7 +48,7 @@ const D = {
     pay_note: "Razorpay के ज़रिए सुरक्षित भुगतान: UPI, कार्ड और नेटबैंकिंग।",
     test_note: "टेस्ट मोड: असली पैसे नहीं कटते।",
     soon: "पैसे जोड़ने की सुविधा जल्द आ रही है।",
-    hist: "इतिहास", hist_empty: "अभी कोई टॉप-अप नहीं।",
+    hist: "इतिहास", hist_empty: "अभी कुछ नहीं।",
     added: "वॉलेट में जोड़े गए", balance_after: "बैलेंस {a}",
     logout: "लॉग आउट", edit_name: "नाम बदलें",
     added_toast: "{a} आपके वॉलेट में जुड़ गए",
@@ -62,7 +67,7 @@ const D = {
 const tr = (k, v = {}) => (D[getLang()]?.[k] ?? D.en[k] ?? k).replace(/\{(\w+)\}/g, (_, x) => v[x] ?? "");
 const inr = (p) => "₹" + (p / 100).toLocaleString("en-IN", { minimumFractionDigits: p % 100 ? 2 : 0 });
 const HINT = "kk.acct";
-const QUICK = [100, 250, 500, 1000];
+const QUICK = [50, 99, 199, 499, 999];
 
 const loaded = new Map();
 function loadScript(src) {
@@ -80,7 +85,7 @@ export function initAccount({ toast, config }) {
   const cfg = config?.accounts;
   if (!cfg?.firebase) return; // accounts are not switched on: nothing is added to the page
 
-  const state = { fb: null, user: null, history: null, view: "login", phone: "", confirmation: null, verifier: null, busy: false, error: "", timer: 0, resendAt: 0 };
+  const state = { notice: "", fb: null, user: null, history: null, view: "login", phone: "", confirmation: null, verifier: null, busy: false, error: "", timer: 0, resendAt: 0 };
   const hint = () => { try { return JSON.parse(localStorage.getItem(HINT) || "null"); } catch { return null; } };
   const saveHint = (u) => { try { u ? localStorage.setItem(HINT, JSON.stringify({ name: u.name, balancePaise: u.balancePaise })) : localStorage.removeItem(HINT); } catch { /* private mode */ } };
 
@@ -174,7 +179,8 @@ export function initAccount({ toast, config }) {
     "auth/invalid-verification-code": tr("e_code"), "auth/code-expired": tr("e_code"),
     "auth/too-many-requests": tr("e_many"), "auth/popup-blocked": tr("e_popup"),
     "auth/unauthorized-domain": tr("e_domain"), "auth/network-request-failed": tr("e_net"),
-  }[e?.code] || (e?.message && !/^Firebase/.test(e.message) && e.code == null ? e.message : tr("e_generic")));
+    "auth/captcha-check-failed": tr("e_captcha"), "auth/quota-exceeded": tr("e_many"), "auth/web-storage-unsupported": tr("e_storage"),
+  }[e?.code] || (e?.message && !/^Firebase/.test(e.message) && e.code == null ? e.message : tr("e_generic") + (e?.code ? ` (${e.code})` : "")));
 
   // ---- views ----
   const err = () => `<p class="acc-err" role="alert">${esc(state.error)}</p>`;
@@ -194,7 +200,7 @@ export function initAccount({ toast, config }) {
 
   function viewLogin() {
     state.view = "login";
-    mount(`<h2 id="accTitle">${tr("login_title")}</h2><p class="acc-sub">${tr("login_sub")}</p>
+    mount(`<h2 id="accTitle">${tr("login_title")}</h2><p class="acc-sub">${tr("login_sub")}</p>${state.notice ? `<p class="acc-notice">${esc(state.notice)}</p>` : ""}${cfg.welcomePaise ? `<p class="acc-welcome">${tr("welcome_note", { a: inr(cfg.welcomePaise) })}</p>` : ""}
       <button type="button" class="acc-google" id="accGoogle"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.7 6c4.5-4.2 6.9-10.3 6.9-17.7z"/><path fill="#FBBC05" d="M10.5 28.7a14.5 14.5 0 0 1 0-9.4l-7.9-6.1a24 24 0 0 0 0 21.6l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.7-6c-2.1 1.4-4.9 2.3-8.2 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>${tr("google")}</button>
       <div class="acc-or"><span>${tr("or")}</span></div>
       <label class="acc-label" for="accPhone">${tr("mobile")}</label>
@@ -226,12 +232,15 @@ export function initAccount({ toast, config }) {
     try {
       const { auth, A } = await ensureFirebase();
       auth.languageCode = getLang() === "hi" ? "hi" : "en";
-      state.verifier?.clear(); state.verifier = new A.RecaptchaVerifier(auth, "accSend", { size: "invisible" });
+      try { state.verifier?.clear(); } catch { /* gone already */ }
+      document.getElementById("accCaptcha")?.remove();
+      const holder = document.createElement("div"); holder.id = "accCaptcha"; document.body.appendChild(holder); // a fresh element every time, so reCAPTCHA never says "already rendered"
+      state.verifier = new A.RecaptchaVerifier(auth, holder, { size: "invisible" });
       state.confirmation = await A.signInWithPhoneNumber(auth, "+91" + digits, state.verifier);
       state.view = "otp"; state.resendAt = Date.now() + 30000; viewOtp();
     } catch (e) {
       try { state.verifier?.clear(); } catch { /* gone already */ }
-      state.verifier = null; state.error = authMessage(e); viewLogin();
+      state.verifier = null; console.warn("otp error", e?.code, e?.message); state.error = authMessage(e); viewLogin();
     }
   }
 
@@ -270,20 +279,34 @@ export function initAccount({ toast, config }) {
     b.onclick = save; input.onkeydown = (e) => { if (e.key === "Enter") save(); };
   }
 
+  const histRow = (x) => {
+    const date = new Date(x.createdAt).toLocaleDateString(getLang() === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short" });
+    const title = x.type === "spend" ? `${tr("h_spend")}: ${esc(x.label || x.kind || "")}` : x.type === "refund" ? tr("h_refund") : x.type === "welcome" ? tr("h_welcome") : tr("added");
+    const extra = x.bonusPaise ? ` · ${tr("h_bonus", { a: inr(x.bonusPaise) })}` : "";
+    const amt = x.type === "spend" ? `−${inr(-x.amountPaise)}` : `+${inr(x.amountPaise)}`;
+    return `<li><div><strong>${title}</strong><span>${esc(date)} · ${tr("balance_after", { a: inr(x.balanceAfterPaise) })}${extra}</span></div><b class="${x.type === "spend" ? "out" : ""}">${esc(amt)}</b></li>`;
+  };
+  const priceList = () => {
+    const p = cfg.prices; if (!p) return "";
+    return `<h3>${tr("prices_h")}</h3><ul class="acc-prices"><li><span>${tr("p_chat")}</span><b>${inr(p.chat)}</b></li><li><span>${tr("p_krishna")}</span><b>${inr(p.krishna)}</b></li><li><span>${tr("p_voice")}</span><b>+${inr(p.voice)}</b></li><li><span>${tr("p_report")}</span><b>${inr(p.report)}</b></li></ul>`;
+  };
+  const bonusFor = (rupees) => (cfg.bonus || []).filter((b) => rupees >= b.topup).pop()?.bonus || 0;
+
   function viewWallet() {
     state.view = "wallet";
     const t = cfg.topup;
     const rows = state.history == null ? `<p class="acc-muted"><span class="spinner"></span></p>`
       : state.history.length === 0 ? `<p class="acc-muted">${tr("hist_empty")}</p>`
-        : `<ul class="acc-hist">${state.history.map((x) => `<li><div><strong>${tr("added")}</strong><span>${esc(new Date(x.createdAt).toLocaleDateString(getLang() === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short", year: "numeric" }))} · ${tr("balance_after", { a: inr(x.balanceAfterPaise) })}</span></div><b>+${esc(inr(x.amountPaise))}</b></li>`).join("")}</ul>`;
+        : `<ul class="acc-hist">${state.history.map(histRow).join("")}</ul>`;
     const add = t ? `<h3>${tr("add_title")}</h3>
-      <div class="acc-quick">${QUICK.filter((a) => a >= t.min && a <= t.max).map((a) => `<button type="button" data-amt="${a}">₹${a}</button>`).join("")}</div>
+      <div class="acc-quick">${QUICK.filter((a) => a >= t.min && a <= t.max).map((a) => `<button type="button" data-amt="${a}">₹${a}${bonusFor(a) ? `<small>${tr("bonus_tag", { a: "₹" + bonusFor(a) })}</small>` : ""}</button>`).join("")}</div>
       <label class="acc-label" for="accAmt">${tr("other")} <span class="acc-muted">(${tr("range", { min: t.min, max: t.max.toLocaleString("en-IN") })})</span></label>
       <input id="accAmt" class="acc-input" type="text" inputmode="numeric" maxlength="6" placeholder="500">
       <button type="button" class="acc-primary" id="accPay" disabled>${tr("add_btn", { a: "" }).trim()}</button>
       <p class="acc-note">${tr("pay_note")}${t.live ? "" : " " + tr("test_note")}</p>` : `<p class="acc-muted">${tr("soon")}</p>`;
     mount(`<h2 id="accTitle">${tr("hello", { n: esc(state.user.name || "") })}</h2>
-      <div class="acc-balance"><span>${tr("bal")}</span><strong>${esc(inr(bal()))}</strong></div>${err()}${add}
+      <div class="acc-balance"><span>${tr("bal")}</span><strong>${esc(inr(bal()))}</strong></div>${state.notice ? `<p class="acc-notice">${esc(state.notice)}</p>` : ""}${err()}${add}
+      ${priceList()}
       <h3>${tr("hist")}</h3>${rows}
       <div class="acc-links"><button type="button" class="acc-link" id="accEdit">${tr("edit_name")}</button><button type="button" class="acc-link" id="accOut">${tr("logout")}</button></div>`);
     body.querySelector("#accEdit").onclick = viewName;
@@ -336,6 +359,37 @@ export function initAccount({ toast, config }) {
     rzp.on("payment.failed", () => { state.error = tr("failed"); if (!back.hidden) viewWallet(); });
     rzp.open();
   }
+
+  // ---- used by chat, Krishna and reports ----
+  const wallet = {
+    enabled: true,
+    prices: cfg.prices || {},
+    /** Headers that prove who is asking; empty when nobody is logged in. */
+    async headers() {
+      try {
+        const { auth } = await ensureFirebase();
+        await auth.authStateReady?.();
+        const token = await auth.currentUser?.getIdToken();
+        return token ? { Authorization: `Bearer ${token}` } : {};
+      } catch { return {}; }
+    },
+    setBalance(paise) {
+      if (!Number.isFinite(paise) || !state.user) return;
+      state.user.balancePaise = paise; state.history = null; saveHint(state.user); paintButton();
+      if (!back.hidden && state.view === "wallet") viewWallet();
+      document.dispatchEvent(new CustomEvent("kk:balance", { detail: { paise } }));
+    },
+    balance: () => (state.user ? bal() : null),
+    loggedIn: () => !!state.user,
+    /** Open the panel, with a short reason on top. kind: "login" | "funds" */
+    prompt(kind, needPaise) {
+      state.notice = kind === "funds" ? tr("need_money", { a: inr(needPaise || 0) }) : tr("need_login");
+      open().finally(() => { state.notice = ""; });
+    },
+    open() { state.notice = ""; return open(); },
+  };
+  window.kkWallet = wallet;
+  document.dispatchEvent(new CustomEvent("kk:wallet"));
 
   // ---- start ----
   paintButton();

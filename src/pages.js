@@ -8,7 +8,7 @@ import { seoBlock, seoLd, alternates, hiPath, HI_META } from "./seo.js";
 
 export const SLUGS = SIGNS.map((s) => s.en.toLowerCase());
 
-const ALL = ["hero", "marquee", "s3d", "aaj", "rashifal", "kundli", "match", "guides", "tarot", "premium", "report", "how", "store", "faq", "final"];
+const ALL = ["hero", "marquee", "s3d", "aaj", "rashifal", "kundli", "match", "guides", "tarot", "report", "how", "store", "faq", "final"];
 
 export const PAGES = {
   home: {
@@ -66,13 +66,6 @@ export const PAGES = {
     title: "Kundli Report: Career, Money, Love & Life Periods | Kundli Kaka",
     desc: "A personal kundli report made from your own chart: career, money, love, health and the periods of your life, in one PDF. Opening soon.",
     main: "report",
-  },
-  premium: {
-    path: "/premium",
-    on: ["premium", "faq"],
-    title: "Kundli Kaka Premium: Deeper Kundli Reports | Kundli Kaka",
-    desc: "Join the waiting list for deeper kundli reports and more. Free kundli, rashifal and panchang stay free.",
-    main: "premium",
   },
   store: {
     path: "/store",
@@ -154,8 +147,8 @@ export function renderPage(html, page, { origin, reading = "", noindex = false, 
 
   // current page in the menus
   const navPath = page.navPath || page.path;
-  out = out.replace(new RegExp(`<a href="${escRe(navPath)}"( data-| class="nav-premium")`, "g"), (_m, tail) =>
-    tail.startsWith(" class") ? `<a href="${navPath}" class="nav-premium active" aria-current="page"` : `<a class="active" aria-current="page" href="${navPath}"${tail}`
+  out = out.replace(new RegExp(`<a href="${escRe(navPath)}"( data-)`, "g"), (_m, tail) =>
+    `<a class="active" aria-current="page" href="${navPath}"${tail}`
   );
 
   if (isTool) out = out.replace("  </main>", seoBlock(key, lang) + "\n  </main>");
@@ -165,7 +158,7 @@ export function renderPage(html, page, { origin, reading = "", noindex = false, 
 }
 
 function headingId(main) {
-  return { aaj: "aaj-h", rashifal: "rf-h", kundli: "k-h", match: "m-h", guides: "g-h", premium: "pr-h", report: "rp-h", tarot: "tr-h", store: "store-h" }[main];
+  return { aaj: "aaj-h", rashifal: "rf-h", kundli: "k-h", match: "m-h", guides: "g-h", report: "rp-h", tarot: "tr-h", store: "store-h" }[main];
 }
 
 export function sitemap(origin, posts = [], extra = []) {

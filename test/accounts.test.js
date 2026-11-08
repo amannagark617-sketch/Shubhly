@@ -26,7 +26,7 @@ async function harness() {
   };
   const acc = createAccounts({
     getDeps: async () => ({ store, verifyToken: async (t) => { if (!people[t]) throw new Error("bad token"); return people[t]; } }),
-    razorpay, limits: LIMITS, publicConfig: null,
+    razorpay, limits: LIMITS, publicConfig: null, welcome: 0,
   });
   const app = express();
   app.post("/api/account/razorpay-webhook", express.raw({ type: "*/*" }), acc.webhook);
@@ -135,9 +135,9 @@ test("top-up: the order amount is set by the server; the wallet is credited once
     assert.equal((await h.call("POST", "/topup", { token: "tok-asha", body: { amount: 10 } })).status, 400);
     assert.equal((await h.call("POST", "/topup", { token: "tok-asha", body: { amount: 99999 } })).status, 400);
 
-    const o = await h.call("POST", "/topup", { token: "tok-asha", body: { amount: 500 } });
+    const o = await h.call("POST", "/topup", { token: "tok-asha", body: { amount: 200 } });
     assert.equal(o.status, 200);
-    assert.equal(o.json.amountPaise, 50000);
+    assert.equal(o.json.amountPaise, 20000);
     assert.equal(o.json.keyId, "rzp_test_abc");
 
     // a wrong proof adds nothing
@@ -148,20 +148,20 @@ test("top-up: the order amount is set by the server; the wallet is credited once
     // the real proof credits the wallet
     const ok = await h.call("POST", "/topup/verify", { token: "tok-asha", body: payProof(o.json.orderId) });
     assert.equal(ok.json.credited, true);
-    assert.equal(ok.json.balancePaise, 50000);
+    assert.equal(ok.json.balancePaise, 20000);
 
     // confirming again, by the browser or by the webhook, changes nothing
     const again = await h.call("POST", "/topup/verify", { token: "tok-asha", body: payProof(o.json.orderId) });
     assert.equal(again.json.credited, false);
-    assert.equal(again.json.balancePaise, 50000);
-    const w = hook("payment.captured", o.json.orderId, "pay_" + o.json.orderId, 50000);
+    assert.equal(again.json.balancePaise, 20000);
+    const w = hook("payment.captured", o.json.orderId, "pay_" + o.json.orderId, 20000);
     assert.equal((await h.call("POST", "/razorpay-webhook", { raw: w.raw, headers: w.headers })).status, 200);
-    assert.equal((await h.call("GET", "/me", { token: "tok-asha" })).json.user.balancePaise, 50000);
+    assert.equal((await h.call("GET", "/me", { token: "tok-asha" })).json.user.balancePaise, 20000);
 
     const tx = (await h.call("GET", "/transactions", { token: "tok-asha" })).json.transactions;
     assert.equal(tx.length, 1);
-    assert.equal(tx[0].amountPaise, 50000);
-    assert.equal(tx[0].balanceAfterPaise, 50000);
+    assert.equal(tx[0].amountPaise, 20000);
+    assert.equal(tx[0].balanceAfterPaise, 20000);
   } finally { h.close(); }
 });
 

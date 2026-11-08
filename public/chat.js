@@ -27,7 +27,8 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
   const hist = (id) => store.get(`shubhly.chat.${id}`, []);
   const save = () => store.set(`shubhly.chat.${open.id}`, history.slice(-HISTORY_KEEP));
   const setLeft = (n) => { left = Number.isInteger(n) ? n : null; store.set("shubhly.chatLeft", left); };
-  const limited = () => left !== null;
+  const W = () => window.kkWallet?.enabled ? window.kkWallet : null; // the wallet, when accounts are switched on
+  const limited = () => !W() && left !== null;
   const out = () => limited() && left <= 0;
   const avatar = (g, cls = "") => g.image
     ? `<div class="avatar ${cls}"><img src="${g.image}" alt="${g.name}" loading="lazy" class="guide-avatar-img"></div>`
@@ -142,7 +143,10 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
       ? brief.chips.map(([k, v]) => `<span class="ctx-chip"><small>${esc(k)}</small>${esc(v)}</span>`).join("")
       : "";
     const shareBtn = sel.length ? `<button type="button" class="ctx-share" id="chatShare">${esc(t("g_share_k"))}</button>` : "";
-    const lft = limited() ? `<span class="chat-left">${esc(t("g_free_left", { n: left }))}</span>` : "";
+    const w = W();
+    const lft = w
+      ? `<span class="chat-left">${esc(t("g_price", { p: "₹" + (w.prices.chat / 100) }))}${w.loggedIn() ? " · " + esc(t("g_wallet", { b: "₹" + (w.balance() / 100).toLocaleString("en-IN") })) : ""}</span>`
+      : limited() ? `<span class="chat-left">${esc(t("g_free_left", { n: left }))}</span>` : "";
     $("chatCtx").innerHTML = `<div class="ctx-who-row">${people}</div>${chips ? `<div class="ctx-chips">${chips}</div>` : ""}${shareBtn}${lft}`;
     const wall = out();
     $("chatWall").hidden = !wall;
@@ -205,13 +209,21 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: { "content-type": "application/json", ...(W() ? await W().headers() : {}) },
         body: JSON.stringify({ guide: g.id, cid, messages: history, language: getLang(), people: selected().map((p) => p.payload) }),
       });
       let data = null;
       try { data = await res.json(); } catch { /* ignore */ }
       if (open?.id !== g.id) return; // closed or switched meanwhile
       typing(false);
+      if ((res.status === 401 || res.status === 402) && W()) {
+        history.pop(); save();
+        $("chatLog").lastElementChild?.remove();
+        $("chatInput").value = text; fit();
+        if (data?.balancePaise != null) W().setBalance(data.balancePaise);
+        W().prompt(res.status === 401 ? "login" : "funds", data?.needPaise);
+        return;
+      }
       if (res.status === 402) {
         history.pop(); save();
         setLeft(0);
@@ -231,6 +243,7 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
       history.push({ role: "model", text: data.reply });
       save();
       setLeft(data.left);
+      if (W() && data.balancePaise != null) W().setBalance(data.balancePaise);
       $("chatLog").insertAdjacentHTML("beforeend", bubble({ role: "model", text: data.reply }));
       scrollDown();
       renderMeta();
@@ -291,7 +304,7 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     if (e.target.closest("#chatShare")) share(selected()[0]?.payload);
     const w = e.target.closest("[data-who]");
     if (w && !busy) toggle(w.dataset.who);
-    if (e.target.closest("#chatPremium")) { window.track?.("premium_from_chat_limit"); closeChat(); location.href = "/premium"; }
+    if (e.target.closest("#chatPremium")) { window.track?.("add_money_from_chat_limit"); if (W()) W().open(); else location.href = "mailto:hello@shubhlyastro.in"; }
   });
   document.addEventListener("keydown", (e) => {
     if ($("chat").hidden) return;
@@ -311,6 +324,8 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     .then((d) => { if (d) { setLeft(d.left); if (open) renderMeta(); } })
     .catch(() => {});
 
+  document.addEventListener("kk:balance", () => { if (open) renderMeta(); });
+  document.addEventListener("kk:wallet", () => { if (open) renderMeta(); });
   renderCards();
   setInterval(renderCards, 60_000); // availability changes with the hour
 

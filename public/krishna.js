@@ -37,8 +37,10 @@ if (box) {
     return id;
   })();
   let history = get("kk.krishna", []).filter((m) => m && typeof m.text === "string" && (m.role === "user" || m.role === "model")).slice(-20);
+  const W = () => window.kkWallet?.enabled ? window.kkWallet : null;
   let left = get("shubhly.chatLeft", null);
   let busy = false;
+  const priceTag = () => { const w = W(); return w ? `Each reply is ₹${w.prices.krishna / 100}. Hearing it spoken is ₹${w.prices.voice / 100} more.` : ""; };
 
   // ---- Krishna's voice: a calm voice from the server, or the phone's own voice if that is not available ----
   let audio = null, stopSpeech = null;
@@ -67,8 +69,14 @@ if (box) {
     track("krishna_listen");
     try {
       if (!sig) throw new Error("fallback");
-      const r = await fetch("/api/krishna/speak", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cid, text, sig }) });
+      const r = await fetch("/api/krishna/speak", { method: "POST", headers: { "Content-Type": "application/json", ...(W() ? await W().headers() : {}) }, body: JSON.stringify({ cid, text, sig }) });
+      if ((r.status === 401 || r.status === 402) && W()) {
+        const j = await r.json().catch(() => ({}));
+        stopAll(); W().prompt(r.status === 401 ? "login" : "funds", j.needPaise);
+        return;
+      }
       if (!r.ok) throw new Error(String(r.status));
+      if (W() && r.headers.get("X-Balance-Paise")) W().setBalance(Number(r.headers.get("X-Balance-Paise")));
       const url = URL.createObjectURL(await r.blob());
       audio = new Audio(url);
       audio.onended = audio.onerror = () => { URL.revokeObjectURL(url); stopAll(); };
@@ -104,14 +112,15 @@ if (box) {
   };
   const showLimit = () => {
     form.hidden = true; ideas.hidden = true;
-    note.innerHTML = 'You have used your free messages for now. Keep reading the Gita here, it is always free. Want more? <a href="/premium">Join the premium list</a> or write to <a href="mailto:hello@shubhlyastro.in?subject=Krishna%20chat">hello@shubhlyastro.in</a>.';
+    note.innerHTML = 'You have used your free messages for now. Keep reading the Gita here, it is always free. To keep talking with Krishna, write to <a href="mailto:hello@shubhlyastro.in?subject=Krishna%20chat">hello@shubhlyastro.in</a>.';
     track("chat_limit_reached", { where: "krishna" });
   };
   const open = (q) => {
     box.hidden = false;
     $("kr-open")?.setAttribute("hidden", "");
     render();
-    if (left !== null && left <= 0) showLimit();
+    if (!W() && left !== null && left <= 0) showLimit();
+    if (W()) note.textContent = priceTag();
     if (q) { input.value = q; input.focus(); autosize(); }
     else input.focus({ preventScroll: true });
     track("krishna_open");
@@ -133,10 +142,16 @@ if (box) {
     try {
       const r = await fetch("/api/krishna", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(W() ? await W().headers() : {}) },
         body: JSON.stringify({ cid, language: get("shubhly.lang", "en"), messages: history.slice(-12) }),
       });
       const j = await r.json().catch(() => ({}));
+      if ((r.status === 401 || r.status === 402) && W()) {
+        wait.remove(); history.pop(); input.value = t; autosize();
+        if (j.balancePaise != null) W().setBalance(j.balancePaise);
+        W().prompt(r.status === 401 ? "login" : "funds", j.needPaise);
+        return;
+      }
       if (r.status === 402) { wait.remove(); history.pop(); left = 0; set("shubhly.chatLeft", 0); showLimit(); return; }
       if (!r.ok) throw new Error(j.error || "Krishna is quiet for a moment. Please try again.");
       if (!j.reply || !String(j.reply).trim()) throw new Error("Krishna is quiet for a moment. Please ask again.");
@@ -144,9 +159,10 @@ if (box) {
       wait.textContent = j.reply;
       if (j.sig) addListen(wait, j.reply, j.sig);
       history.push({ role: "model", text: j.reply, sig: j.sig });
+      if (W() && j.balancePaise != null) W().setBalance(j.balancePaise);
       if (Number.isInteger(j.left)) { left = j.left; set("shubhly.chatLeft", left); }
       set("kk.krishna", history.slice(-20));
-      if (left !== null && left <= 0) showLimit();
+      if (!W() && left !== null && left <= 0) showLimit();
     } catch (e) {
       history.pop();
       wait.classList.remove("wait");

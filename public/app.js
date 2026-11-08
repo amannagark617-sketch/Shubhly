@@ -1051,11 +1051,20 @@ $("reportBtn").addEventListener("click", async () => {
   setBusy(btn, true, t("rep_busy"));
   try {
     const lang = $("repLang").value;
-    const data = await api("/api/report", {
+    const W = window.kkWallet?.enabled ? window.kkWallet : null;
+    const res = await fetch("/api/report", {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: { "content-type": "application/json", ...(W ? await W.headers() : {}) },
       body: JSON.stringify({ ...lastPayload, topic: $("topic").value, language: lang }),
     });
+    const data = await res.json().catch(() => null);
+    if (W && (res.status === 401 || res.status === 402)) {
+      if (data?.balancePaise != null) W.setBalance(data.balancePaise);
+      W.prompt(res.status === 401 ? "login" : "funds", data?.needPaise);
+      return;
+    }
+    if (!res.ok) throw new Error(data?.error || t("err_generic"));
+    if (W && data.balancePaise != null) W.setBalance(data.balancePaise);
     $("reportOut").innerHTML = renderReport(data.report, data.chart, lastPayload?.timeUnknown);
     show($("reportOut"), true);
     reportText = data.report;
@@ -1095,29 +1104,6 @@ $("pdfBtn").addEventListener("click", async () => {
 
 // Analytics lives in analytics.js (loaded above). window.track(name, params) sends an event.
 
-// ---------- premium ----------
-function renderPremium() {
-  const joined = store.get("shubhly.premium", false);
-  $("premiumNote").textContent = t(joined ? "pr_joined" : "pr_note");
-  $("premiumNote").classList.toggle("ok", !!joined);
-}
-$("premiumBtn").addEventListener("click", () => {
-  window.track("premium_interest");
-  store.set("shubhly.premium", true);
-  renderPremium();
-  if (config.built) {
-    const tag = $("buildTag");
-    tag.textContent = "Version " + new Date(config.built).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
-    show(tag, true);
-  }
-  if (config.whatsappUrl) {
-    const u = config.whatsappUrl;
-    window.open(`${u}${u.includes("?") ? "&" : "?"}text=${encodeURIComponent(t("pr_wa_text"))}`, "_blank", "noopener");
-  } else {
-    toast(t("pr_toast"));
-  }
-});
-
 // ---------- language ----------
 let guides = null;
 let liveSky = null;
@@ -1137,7 +1123,6 @@ function setLanguage(l, { first = false } = {}) {
   setTradition(tradition());
   setBusy($("go"), false, t("f_go"));
   setBusy($("reportBtn"), false, t("rep_btn"));
-  renderPremium();
   renderStreak();
   renderSaved();
   guides?.refresh();

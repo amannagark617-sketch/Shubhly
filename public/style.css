@@ -106,7 +106,7 @@ main, .footer { position: relative; z-index: 1; }
 .btn-wide { width: 100%; }
 
 /* ---------- mobile tab bar ---------- */
-.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 55; display: grid; grid-template-columns: repeat(5, 1fr); background: var(--ink); border-top: 3px solid var(--haldi); padding-bottom: env(safe-area-inset-bottom); }
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 55; display: grid; grid-template-columns: repeat(4, 1fr); background: var(--ink); border-top: 3px solid var(--haldi); padding-bottom: env(safe-area-inset-bottom); }
 .tabbar a { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 8px 4px 7px; text-decoration: none; color: #fff; font-size: 0.78rem; font-weight: 700; border-right: 1px solid rgba(255, 255, 255, 0.2); }
 .tabbar a:last-child { border-right: 0; }
 .tabbar i { font-style: normal; font-size: 1.25rem; line-height: 1.2; }
@@ -1657,3 +1657,12 @@ header.nav .drawer-section a.nav-premium { background: none; color: var(--red); 
 }
 @media (max-width: 380px) { header.nav .brand-text { font-size: 1.05rem; } header.nav .acc-lbl small { display: none; } }
 html { scroll-padding-top: 84px; }
+
+/* ---------- wallet: prices, notices, history ---------- */
+.acc-prices { list-style: none; margin: 0 0 6px; padding: 0; border: 1px solid #e3e3ea; border-radius: 8px; }
+.acc-prices li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 12px; font-size: 0.95rem; }
+.acc-prices li + li { border-top: 1px solid #eee; }
+.acc-notice { margin: 10px 0; padding: 10px 12px; border-radius: 8px; background: #fff4d6; color: #5a4300; font-weight: 600; font-size: 0.95rem; }
+.acc-welcome { margin: 6px 0 12px; padding: 10px 12px; border-radius: 8px; background: #e8f6ec; color: #17612c; font-size: 0.92rem; }
+.acc-quick button small { display: block; font-size: 0.7rem; font-weight: 600; color: #17612c; }
+.acc-hist b.out { color: #b3261e; }
