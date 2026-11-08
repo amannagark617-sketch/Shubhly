@@ -26,11 +26,12 @@ const FONTS = {
   telu: [font("hind-guntur", "telugu", 400), font("hind-guntur", "telugu", 700)],
 };
 
-const NAVY = "#161b3d";
-const MAROON = "#7a1f2b";
-const GOLD = "#b08d3c";
-const GOLDL = "#e2c677";
-const MUTED = "#5b5f7a";
+const NAVY = "#5c1426"; // deep wine, used for dark panels and table heads
+const INK = "#26212a";
+const MAROON = "#8a2237";
+const GOLD = "#a8832f";
+const GOLDL = "#e3c981";
+const MUTED = "#6c6571";
 
 // Which font a character needs. Spaces, digits and punctuation always use Latin,
 // because the Indian-script fonts leave them out.
@@ -109,7 +110,7 @@ function layout(doc, text, size, bold, width) {
 const leading = (line, size) => size * (line.indic ? 1.8 : 1.5);
 
 // Draws text and returns the height it used.
-function rich(doc, text, x, y, { size = 10, bold = false, color = NAVY, width, align = "left" } = {}) {
+function rich(doc, text, x, y, { size = 10, bold = false, color = INK, width, align = "left" } = {}) {
   const lines = layout(doc, text, size, bold, width);
   doc.fillColor(color);
   const latinAsc = doc.font("latin")._font.ascender;
@@ -170,6 +171,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
   const L = 46, W = PW - 92, TOP = 60;
   const pn = (k) => planetName(lang, k);
   const sg = (en, hi) => signName(lang, en, hi);
+  const skin = (svg) => svg.replace(/#1b1b3a/gi, "#4a2a33").replace(/#55537a/gi, "#6c6571").replace(/#fff6e2|#fffaf0/gi, "#ffffff");
   const SVGOPT = { assumePt: true, fontCallback: (_f, bold) => (bold ? "latin-b" : "latin") };
   const TAGC = { good: "#2b7a4b", steady: "#b27d12", careful: "#a8321e" };
   const asc = chart.ascendant;
@@ -197,23 +199,24 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
   }
 
   // ================= COVER =================
-  doc.rect(0, 0, PW, PH).fill(NAVY);
+  const grad = doc.linearGradient(0, 0, PW, PH); grad.stop(0, "#6e1a30").stop(1, "#2a0a14");
+  doc.rect(0, 0, PW, PH).fill(grad);
   doc.rect(26, 26, PW - 52, PH - 52).lineWidth(0.8).stroke(GOLD);
   doc.rect(32, 32, PW - 64, PH - 64).lineWidth(0.3).stroke(GOLD);
   rich(doc, "KUNDLI KAKA", L, 78, { size: 13, bold: true, color: GOLDL, width: W, align: "center" });
   doc.moveTo(PW / 2 - 24, 102).lineTo(PW / 2 + 24, 102).lineWidth(1).stroke(GOLD);
-  rich(doc, T(western ? "pdf_h_western" : "pdf_h_vedic"), L, 114, { size: 11, color: "#c4c7de", width: W, align: "center" });
+  rich(doc, T(western ? "pdf_h_western" : "pdf_h_vedic"), L, 114, { size: 11, color: "#ead9dc", width: W, align: "center" });
   const nm = name || T("r_title_none");
   const nmSize = widthOf(doc, nm, 36, true) > W - 40 ? 26 : 36;
   const nmH = heightOf(doc, nm, nmSize, W - 40, true);
   rich(doc, nm, L + 20, 150, { size: nmSize, bold: true, color: "#ffffff", width: W - 40, align: "center" });
   const meta = [dateLabel, timeUnknown ? T("r_time_unknown") : timeLabel, placeLabel].filter(Boolean).join("   |   ");
-  rich(doc, meta, L, 158 + nmH, { size: 10, color: "#c4c7de", width: W, align: "center" });
+  rich(doc, meta, L, 158 + nmH, { size: 10, color: "#ead9dc", width: W, align: "center" });
   {
     const S = 290, cx0 = (PW - S) / 2, cy0 = 238 + Math.max(0, nmH - 44);
     doc.rect(cx0, cy0, S, S).fill("#ffffff");
     doc.rect(cx0 + 5, cy0 + 5, S - 10, S - 10).lineWidth(0.5).stroke(GOLD);
-    SVGtoPDF(doc, (western ? westernSvg(chart, { glyphs: false }) : chartSvg(chart)).replace(/#fff6e2|#fffaf0/gi, "#ffffff"), cx0 + 16, cy0 + 16, { width: S - 32, height: S - 32, ...SVGOPT });
+    SVGtoPDF(doc, skin(western ? westernSvg(chart, { glyphs: false }) : chartSvg(chart)), cx0 + 16, cy0 + 16, { width: S - 32, height: S - 32, ...SVGOPT });
     // three key facts under the chart
     const ty0 = cy0 + S + 34, cw = W / chips.length;
     chips.forEach(([k, v], i) => {
@@ -226,17 +229,20 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
   rich(doc, "kundlikaka.in", L, PH - 78, { size: 9.5, bold: true, color: GOLDL, width: W, align: "center" });
 
   // ================= INNER PAGES =================
+  doc.addPage(); // page 2 is the contents page, drawn at the end once the page numbers are known
   doc.addPage();
   let y = TOP;
+  const toc = [];
   const bottomEdge = () => PH - 62;
   const ensure = (h) => { if (y + h > bottomEdge()) { doc.addPage(); y = TOP; } };
   const section = (title, color = GOLD, need = 130) => {
     ensure(need);
+    toc.push({ title, page: doc.bufferedPageRange().count, color });
     y += 6;
     doc.rect(L, y + 2, 5, 17).fill(color);
     rich(doc, title, L + 14, y, { size: 15, bold: true, width: W - 14 });
     y += 28;
-    doc.moveTo(L, y - 5).lineTo(L + W, y - 5).lineWidth(0.5).stroke("#d3d6e4");
+    doc.moveTo(L, y - 5).lineTo(L + W, y - 5).lineWidth(0.5).stroke("#e3dde0");
   };
   const half = (W - 14) / 2;
   // A short box: a coloured top edge, a heading, and a little text. Measured first so two can sit side by side.
@@ -245,10 +251,10 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     const hh = heightOf(doc, head, hSize, inner, true), th = heightOf(doc, txt, tSize, inner);
     const h = 12 + hh + 4 + th + 10;
     return { h, draw(y0) {
-      doc.rect(x, y0, w, h).fillAndStroke(fill, "#d3d6e4");
+      doc.rect(x, y0, w, h).fillAndStroke(fill, "#e3dde0");
       doc.rect(x, y0, w, 3).fill(accent);
       rich(doc, head, x + 10, y0 + 10, { size: hSize, bold: true, color: accent === GOLD ? MAROON : accent, width: inner });
-      rich(doc, txt, x + 10, y0 + 14 + hh, { size: tSize, color: "#2d3252", width: inner });
+      rich(doc, txt, x + 10, y0 + 14 + hh, { size: tSize, color: "#3a343f", width: inner });
     } };
   };
   const card = (x, w, title, items, accent = GOLD, fill = "#ffffff") => {
@@ -257,14 +263,14 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     for (const it of items) h += heightOf(doc, it, 9.5, inner) + 5;
     h += 6;
     return { h, draw(y0) {
-      doc.rect(x, y0, w, h).fillAndStroke(fill, "#d3d6e4");
+      doc.rect(x, y0, w, h).fillAndStroke(fill, "#e3dde0");
       doc.rect(x, y0, w, 3).fill(accent);
       let cy = y0 + 13;
       rich(doc, title, x + 10, cy, { size: 10.5, bold: true, color: accent, width: w - 20 });
       cy += heightOf(doc, title, 10.5, w - 20, true) + 8;
       for (const it of items) {
         doc.rect(x + 12, cy + 4, 4.5, 4.5).fill(accent);
-        rich(doc, it, x + 24, cy, { size: 9.5, color: "#2d3252", width: inner });
+        rich(doc, it, x + 24, cy, { size: 9.5, color: "#3a343f", width: inner });
         cy += heightOf(doc, it, 9.5, inner) + 5;
       }
     } };
@@ -280,10 +286,10 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     const hh = head ? heightOf(doc, head, 9.5, W - 36, true) + 4 : 0, th = heightOf(doc, txt, 10, W - 36);
     const h = hh + th + 24;
     ensure(h + 8);
-    doc.rect(L, y, W, h).fill(dark ? NAVY : "#f1f2f8");
+    doc.rect(L, y, W, h).fill(dark ? NAVY : "#f7f4f5");
     doc.rect(L, y, 4, h).fill(GOLD);
     if (head) rich(doc, head, L + 18, y + 11, { size: 9.5, bold: true, color: dark ? GOLDL : MAROON, width: W - 36 });
-    rich(doc, txt, L + 18, y + 11 + hh, { size: 10, color: dark ? "#ffffff" : "#2d3252", width: W - 36 });
+    rich(doc, txt, L + 18, y + 11 + hh, { size: 10, color: dark ? "#ffffff" : "#3a343f", width: W - 36 });
     y += h + 14;
   };
 
@@ -320,7 +326,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     y += rowH;
     const y0 = y - rowH;
     chart.planets.forEach((p, ri) => {
-      if (ri % 2 === 0) doc.rect(L, y, W, rowH).fill("#f1f2f8");
+      if (ri % 2 === 0) doc.rect(L, y, W, rowH).fill("#f7f4f5");
       doc.rect(L + 8, y + 6.5, 6, 6).fill(PLANET_COLOR[p.key] || NAVY);
       const cells = [pn(p.key) + (p.retrograde ? " (R)" : ""), sg(p.sign, p.signHi), `${p.degInSign.toFixed(1)}°`, String(p.house)];
       if (!western) cells.push(`${nakName(lang, p.nakshatra, p.nakshatraHi)} ${p.pada}`);
@@ -328,7 +334,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
       cells.forEach((c, i) => { rich(doc, c, x + (i === 0 ? 12 : 0), y + 5, { size: 8.5, bold: i === 0, width: W * cols[i] - (i === 0 ? 18 : 6) }); x += W * cols[i]; });
       y += rowH;
     });
-    doc.rect(L, y0, W, y - y0).lineWidth(0.6).stroke("#d3d6e4");
+    doc.rect(L, y0, W, y - y0).lineWidth(0.6).stroke("#e3dde0");
     y += 8;
     const legend = chart.planets.map((p) => `${SHORT[p.key]} ${pn(p.key)}`).join(", ");
     const lg = `${legend}. ${T(western ? "r_legend_w" : "r_legend")}`;
@@ -362,30 +368,26 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
   const elNames = rep?.labels?.fire ? ["fire", "earth", "air", "water"].map((k) => rep.labels[k] || "") : ELNAMES[lang] || ELNAMES.en;
   const lab = (k, def) => rep?.labels?.[k] || def;
 
-  // ---- graphics: element balance and the life periods
-  {
+  // ---- graphics: element balance and the life periods (drawn on the contents page at the end)
+  const drawGraphics = (y0) => {
     const counts = elementBalance(chart, { timeUnknown });
     const showTimeline = !western && !timeUnknown && chart.dasha?.mahadashas?.length;
-    ensure(130);
-    rich(doc, lab("elements", T("pdf_elements")), L, y, { size: 11, bold: true, color: MAROON, width: half });
-    if (showTimeline) rich(doc, lab("timeline", T("pdf_timeline")), L + half + 14, y, { size: 11, bold: true, color: MAROON, width: half });
-    y += 24;
+    let gy = y0;
+    rich(doc, lab("elements", T("pdf_elements")), L, gy, { size: 11, bold: true, color: MAROON, width: half });
+    if (showTimeline) rich(doc, lab("timeline", T("pdf_timeline")), L + half + 14, gy, { size: 11, bold: true, color: MAROON, width: half });
+    gy += 24;
     const max = Math.max(1, ...counts);
     counts.forEach((n, i) => {
-      const ry = y + i * 25;
+      const ry = gy + i * 25;
       rich(doc, elNames[i] || "", L, ry + 4, { size: 9, bold: true, width: 60 });
       const bw = Math.max(4, (n / max) * (half - 100));
-      doc.rect(L + 62, ry, half - 100, 16).fill("#eceef6");
+      doc.rect(L + 62, ry, half - 100, 16).fill("#eee9ec");
       doc.rect(L + 62, ry, bw, 16).fill(ELEMENT_COLOR[i]);
       rich(doc, String(n), L + 62 + half - 94, ry + 4, { size: 9, bold: true });
     });
-    let vh = 4 * 25;
-    if (showTimeline) {
-      SVGtoPDF(doc, timelineSvg(chart), L + half + 14, y - 6, { width: half, height: half * 92 / 360, ...SVGOPT });
-      vh = Math.max(vh, half * 92 / 360);
-    }
-    y += vh + 16;
-  }
+    if (showTimeline) SVGtoPDF(doc, skin(timelineSvg(chart)), L + half + 14, gy - 6, { width: half, height: half * 92 / 360, ...SVGOPT });
+    return gy + Math.max(4 * 25, showTimeline ? half * 92 / 360 : 0) + 16;
+  };
 
   // ---- about you (Vedic): short cards, two per row
   const about = western ? null : buildAbout(chart, { lang: lang === "hi" || lang === "hn" ? lang : "en", timeUnknown });
@@ -404,7 +406,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     if (about.money) list.push([T("ab_money"), about.money.text]);
     if (about.love) list.push([T("ab_love"), about.love.text]);
     if (about.career) list.push([T("ab_career"), about.career.text]);
-    const accents = [MAROON, GOLD, NAVY, "#2b7a4b", "#1f3f8f", "#8a4b7a"];
+    const accents = [MAROON, GOLD, NAVY, "#2b7a4b", "#2e5e73", "#8a4b7a"];
     for (let i = 0; i < list.length; i += 2) {
       row(tile(L, half, list[i][0], shorten(list[i][1], 230), { accent: accents[i % 6] }), list[i + 1] ? tile(L + half + 14, half, list[i + 1][0], shorten(list[i + 1][1], 230), { accent: accents[(i + 1) % 6] }) : null);
     }
@@ -416,7 +418,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
   }
 
   // ---- the written report
-  const SEC_COLOR = { now: MAROON, periods: NAVY, months: "#2b7a4b", career: "#1f3f8f", money: "#2b7a4b", love: "#a8326a", windows: NAVY, doshas: MAROON, remedies: "#b27d12", kit: GOLD };
+  const SEC_COLOR = { now: MAROON, periods: NAVY, months: "#2b7a4b", career: "#2e5e73", money: "#2b7a4b", love: "#9a3b5a", windows: NAVY, doshas: MAROON, remedies: "#b27d12", kit: GOLD };
   if (rep) {
     section(T("pdf_report"), MAROON);
     if (rep.headline) { const hh = heightOf(doc, rep.headline, 16, W, true); ensure(hh + 10); rich(doc, rep.headline, L, y, { size: 16, bold: true, width: W }); y += hh + 8; }
@@ -434,7 +436,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
         if (b.type === "p") {
           if (sec.id === "now") { callout("", b.text, false); continue; }
           const hh = heightOf(doc, b.text, 10, W); ensure(hh + 8);
-          rich(doc, b.text, L, y, { size: 10, width: W, color: "#2d3252" }); y += hh + 10;
+          rich(doc, b.text, L, y, { size: 10, width: W, color: "#3a343f" }); y += hh + 10;
         } else if (b.type === "list") {
           const [head, ...rest] = b.items;
           const dos = listNo++ === 0, c = dos ? "#2b7a4b" : "#a8321e";
@@ -444,14 +446,14 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
             doc.rect(L + 1, y + 2, 10, 10).lineWidth(1).stroke(c);
             if (dos) doc.moveTo(L + 3.5, y + 7.5).lineTo(L + 5.8, y + 10).lineTo(L + 9, y + 4).lineWidth(1.4).stroke(c);
             else doc.moveTo(L + 3.5, y + 4.5).lineTo(L + 8.5, y + 9.5).moveTo(L + 8.5, y + 4.5).lineTo(L + 3.5, y + 9.5).lineWidth(1.2).stroke(c);
-            rich(doc, it, L + 20, y, { size: 10, width: W - 26, color: "#2d3252" }); y += hh + 7;
+            rich(doc, it, L + 20, y, { size: 10, width: W - 26, color: "#3a343f" }); y += hh + 7;
           }
           y += 6;
         } else if (b.type === "table" && sec.id === "kit") {
           const tiles = b.rows.map(([k, v]) => ({ k, v: String(v) }));
           const tw = (W - 8 * (tiles.length - 1)) / tiles.length;
           const kit = luckyKit(chart);
-          const SW = { orange: "#d98a1b", gold: "#c9a227", white: "#ffffff", cream: "#efe6cf", red: "#b3261e", maroon: "#7a1f2b", green: "#2b7a4b", yellow: "#e6c11a", pink: "#eeb3c6", light: null, dark: null, blue: "#1f3f8f", black: "#1a1a1a" };
+          const SW = { orange: "#d98a1b", gold: "#c9a227", white: "#ffffff", cream: "#efe6cf", red: "#b3261e", maroon: "#7a1f2b", green: "#2b7a4b", yellow: "#e6c11a", pink: "#eeb3c6", light: null, dark: null, blue: "#2e5e73", black: "#1f1b22" };
           const sw = String(kit.colour || "").toLowerCase().split(/\s+or\s+|\s+/).map((w) => SW[w]).filter(Boolean).slice(0, 2);
           const hs = tiles.map((t) => heightOf(doc, t.v, 10.5, tw - 14, true));
           const lhs = tiles.map((t) => heightOf(doc, t.k, 8, tw - 14, true)), lh = Math.max(...lhs);
@@ -459,13 +461,13 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
           ensure(h + 10);
           tiles.forEach((t, i) => {
             const x = L + i * (tw + 8);
-            doc.rect(x, y, tw, h).fillAndStroke("#ffffff", "#d3d6e4");
+            doc.rect(x, y, tw, h).fillAndStroke("#ffffff", "#e3dde0");
             doc.rect(x, y, tw, 3).fill(GOLD);
             rich(doc, t.k, x + 7, y + 11, { size: 8, bold: true, color: MUTED, width: tw - 14 });
             const vy = y + 18 + lh;
             if (i === 1 && sw.length) {
-              sw.forEach((c, j) => doc.rect(x + 7 + j * 24, vy, 20, 20).fillAndStroke(c, "#8d90a8"));
-              rich(doc, t.v, x + 7, vy + 25, { size: 8.5, color: "#2d3252", width: tw - 14 });
+              sw.forEach((c, j) => doc.rect(x + 7 + j * 24, vy, 20, 20).fillAndStroke(c, "#9a8f96"));
+              rich(doc, t.v, x + 7, vy + 25, { size: 8.5, color: "#3a343f", width: tw - 14 });
             } else rich(doc, t.v, x + 7, vy, { size: 10.5, bold: true, width: tw - 14 });
           });
           y += h + 14 + (sw.length ? 16 : 0);
@@ -483,7 +485,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
           b.rows.forEach((r, ri) => {
             const hh = Math.max(...r.map((c, i) => heightOf(doc, c, 9.5, cw[i] - 12, i === 0))) + 8;
             ensure(hh + 2);
-            if (ri % 2 === 0) doc.rect(L, y, W, hh).fill("#f1f2f8");
+            if (ri % 2 === 0) doc.rect(L, y, W, hh).fill("#f7f4f5");
             r.forEach((c, i) => rich(doc, c, xs[i] + 8, y + 4, { size: 9.5, bold: i === 0, width: cw[i] - 12 }));
             y += hh;
           });
@@ -493,9 +495,25 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
           const rows = b.rows, bw = W / rows.length;
           const word = {};
           for (const r of rows) if (!word[r.tag]) word[r.tag] = String(r.text).split(/[.।]\s/)[0];
+          // the year in three numbers
+          {
+            const tw3 = (W - 24) / 3;
+            const tl = ["good", "steady", "careful"].map((tg) => ({ tg, ms: rows.filter((r) => r.tag === tg).map((r) => String(r.h).split(" ")[0].slice(0, 3)) }));
+            const th3 = Math.max(...tl.map((o) => heightOf(doc, o.ms.join(", ") || "-", 8.5, tw3 - 20))) + 62;
+            ensure(th3 + 170);
+            tl.forEach((o, i) => {
+              const x = L + i * (tw3 + 12);
+              doc.rect(x, y, tw3, th3).fillAndStroke("#ffffff", "#e3dde0");
+              doc.rect(x, y, tw3, 3).fill(TAGC[o.tg]);
+              rich(doc, String(o.ms.length), x + 10, y + 10, { size: 24, bold: true, color: TAGC[o.tg] });
+              rich(doc, word[o.tg] || "", x + 44, y + 22, { size: 9.5, bold: true, color: TAGC[o.tg], width: tw3 - 54 });
+              rich(doc, o.ms.join(", ") || "-", x + 10, y + 48, { size: 8.5, color: MUTED, width: tw3 - 20 });
+            });
+            y += th3 + 16;
+          }
           ensure(150);
           const base = y + 100;
-          for (let g = 1; g <= 5; g++) doc.moveTo(L, base - g * 17).lineTo(L + W, base - g * 17).lineWidth(0.3).stroke("#e1e3ee");
+          for (let g = 1; g <= 5; g++) doc.moveTo(L, base - g * 17).lineTo(L + W, base - g * 17).lineWidth(0.3).stroke("#e8e3e6");
           rows.forEach((r, i) => {
             const x = L + i * bw + 5, bh = (r.score || 1) * 17;
             doc.rect(x, base - bh, bw - 10, bh).fill(TAGC[r.tag] || NAVY);
@@ -515,11 +533,11 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
             const inner = w - 22, th = heightOf(doc, body, 8.8, inner);
             const h = 12 + 14 + th + 10;
             return { h, draw(y0) {
-              doc.rect(x, y0, w, h).fillAndStroke("#ffffff", "#d3d6e4");
+              doc.rect(x, y0, w, h).fillAndStroke("#ffffff", "#e3dde0");
               doc.rect(x, y0, 4, h).fill(TAGC[r.tag] || NAVY);
               rich(doc, r.h, x + 14, y0 + 9, { size: 9.5, bold: true, color: TAGC[r.tag] || NAVY, width: inner - 60 });
-              for (let s = 0; s < 5; s++) doc.rect(x + w - 12 - (5 - s) * 9, y0 + 12, 6, 6).fill(s < (r.score || 0) ? TAGC[r.tag] || NAVY : "#dfe1ec");
-              rich(doc, body, x + 14, y0 + 26, { size: 8.8, color: "#2d3252", width: inner });
+              for (let s = 0; s < 5; s++) doc.rect(x + w - 12 - (5 - s) * 9, y0 + 12, 6, 6).fill(s < (r.score || 0) ? TAGC[r.tag] || NAVY : "#e6e1e4");
+              rich(doc, body, x + 14, y0 + 26, { size: 8.8, color: "#3a343f", width: inner });
             } };
           };
           for (let i = 0; i < rows.length; i += 2) row(card12(L, half, rows[i]), rows[i + 1] ? card12(L + half + 14, half, rows[i + 1]) : null);
@@ -530,11 +548,11 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
             const [dn, ds] = String(r.h).split(/:\s*/);
             const hh = heightOf(doc, r.text || " ", 9.5, W - 28), bh = 18;
             ensure(hh + bh + 26);
-            doc.rect(L, y, W, hh + bh + 18).fillAndStroke("#ffffff", "#d3d6e4");
+            doc.rect(L, y, W, hh + bh + 18).fillAndStroke("#ffffff", "#e3dde0");
             doc.rect(L, y, 4, hh + bh + 18).fill(MAROON);
             rich(doc, dn, L + 16, y + 9, { size: 10.5, bold: true, width: W - 140 });
             if (ds) { const bw2 = widthOf(doc, ds, 8.5, true) + 18; doc.rect(L + W - bw2 - 10, y + 8, bw2, 17).fill(NAVY); rich(doc, ds, L + W - bw2 - 1, y + 12.5, { size: 8.5, bold: true, color: "#ffffff" }); }
-            rich(doc, r.text || "", L + 16, y + 32, { size: 9.5, color: "#2d3252", width: W - 28 });
+            rich(doc, r.text || "", L + 16, y + 32, { size: 9.5, color: "#3a343f", width: W - 28 });
             y += hh + bh + 28;
           }
         } else if (b.type === "rows") {
@@ -543,10 +561,10 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
           for (const r of b.rows) {
             const hh = Math.max(heightOf(doc, r.text || " ", 9.5, W - lw - 24), heightOf(doc, r.h, 10, lw - 18, true)) + 18;
             ensure(hh + 6);
-            doc.rect(L, y, W, hh).fillAndStroke("#ffffff", "#d3d6e4");
+            doc.rect(L, y, W, hh).fillAndStroke("#ffffff", "#e3dde0");
             doc.rect(L, y, lw, hh).fill(col);
             rich(doc, r.h, L + 9, y + 9, { size: 10, bold: true, color: "#ffffff", width: lw - 18 });
-            rich(doc, r.text || "", L + lw + 12, y + 9, { size: 9.5, color: "#2d3252", width: W - lw - 24 });
+            rich(doc, r.text || "", L + lw + 12, y + 9, { size: 9.5, color: "#3a343f", width: W - lw - 24 });
             y += hh + 7;
           }
           y += 4;
@@ -584,10 +602,49 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
       doc.rect(L, y, W, 3).fill(GOLD);
       rich(doc, T("next_rep_t"), L + 20, y + 18, { size: 13, bold: true, color: "#ffffff", width: W - 40 });
       let cy = y + 18 + heightOf(doc, T("next_rep_t"), 13, W - 40, true) + 10;
-      for (const b2 of bullets) { doc.rect(L + 22, cy + 4, 5, 5).fill(GOLD); rich(doc, b2, L + 36, cy, { size: 10, color: "#e8e9f4", width: W - 60 }); cy += heightOf(doc, b2, 10, W - 60) + 6; }
+      for (const b2 of bullets) { doc.rect(L + 22, cy + 4, 5, 5).fill(GOLD); rich(doc, b2, L + 36, cy, { size: 10, color: "#f0e6e8", width: W - 60 }); cy += heightOf(doc, b2, 10, W - 60) + 6; }
       rich(doc, "kundlikaka.in", L + 20, cy + 6, { size: 10, bold: true, color: GOLDL, width: W - 40 });
       y += h + 10;
     }
+  }
+
+  // ---- a closing thought from the Gita
+  {
+    const meaning = lang === "hi" || lang === "hn" ? "कर्म करने में ही तुम्हारा अधिकार है, फल में कभी नहीं।" : "You have the right to do your work, but never to its fruits.";
+    const h = 128;
+    ensure(h + 12);
+    y += 8;
+    const gr = doc.linearGradient(L, y, L + W, y + h); gr.stop(0, "#6e1a30").stop(1, "#2a0a14");
+    doc.rect(L, y, W, h).fill(gr);
+    doc.rect(L + 6, y + 6, W - 12, h - 12).lineWidth(0.5).stroke(GOLD);
+    rich(doc, "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।", L + 20, y + 26, { size: 15, bold: true, color: GOLDL, width: W - 40, align: "center" });
+    rich(doc, meaning, L + 30, y + 58, { size: 10.5, color: "#ffffff", width: W - 60, align: "center" });
+    rich(doc, "Bhagavad Gita 2.47", L + 20, y + 88, { size: 8.5, bold: true, color: GOLDL, width: W - 40, align: "center" });
+    rich(doc, "kundlikaka.in", L + 20, y + 104, { size: 8.5, color: "#ead9dc", width: W - 40, align: "center" });
+    y += h + 10;
+  }
+
+  // ---- the contents page (page 2), now that every page number is known
+  {
+    doc.switchToPage(1);
+    const bottom = doc.page.margins.bottom;
+    doc.page.margins.bottom = 0;
+    const title = lang === "hi" || lang === "hn" ? "इस रिपोर्ट में" : "Inside your report";
+    rich(doc, title, L, TOP + 4, { size: 24, bold: true, color: NAVY, width: W });
+    doc.moveTo(L, TOP + 40).lineTo(L + 44, TOP + 40).lineWidth(2).stroke(GOLD);
+    let cy = TOP + 62;
+    toc.forEach((t, i) => {
+      doc.rect(L, cy - 3, 4, 20).fill(t.color);
+      rich(doc, String(i + 1).padStart(2, "0"), L + 14, cy, { size: 10, bold: true, color: GOLD });
+      rich(doc, t.title, L + 42, cy, { size: 11.5, bold: true, width: W - 100 });
+      const tw = widthOf(doc, t.title, 11.5, true);
+      doc.moveTo(L + 48 + tw, cy + 12).lineTo(L + W - 34, cy + 12).dash(1, { space: 3 }).lineWidth(0.4).stroke("#bdb4b9").undash();
+      rich(doc, String(t.page), L + W - 28, cy, { size: 11.5, bold: true, color: MAROON, width: 28, align: "right" });
+      cy += 28;
+    });
+    cy += 18;
+    drawGraphics(Math.min(cy, bottomEdge() - 150));
+    doc.page.margins.bottom = bottom;
   }
 
   // ---- running header and footer on every inner page
@@ -598,8 +655,8 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     doc.page.margins.bottom = 0;
     rich(doc, "KUNDLI KAKA", L, 28, { size: 7.5, bold: true, color: GOLD });
     rich(doc, nm, L, 28, { size: 7.5, color: MUTED, width: W, align: "right" });
-    doc.moveTo(L, 42).lineTo(L + W, 42).lineWidth(0.5).stroke("#d3d6e4");
-    doc.moveTo(L, PH - 50).lineTo(L + W, PH - 50).lineWidth(0.5).stroke("#d3d6e4");
+    doc.moveTo(L, 42).lineTo(L + W, 42).lineWidth(0.5).stroke("#e3dde0");
+    doc.moveTo(L, PH - 50).lineTo(L + W, PH - 50).lineWidth(0.5).stroke("#e3dde0");
     rich(doc, T("rep_fine"), L, PH - 42, { size: 6.8, color: MUTED, width: W - 60 });
     rich(doc, `${i + 1} / ${range.count}`, L, PH - 42, { size: 7.5, bold: true, color: GOLD, width: W, align: "right" });
     doc.page.margins.bottom = bottom;
