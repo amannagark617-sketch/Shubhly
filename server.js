@@ -30,6 +30,7 @@ import { renderGitaIndex, renderChapter, chapterOf, GITA_PATHS, krishnaReply } f
 import { buildMyDay } from "./src/myday.js";
 import { renderPujaIndex, renderPuja, pujaOf, PUJA_PATHS, PUJA_HI_PATHS } from "./src/puja.js";
 import { signReply, verifyReply, speakKrishna, FREE_LISTENS } from "./src/voice.js";
+import { accountsFromEnv } from "./src/accounts.js";
 import { hiPath } from "./src/seo.js";
 import { PAGES, SLUGS, signPage, loadShell, renderPage, sitemap } from "./src/pages.js";
 import {
@@ -95,7 +96,12 @@ app.use((req, res, next) => {
   };
   next();
 });
+// Accounts and wallet. Everything stays switched off until the Firebase settings exist (see docs/accounts-setup.md).
+// Razorpay's webhook is signed over the exact bytes it sends, so it is read raw, before the JSON parser below.
+const accounts = accountsFromEnv();
+app.post("/api/account/razorpay-webhook", express.raw({ type: "*/*", limit: "200kb" }), accounts.webhook);
 app.use(express.json({ limit: "80kb" }));
+app.use("/api/account", accounts.router);
 
 // ---- very small in-memory rate limiter (per IP) -------------------------
 function rateLimit({ windowMs, max, message }) {
@@ -173,7 +179,7 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.get("/api/config", (_req, res) => {
-  res.json({ built: STARTED, whatsappUrl, gaId });
+  res.json({ built: STARTED, whatsappUrl, gaId, accounts: accounts.publicConfig });
 });
 
 // Today's panchang, plus a personal Moon-transit note when `moon` is given.

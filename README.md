@@ -81,3 +81,6 @@ Payments (UPI and Razorpay), marriage matching, the WhatsApp flow, and the puja 
 - Tests: `npm test`.
 
 Languages: the page and the daily content switch between English, Hindi and Hinglish (picker in the top bar, remembered on the device). Page words live in `public/i18n.js`; daily content in `src/content.js`, `src/content-en.js`, `src/content-hi.js`. The APIs take `lang=en|hi|hn`.
+
+## Login and wallet
+Optional Google/phone login with a Razorpay-funded wallet, saved in Firestore. Off until configured; see `docs/accounts-setup.md`.

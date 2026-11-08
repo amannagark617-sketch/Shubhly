@@ -9,6 +9,7 @@ import { SIGN_EN, planetName, signName, nakName, dayName, pickName, DATE_LOCALE 
 import { initLiveSky } from "/livesky.js";
 import { initGuides } from "/chat.js";
 import { initFestivalCorner } from "/festival.js";
+import { initAccount } from "/account.js";
 import { GUIDES, isResting } from "/guides.js";
 
 // Display guide image or SVG avatar
@@ -1387,6 +1388,7 @@ if ("serviceWorker" in navigator) window.addEventListener("load", () => navigato
     $("storeWa").rel = "noopener";
   }
   initFestivalCorner({ L, toast, config });
+  initAccount({ toast, config });
   loadToday();
   loadHoroscope();
 })();
