@@ -271,13 +271,31 @@ export const HEAD = (title, desc, url, extra = "", img = "/img/og-image.jpg") =>
   <link rel="stylesheet" href="/style.css" />
   <script type="module" src="/analytics.js"></script>
   <script type="module" src="/popups.js"></script>
+  <script type="module" src="/shell.js"></script>
 ${extra}</head>`;
 
 export const TOP = `<body class="blog-page">
-<header class="post-top"><div class="wrap post-top-in">
-  <a class="brand" href="/" aria-label="Kundli Kaka home"><img class="brand-mark" src="/img/logo-mark.png" alt="" width="36" height="36" /><span class="brand-text">Kundli <b>Kaka</b></span></a>
-  <nav aria-label="Main"><a href="/kundli">Kundli</a><a href="/rashifal">Rashifal</a><a href="/match">Kundli Milan</a><a href="/gita">Gita</a><a href="/puja">Puja</a><a href="/blog">Blog</a></nav>
-</div></header>`;
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/" aria-label="Kundli Kaka home"><img class="brand-mark" src="/img/logo-mark.png" alt="" width="36" height="36" /><span class="brand-text">Kundli <b>Kaka</b></span></a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="/kundli">Free kundli</a><a href="/rashifal">Daily horoscope</a><a href="/guides">Ask an astrologer</a><a href="/store">Puja store</a>
+      <div class="nav-dropdown"><button type="button" class="nav-btn" aria-haspopup="menu">More</button>
+        <ul class="nav-menu" role="menu"><li><a href="/panchang" role="menuitem">Today's panchang</a></li><li><a href="/match" role="menuitem">Kundli Milan</a></li><li><a href="/tarot" role="menuitem">Tarot</a></li><li><a href="/gita" role="menuitem">Bhagavad Gita</a></li><li><a href="/puja" role="menuitem">Puja guides</a></li><li><a href="/blog" role="menuitem">Blog</a></li></ul>
+      </div>
+    </nav>
+    <div class="nav-end">
+      <button type="button" class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false" aria-controls="navDrawer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+  </div>
+  <div class="nav-drawer" id="navDrawer" hidden>
+    <nav class="drawer-nav" aria-label="Navigation">
+      <div class="drawer-section" id="drawerAcct"></div>
+      <div class="drawer-section"><a href="/kundli">Free kundli</a><a href="/rashifal">Daily horoscope</a><a href="/guides">Ask an astrologer</a><a href="/store">Puja store</a></div>
+      <div class="drawer-section"><a href="/panchang">Today's panchang</a><a href="/match">Kundli Milan</a><a href="/tarot">Tarot</a><a href="/gita">Bhagavad Gita</a><a href="/puja">Puja guides</a><a href="/blog">Blog</a></div>
+    </nav>
+  </div>
+</header>`;
 
 export const FOOT = `<footer class="post-foot"><div class="wrap"><p>Kundli Kaka: your kundli, your puja, your vibe.</p></div></footer>
 </body></html>`;

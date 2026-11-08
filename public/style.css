@@ -1723,3 +1723,7 @@ body[data-page="kundli"] { background: #fff; }
 .pj-problems a { padding: 10px 14px; border: 1px solid #b9b9c9; border-radius: 4px; color: var(--ink, #1b1b3a); text-decoration: none; font-weight: 600; background: #fff; }
 .pj-problems a:hover { border-color: #1b1b3a; background: #f6f6f9; }
 @media print { .pj-trouble { display: none !important; } }
+
+/* header on the blog, Gita and puja pages is the same as the main pages */
+body.blog-page { padding-top: 64px; }
+body.blog-page header.nav { position: fixed; }
