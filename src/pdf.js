@@ -159,6 +159,56 @@ function plainMarkdown(md) {
   return blocks;
 }
 
+
+// ---- decorative vector art -------------------------------------------------------
+// A fine line mandala: rings, a ring of dots and two layers of petals.
+function mandala(doc, cx, cy, R, { color = GOLD, opacity = 1, lw = 0.5 } = {}) {
+  doc.save();
+  doc.opacity(opacity).strokeColor(color).fillColor(color).lineWidth(lw);
+  for (const f of [1, 0.94, 0.66, 0.34]) doc.circle(cx, cy, R * f).stroke();
+  const P = (r, a) => [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+  for (let k = 0; k < 48; k++) { const [x, y] = P(R * 0.97, (k * Math.PI) / 24); doc.circle(x, y, 0.9).fill(); }
+  const petals = (n, r1, r2, spread) => {
+    for (let k = 0; k < n; k++) {
+      const a = (k * 2 * Math.PI) / n, [x1, y1] = P(r1, a), [x2, y2] = P(r2, a);
+      const [c1x, c1y] = P((r1 + r2) / 2, a - spread), [c2x, c2y] = P((r1 + r2) / 2, a + spread);
+      doc.moveTo(x1, y1).bezierCurveTo(c1x, c1y, c1x, c1y, x2, y2).bezierCurveTo(c2x, c2y, c2x, c2y, x1, y1).stroke();
+    }
+  };
+  petals(24, R * 0.66, R * 0.92, 0.1);
+  petals(12, R * 0.34, R * 0.64, 0.2);
+  petals(12, R * 0.12, R * 0.34, 0.3);
+  doc.restore();
+}
+
+// A twelve-sign wheel with the planets placed where they stand in the sky.
+function skyWheel(doc, chart, cx, cy, R, { asc, moon, labelOf }) {
+  const th = (lonDeg) => Math.PI - (lonDeg * Math.PI) / 180;
+  const pt = (r, lonDeg) => [cx + Math.cos(th(lonDeg)) * r, cy - Math.sin(th(lonDeg)) * r];
+  for (let i = 0; i < 12; i++) {
+    const pts = [];
+    for (let d = 0; d <= 30; d += 3) pts.push(pt(R, i * 30 + d));
+    for (let d = 30; d >= 0; d -= 3) pts.push(pt(R * 0.8, i * 30 + d));
+    doc.save();
+    doc.moveTo(...pts[0]);
+    pts.slice(1).forEach((q) => doc.lineTo(...q));
+    doc.closePath().fillAndStroke(i === asc ? "#ecdcae" : i === moon ? "#efd6db" : i % 2 ? "#ffffff" : "#f7f4f5", "#cdbfc5");
+    doc.restore();
+    const [tx, ty] = pt(R * 0.9, i * 30 + 15);
+    doc.save().fillColor(i === asc || i === moon ? MAROON : MUTED).fontSize(7.5).font("latin-b").text(String(i + 1), tx - 6, ty - 4, { width: 12, align: "center", lineBreak: false }).restore();
+  }
+  doc.circle(cx, cy, R * 0.8).lineWidth(0.6).stroke("#cdbfc5");
+  doc.circle(cx, cy, R * 0.12).fill(GOLD);
+  const seen = {};
+  for (const p of chart.planets) {
+    const n = (seen[p.signIndex] = (seen[p.signIndex] || 0) + 1) - 1;
+    const r = R * (0.62 - n * 0.17);
+    const [x, y] = pt(r, p.lon % 360);
+    doc.circle(x, y, 5.6).fillAndStroke(PLANET_COLOR[p.key] || NAVY, "#ffffff");
+    doc.save().fillColor("#ffffff").fontSize(5.6).font("latin-b").text(labelOf(p.key), x - 6, y - 2.8, { width: 12, align: "center", lineBreak: false }).restore();
+  }
+}
+
 export function buildPdf({ name, chart, insights = {}, lang = "en", report = "", timeUnknown = false, placeLabel = "", dateLabel = "", timeLabel = "" }) {
   const doc = newDoc();
   const chunks = [];
@@ -203,6 +253,10 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
   doc.rect(0, 0, PW, PH).fill(grad);
   doc.rect(26, 26, PW - 52, PH - 52).lineWidth(0.8).stroke(GOLD);
   doc.rect(32, 32, PW - 64, PH - 64).lineWidth(0.3).stroke(GOLD);
+  for (const [qx, qy, sx, sy] of [[44, 44, 1, 1], [PW - 44, 44, -1, 1], [44, PH - 44, 1, -1], [PW - 44, PH - 44, -1, -1]]) {
+    for (const r of [14, 22]) doc.moveTo(qx, qy + sy * r).bezierCurveTo(qx, qy + sy * 5, qx + sx * 5, qy, qx + sx * r, qy).lineWidth(0.6).stroke(GOLD);
+    doc.circle(qx + sx * 4, qy + sy * 4, 1.4).fill(GOLD);
+  }
   rich(doc, "KUNDLI KAKA", L, 78, { size: 13, bold: true, color: GOLDL, width: W, align: "center" });
   doc.moveTo(PW / 2 - 24, 102).lineTo(PW / 2 + 24, 102).lineWidth(1).stroke(GOLD);
   rich(doc, T(western ? "pdf_h_western" : "pdf_h_vedic"), L, 114, { size: 11, color: "#ead9dc", width: W, align: "center" });
@@ -213,12 +267,13 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
   const meta = [dateLabel, timeUnknown ? T("r_time_unknown") : timeLabel, placeLabel].filter(Boolean).join("   |   ");
   rich(doc, meta, L, 158 + nmH, { size: 10, color: "#ead9dc", width: W, align: "center" });
   {
-    const S = 290, cx0 = (PW - S) / 2, cy0 = 238 + Math.max(0, nmH - 44);
+    const S = 240, cx0 = (PW - S) / 2, cy0 = 330 + Math.max(0, nmH - 44);
+    mandala(doc, PW / 2, cy0 + S / 2, 205, { color: GOLDL, opacity: 0.55, lw: 0.55 });
     doc.rect(cx0, cy0, S, S).fill("#ffffff");
     doc.rect(cx0 + 5, cy0 + 5, S - 10, S - 10).lineWidth(0.5).stroke(GOLD);
     SVGtoPDF(doc, skin(western ? westernSvg(chart, { glyphs: false }) : chartSvg(chart)), cx0 + 16, cy0 + 16, { width: S - 32, height: S - 32, ...SVGOPT });
     // three key facts under the chart
-    const ty0 = cy0 + S + 34, cw = W / chips.length;
+    const ty0 = Math.max(cy0 + S + 78, PH - 170), cw = W / chips.length;
     chips.forEach(([k, v], i) => {
       const x = L + i * cw;
       if (i) doc.moveTo(x, ty0 - 2).lineTo(x, ty0 + 42).lineWidth(0.5).stroke(GOLD);
@@ -242,7 +297,8 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     doc.rect(L, y + 2, 5, 17).fill(color);
     rich(doc, title, L + 14, y, { size: 15, bold: true, width: W - 14 });
     y += 28;
-    doc.moveTo(L, y - 5).lineTo(L + W, y - 5).lineWidth(0.5).stroke("#e3dde0");
+    doc.moveTo(L, y - 5).lineTo(L + W - 14, y - 5).lineWidth(0.5).stroke("#e3dde0");
+    doc.moveTo(L + W - 7, y - 10).lineTo(L + W - 2, y - 5).lineTo(L + W - 7, y).lineTo(L + W - 12, y - 5).closePath().fill(GOLD);
   };
   const half = (W - 14) / 2;
   // A short box: a coloured top edge, a heading, and a little text. Measured first so two can sit side by side.
@@ -616,6 +672,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     y += 8;
     const gr = doc.linearGradient(L, y, L + W, y + h); gr.stop(0, "#6e1a30").stop(1, "#2a0a14");
     doc.rect(L, y, W, h).fill(gr);
+    mandala(doc, PW / 2, y + h / 2, 150, { color: GOLDL, opacity: 0.18, lw: 0.5 });
     doc.rect(L + 6, y + 6, W - 12, h - 12).lineWidth(0.5).stroke(GOLD);
     rich(doc, "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।", L + 20, y + 26, { size: 15, bold: true, color: GOLDL, width: W - 40, align: "center" });
     rich(doc, meaning, L + 30, y + 58, { size: 10.5, color: "#ffffff", width: W - 60, align: "center" });
@@ -632,17 +689,24 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     const title = lang === "hi" || lang === "hn" ? "इस रिपोर्ट में" : "Inside your report";
     rich(doc, title, L, TOP + 4, { size: 24, bold: true, color: NAVY, width: W });
     doc.moveTo(L, TOP + 40).lineTo(L + 44, TOP + 40).lineWidth(2).stroke(GOLD);
+    const TW = 300;
     let cy = TOP + 62;
     toc.forEach((t, i) => {
       doc.rect(L, cy - 3, 4, 20).fill(t.color);
       rich(doc, String(i + 1).padStart(2, "0"), L + 14, cy, { size: 10, bold: true, color: GOLD });
-      rich(doc, t.title, L + 42, cy, { size: 11.5, bold: true, width: W - 100 });
-      const tw = widthOf(doc, t.title, 11.5, true);
-      doc.moveTo(L + 48 + tw, cy + 12).lineTo(L + W - 34, cy + 12).dash(1, { space: 3 }).lineWidth(0.4).stroke("#bdb4b9").undash();
-      rich(doc, String(t.page), L + W - 28, cy, { size: 11.5, bold: true, color: MAROON, width: 28, align: "right" });
+      rich(doc, t.title, L + 42, cy, { size: 10.5, bold: true, width: TW - 62 });
+      const tw = Math.min(widthOf(doc, t.title, 10.5, true), TW - 70);
+      doc.moveTo(L + 48 + tw, cy + 12).lineTo(L + TW - 34, cy + 12).dash(1, { space: 3 }).lineWidth(0.4).stroke("#bdb4b9").undash();
+      rich(doc, String(t.page), L + TW - 28, cy, { size: 11.5, bold: true, color: MAROON, width: 28, align: "right" });
       cy += 28;
     });
-    cy += 18;
+    {
+      const wcx = L + W - 92, wcy = TOP + 150, wr = 88;
+      mandala(doc, wcx, wcy, wr + 22, { color: GOLD, opacity: 0.35, lw: 0.4 });
+      skyWheel(doc, chart, wcx, wcy, wr, { asc: timeUnknown || western ? -1 : asc.signIndex, moon: chart.planets.find((p) => p.key === "Moon")?.signIndex, labelOf: (k) => SHORT[k] });
+      rich(doc, lang === "hi" || lang === "hn" ? "जन्म के समय आकाश" : "The sky at your birth", wcx - 100, wcy + wr + 32, { size: 9, bold: true, color: MAROON, width: 200, align: "center" });
+    }
+    cy = Math.max(cy + 18, TOP + 150 + 98 + 70);
     drawGraphics(Math.min(cy, bottomEdge() - 150));
     doc.page.margins.bottom = bottom;
   }
@@ -653,6 +717,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     doc.switchToPage(range.start + i);
     const bottom = doc.page.margins.bottom;
     doc.page.margins.bottom = 0;
+    mandala(doc, PW - 10, PH - 10, 150, { color: GOLD, opacity: 0.09, lw: 0.6 });
     rich(doc, "KUNDLI KAKA", L, 28, { size: 7.5, bold: true, color: GOLD });
     rich(doc, nm, L, 28, { size: 7.5, color: MUTED, width: W, align: "right" });
     doc.moveTo(L, 42).lineTo(L + W, 42).lineWidth(0.5).stroke("#e3dde0");
