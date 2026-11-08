@@ -12,12 +12,13 @@ const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DIR = path.join(ROOT, "data", "puja");
 const IMG = path.join(ROOT, "public", "img", "puja");
 
-export const ORDER = ["lakshmi", "ganesh", "satyanarayan", "griha-pravesh", "saraswati", "hanuman", "shiv", "durga", "krishna", "ram", "shani", "parvati", "surya", "kartikeya"];
+export const ORDER = ["lakshmi", "ganesh", "satyanarayan", "griha-pravesh", "saraswati", "hanuman", "shiv", "durga", "krishna", "ram", "shani", "parvati", "surya", "kartikeya", "tulsi-vivah", "kartik-purnima"];
 const ACCENT = {
   lakshmi: ["#b8326b", "#fbe9f1"], ganesh: ["#d4651a", "#fdeedd"], satyanarayan: ["#c79200", "#fbf3d4"],
   "griha-pravesh": ["#2f7d4f", "#e3f3e8"], saraswati: ["#2b6cb0", "#e4eefa"], hanuman: ["#c0392b", "#fbe4e0"],
   shiv: ["#4a4fa3", "#e8e9f8"], durga: ["#a8261f", "#fbe3e1"],
   krishna: ["#1f5f9e", "#e3eefa"], ram: ["#b8570f", "#fbeadb"], shani: ["#2c3e66", "#e6eaf4"], parvati: ["#b5306a", "#fbe6ef"], surya: ["#c46a00", "#fdefd6"], kartikeya: ["#8a2f2f", "#f8e5e2"],
+  "tulsi-vivah": ["#2f7d4f", "#e3f3e8"], "kartik-purnima": ["#c79200", "#fbf3d4"],
 };
 
 let cache = null;

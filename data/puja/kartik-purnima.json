@@ -1,0 +1,297 @@
+{
+ "slug": "kartik-purnima",
+ "en": "Kartik Purnima Puja",
+ "hi": "कार्तिक पूर्णिमा पूजा",
+ "tag_en": "A calm home puja and diya lighting for Kartik Purnima and Dev Deepawali",
+ "tag_hi": "कार्तिक पूर्णिमा और देव दीपावली की शांत घरेलू पूजा और दीपदान",
+ "when_en": "Kartik Purnima falls on the full moon of the month of Kartik, about fifteen days after Diwali. Dev Deepawali is celebrated on the same day. Please check a trusted panchang or your pandit for the exact day and time.",
+ "when_hi": "कार्तिक पूर्णिमा कार्तिक मास की पूर्णिमा को आती है, दीवाली के लगभग पंद्रह दिन बाद। देव दीपावली भी इसी दिन मनाई जाती है। सही दिन और समय के लिए किसी भरोसेमंद पंचांग या अपने पंडित जी से ज़रूर पूछ लें।",
+ "time_en": "About 45 to 60 minutes, plus the holy bath and diya lighting",
+ "time_hi": "लगभग 45 से 60 मिनट, स्नान और दीपदान अलग से",
+ "intro_en": "Kartik Purnima is a gentle, bright day when many families bathe early, worship Lord Vishnu (often as Satyanarayan) and Lord Shiva, and light many diyas in the evening. On Dev Deepawali the ghats of rivers like the Ganga are lit with thousands of lamps, and at home a row of diyas at the tulsi, the door and the windows does the same. A simple act of giving, such as food or a blanket, is also part of the day. You do not need a priest; a clean corner and sincere offerings are enough. Families and regions do it a little differently, so wherever your own family or pandit's way differs from this guide, please follow theirs.",
+ "intro_hi": "कार्तिक पूर्णिमा एक कोमल और उजला दिन है, जब कई परिवार सुबह जल्दी स्नान करते हैं, भगवान विष्णु (अक्सर सत्यनारायण रूप में) और भगवान शिव की पूजा करते हैं, और शाम को ढेर सारे दीये जलाते हैं। देव दीपावली पर गंगा जैसी नदियों के घाट हज़ारों दीयों से जगमगाते हैं, और घर में तुलसी, दरवाज़े और खिड़कियों पर दीयों की कतार वही भाव जगाती है। भोजन या कंबल जैसा छोटा-सा दान भी इस दिन का हिस्सा है। इसके लिए पंडित जी ज़रूरी नहीं; साफ़ कोना और सच्चे मन की भेंट काफ़ी हैं। हर परिवार और हर क्षेत्र में तरीक़ा थोड़ा अलग होता है, इसलिए जहाँ आपके परिवार या पंडित जी का तरीक़ा इस गाइड से अलग हो, वहाँ उन्हीं का तरीक़ा अपनाएँ।",
+ "samagri": [
+  {
+   "en": "Vishnu or Satyanarayan picture",
+   "hi": "विष्णु या सत्यनारायण की तस्वीर",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Kept on the altar as the focus of Vishnu worship",
+   "use_hi": "विष्णु पूजा के केंद्र के रूप में वेदी पर रखी जाती है"
+  },
+  {
+   "en": "Shivling or Shiv picture",
+   "hi": "शिवलिंग या शिव जी की तस्वीर",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Kept beside the Vishnu picture for Shiva worship",
+   "use_hi": "शिव पूजा के लिए विष्णु जी की तस्वीर के पास रखा जाता है"
+  },
+  {
+   "en": "Wooden chowki or clean platform",
+   "hi": "लकड़ी की चौकी या साफ़ चबूतरा",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "A raised seat on which the pictures or idols are placed",
+   "use_hi": "ऊँचा आसन, जिस पर तस्वीरें या मूर्तियाँ रखी जाती हैं"
+  },
+  {
+   "en": "Yellow or white cloth",
+   "hi": "पीला या सफ़ेद कपड़ा",
+   "qty_en": "1 piece, about 1 metre",
+   "qty_hi": "1 टुकड़ा, लगभग 1 मीटर",
+   "use_en": "Spread over the chowki before placing the pictures",
+   "use_hi": "तस्वीरें रखने से पहले चौकी पर बिछाया जाता है"
+  },
+  {
+   "en": "Tulsi plant and fresh tulsi leaves",
+   "hi": "तुलसी का पौधा और ताज़े तुलसी पत्ते",
+   "qty_en": "1 plant, a few leaves",
+   "qty_hi": "1 पौधा, कुछ पत्ते",
+   "use_en": "Leaves are offered to Vishnu; the plant is worshipped with a diya",
+   "use_hi": "पत्ते विष्णु जी को चढ़ाए जाते हैं; पौधे की दीया जलाकर पूजा की जाती है"
+  },
+  {
+   "en": "Clay diyas",
+   "hi": "मिट्टी के दीये",
+   "qty_en": "11 to 51, as you wish",
+   "qty_hi": "11 से 51, अपनी इच्छा अनुसार",
+   "use_en": "Lit at the tulsi, the main door, windows and near water",
+   "use_hi": "तुलसी, मुख्य द्वार, खिड़कियों और जल के पास जलाए जाते हैं"
+  },
+  {
+   "en": "Ghee or sesame oil",
+   "hi": "घी या तिल का तेल",
+   "qty_en": "About 250 ml",
+   "qty_hi": "लगभग 250 मिली",
+   "use_en": "Fuel for the diyas",
+   "use_hi": "दीयों में डालने के लिए"
+  },
+  {
+   "en": "Cotton wicks",
+   "hi": "रुई की बत्तियाँ",
+   "qty_en": "1 packet",
+   "qty_hi": "1 पैकेट",
+   "use_en": "One wick for each diya",
+   "use_hi": "हर दीये के लिए एक बत्ती"
+  },
+  {
+   "en": "Panchamrit",
+   "hi": "पंचामृत",
+   "qty_en": "1 small bowl",
+   "qty_hi": "1 छोटी कटोरी",
+   "use_en": "Milk, curd, honey, sugar and ghee mixed, offered and shared as prasad",
+   "use_hi": "दूध, दही, शहद, चीनी और घी मिलाकर चढ़ाया और प्रसाद में बाँटा जाता है"
+  },
+  {
+   "en": "Gangajal and clean water",
+   "hi": "गंगाजल और साफ़ जल",
+   "qty_en": "1 small bottle, 1 kalash of water",
+   "qty_hi": "1 छोटी शीशी, 1 कलश जल",
+   "use_en": "For sprinkling and for offering water to the deities",
+   "use_hi": "छिड़काव और देवताओं को जल चढ़ाने के लिए"
+  },
+  {
+   "en": "Bel leaves",
+   "hi": "बेलपत्र",
+   "qty_en": "5 to 11 leaves",
+   "qty_hi": "5 से 11 पत्ते",
+   "use_en": "Offered to Lord Shiva",
+   "use_hi": "भगवान शिव को चढ़ाए जाते हैं"
+  },
+  {
+   "en": "Fresh flowers and garland",
+   "hi": "ताज़े फूल और माला",
+   "qty_en": "1 garland, 1 handful petals",
+   "qty_hi": "1 माला, 1 मुट्ठी पंखुड़ियाँ",
+   "use_en": "Offered at the feet; marigold and yellow flowers are commonly used",
+   "use_hi": "चरणों में अर्पित किए जाते हैं; गेंदा और पीले फूल आम तौर पर चढ़ाए जाते हैं"
+  },
+  {
+   "en": "Whole rice (akshat)",
+   "hi": "साबुत चावल (अक्षत)",
+   "qty_en": "1 small bowl, about 100 g",
+   "qty_hi": "1 छोटी कटोरी, लगभग 100 ग्राम",
+   "use_en": "Offered unbroken to the deities and used for tilak",
+   "use_hi": "देवताओं को चढ़ाने और तिलक में लगाने के लिए"
+  },
+  {
+   "en": "Chandan and kumkum",
+   "hi": "चंदन और कुमकुम",
+   "qty_en": "1 small packet each",
+   "qty_hi": "हर एक का 1 छोटा पैकेट",
+   "use_en": "For tilak on the deities and on the family",
+   "use_hi": "देवताओं और परिवार के सभी सदस्यों को तिलक लगाने के लिए"
+  },
+  {
+   "en": "Fruits",
+   "hi": "फल",
+   "qty_en": "5 types, a small amount of each",
+   "qty_hi": "5 तरह के, हर एक थोड़ा-थोड़ा",
+   "use_en": "Offered as bhog and shared afterwards",
+   "use_hi": "भोग के रूप में चढ़ाए और बाद में बाँटे जाते हैं"
+  },
+  {
+   "en": "Kheer or sweets",
+   "hi": "खीर या मिठाई",
+   "qty_en": "1 bowl, or about 250 g",
+   "qty_hi": "1 कटोरी, या लगभग 250 ग्राम",
+   "use_en": "Offered as bhog; kheer is a common choice on this day",
+   "use_hi": "भोग के लिए; इस दिन खीर आम तौर पर बनाई जाती है"
+  },
+  {
+   "en": "Camphor",
+   "hi": "कपूर",
+   "qty_en": "A few tablets",
+   "qty_hi": "कुछ टिकियाँ",
+   "use_en": "Lit for the closing aarti",
+   "use_hi": "अंत की आरती के लिए जलाया जाता है"
+  },
+  {
+   "en": "Incense sticks",
+   "hi": "अगरबत्ती",
+   "qty_en": "1 packet",
+   "qty_hi": "1 पैकेट",
+   "use_en": "Lit to keep the space calm and fragrant",
+   "use_hi": "वातावरण को शांत और सुगंधित रखने के लिए जलाई जाती है"
+  },
+  {
+   "en": "Donation items: grains, blankets or food",
+   "hi": "दान की वस्तुएँ: अनाज, कंबल या भोजन",
+   "qty_en": "As much as you comfortably can",
+   "qty_hi": "जितना आप सहजता से दे सकें",
+   "use_en": "Given to people in need, a temple or a pandit after the puja",
+   "use_hi": "पूजा के बाद ज़रूरतमंद लोगों, मंदिर या पंडित जी को दिया जाता है"
+  }
+ ],
+ "before_en": [
+  "If you can, take an early morning bath, ideally in a river or with a little Gangajal added to your bath water. A bath at home is perfectly fine.",
+  "Clean the house and the puja corner, and wear fresh, clean clothes.",
+  "Keep all the samagri ready, with the diyas, oil and wicks set out in a tray so that nothing is searched for during the puja.",
+  "Wash the tulsi plant's surroundings and clear dry leaves, so the place is ready for its diya.",
+  "Many families keep a simple fast or eat only light food until the puja is done. This is optional, and you can skip it if you are unwell or elderly."
+ ],
+ "before_hi": [
+  "हो सके तो सुबह जल्दी स्नान करें, अच्छा हो नदी में या नहाने के पानी में थोड़ा गंगाजल मिलाकर। घर पर स्नान करना भी बिल्कुल ठीक है।",
+  "घर और पूजा के कोने की सफ़ाई करें, और साफ़, ताज़े कपड़े पहनें।",
+  "सारी सामग्री तैयार रखें, दीये, तेल और बत्तियाँ थाली में सजा लें ताकि पूजा के बीच कुछ ढूँढना न पड़े।",
+  "तुलसी के आसपास की जगह साफ़ करें और सूखे पत्ते हटा दें, ताकि दीया रखने की जगह तैयार रहे।",
+  "कई परिवार सरल व्रत रखते हैं या पूजा होने तक हल्का भोजन करते हैं। यह वैकल्पिक है, और अस्वस्थ या बुज़ुर्ग हों तो छोड़ सकते हैं।"
+ ],
+ "steps": [
+  {
+   "title_en": "Holy bath",
+   "title_hi": "पवित्र स्नान",
+   "en": "In the early morning, bathe in a river if you can reach one, or at home with a few drops of Gangajal in the water. Wear clean clothes and take a quiet moment to thank the day for beginning.",
+   "hi": "सुबह जल्दी, अगर नदी तक जा सकें तो वहाँ स्नान करें, या घर पर पानी में गंगाजल की कुछ बूँदें डालकर नहाएँ। साफ़ कपड़े पहनें और दिन की शुरुआत के लिए एक शांत पल धन्यवाद कहें।"
+  },
+  {
+   "title_en": "Set up the altar",
+   "title_hi": "वेदी सजाएँ",
+   "en": "Spread the cloth on the chowki and place the Vishnu or Satyanarayan picture with the Shivling or Shiv picture beside it. Keep the water kalash and the other samagri within reach.",
+   "hi": "चौकी पर कपड़ा बिछाएँ और विष्णु या सत्यनारायण की तस्वीर रखें, उसके पास शिवलिंग या शिव जी की तस्वीर रखें। जल का कलश और बाकी सामग्री हाथ के पास रखें।"
+  },
+  {
+   "title_en": "Light the first diya and incense",
+   "title_hi": "पहला दीया और अगरबत्ती",
+   "en": "Light a ghee diya on the altar and then the incense. Sprinkle a little Gangajal around the space and on yourself, and sit calmly for a few breaths.",
+   "hi": "वेदी पर घी का दीया जलाएँ, फिर अगरबत्ती। आसपास और स्वयं पर थोड़ा गंगाजल छिड़कें, और कुछ साँसों तक शांत बैठें।"
+  },
+  {
+   "title_en": "Sankalp",
+   "title_hi": "संकल्प",
+   "en": "Take a little water and rice in your right hand and say in your own words that you are doing this puja with gratitude, for the well-being of your family. Then let the water flow into a small plate.",
+   "hi": "दाहिने हाथ में थोड़ा जल और चावल लें और अपने शब्दों में कहें कि आप यह पूजा कृतज्ञता के साथ, परिवार की भलाई के लिए कर रहे हैं। फिर जल को एक छोटी थाली में छोड़ दें।"
+  },
+  {
+   "title_en": "Worship Lord Vishnu",
+   "title_hi": "भगवान विष्णु की पूजा",
+   "en": "Apply chandan and rice to the picture, offer flowers and fresh tulsi leaves, and offer a little panchamrit. Chant the mantra below, or Om Namo Narayanaya, as many times as feels comfortable.",
+   "hi": "तस्वीर पर चंदन और अक्षत लगाएँ, फूल और ताज़े तुलसी पत्ते चढ़ाएँ, और थोड़ा पंचामृत अर्पित करें। नीचे दिया मंत्र, या ॐ नमो नारायणाय, जितनी बार सहज लगे उतनी बार जपें।"
+  },
+  {
+   "title_en": "Worship Lord Shiva",
+   "title_hi": "भगवान शिव की पूजा",
+   "en": "Offer clean water or a little milk to the Shivling or picture, then bel leaves, flowers and a touch of chandan. Chant Om Namah Shivaya a few times with a calm mind.",
+   "hi": "शिवलिंग या तस्वीर पर साफ़ जल या थोड़ा दूध चढ़ाएँ, फिर बेलपत्र, फूल और थोड़ा चंदन अर्पित करें। शांत मन से ॐ नमः शिवाय का कुछ बार जप करें।"
+  },
+  {
+   "title_en": "Offer bhog",
+   "title_hi": "भोग लगाएँ",
+   "en": "Place the fruits, kheer or sweets before the deities with a tulsi leaf on the kheer. Fold your hands and offer them with thanks. If you do a Satyanarayan katha, this is a good time to read or listen to it.",
+   "hi": "फल, खीर या मिठाई देवताओं के सामने रखें और खीर पर एक तुलसी पत्ता रखें। हाथ जोड़कर धन्यवाद के साथ अर्पित करें। अगर आप सत्यनारायण कथा करते हैं, तो यह उसे पढ़ने या सुनने का अच्छा समय है।"
+  },
+  {
+   "title_en": "Aarti",
+   "title_hi": "आरती",
+   "en": "Light the camphor and do a gentle aarti to Vishnu and Shiva, singing or simply ringing a small bell. Let everyone at home take the warmth of the flame with their hands and touch their eyes.",
+   "hi": "कपूर जलाएँ और विष्णु जी तथा शिव जी की धीमी आरती करें, गाकर या बस छोटी घंटी बजाकर। घर के सभी लोग लौ की गर्माहट हाथों से लेकर आँखों से लगाएँ।"
+  },
+  {
+   "title_en": "Diya at the tulsi",
+   "title_hi": "तुलसी पर दीया",
+   "en": "In the evening, after sunset, light a ghee or sesame oil diya at the foot of the tulsi plant. Walk around it slowly once or three times, bow, and say a small thank you.",
+   "hi": "शाम को सूर्यास्त के बाद तुलसी के पौधे के पास घी या तिल के तेल का दीया जलाएँ। धीरे-धीरे एक या तीन बार परिक्रमा करें, प्रणाम करें और मन में छोटा-सा धन्यवाद कहें।"
+  },
+  {
+   "title_en": "Diyas at the main door and windows",
+   "title_hi": "मुख्य द्वार और खिड़कियों पर दीये",
+   "en": "Light a diya on each side of the main door, and then place more along the windows, balcony and courtyard. Keep them safely away from curtains and children's reach.",
+   "hi": "मुख्य द्वार के दोनों ओर एक-एक दीया जलाएँ, फिर खिड़कियों, बालकनी और आँगन में और दीये रखें। इन्हें पर्दों से और बच्चों की पहुँच से सुरक्षित दूरी पर रखें।"
+  },
+  {
+   "title_en": "Diyas near water",
+   "title_hi": "जल के पास दीये",
+   "en": "If you can, light diyas near a river, pond or ghat, and float a small leaf diya on the water. If that is not possible, place a diya beside a bowl or pot of water at home, with the same thought.",
+   "hi": "हो सके तो नदी, तालाब या घाट के पास दीये जलाएँ और पानी पर पत्ते का छोटा दीया बहाएँ। यह संभव न हो तो घर में पानी के किसी कटोरे या पात्र के पास उसी भाव से एक दीया रखें।"
+  },
+  {
+   "title_en": "Daan, a simple act of giving",
+   "title_hi": "दान, देने का सरल कार्य",
+   "en": "Give grains, a blanket, warm clothes or a meal to someone in need, to a temple or to a pandit, as much as you comfortably can. Give quietly and with a glad heart.",
+   "hi": "ज़रूरतमंद व्यक्ति, मंदिर या पंडित जी को अनाज, कंबल, गर्म कपड़े या भोजन दें, जितना आप सहजता से दे सकें। चुपचाप और प्रसन्न मन से दें।"
+  },
+  {
+   "title_en": "Share the prasad",
+   "title_hi": "प्रसाद बाँटें",
+   "en": "Share the panchamrit, fruits and kheer with the family, neighbours and friends. Sit together for a few minutes beside the glowing diyas before the evening ends.",
+   "hi": "पंचामृत, फल और खीर परिवार, पड़ोसियों और मित्रों में बाँटें। शाम खत्म होने से पहले जगमगाते दीयों के पास कुछ मिनट साथ बैठें।"
+  }
+ ],
+ "mantra": {
+  "sa": "ॐ नमो नारायणाय",
+  "tr": "Om Namo Narayanaya",
+  "en": "Om, I bow to Lord Narayana, Lord Vishnu.",
+  "hi": "ॐ, मैं भगवान नारायण, यानी विष्णु जी को प्रणाम करता हूँ।"
+ },
+ "tips_en": [
+  "Families and regions differ in how they keep this day, so please follow your own family or pandit's way where it differs from this guide.",
+  "Ghee or sesame oil diyas burn longer and feel more traditional, but any clean oil works if that is what you have.",
+  "Light diyas around sunset, in the pradosh time, when many families light the most lamps.",
+  "Let children help arrange the diyas and carry the prasad, so the day becomes a memory for them.",
+  "If you cannot reach a river, a calm moment by the tulsi with a diya and a bowl of water carries the same feeling.",
+  "Do whatever you comfortably can. A small puja done with a sincere heart is complete."
+ ],
+ "tips_hi": [
+  "हर परिवार और हर क्षेत्र में यह दिन अलग तरह से मनाया जाता है, इसलिए जहाँ आपके परिवार या पंडित जी का तरीक़ा इस गाइड से अलग हो, वहाँ उन्हीं का तरीक़ा अपनाएँ।",
+  "घी या तिल के तेल के दीये ज़्यादा देर जलते हैं और परंपरागत लगते हैं, पर आपके पास जो साफ़ तेल हो, उससे भी काम चल जाता है।",
+  "दीये सूर्यास्त के आसपास, प्रदोष काल में जलाएँ, जब कई परिवार सबसे ज़्यादा दीये जलाते हैं।",
+  "बच्चों को दीये सजाने और प्रसाद ले जाने में शामिल करें, ताकि यह दिन उनकी यादों में बस जाए।",
+  "नदी तक न जा सकें तो तुलसी के पास दीये और पानी के कटोरे के साथ बिताया एक शांत पल भी वही भाव देता है।",
+  "जितना सहजता से हो सके उतना करें। सच्चे मन से की गई छोटी-सी पूजा भी पूरी होती है।"
+ ],
+ "avoid_en": [
+  "Do not place lit diyas near curtains, dry leaves or anything that can catch fire, and never leave them unattended with children or pets around.",
+  "Do not offer tulsi leaves to Lord Shiva; use bel leaves for Shiva and tulsi for Vishnu.",
+  "Avoid plucking tulsi leaves in a hurry or after sunset; pluck a few gently in the morning, and keep them ready.",
+  "Do not feel pressure to travel far or spend a lot; a simple puja at home is welcome.",
+  "Avoid giving torn or unusable things as donation; give what you would be glad to receive."
+ ],
+ "avoid_hi": [
+  "जलते दीये पर्दों, सूखे पत्तों या आग पकड़ने वाली चीज़ों के पास न रखें, और बच्चों या पालतू जानवरों के आसपास उन्हें अकेला न छोड़ें।",
+  "भगवान शिव को तुलसी पत्र न चढ़ाएँ; शिव जी को बेलपत्र और विष्णु जी को तुलसी चढ़ाएँ।",
+  "तुलसी के पत्ते जल्दबाज़ी में या सूर्यास्त के बाद न तोड़ें; सुबह आराम से कुछ पत्ते तोड़कर तैयार रखें।",
+  "दूर जाने या ज़्यादा ख़र्च करने का दबाव न लें; घर पर की गई सरल पूजा भी स्वीकार है।",
+  "दान में फटी या काम न आने वाली चीज़ें न दें; वही दें जो आप ख़ुद पाकर प्रसन्न होते।"
+ ]
+}

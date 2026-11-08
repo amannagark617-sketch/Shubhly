@@ -1,0 +1,303 @@
+{
+ "slug": "tulsi-vivah",
+ "en": "Tulsi Vivah Puja",
+ "hi": "तुलसी विवाह पूजा",
+ "tag_en": "A gentle home ceremony of the symbolic wedding of Tulsi and Shaligram (Lord Vishnu)",
+ "tag_hi": "तुलसी और शालिग्राम (भगवान विष्णु) के प्रतीकात्मक विवाह की सरल घरेलू पूजा",
+ "when_en": "It is done on or after Dev Uthani Ekadashi in the month of Kartik, and many families hold it on Dwadashi or a day soon after. Please check a trusted panchang or your pandit for the exact day.",
+ "when_hi": "यह कार्तिक मास में देवउठनी एकादशी के दिन या उसके बाद की जाती है, और कई परिवार इसे द्वादशी या उसके कुछ दिन बाद करते हैं। सही दिन के लिए कृपया किसी भरोसेमंद पंचांग या अपने पंडित जी से पूछ लें।",
+ "time_en": "About 45 to 60 minutes",
+ "time_hi": "लगभग 45 से 60 मिनट",
+ "intro_en": "Tulsi Vivah is the symbolic wedding of the Tulsi plant, seen as a form of Goddess Lakshmi, with Shaligram, a form of Lord Vishnu. It is a warm, festive family occasion that comes after Vishnu wakes from his rest on Dev Uthani Ekadashi, and many families treat it as the start of the wedding season. You can do it at home with a Tulsi plant in a pot or in the courtyard, dressed like a bride. Families and regions differ in small ways, so wherever your own family or pandit's way is different from this guide, please follow theirs.",
+ "intro_hi": "तुलसी विवाह तुलसी के पौधे, जिसे देवी लक्ष्मी का रूप माना जाता है, और शालिग्राम, जो भगवान विष्णु का रूप हैं, के प्रतीकात्मक विवाह की पूजा है। यह देवउठनी एकादशी पर विष्णु जी के जागने के बाद आने वाला एक आनंद भरा पारिवारिक उत्सव है, और कई परिवार इसे विवाह के मौसम की शुरुआत मानते हैं। इसे घर पर गमले या आँगन में लगी तुलसी को दुल्हन की तरह सजाकर किया जा सकता है। हर परिवार और हर क्षेत्र में तरीक़ा थोड़ा अलग होता है, इसलिए जहाँ आपके परिवार या पंडित जी का तरीक़ा इस गाइड से अलग हो, वहाँ उन्हीं का तरीक़ा अपनाएँ।",
+ "samagri": [
+  {
+   "en": "Tulsi plant in a pot or tulsi vrindavan",
+   "hi": "तुलसी का पौधा, गमले या तुलसी चौरे में",
+   "qty_en": "1, healthy and green",
+   "qty_hi": "1, हरा-भरा",
+   "use_en": "The bride of the ceremony",
+   "use_hi": "विवाह में दुल्हन के रूप में"
+  },
+  {
+   "en": "Shaligram, or a Vishnu or Krishna picture or idol",
+   "hi": "शालिग्राम, या विष्णु या कृष्ण की तस्वीर या मूर्ति",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "The groom; a small Krishna idol is commonly used at home",
+   "use_hi": "वर के रूप में; घरों में अक्सर छोटी कृष्ण मूर्ति ली जाती है"
+  },
+  {
+   "en": "Sugarcane stalks",
+   "hi": "गन्ने",
+   "qty_en": "4, about 4 to 5 feet each",
+   "qty_hi": "4, लगभग 4 से 5 फ़ीट के",
+   "use_en": "Tied around the plant to make the wedding mandap",
+   "use_hi": "तुलसी के चारों ओर बाँधकर विवाह मंडप बनाने के लिए"
+  },
+  {
+   "en": "Red chunri or dupatta",
+   "hi": "लाल चुनरी या दुपट्टा",
+   "qty_en": "1",
+   "qty_hi": "1",
+   "use_en": "Draped over Tulsi like a bride's veil",
+   "use_hi": "तुलसी को दुल्हन की तरह ओढ़ाने के लिए"
+  },
+  {
+   "en": "Shringar items for Tulsi (16 shringar set)",
+   "hi": "तुलसी के लिए सोलह शृंगार का सामान",
+   "qty_en": "1 set",
+   "qty_hi": "1 सेट",
+   "use_en": "Offered to Tulsi as bridal adornment",
+   "use_hi": "दुल्हन के श्रृंगार के रूप में तुलसी को अर्पित करने के लिए"
+  },
+  {
+   "en": "Bangles",
+   "hi": "चूड़ियाँ",
+   "qty_en": "1 set, red or green",
+   "qty_hi": "1 सेट, लाल या हरी",
+   "use_en": "Part of the shringar for Tulsi",
+   "use_hi": "तुलसी के शृंगार का हिस्सा"
+  },
+  {
+   "en": "Bindi and sindoor",
+   "hi": "बिंदी और सिंदूर",
+   "qty_en": "1 packet each",
+   "qty_hi": "1-1 पैकेट",
+   "use_en": "Part of the shringar for Tulsi",
+   "use_hi": "तुलसी के शृंगार का हिस्सा"
+  },
+  {
+   "en": "Mehendi",
+   "hi": "मेहंदी",
+   "qty_en": "1 small cone or packet",
+   "qty_hi": "1 छोटा कोन या पैकेट",
+   "use_en": "Applied lightly or offered, as in any wedding",
+   "use_hi": "विवाह की तरह हल्के से लगाने या अर्पित करने के लिए"
+  },
+  {
+   "en": "Turmeric (haldi) paste",
+   "hi": "हल्दी का लेप",
+   "qty_en": "2 to 3 tablespoons",
+   "qty_hi": "2 से 3 बड़े चम्मच",
+   "use_en": "For the haldi ceremony of Tulsi and Shaligram",
+   "use_hi": "तुलसी और शालिग्राम की हल्दी की रस्म के लिए"
+  },
+  {
+   "en": "Kumkum and roli",
+   "hi": "कुमकुम और रोली",
+   "qty_en": "1 small packet each",
+   "qty_hi": "1-1 छोटा पैकेट",
+   "use_en": "For tilak and for the tilak on Tulsi",
+   "use_hi": "तिलक लगाने और तुलसी को तिलक करने के लिए"
+  },
+  {
+   "en": "Yellow or red cloth for the groom",
+   "hi": "वर के लिए पीला या लाल वस्त्र",
+   "qty_en": "1 small piece",
+   "qty_hi": "1 छोटा टुकड़ा",
+   "use_en": "To dress Shaligram or the Vishnu idol",
+   "use_hi": "शालिग्राम या विष्णु मूर्ति को पहनाने के लिए"
+  },
+  {
+   "en": "Mango leaves",
+   "hi": "आम के पत्ते",
+   "qty_en": "5 to 7",
+   "qty_hi": "5 से 7",
+   "use_en": "Torana and decoration of the mandap",
+   "use_hi": "मंडप की सजावट और तोरण के लिए"
+  },
+  {
+   "en": "Marigold flowers and garlands",
+   "hi": "गेंदे के फूल और मालाएँ",
+   "qty_en": "2 garlands and a handful of flowers",
+   "qty_hi": "2 मालाएँ और एक मुट्ठी फूल",
+   "use_en": "For the varmala and decoration",
+   "use_hi": "वरमाला और सजावट के लिए"
+  },
+  {
+   "en": "Diyas with ghee and cotton wicks",
+   "hi": "घी और रुई की बत्ती वाले दीये",
+   "qty_en": "5 to 11",
+   "qty_hi": "5 से 11",
+   "use_en": "Lit around Tulsi, as the evening is festive",
+   "use_hi": "तुलसी के चारों ओर जलाने के लिए, क्योंकि संध्या उत्सव की होती है"
+  },
+  {
+   "en": "Panchamrit",
+   "hi": "पंचामृत",
+   "qty_en": "1 small bowl",
+   "qty_hi": "1 छोटी कटोरी",
+   "use_en": "Offered to Shaligram and shared as prasad",
+   "use_hi": "शालिग्राम को अर्पित करने और प्रसाद के रूप में बाँटने के लिए"
+  },
+  {
+   "en": "Seasonal fruits such as amla, singhara, guava and banana",
+   "hi": "मौसमी फल, जैसे आँवला, सिंघाड़ा, अमरूद और केला",
+   "qty_en": "About 1 kg, mixed",
+   "qty_hi": "लगभग 1 किलो, मिले-जुले",
+   "use_en": "Offered as bhog and shared afterwards",
+   "use_hi": "भोग के रूप में चढ़ाने और बाद में बाँटने के लिए"
+  },
+  {
+   "en": "Sweets or sugarcane pieces and sesame or jaggery sweets",
+   "hi": "मिठाई, या गन्ने के टुकड़े और तिल-गुड़ की मिठाई",
+   "qty_en": "About 250 g",
+   "qty_hi": "लगभग 250 ग्राम",
+   "use_en": "Offered as bhog",
+   "use_hi": "भोग के लिए"
+  },
+  {
+   "en": "Incense sticks and camphor",
+   "hi": "अगरबत्ती और कपूर",
+   "qty_en": "1 packet and 2 to 3 pieces",
+   "qty_hi": "1 पैकेट और 2 से 3 टुकड़े",
+   "use_en": "For dhoop and aarti",
+   "use_hi": "धूप और आरती के लिए"
+  },
+  {
+   "en": "Raw cotton thread or mauli",
+   "hi": "कच्चा सूत या मौली",
+   "qty_en": "1 roll",
+   "qty_hi": "1 गुच्छा",
+   "use_en": "Tied to join the two sides and around the mandap",
+   "use_hi": "दोनों पक्षों को जोड़ने और मंडप पर बाँधने के लिए"
+  },
+  {
+   "en": "Rice (akshat), clean water and a kalash",
+   "hi": "अक्षत (चावल), साफ़ पानी और कलश",
+   "qty_en": "A handful of rice and 1 small kalash",
+   "qty_hi": "एक मुट्ठी चावल और 1 छोटा कलश",
+   "use_en": "For tilak, sankalp and the sacred water",
+   "use_hi": "तिलक, संकल्प और पवित्र जल के लिए"
+  }
+ ],
+ "before_en": [
+  "Clean the house and the courtyard or puja corner, and water the Tulsi plant a day before so it looks fresh.",
+  "Place the Tulsi pot on a clean chowki or at the centre of the courtyard, and wash the base. Draw a small rangoli or chowk around it if you like.",
+  "Gather all the samagri, and keep the Shaligram or Vishnu idol, the red chunri and the shringar items ready.",
+  "Check a trusted panchang or ask your pandit for the day and a comfortable time, which is usually evening.",
+  "Some families do it in a lively way with family and neighbours; invite those close to you and decide who will sit on each side."
+ ],
+ "before_hi": [
+  "घर, आँगन या पूजा के कोने की सफ़ाई करें, और एक दिन पहले तुलसी में पानी दें ताकि वह ताज़ी दिखे।",
+  "तुलसी का गमला साफ़ चौकी पर या आँगन के बीच में रखें और उसका आधार धो लें। चाहें तो चारों ओर छोटी रंगोली या चौक बना लें।",
+  "सारी सामग्री इकट्ठा करें, और शालिग्राम या विष्णु मूर्ति, लाल चुनरी और शृंगार का सामान तैयार रखें।",
+  "किसी भरोसेमंद पंचांग से देखें या पंडित जी से दिन और सुविधाजनक समय पूछ लें, जो आमतौर पर शाम का होता है।",
+  "कई परिवार इसे परिवार और पड़ोसियों के साथ उत्सव की तरह करते हैं; अपने क़रीबी लोगों को बुलाएँ और तय कर लें कि कौन किस पक्ष की ओर बैठेगा।"
+ ],
+ "steps": [
+  {
+   "title_en": "Clean and get ready",
+   "title_hi": "सफ़ाई और तैयारी",
+   "en": "Bathe and wear fresh, clean clothes. Sit for a minute with a quiet mind before you begin; many people sit with their family, with the Tulsi side as the bride's family and the Vishnu side as the groom's.",
+   "hi": "स्नान करके ताज़े, साफ़ कपड़े पहनें। शुरू करने से पहले एक मिनट शांत मन से बैठें; कई लोग परिवार के साथ बैठते हैं, जिसमें तुलसी की ओर कन्या पक्ष और विष्णु जी की ओर वर पक्ष होता है।"
+  },
+  {
+   "title_en": "Set up the mandap",
+   "title_hi": "मंडप सजाएँ",
+   "en": "Tie the four sugarcane stalks around the Tulsi pot to make a small mandap, and hang mango leaves on top. Decorate with marigold flowers and a mauli thread.",
+   "hi": "तुलसी के गमले के चारों ओर चार गन्ने बाँधकर छोटा मंडप बनाएँ और ऊपर आम के पत्ते लगाएँ। गेंदे के फूल और मौली से सजाएँ।"
+  },
+  {
+   "title_en": "Dress Tulsi as a bride",
+   "title_hi": "तुलसी को दुल्हन की तरह सजाएँ",
+   "en": "Drape the red chunri over Tulsi, apply a little kumkum and sindoor, and offer the bangles, bindi and other shringar items. Place a garland gently around the pot.",
+   "hi": "तुलसी को लाल चुनरी ओढ़ाएँ, थोड़ा कुमकुम और सिंदूर लगाएँ, और चूड़ियाँ, बिंदी तथा बाक़ी शृंगार का सामान अर्पित करें। गमले के चारों ओर माला धीरे से रखें।"
+  },
+  {
+   "title_en": "Prepare the groom",
+   "title_hi": "वर को तैयार करें",
+   "en": "Bathe the Shaligram or idol gently with clean water and panchamrit, wipe with a soft cloth, dress it in the yellow or red cloth and apply a light tilak. Do not use turmeric or kumkum paste directly on Shaligram if your family does not do so.",
+   "hi": "शालिग्राम या मूर्ति को साफ़ पानी और पंचामृत से धीरे से स्नान कराएँ, नरम कपड़े से पोंछें, पीला या लाल वस्त्र पहनाएँ और हल्का तिलक लगाएँ। यदि आपके परिवार में शालिग्राम पर हल्दी या कुमकुम सीधे नहीं लगाते, तो न लगाएँ।"
+  },
+  {
+   "title_en": "Light the diya and take sankalp",
+   "title_hi": "दीया जलाएँ और संकल्प लें",
+   "en": "Light a ghee diya and incense. Hold a little rice and water in your hand and say in your own words that you are doing Tulsi Vivah with a pure heart, for the happiness and peace of your family.",
+   "hi": "घी का दीया और अगरबत्ती जलाएँ। हाथ में थोड़े चावल और जल लें, और अपने शब्दों में कहें कि आप शुद्ध मन से परिवार की ख़ुशी और शांति के लिए तुलसी विवाह कर रहे हैं।"
+  },
+  {
+   "title_en": "Haldi and tilak",
+   "title_hi": "हल्दी और तिलक",
+   "en": "Apply a little haldi paste to Tulsi's pot or leaves lightly, and a tilak to the groom, as in a haldi ceremony. Songs and a simple family mood are very welcome here.",
+   "hi": "हल्दी की रस्म की तरह तुलसी के गमले या पत्तों पर हल्की हल्दी लगाएँ और वर को तिलक करें। यहाँ मंगल गीत और सरल पारिवारिक माहौल बहुत अच्छा लगता है।"
+  },
+  {
+   "title_en": "Bring the groom to the mandap",
+   "title_hi": "वर को मंडप में लाएँ",
+   "en": "The elder of the groom's side carries the Shaligram or Vishnu idol in both hands, on a plate or a cloth, to the mandap. Place him gently beside the Tulsi pot, facing the bride, on a small seat.",
+   "hi": "वर पक्ष के बड़े सदस्य शालिग्राम या विष्णु मूर्ति को थाली या कपड़े पर दोनों हाथों से मंडप तक लाएँ। उन्हें तुलसी के गमले के पास, कन्या के सामने, छोटे आसन पर धीरे से रखें।"
+  },
+  {
+   "title_en": "Exchange the garlands",
+   "title_hi": "वरमाला",
+   "en": "Offer a garland to Tulsi and place one gently on the Shaligram or idol. In many homes the family says a short blessing or sings a song as the garlands are exchanged.",
+   "hi": "तुलसी को माला अर्पित करें और शालिग्राम या मूर्ति को भी एक माला धीरे से पहनाएँ। कई घरों में माला बदलते समय परिवार छोटा आशीर्वचन बोलता या गीत गाता है।"
+  },
+  {
+   "title_en": "Tie the thread and offer rice",
+   "title_hi": "गठबंधन और अक्षत",
+   "en": "Tie a mauli thread loosely joining the two sides, and offer akshat rice and flowers with the mantra below. Some families also do a symbolic kanyadaan by a couple or an elder of the home.",
+   "hi": "दोनों पक्षों को जोड़ते हुए मौली का धागा हल्के से बाँधें और नीचे दिया मंत्र बोलते हुए अक्षत और फूल चढ़ाएँ। कुछ परिवार घर के किसी दंपति या बड़े के हाथों प्रतीकात्मक कन्यादान भी करते हैं।"
+  },
+  {
+   "title_en": "Chant the mantra",
+   "title_hi": "मंत्र जाप",
+   "en": "Sit calmly and chant the mantra below 11 or 21 times, or as many times as is comfortable. Keep your mind on the happy occasion.",
+   "hi": "शांत बैठकर नीचे दिया मंत्र 11 या 21 बार, या जितना सहज लगे उतना जपें। मन को इस शुभ अवसर पर रखें।"
+  },
+  {
+   "title_en": "Offer bhog and do aarti",
+   "title_hi": "भोग और आरती",
+   "en": "Offer the fruits, sweets and panchamrit, then do aarti with ghee diya and camphor, going around the mandap with the family. Sing the Tulsi aarti or the Vishnu aarti.",
+   "hi": "फल, मिठाई और पंचामृत का भोग लगाएँ, फिर घी के दीये और कपूर से आरती करें और परिवार के साथ मंडप की परिक्रमा करें। तुलसी माता की आरती या विष्णु जी की आरती गाएँ।"
+  },
+  {
+   "title_en": "Pradakshina and blessings",
+   "title_hi": "परिक्रमा और आशीर्वाद",
+   "en": "Walk around the Tulsi three or seven times with folded hands, then take the elders' blessings. If you like, do a small fireworks celebration in the courtyard, as many families do.",
+   "hi": "हाथ जोड़कर तुलसी की तीन या सात परिक्रमा करें, फिर बड़ों का आशीर्वाद लें। चाहें तो कई परिवारों की तरह आँगन में थोड़ी आतिशबाज़ी से उत्सव मनाएँ।"
+  },
+  {
+   "title_en": "Share the prasad",
+   "title_hi": "प्रसाद बाँटें",
+   "en": "Distribute the panchamrit, fruits and sweets to everyone present. Add a Tulsi leaf only if your family does so, and eat the prasad with thanks.",
+   "hi": "उपस्थित सभी को पंचामृत, फल और मिठाई बाँटें। तुलसी का पत्ता तभी डालें जब आपके परिवार में ऐसा होता हो, और धन्यवाद के भाव से प्रसाद खाएँ।"
+  }
+ ],
+ "mantra": {
+  "sa": "ॐ नमो भगवते वासुदेवाय",
+  "tr": "Om Namo Bhagavate Vasudevaya",
+  "en": "Om, I bow to Lord Vasudeva, Lord Vishnu.",
+  "hi": "ॐ, मैं भगवान वासुदेव, यानी भगवान विष्णु को प्रणाम करता हूँ।"
+ },
+ "tips_en": [
+  "Evening is the most common time, as the wedding is held like a festive baraat after sunset. Choose the time that suits your family.",
+  "Many families keep a light fast on Ekadashi and eat sattvic food after the puja; follow your own family's custom and your health.",
+  "If you do not have a Shaligram, a small Krishna or Vishnu idol or picture is widely used instead.",
+  "Many families do not pluck Tulsi leaves on Ekadashi, Sunday or after sunset, so pluck what you need a day earlier and keep it fresh in water.",
+  "Involve children and the family in decorating; it is meant to be a happy, warm occasion.",
+  "Families and regions differ, for example in the number of pradakshinas, the songs sung and whether kanyadaan is done, so follow your own family's way."
+ ],
+ "tips_hi": [
+  "शाम का समय सबसे आम है, क्योंकि विवाह सूर्यास्त के बाद उत्सव वाली बारात की तरह होता है। वह समय चुनें जो आपके परिवार के लिए सुविधाजनक हो।",
+  "कई परिवार एकादशी पर हल्का व्रत रखते हैं और पूजा के बाद सात्विक भोजन करते हैं; अपने परिवार की रीति और अपनी सेहत के अनुसार चलें।",
+  "यदि शालिग्राम न हो तो छोटी कृष्ण या विष्णु जी की मूर्ति या तस्वीर का उपयोग बहुत आम है।",
+  "कई परिवार एकादशी, रविवार या सूर्यास्त के बाद तुलसी के पत्ते नहीं तोड़ते, इसलिए ज़रूरत भर पत्ते एक दिन पहले तोड़कर पानी में ताज़ा रखें।",
+  "सजावट में बच्चों और परिवार को शामिल करें; यह एक ख़ुशी और अपनेपन भरा अवसर है।",
+  "परिवारों और क्षेत्रों में फ़र्क़ होता है, जैसे परिक्रमा की संख्या, गाए जाने वाले गीत और कन्यादान होता है या नहीं, इसलिए अपने परिवार का तरीक़ा अपनाएँ।"
+ ],
+ "avoid_en": [
+  "Do not leave burning diyas or camphor unattended, especially near the chunri, sugarcane, dry leaves or children.",
+  "Try not to pluck Tulsi leaves roughly or break the plant for decoration; use only what is needed, and with thanks.",
+  "Do not use hard objects or soaps on the Shaligram; use clean water and soft cloth only.",
+  "Avoid rushing; it is fine if some steps are shorter or different, as long as the puja is done with a calm and happy heart."
+ ],
+ "avoid_hi": [
+  "जलते दीये या कपूर को अकेला न छोड़ें, ख़ासकर चुनरी, गन्ने, सूखे पत्तों या बच्चों के पास।",
+  "तुलसी के पत्ते ज़ोर से न तोड़ें और सजावट के लिए पौधे को न तोड़ें; केवल ज़रूरत भर पत्ते और धन्यवाद के साथ लें।",
+  "शालिग्राम पर कठोर चीज़ों या साबुन का उपयोग न करें; केवल साफ़ पानी और नरम कपड़ा इस्तेमाल करें।",
+  "जल्दबाज़ी न करें; कुछ चरण छोटे या अलग हो जाएँ तो भी ठीक है, बस पूजा शांत और प्रसन्न मन से हो।"
+ ]
+}
