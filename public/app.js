@@ -650,6 +650,15 @@ function priceLabel() {
 }
 document.addEventListener("kk:wallet", priceLabel);
 document.addEventListener("kk:lang", priceLabel);
+async function sharePreview(months) {
+  const rows = months.map((m) => [m.label, t("pv_" + m.tag)]);
+  const blob = await makeShareCard({ title: t("pv_h").replace(/^[^:]*:\s*/, ""), subtitle: lastResult?.name || "", rows, footer: t("card_footer") });
+  const file = new File([blob], "kundlikaka-next-3-months.png", { type: "image/png" });
+  try {
+    if (navigator.canShare?.({ files: [file] })) { await navigator.share({ files: [file], text: t("g_share_text") + " https://kundlikaka.in/kundli" }); return; }
+  } catch (e) { if (e.name === "AbortError") return; }
+  deliverFile(blob, file.name);
+}
 async function loadPreview(payload, western) {
   const box = $("reportPreview");
   if (!box) return;
@@ -659,7 +668,8 @@ async function loadPreview(payload, western) {
     const res = await fetch("/api/report/preview", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
     const d = await res.json();
     if (!res.ok || !d.months?.length) return;
-    box.innerHTML = `<h4>${esc(t("pv_h"))}</h4>` + d.months.map((m) => `<div class="rr rr--${m.tag}"><div class="rr-h"><b>${esc(m.label)}</b><span class="pv-tag">${esc(t("pv_" + m.tag))}</span><span class="rr-bar" style="--w:${m.score * 20}%" aria-hidden="true"></span></div></div>`).join("") + `<p class="pv-more">${esc(t("pv_more"))}</p>`;
+    box.innerHTML = `<h4>${esc(t("pv_h"))}</h4>` + d.months.map((m) => `<div class="rr rr--${m.tag}"><div class="rr-h"><b>${esc(m.label)}</b><span class="pv-tag">${esc(t("pv_" + m.tag))}</span><span class="rr-bar" style="--w:${m.score * 20}%" aria-hidden="true"></span></div></div>`).join("") + `<p class="pv-more">${esc(t("pv_more"))}</p><button type="button" class="btn btn-outline" id="pvShare">${esc(t("pv_share"))}</button>`;
+    $("pvShare").onclick = () => sharePreview(d.months);
     show(box, true);
   } catch { /* the preview is a bonus; the page works without it */ }
 }
