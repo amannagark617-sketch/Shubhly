@@ -1045,7 +1045,7 @@ $("mUseMine").addEventListener("click", () => {
   $("maPicked").textContent = t("f_selected", { label: p.place.label });
   show($("maPicked"), true);
 });
-let matchText = "";
+let matchText = "", matchBody = null;
 $("matchForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const err = $("matchError"), btn = $("matchGo");
@@ -1055,9 +1055,10 @@ $("matchForm").addEventListener("submit", async (e) => {
   setBusy(btn, true, t("m_busy"));
   try {
     const lang = getLang();
+    matchBody = JSON.stringify({ a, b, lang });
     const r = await api("/api/match", {
       method: "POST", headers: { "content-type": "application/json" },
-      body: JSON.stringify({ a, b, lang }),
+      body: matchBody,
     });
     const n1 = r.names[0] || t("m_p1"), n2 = r.names[1] || t("m_p2");
     const num = (x) => String(Number.isInteger(x) ? x : x.toFixed(1));
@@ -1085,7 +1086,7 @@ $("matchForm").addEventListener("submit", async (e) => {
         <div class="bar" aria-hidden="true"><i style="width:${(i.score / i.max * 100).toFixed(0)}%"></i></div>
         <small>${esc(i.measures)}</small><p>${esc(i.text)}</p></li>`).join("")}</ul>
       <p class="fine">${esc(r.summary)}</p>
-      <button type="button" class="btn btn-outline" id="matchShare">${esc(t("m_share"))}</button>`;
+      <div class="match-actions"><button type="button" class="btn btn-primary" id="matchPdf">${esc(t("m_pdf"))}</button> <button type="button" class="btn btn-outline" id="matchShare">${esc(t("m_share"))}</button></div>`;
     matchText = `${n1} & ${n2}: ${num(r.total)}/36 (${r.verdict})\nKundli Kaka Kundli Milan: https://kundlikaka.in/match`;
     show(out, true);
     out.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1096,6 +1097,18 @@ $("matchForm").addEventListener("submit", async (e) => {
   }
 });
 $("matchOut").addEventListener("click", async (e) => {
+  const pb = e.target.closest("#matchPdf");
+  if (pb && matchBody) {
+    setBusy(pb, true, t("pdf_busy"));
+    try {
+      const r = await fetch("/api/match/pdf", { method: "POST", headers: { "content-type": "application/json" }, body: matchBody });
+      if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || "PDF failed");
+      if (await deliverFile(await r.blob(), "kundlikaka-kundli-milan.pdf") === "cancelled") { setBusy(pb, false, t("m_pdf")); return; }
+      toast(t("pdf_done"));
+    } catch (ex) { toast(ex.message); }
+    setBusy(pb, false, t("m_pdf"));
+    return;
+  }
   if (!e.target.closest("#matchShare")) return;
   if (navigator.share) { try { await navigator.share({ text: matchText }); return; } catch { /* cancelled */ } }
   try { await navigator.clipboard.writeText(matchText); toast(t("rf_copy_ok")); } catch { toast(t("rf_copy_fail")); }

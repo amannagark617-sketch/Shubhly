@@ -11,7 +11,7 @@ import { DateTime } from "luxon";
 import { computePanchang } from "./src/panchang.js";
 import { buildDailyHoroscope } from "./src/horoscope.js";
 import { quickInsights } from "./src/insights.js";
-import { buildPdf } from "./src/pdf.js";
+import { buildPdf, buildMatchPdf } from "./src/pdf.js";
 import { DATE_LOCALE } from "./public/names.js";
 import {
   FreeChats, FREE_MESSAGES, guideReply, parseClientId, parseGuide, parseMessages,
@@ -290,6 +290,26 @@ app.post("/api/match", kundliLimit, (req, res, next) => {
     const b = person(req.body?.b);
     const lang = req.body?.lang === "hn" ? "hn" : parseLang(req.body?.lang);
     res.json({ names: [a.name, b.name], ...buildMatch(a.chart, b.chart, { lang, timeUnknown: [a.timeUnknown, b.timeUnknown] }) });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// The Kundli Milan result as a PDF. The match is worked out again here from the two birth details.
+app.post("/api/match/pdf", kundliLimit, async (req, res, next) => {
+  try {
+    const lang = req.body?.lang === "hn" ? "hn" : parseLang(req.body?.lang);
+    const language = parseLanguage(req.body?.lang);
+    const locale = DATE_LOCALE[language] || "en-IN";
+    const people = [req.body?.a, req.body?.b].map((x) => {
+      const birth = parseBirthInput({ ...x, tradition: "vedic" });
+      const when = DateTime.fromObject({ year: birth.year, month: birth.month, day: birth.day }, { zone: "utc" });
+      return { name: cleanName(x?.name), chart: computeKundli(birth), timeUnknown: birth.timeUnknown, date: when.setLocale(locale).toLocaleString({ day: "numeric", month: "long", year: "numeric" }), place: birth.placeLabel };
+    });
+    const r = buildMatch(people[0].chart, people[1].chart, { lang, timeUnknown: [people[0].timeUnknown, people[1].timeUnknown] });
+    const pdf = await buildMatchPdf({ names: people.map((x) => x.name), r, lang: language, dates: people.map((x) => x.date), placeLabels: people.map((x) => x.place) });
+    res.set({ "Content-Type": "application/pdf", "Content-Disposition": 'attachment; filename="kundlikaka-kundli-milan.pdf"', "Cache-Control": "no-store" });
+    res.send(pdf);
   } catch (e) {
     next(e);
   }

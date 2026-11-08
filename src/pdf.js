@@ -202,6 +202,23 @@ function badge(doc, id, cx, cy, color) {
   doc.restore();
 }
 
+function backCover(doc, hiLang, { L, W, PW, PH }) {
+  const meaning = hiLang ? "कर्म करने में ही तुम्हारा अधिकार है, फल में कभी नहीं।" : "You have the right to do your work, but never to its fruits.";
+  doc.addPage();
+  const gr = doc.linearGradient(0, 0, PW, PH); gr.stop(0, "#6e1a30").stop(1, "#2a0a14");
+  doc.rect(0, 0, PW, PH).fill(gr);
+  doc.rect(26, 26, PW - 52, PH - 52).lineWidth(0.8).stroke(GOLD);
+  doc.rect(32, 32, PW - 64, PH - 64).lineWidth(0.3).stroke(GOLD);
+  mandala(doc, PW / 2, PH / 2 - 40, 230, { color: GOLDL, opacity: 0.4, lw: 0.55 });
+  rich(doc, "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।", L, PH / 2 - 78, { size: 19, bold: true, color: GOLDL, width: W, align: "center" });
+  rich(doc, meaning, L + 40, PH / 2 - 36, { size: 12, color: "#ffffff", width: W - 80, align: "center" });
+  rich(doc, "Bhagavad Gita 2.47", L, PH / 2 - 4, { size: 9.5, bold: true, color: GOLDL, width: W, align: "center" });
+  doc.rect(PW / 2 - 115, PH - 210, 230, 84).fill("#ffffff");
+  doc.rect(PW / 2 - 111, PH - 206, 222, 76).lineWidth(0.5).stroke(GOLD);
+  doc.image(LOGO_FULL, PW / 2 - 100, PH - 202, { width: 200 });
+  rich(doc, "kundlikaka.in", L, PH - 100, { size: 10.5, bold: true, color: GOLDL, width: W, align: "center" });
+}
+
 // A twelve-sign wheel with the planets placed where they stand in the sky.
 function skyWheel(doc, chart, cx, cy, R, { asc, moon, labelOf }) {
   const th = (lonDeg) => Math.PI - (lonDeg * Math.PI) / 180;
@@ -726,21 +743,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
 
   // ---- the back cover: a closing thought from the Gita and the logo
   {
-    const hiLang = lang === "hi" || lang === "hn";
-    const meaning = hiLang ? "कर्म करने में ही तुम्हारा अधिकार है, फल में कभी नहीं।" : "You have the right to do your work, but never to its fruits.";
-    doc.addPage();
-    const gr = doc.linearGradient(0, 0, PW, PH); gr.stop(0, "#6e1a30").stop(1, "#2a0a14");
-    doc.rect(0, 0, PW, PH).fill(gr);
-    doc.rect(26, 26, PW - 52, PH - 52).lineWidth(0.8).stroke(GOLD);
-    doc.rect(32, 32, PW - 64, PH - 64).lineWidth(0.3).stroke(GOLD);
-    mandala(doc, PW / 2, PH / 2 - 40, 230, { color: GOLDL, opacity: 0.4, lw: 0.55 });
-    rich(doc, "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।", L, PH / 2 - 78, { size: 19, bold: true, color: GOLDL, width: W, align: "center" });
-    rich(doc, meaning, L + 40, PH / 2 - 36, { size: 12, color: "#ffffff", width: W - 80, align: "center" });
-    rich(doc, "Bhagavad Gita 2.47", L, PH / 2 - 4, { size: 9.5, bold: true, color: GOLDL, width: W, align: "center" });
-    doc.rect(PW / 2 - 115, PH - 210, 230, 84).fill("#ffffff");
-    doc.rect(PW / 2 - 111, PH - 206, 222, 76).lineWidth(0.5).stroke(GOLD);
-    doc.image(LOGO_FULL, PW / 2 - 100, PH - 202, { width: 200 });
-    rich(doc, "kundlikaka.in", L, PH - 100, { size: 10.5, bold: true, color: GOLDL, width: W, align: "center" });
+    backCover(doc, lang === "hi" || lang === "hn", { L, W, PW, PH });
   }
 
   // ---- the contents page (page 2), now that every page number is known
@@ -783,6 +786,131 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     doc.image(LOGO_MARK, L, 20, { width: 17 });
     rich(doc, "KUNDLI KAKA", L + 23, 25, { size: 7.5, bold: true, color: GOLD });
     rich(doc, nm, L, 28, { size: 7.5, color: MUTED, width: W, align: "right" });
+    doc.moveTo(L, 42).lineTo(L + W, 42).lineWidth(0.5).stroke("#e3dde0");
+    doc.moveTo(L, PH - 50).lineTo(L + W, PH - 50).lineWidth(0.5).stroke("#e3dde0");
+    rich(doc, T("rep_fine"), L, PH - 42, { size: 6.8, color: MUTED, width: W - 60 });
+    rich(doc, `${i + 1} / ${range.count}`, L, PH - 42, { size: 7.5, bold: true, color: GOLD, width: W, align: "right" });
+    doc.page.margins.bottom = bottom;
+  }
+  doc.end();
+  return done;
+}
+
+// ---- Kundli Milan: a PDF of the match between two people -----------------------------------
+export function buildMatchPdf({ names = ["", ""], r, lang = "en", dates = ["", ""], placeLabels = ["", ""] }) {
+  const doc = newDoc();
+  const chunks = [];
+  doc.on("data", (c) => chunks.push(c));
+  const done = new Promise((resolve) => doc.on("end", () => resolve(Buffer.concat(chunks))));
+  const T = (k, v) => tr(lang, k, v);
+  const hiLang = lang === "hi" || lang === "hn";
+  const PW = doc.page.width, PH = doc.page.height, L = 46, W = PW - 92, TOP = 60;
+  const COL = { good: "#2b7a4b", ok: "#b27d12", low: "#a8321e" };
+  const n1 = names[0] || T("m_p1"), n2 = names[1] || T("m_p2");
+  const num = (x) => String(Number.isInteger(x) ? x : x.toFixed(1));
+  const frac = r.total / r.outOf, band = frac >= 0.75 ? COL.good : frac >= 0.5 ? COL.ok : COL.low;
+  const arc = (cx, cy, rad, to, col, w) => { doc.save().lineWidth(w).strokeColor(col); for (let a = 0; a <= to + 0.0001; a += 0.03) { const x = cx + Math.cos(-Math.PI / 2 + a) * rad, y = cy + Math.sin(-Math.PI / 2 + a) * rad; if (a === 0) doc.moveTo(x, y); else doc.lineTo(x, y); } doc.stroke().restore(); };
+
+  // ---- cover
+  const grad = doc.linearGradient(0, 0, PW, PH); grad.stop(0, "#6e1a30").stop(1, "#2a0a14");
+  doc.rect(0, 0, PW, PH).fill(grad);
+  doc.rect(26, 26, PW - 52, PH - 52).lineWidth(0.8).stroke(GOLD);
+  doc.rect(32, 32, PW - 64, PH - 64).lineWidth(0.3).stroke(GOLD);
+  doc.circle(PW / 2, 88, 36).lineWidth(1).stroke(GOLD);
+  doc.image(LOGO_MARK, PW / 2 - 31, 57, { width: 62 });
+  rich(doc, "KUNDLI KAKA", L, 134, { size: 13, bold: true, color: GOLDL, width: W, align: "center" });
+  doc.moveTo(PW / 2 - 24, 156).lineTo(PW / 2 + 24, 156).lineWidth(1).stroke(GOLD);
+  rich(doc, hiLang ? "कुंडली मिलान" : "Kundli Milan", L, 166, { size: 11, color: "#ead9dc", width: W, align: "center" });
+  const title = `${n1}  &  ${n2}`;
+  const tSize = widthOf(doc, title, 32, true) > W - 40 ? 22 : 32;
+  const tH = heightOf(doc, title, tSize, W - 40, true);
+  rich(doc, title, L + 20, 196, { size: tSize, bold: true, color: "#ffffff", width: W - 40, align: "center" });
+  rich(doc, dates.filter(Boolean).join("   |   "), L, 206 + tH, { size: 10, color: "#ead9dc", width: W, align: "center" });
+  const cx = PW / 2, cy = 470;
+  mandala(doc, cx, cy, 200, { color: GOLDL, opacity: 0.5, lw: 0.55 });
+  doc.circle(cx, cy, 104).fill("#ffffff");
+  doc.circle(cx, cy, 104).lineWidth(0.6).stroke(GOLD);
+  arc(cx, cy, 92, Math.PI * 2, "#eee9ec", 11);
+  arc(cx, cy, 92, Math.PI * 2 * frac, band, 11);
+  rich(doc, num(r.total), cx - 70, cy - 34, { size: 56, bold: true, color: NAVY, width: 140, align: "center" });
+  rich(doc, `/ ${r.outOf}`, cx - 70, cy + 30, { size: 13, bold: true, color: MUTED, width: 140, align: "center" });
+  rich(doc, r.verdict, L + 20, 640, { size: 15, bold: true, color: GOLDL, width: W - 40, align: "center" });
+  rich(doc, "kundlikaka.in", L, PH - 78, { size: 9.5, bold: true, color: GOLDL, width: W, align: "center" });
+
+  // ---- inner pages
+  doc.addPage();
+  let y = TOP;
+  const ensure = (h) => { if (y + h > PH - 62) { doc.addPage(); y = TOP; } };
+  const section = (title, color, id) => {
+    ensure(110); y += 6;
+    badge(doc, id, L + 11, y + 10, color);
+    rich(doc, title, L + 30, y, { size: 15, bold: true, width: W - 34 });
+    y += 28;
+    doc.moveTo(L, y - 5).lineTo(L + W - 14, y - 5).lineWidth(0.5).stroke("#e3dde0");
+    doc.moveTo(L + W - 7, y - 10).lineTo(L + W - 2, y - 5).lineTo(L + W - 7, y).lineTo(L + W - 12, y - 5).closePath().fill(GOLD);
+  };
+  const half = (W - 14) / 2;
+  const tile = (x, w, head, txt, accent) => {
+    const inner = w - 20, hh = heightOf(doc, head, 10, inner, true), th = heightOf(doc, txt, 9, inner), h = 12 + hh + 4 + th + 10;
+    return { h, draw(y0) {
+      doc.rect(x, y0, w, h).fillAndStroke("#ffffff", "#e3dde0");
+      doc.rect(x, y0, w, 3).fill(accent);
+      rich(doc, head, x + 10, y0 + 10, { size: 10, bold: true, color: accent, width: inner });
+      rich(doc, txt, x + 10, y0 + 14 + hh, { size: 9, color: "#3a343f", width: inner });
+    } };
+  };
+  const row2 = (a, b) => { const h = Math.max(a?.h || 0, b?.h || 0); ensure(h + 8); a?.draw(y); b?.draw(y); y += h + 12; };
+
+  section(hiLang ? "मिलान एक नज़र में" : "Your match at a glance", MAROON, "love");
+  rich(doc, r.verdict, L, y, { size: 12, bold: true, width: W }); y += heightOf(doc, r.verdict, 12, W, true) + 12;
+  for (const a of r.areas) {
+    const th = heightOf(doc, a.text, 9, W);
+    ensure(th + 38);
+    rich(doc, a.name, L, y, { size: 10.5, bold: true, width: W - 60 });
+    rich(doc, `${a.pct}%`, L, y, { size: 10.5, bold: true, color: COL[a.level], width: W, align: "right" });
+    doc.rect(L, y + 18, W, 7).fill("#eee9ec");
+    doc.rect(L, y + 18, (W * a.pct) / 100, 7).fill(COL[a.level]);
+    rich(doc, a.text, L, y + 31, { size: 9, color: "#3a343f", width: W });
+    y += th + 44;
+  }
+  const best = r.items.find((i) => i.key === r.best), care = r.care ? r.items.find((i) => i.key === r.care) : null;
+  row2(tile(L, half, T("m_best"), `${best.name}: ${best.text}`, COL.good), care ? tile(L + half + 14, half, T("m_care"), `${care.name}: ${care.text}`, COL.ok) : null);
+
+  section(T("m_people"), NAVY, "about");
+  row2(...r.people.map((pp, i) => tile(L + i * (half + 14), half, `${i ? n2 : n1}: ${signName(lang, SIGN_EN[pp.signIndex], "")}`, `${pp.strength} ${pp.grow}`, i ? GOLD : MAROON)));
+  if (r.mangal) row2(tile(L, W, T("m_mangal"), r.mangal, MAROON));
+
+  section(T("m_rows"), "#2e5e73", "months");
+  for (const i of r.items) {
+    const th = heightOf(doc, i.text, 9, W - 150), mh = heightOf(doc, i.measures, 8, W - 150);
+    const h = Math.max(th + mh + 24, 44);
+    ensure(h + 8);
+    doc.rect(L, y, W, h).fillAndStroke("#ffffff", "#e3dde0");
+    doc.rect(L, y, 4, h).fill(COL[i.level] || GOLD);
+    rich(doc, i.name, L + 16, y + 9, { size: 10.5, bold: true, width: 120 });
+    rich(doc, `${num(i.score)} / ${i.max}`, L + 16, y + 25, { size: 9.5, bold: true, color: COL[i.level], width: 120 });
+    doc.rect(L + 16, y + 40, 100, 5).fill("#eee9ec");
+    doc.rect(L + 16, y + 40, 100 * (i.score / i.max), 5).fill(COL[i.level]);
+    rich(doc, i.measures, L + 140, y + 8, { size: 8, color: MUTED, width: W - 150 });
+    rich(doc, i.text, L + 140, y + 12 + mh, { size: 9, color: "#3a343f", width: W - 150 });
+    y += Math.max(h, 52) + 8;
+  }
+  const sh = heightOf(doc, r.summary, 8, W);
+  ensure(sh + 10);
+  rich(doc, r.summary, L, y + 4, { size: 8, color: MUTED, width: W });
+
+  // ---- back cover
+  backCover(doc, hiLang, { L, W, PW, PH });
+
+  const range = doc.bufferedPageRange();
+  for (let i = 1; i < range.count - 1; i++) {
+    doc.switchToPage(range.start + i);
+    const bottom = doc.page.margins.bottom;
+    doc.page.margins.bottom = 0;
+    mandala(doc, PW - 10, PH - 10, 150, { color: GOLD, opacity: 0.09, lw: 0.6 });
+    doc.image(LOGO_MARK, L, 20, { width: 17 });
+    rich(doc, "KUNDLI KAKA", L + 23, 25, { size: 7.5, bold: true, color: GOLD });
+    rich(doc, `${n1} & ${n2}`, L, 28, { size: 7.5, color: MUTED, width: W, align: "right" });
     doc.moveTo(L, 42).lineTo(L + W, 42).lineWidth(0.5).stroke("#e3dde0");
     doc.moveTo(L, PH - 50).lineTo(L + W, PH - 50).lineWidth(0.5).stroke("#e3dde0");
     rich(doc, T("rep_fine"), L, PH - 42, { size: 6.8, color: MUTED, width: W - 60 });
