@@ -12,6 +12,8 @@ import { luckyKit } from "./report-facts.js";
 import { planetName, signName, nakName, DATE_LOCALE, SIGN_EN } from "../public/names.js";
 
 const require = createRequire(import.meta.url);
+const LOGO_MARK = new URL("../public/img/logo-mark.png", import.meta.url).pathname;
+const LOGO_FULL = new URL("../public/img/logo-full.png", import.meta.url).pathname;
 const FONTSOURCE = require.resolve("@fontsource/noto-sans/package.json").replace(/noto-sans[\\/]package\.json$/, "");
 
 const font = (pkg, subset, weight) => `${FONTSOURCE}${pkg}/files/${pkg}-${subset}-${weight}-normal.woff`;
@@ -276,23 +278,25 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     for (const r of [14, 22]) doc.moveTo(qx, qy + sy * r).bezierCurveTo(qx, qy + sy * 5, qx + sx * 5, qy, qx + sx * r, qy).lineWidth(0.6).stroke(GOLD);
     doc.circle(qx + sx * 4, qy + sy * 4, 1.4).fill(GOLD);
   }
-  rich(doc, "KUNDLI KAKA", L, 78, { size: 13, bold: true, color: GOLDL, width: W, align: "center" });
-  doc.moveTo(PW / 2 - 24, 102).lineTo(PW / 2 + 24, 102).lineWidth(1).stroke(GOLD);
-  rich(doc, T(western ? "pdf_h_western" : "pdf_h_vedic"), L, 114, { size: 11, color: "#ead9dc", width: W, align: "center" });
+  doc.circle(PW / 2, 88, 36).lineWidth(1).stroke(GOLD);
+  doc.image(LOGO_MARK, PW / 2 - 31, 57, { width: 62 });
+  rich(doc, "KUNDLI KAKA", L, 134, { size: 13, bold: true, color: GOLDL, width: W, align: "center" });
+  doc.moveTo(PW / 2 - 24, 156).lineTo(PW / 2 + 24, 156).lineWidth(1).stroke(GOLD);
+  rich(doc, T(western ? "pdf_h_western" : "pdf_h_vedic"), L, 166, { size: 11, color: "#ead9dc", width: W, align: "center" });
   const nm = name || T("r_title_none");
   const nmSize = widthOf(doc, nm, 36, true) > W - 40 ? 26 : 36;
   const nmH = heightOf(doc, nm, nmSize, W - 40, true);
-  rich(doc, nm, L + 20, 150, { size: nmSize, bold: true, color: "#ffffff", width: W - 40, align: "center" });
+  rich(doc, nm, L + 20, 196, { size: nmSize, bold: true, color: "#ffffff", width: W - 40, align: "center" });
   const meta = [dateLabel, timeUnknown ? T("r_time_unknown") : timeLabel, placeLabel].filter(Boolean).join("   |   ");
-  rich(doc, meta, L, 158 + nmH, { size: 10, color: "#ead9dc", width: W, align: "center" });
+  rich(doc, meta, L, 204 + nmH, { size: 10, color: "#ead9dc", width: W, align: "center" });
   {
-    const S = 240, cx0 = (PW - S) / 2, cy0 = 330 + Math.max(0, nmH - 44);
+    const S = 240, cx0 = (PW - S) / 2, cy0 = 350 + Math.max(0, nmH - 44);
     mandala(doc, PW / 2, cy0 + S / 2, 205, { color: GOLDL, opacity: 0.55, lw: 0.55 });
     doc.rect(cx0, cy0, S, S).fill("#ffffff");
     doc.rect(cx0 + 5, cy0 + 5, S - 10, S - 10).lineWidth(0.5).stroke(GOLD);
     SVGtoPDF(doc, skin(western ? westernSvg(chart, { glyphs: false }) : chartSvg(chart)), cx0 + 16, cy0 + 16, { width: S - 32, height: S - 32, ...SVGOPT });
     // three key facts under the chart
-    const ty0 = Math.max(cy0 + S + 78, PH - 170), cw = W / chips.length;
+    const ty0 = Math.max(cy0 + S + 84, PH - 160), cw = W / chips.length;
     chips.forEach(([k, v], i) => {
       const x = L + i * cw;
       if (i) doc.moveTo(x, ty0 - 2).lineTo(x, ty0 + 42).lineWidth(0.5).stroke(GOLD);
@@ -735,6 +739,10 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     rich(doc, "Bhagavad Gita 2.47", L + 20, y + 88, { size: 8.5, bold: true, color: GOLDL, width: W - 40, align: "center" });
     rich(doc, "kundlikaka.in", L + 20, y + 104, { size: 8.5, color: "#ead9dc", width: W - 40, align: "center" });
     y += h + 10;
+    // the full logo on white, as a signature
+    ensure(90);
+    doc.image(LOGO_FULL, PW / 2 - 90, y + 14, { width: 180 });
+    y += 80;
   }
 
   // ---- the contents page (page 2), now that every page number is known
@@ -774,7 +782,8 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
     const bottom = doc.page.margins.bottom;
     doc.page.margins.bottom = 0;
     mandala(doc, PW - 10, PH - 10, 150, { color: GOLD, opacity: 0.09, lw: 0.6 });
-    rich(doc, "KUNDLI KAKA", L, 28, { size: 7.5, bold: true, color: GOLD });
+    doc.image(LOGO_MARK, L, 20, { width: 17 });
+    rich(doc, "KUNDLI KAKA", L + 23, 25, { size: 7.5, bold: true, color: GOLD });
     rich(doc, nm, L, 28, { size: 7.5, color: MUTED, width: W, align: "right" });
     doc.moveTo(L, 42).lineTo(L + W, 42).lineWidth(0.5).stroke("#e3dde0");
     doc.moveTo(L, PH - 50).lineTo(L + W, PH - 50).lineWidth(0.5).stroke("#e3dde0");
