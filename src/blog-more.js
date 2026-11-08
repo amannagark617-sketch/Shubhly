@@ -294,4 +294,34 @@ export const MORE_POSTS = [
 <p>Try a free reading with animated cards: choose love, career or money, turn each card and read what it may be telling you at <a href="/tarot">Kundli Kaka tarot</a>. For a longer view of your timing, make your <a href="/kundli">free kundli</a>.</p>
 `,
   },
+  {
+    slug: "how-kundli-kaka-works",
+    title: "How Kundli Kaka Works: AI, Your Chart and What We Will Never Say",
+    desc: "Plain answers: who replies to you, how your chart is made, what each reply costs, when money is returned, and what Kundli Kaka will never tell you.",
+    date: D, read: 4,
+    lead: "You should know exactly who or what you are talking to, and what it costs, before you put in a rupee. Here it is in plain words.",
+    body: `
+<h2>Who answers you</h2>
+<p>Every astrologer on Kundli Kaka is an <b>AI</b>. There are no hidden human astrologers behind the chat. The AI reads your own chart before it answers, so the reply is about you and not a template.</p>
+<h2>How your chart is made</h2>
+<p>Your kundli is worked out from your birth date, time and place using real planet positions for that moment. The chart itself is calculation, not AI. The AI only explains it in simple words, in your language.</p>
+<h2>What it costs</h2>
+<ul>
+<li>Your kundli, daily rashifal, panchang, matching and a first plain-language answer are free.</li>
+<li>Each reply from an AI astrologer is a few rupees, and a Krishna reply costs less. The price is shown before you send.</li>
+<li>The full personal report with a dated 12-month guide and a PDF is a one-time price shown on the button.</li>
+<li>You add money to a wallet and it is used only when you ask for something. There are no minutes and no timers.</li>
+</ul>
+<h2>If something goes wrong</h2>
+<p>If a reply or report fails, the money is returned to your wallet automatically. Your balance and every charge, refund and top-up are listed in your wallet history.</p>
+<h2>What we will never say</h2>
+<ul>
+<li>We will not predict death, serious illness or accidents.</li>
+<li>We will not tell you that something terrible will happen unless you buy a puja or a remedy.</li>
+<li>We will not tell you to stop a medicine, leave a job or end a relationship because of a chart.</li>
+</ul>
+<p>Astrology is a way to think about timing. It is not a promise. For health, money or legal trouble, please also talk to a doctor, an adviser or a lawyer.</p>
+<p>Ready to start? <a href="/kundli">Make your free kundli</a>.</p>
+`,
+  },
 ];
