@@ -89,7 +89,7 @@ export function callBook({ now = () => Date.now(), maxMinutes = MAX_MINUTES } = 
     /** A call began. undo() gives the first minute back (money or the free minute) if it never connected. */
     open(uid, undo) {
       const id = crypto.randomBytes(12).toString("hex");
-      calls.set(id, { uid, startedAt: now(), minutes: 1, undo });
+      calls.set(id, { uid, startedAt: now(), connectedAt: 0, minutes: 1, undo });
       if (calls.size > 20000) calls.clear();
       return id;
     },
@@ -102,12 +102,16 @@ export function callBook({ now = () => Date.now(), maxMinutes = MAX_MINUTES } = 
       return { ok: true, minute: c.minutes + 1 };
     },
     commit(id) { const c = calls.get(id); if (c) c.minutes += 1; },
-    /** The call is over. If it never connected, the first minute is given back, once. */
-    async end(id, uid, failed = false) {
+    /** The server saw Google accept the call. From now the first minute is earned and cannot be refunded. */
+    markConnected(id) { const c = calls.get(id); if (c && !c.connectedAt) c.connectedAt = now(); },
+    /** When the paid time runs out, in ms. After this the call is cut unless the next minute was bought. */
+    paidUntil(id, graceMs = 25000) { const c = calls.get(id); return c && c.connectedAt ? c.connectedAt + c.minutes * 60000 + graceMs : null; },
+    /** The call is over. If the server never saw it connect, the first minute is given back, once. What the browser says does not matter. */
+    async end(id, uid) {
       const c = calls.get(id);
       if (!c || c.uid !== uid) return false;
       calls.delete(id);
-      if (failed && c.minutes === 1 && c.undo) { try { await c.undo(); return true; } catch { return false; } }
+      if (!c.connectedAt && c.minutes === 1 && c.undo) { try { await c.undo(); return true; } catch { return false; } }
       return false;
     },
   };

@@ -27,7 +27,7 @@ export function ticketBook({ now = () => Date.now(), ttlMs = 90 * 1000 } = {}) {
   };
 }
 
-export function attachCallRelay(server, tickets) {
+export function attachCallRelay(server, tickets, hooks = {}) {
   const wss = new WebSocketServer({ noServer: true, maxPayload: 1024 * 1024 });
   server.on("upgrade", (req, socket, head) => {
     let url;
@@ -40,25 +40,36 @@ export function attachCallRelay(server, tickets) {
     const ok = sameSite ? tickets.take(url.searchParams.get("ticket") || "") : null;
     const key = geminiKey();
     if (!ok || !key) { socket.write("HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n"); return socket.destroy(); }
-    wss.handleUpgrade(req, socket, head, (client) => bridge(client, key, ok.extra || {}));
+    wss.handleUpgrade(req, socket, head, (client) => bridge(client, key, ok.extra || {}, ok.callId, hooks));
   });
 }
 
-function bridge(client, key, extra = {}) {
+function bridge(client, key, extra = {}, callId = "", hooks = {}) {
   const up = new WebSocket(`${UPSTREAM}?key=${encodeURIComponent(key)}`);
   const queue = [];
   let sawSetup = false, upOpen = false;
   const stop = setTimeout(() => { try { client.close(1000, "call time over"); } catch { /* gone */ } try { up.close(); } catch { /* gone */ } }, (MAX_MINUTES * 60 + 30) * 1000);
-  const shut = (why) => { clearTimeout(stop); try { client.close(1011, String(why).slice(0, 100)); } catch { /* gone */ } try { up.close(); } catch { /* gone */ } };
+  const shut = (why) => { clearTimeout(stop); clearInterval(meter); try { client.close(1011, String(why).slice(0, 100)); } catch { /* gone */ } try { up.close(); } catch { /* gone */ } };
 
   up.on("open", () => {
     upOpen = true;
     up.send(JSON.stringify(liveSetup(extra.memory)));
     for (const m of queue.splice(0)) up.send(m.data, { binary: m.binary });
   });
-  up.on("message", (data, binary) => { if (client.readyState === WebSocket.OPEN) client.send(data, { binary }); });
+  let connected = false, meter = null;
+  up.on("message", (data, binary) => {
+    if (!connected && data.length < 4096 && data.toString().includes("setupComplete")) {
+      connected = true; hooks.onConnected?.(callId);
+      // Time is paid a minute at a time. If the next minute is not bought, the call is cut here, whatever the page does.
+      meter = setInterval(() => {
+        const until = hooks.paidUntil?.(callId);
+        if (until && Date.now() > until) { clearInterval(meter); shut("the paid minute is over"); }
+      }, 3000);
+    }
+    if (client.readyState === WebSocket.OPEN) client.send(data, { binary });
+  });
   up.on("close", (code, reason) => {
-    clearTimeout(stop);
+    clearTimeout(stop); clearInterval(meter);
     try { client.close(code >= 1000 && code < 5000 && code !== 1005 && code !== 1006 ? code : 1011, reason?.toString().slice(0, 100) || "the call service closed"); } catch { /* gone */ }
   });
   up.on("error", (e) => shut("could not reach the call service: " + (e?.message || "error")));
@@ -67,6 +78,6 @@ function bridge(client, key, extra = {}) {
     if (!sawSetup) { sawSetup = true; return; } // the page's own setup is ignored: the server decides the voice and instructions
     if (upOpen) up.send(data, { binary }); else queue.push({ data, binary });
   });
-  client.on("close", () => { clearTimeout(stop); try { up.close(); } catch { /* gone */ } });
+  client.on("close", () => { clearTimeout(stop); clearInterval(meter); try { up.close(); } catch { /* gone */ } });
   client.on("error", () => shut("connection error"));
 }

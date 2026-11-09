@@ -627,12 +627,15 @@ app.post("/api/krishna/call/start", chatLimit, async (req, res, next) => {
     let free = false, paid = null;
     if (!(await accounts.authenticate(req, res))) return;
     const uid = req.user.uid;
-    if (calls.freeAvailable(uid)) { free = true; calls.useFree(uid); }
+    // The free minute is kept in the database (once per person per day in India time), so a restart does not hand out another.
+    const day = new Date(Date.now() + 19_800_000).toISOString().slice(0, 10);
+    await req.store.upsertUser(uid, req.user);
+    if (await req.store.takeFreeCall(uid, day)) free = true;
     else {
       paid = await accounts.charge(req, res, { kind: "call", amountPaise: PRICES.call, label: "Krishna call, minute 1" });
       if (!paid) return;
     }
-    const callId = calls.open(uid, async () => { if (free) calls.giveBackFree(uid); else await paid.refund(); });
+    const callId = calls.open(uid, async () => { if (free) await req.store.giveBackFreeCall(uid, day); else await paid.refund(); });
     let memory = null;
     try {
       const m = await req.store.getKrishnaMemory(uid);
@@ -662,7 +665,7 @@ app.post("/api/krishna/call/minute", chatLimit, async (req, res, next) => {
 });
 app.post("/api/krishna/call/end", chatLimit, async (req, res) => {
   if (!walletOn || !(await accounts.authenticate(req, res))) return;
-  const refunded = await calls.end(String(req.body?.callId || ""), req.user.uid, req.body?.failed === true);
+  const refunded = await calls.end(String(req.body?.callId || ""), req.user.uid); // the server decides if it connected; the page cannot ask for a refund
   res.json({ ok: true, refunded });
   // If they let Krishna remember them, keep a few short notes from what they said on the call.
   const said = String(req.body?.said || "").replace(/\s+/g, " ").slice(0, 1500);
@@ -844,4 +847,4 @@ const port = Number(process.env.PORT) || 3000;
 const httpServer = app.listen(port, "0.0.0.0", () => {
   console.log(`Kundli Kaka is running on http://0.0.0.0:${port}`);
 });
-attachCallRelay(httpServer, callTickets);
+attachCallRelay(httpServer, callTickets, { onConnected: (id) => calls.markConnected(id), paidUntil: (id) => calls.paidUntil(id) });

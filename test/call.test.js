@@ -41,15 +41,37 @@ test("the call token is locked to Krishna and good for one call", async () => {
   assert.ok(new Date(c.expireTime) > new Date());
 });
 
-test("a call that never connected gives the first minute back, once", async () => {
+test("a call that never connected gives the first minute back, once; one that connected cannot be refunded, whatever the page says", async () => {
   const b = callBook();
   let gave = 0;
   const id = b.open("u1", async () => { gave += 1; });
-  assert.equal(await b.end(id, "u2", true), false);
-  assert.equal(await b.end(id, "u1", true), true);
-  assert.equal(await b.end(id, "u1", true), false);
+  assert.equal(await b.end(id, "u2"), false);
+  assert.equal(await b.end(id, "u1"), true);
+  assert.equal(await b.end(id, "u1"), false);
   assert.equal(gave, 1);
   const id2 = b.open("u1", async () => { gave += 1; });
-  assert.equal(await b.end(id2, "u1", false), false);
+  b.markConnected(id2);
+  assert.equal(await b.end(id2, "u1", true), false); // the page claiming "failed" changes nothing
   assert.equal(gave, 1);
+});
+
+test("the paid time is known to the server, so a call cannot run past the minutes bought", () => {
+  let t = 5_000_000;
+  const b = callBook({ now: () => t });
+  const id = b.open("u1");
+  assert.equal(b.paidUntil(id), null); // not connected yet
+  b.markConnected(id);
+  assert.equal(b.paidUntil(id, 0), t + 60_000);
+  t += 60_000; b.commit(id);
+  assert.equal(b.paidUntil(id, 0), 5_000_000 + 120_000);
+});
+
+test("the free call minute is kept in the store, once per person per day", async () => {
+  const { memoryStore } = await import("../src/account-store.js");
+  const st = memoryStore();
+  assert.equal(await st.takeFreeCall("u", "2026-11-09"), true);
+  assert.equal(await st.takeFreeCall("u", "2026-11-09"), false);
+  assert.equal(await st.takeFreeCall("u", "2026-11-10"), true);
+  await st.giveBackFreeCall("u", "2026-11-10");
+  assert.equal(await st.takeFreeCall("u", "2026-11-10"), true);
 });

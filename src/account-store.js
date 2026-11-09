@@ -64,7 +64,7 @@ export function cleanMemory(m) {
 
 // ---- in memory (tests, and local work with no database) ----------------------------------------
 export function memoryStore() {
-  const users = new Map(), orders = new Map(), txs = new Map(), welcomes = new Set(), reports = new Map(), kmem = new Map();
+  const users = new Map(), orders = new Map(), txs = new Map(), welcomes = new Set(), reports = new Map(), kmem = new Map(), freeCall = new Map();
   return {
     kind: "memory",
     async upsertUser(uid, p) {
@@ -97,6 +97,9 @@ export function memoryStore() {
       txs.set(o.uid, [row, ...(txs.get(o.uid) || [])]);
       return { credited: true, uid: o.uid, balancePaise: u.balancePaise };
     },
+    /** The free call minute: once per person per day. True when it was available and is now used. */
+    async takeFreeCall(uid, day) { if (freeCall.get(uid) === day) return false; freeCall.set(uid, day); return true; },
+    async giveBackFreeCall(uid, day) { if (freeCall.get(uid) === day) freeCall.delete(uid); },
     async getKrishnaMemory(uid) { return cleanMemory(kmem.get(uid)); },
     async setKrishnaMemory(uid, m) { const v = cleanMemory(m); kmem.set(uid, v); return v; },
     async saveReport(uid, rec) {
@@ -160,6 +163,18 @@ export function firestoreStore(db) {
     async setName(uid, name) {
       await user(uid).update({ name });
       return (await user(uid).get()).data();
+    },
+    async takeFreeCall(uid, day) {
+      return db.runTransaction(async (tx) => {
+        const snap = await tx.get(user(uid));
+        if (snap.exists && snap.data().freeCallDay === day) return false;
+        tx.set(user(uid), { freeCallDay: day }, { merge: true });
+        return true;
+      });
+    },
+    async giveBackFreeCall(uid, day) {
+      const s = await user(uid).get();
+      if (s.exists && s.data().freeCallDay === day) await user(uid).update({ freeCallDay: "" });
     },
     async getKrishnaMemory(uid) { const s = await db.doc(`krishnaMemory/${uid}`).get(); return cleanMemory(s.exists ? s.data() : null); },
     async setKrishnaMemory(uid, m) { const v = cleanMemory(m); await db.doc(`krishnaMemory/${uid}`).set(v); return v; },
