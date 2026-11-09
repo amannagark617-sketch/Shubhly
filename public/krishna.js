@@ -38,6 +38,31 @@ if (box) {
   })();
   let history = get("kk.krishna", []).filter((m) => m && typeof m.text === "string" && (m.role === "user" || m.role === "model")).slice(-20);
   const W = () => window.kkWallet?.enabled ? window.kkWallet : null;
+
+  // ---- "remember me": off until they turn it on, and they can erase it at any time ----
+  const mem = $("kr-mem"), memOn = $("kr-mem-on"), memState = $("kr-mem-state"), memErase = $("kr-mem-erase");
+  const memCall = async (method, body) => {
+    const r = await fetch("/api/account/krishna-memory", { method, headers: { "Content-Type": "application/json", ...(await W().headers()) }, body: body ? JSON.stringify(body) : undefined });
+    if (!r.ok) throw new Error("memory");
+    return r.json();
+  };
+  const memPaint = (m) => {
+    memOn.checked = !!m.on;
+    memState.textContent = m.on ? (m.count ? `He remembers ${m.count} thing${m.count > 1 ? "s" : ""} about you.` : "He will remember what matters to you.") : "";
+    memErase.hidden = !(m.on || m.count);
+  };
+  const memLoad = async () => {
+    if (!mem || !W()?.loggedIn()) { if (mem) mem.hidden = true; return; }
+    try { memPaint(await memCall("GET")); mem.hidden = false; } catch { mem.hidden = true; }
+  };
+  if (mem) {
+    memOn.addEventListener("change", async () => { try { memPaint(await memCall("PUT", { on: memOn.checked })); } catch { memOn.checked = !memOn.checked; } });
+    memErase.addEventListener("click", async () => { if (!confirm("Erase everything Krishna remembers about you?")) return; try { memPaint(await memCall("DELETE")); } catch { /* try again */ } });
+    document.addEventListener("kk:wallet", () => setTimeout(memLoad, 600));
+    document.addEventListener("kk:balance", memLoad);
+    setTimeout(memLoad, 1500);
+    input?.addEventListener("focus", memLoad);
+  }
   let left = get("shubhly.chatLeft", null);
   let busy = false;
   const priceTag = () => { const w = W(); return w ? `Each written reply is ₹${w.prices.krishna / 100}.` : ""; };

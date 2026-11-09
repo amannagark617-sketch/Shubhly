@@ -14,10 +14,10 @@ const UPSTREAM = "wss://generativelanguage.googleapis.com/ws/google.ai.generativ
 export function ticketBook({ now = () => Date.now(), ttlMs = 90 * 1000 } = {}) {
   const tickets = new Map();
   return {
-    issue(callId) {
+    issue(callId, extra = {}) {
       for (const [k, v] of tickets) if (v.exp < now()) tickets.delete(k);
       const t = crypto.randomUUID();
-      tickets.set(t, { callId, exp: now() + ttlMs });
+      tickets.set(t, { callId, extra, exp: now() + ttlMs });
       return t;
     },
     take(t) { // one use only
@@ -37,14 +37,14 @@ export function attachCallRelay(server, tickets) {
     const host = req.headers["x-forwarded-host"] || req.headers.host;
     let sameSite = true;
     if (origin) { try { sameSite = new URL(origin).host === String(host).split(",")[0].trim(); } catch { sameSite = false; } }
-    const ok = sameSite && tickets.take(url.searchParams.get("ticket") || "");
+    const ok = sameSite ? tickets.take(url.searchParams.get("ticket") || "") : null;
     const key = geminiKey();
     if (!ok || !key) { socket.write("HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n"); return socket.destroy(); }
-    wss.handleUpgrade(req, socket, head, (client) => bridge(client, key));
+    wss.handleUpgrade(req, socket, head, (client) => bridge(client, key, ok.extra || {}));
   });
 }
 
-function bridge(client, key) {
+function bridge(client, key, extra = {}) {
   const up = new WebSocket(`${UPSTREAM}?key=${encodeURIComponent(key)}`);
   const queue = [];
   let sawSetup = false, upOpen = false;
@@ -53,7 +53,7 @@ function bridge(client, key) {
 
   up.on("open", () => {
     upOpen = true;
-    up.send(JSON.stringify(liveSetup()));
+    up.send(JSON.stringify(liveSetup(extra.memory)));
     for (const m of queue.splice(0)) up.send(m.data, { binary: m.binary });
   });
   up.on("message", (data, binary) => { if (client.readyState === WebSocket.OPEN) client.send(data, { binary }); });

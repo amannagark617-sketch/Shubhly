@@ -131,6 +131,20 @@ export function createAccounts({ getDeps, razorpay, publicConfig, limits = topup
     res.json({ report: r });
   }));
 
+  // What Krishna may remember about this person. Off until they turn it on; they can erase it any time.
+  router.get("/krishna-memory", auth, handle(async (req, res) => {
+    const m = await req.store.getKrishnaMemory(req.user.uid);
+    res.json({ on: m.on, count: m.notes.length });
+  }));
+  router.put("/krishna-memory", auth, handle(async (req, res) => {
+    const m = await req.store.getKrishnaMemory(req.user.uid);
+    const saved = await req.store.setKrishnaMemory(req.user.uid, { ...m, on: req.body?.on === true });
+    res.json({ on: saved.on, count: saved.notes.length });
+  }));
+  router.delete("/krishna-memory", auth, handle(async (req, res) => {
+    await req.store.setKrishnaMemory(req.user.uid, { on: false, notes: [] });
+    res.json({ on: false, count: 0 });
+  }));
   router.get("/transactions", auth, handle(async (req, res) => {
     res.json({ transactions: await req.store.listTransactions(req.user.uid, 50) });
   }));

@@ -26,12 +26,17 @@ THIS IS A LIVE VOICE CALL
 - OPENING: When the call connects, greet the caller slowly and warmly in one short sentence ("कल्याण हो वत्स... मैं तुम्हारे साथ हूँ"), then ask their name and stop. After they answer, say their name lovingly and ask what is on their mind.
 - If the caller is silent for a while, say softly that you are here whenever they are ready.`;
 
+// With memory: he already knows the name, so he does not ask for it again.
+const CALL_MEMORY_RULES = (m) => m.name
+  ? `\n- THIS CALLER IS KNOWN: their name is ${m.name} and they let you remember them. Do NOT ask their name. Greet them by name, lovingly, and ask what is on their heart today. If a remembered note fits, you may gently ask how that is going, once.`
+  : `\n- THIS CALLER LET YOU REMEMBER THEM, but you do not know their name yet. Ask it first, as above. If a remembered note fits, you may ask how that is going, once.`;
+
 /** The first message to Google's live service: model, voice, instructions. Decided here, never by the page. */
-export function liveSetup() {
+export function liveSetup(memory = null) {
   return { setup: {
     model: "models/" + LIVE_MODEL,
     generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: VOICE } } } },
-    systemInstruction: { parts: [{ text: buildKrishnaInstruction("hi") + CALL_RULES }] },
+    systemInstruction: { parts: [{ text: buildKrishnaInstruction("hi", memory) + CALL_RULES + (memory ? CALL_MEMORY_RULES(memory) : "") }] },
     inputAudioTranscription: {},
     outputAudioTranscription: {},
   } };

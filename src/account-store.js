@@ -56,9 +56,15 @@ function checkCredit(order, amountPaise) {
   if (amountPaise != null && amountPaise !== order.amountPaise) throw new Error("amount mismatch");
 }
 
+/** What Krishna remembers about one person, only when they agreed: a few short notes they shared. */
+export function cleanMemory(m) {
+  const notes = Array.isArray(m?.notes) ? m.notes.map((x) => String(x).replace(/\s+/g, " ").trim().slice(0, 160)).filter(Boolean) : [];
+  return { on: m?.on === true, notes: [...new Set(notes)].slice(-12) };
+}
+
 // ---- in memory (tests, and local work with no database) ----------------------------------------
 export function memoryStore() {
-  const users = new Map(), orders = new Map(), txs = new Map(), welcomes = new Set(), reports = new Map();
+  const users = new Map(), orders = new Map(), txs = new Map(), welcomes = new Set(), reports = new Map(), kmem = new Map();
   return {
     kind: "memory",
     async upsertUser(uid, p) {
@@ -91,6 +97,8 @@ export function memoryStore() {
       txs.set(o.uid, [row, ...(txs.get(o.uid) || [])]);
       return { credited: true, uid: o.uid, balancePaise: u.balancePaise };
     },
+    async getKrishnaMemory(uid) { return cleanMemory(kmem.get(uid)); },
+    async setKrishnaMemory(uid, m) { const v = cleanMemory(m); kmem.set(uid, v); return v; },
     async saveReport(uid, rec) {
       const row = reportRow(rec);
       reports.set(uid, [row, ...(reports.get(uid) || [])].slice(0, 100));
@@ -153,6 +161,8 @@ export function firestoreStore(db) {
       await user(uid).update({ name });
       return (await user(uid).get()).data();
     },
+    async getKrishnaMemory(uid) { const s = await db.doc(`krishnaMemory/${uid}`).get(); return cleanMemory(s.exists ? s.data() : null); },
+    async setKrishnaMemory(uid, m) { const v = cleanMemory(m); await db.doc(`krishnaMemory/${uid}`).set(v); return v; },
     async createOrder({ orderId, uid, amountPaise }) {
       await order(orderId).create({ orderId, uid, amountPaise, status: "created", createdAt: nowIso() });
     },

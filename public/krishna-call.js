@@ -127,7 +127,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
         if (!c) return;
         if (c.interrupted) stopPlayback();
         for (const p of c.modelTurn?.parts || []) if (p.inlineData?.data) play(p.inlineData.data);
-        if (c.inputTranscription?.text) caption("me", c.inputTranscription.text, true);
+        if (c.inputTranscription?.text) { caption("me", c.inputTranscription.text, true); s.said = ((s.said || "") + " " + c.inputTranscription.text).slice(-1500); }
         if (c.outputTranscription?.text) caption("ai", c.outputTranscription.text, true);
         if (c.turnComplete && s && !s.sources.size) say("Listening…");
       };
@@ -174,7 +174,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
     try { old.ws?.close(); } catch { /* closed */ }
     try { old.mic?.getTracks().forEach((t) => t.stop()); } catch { /* stopped */ }
     try { old.node?.disconnect(); old.ctx?.close(); old.out?.close(); } catch { /* closed */ }
-    if (old.callId) { wallet()?.headers().then((h) => fetch("/api/krishna/call/end", { method: "POST", headers: { "Content-Type": "application/json", ...h }, body: JSON.stringify({ callId: old.callId, failed: !old.connected }) })).catch(() => {}); }
+    if (old.callId) { wallet()?.headers().then((h) => fetch("/api/krishna/call/end", { method: "POST", headers: { "Content-Type": "application/json", ...h }, body: JSON.stringify({ callId: old.callId, failed: !old.connected, said: old.said || "" }) })).catch(() => {}); }
     startBtn.hidden = false; endBtn.hidden = true; startBtn.textContent = "Call again";
     say(message || "The call has ended. Thank you for talking with Krishna.");
     track("krishna_call_end", { minutes: old.minute });
