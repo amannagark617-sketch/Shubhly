@@ -111,3 +111,36 @@ After 5 days, keep what works:
 Rule of thumb for the maximum you can spend to get one logged-in caller: the average first top-up you earn from a caller, multiplied by the share who top up, minus the cost of their free minute (about ₹2 to ₹4).
 
 **Next improvements** (ask me and I will build them): a dedicated page `/krishna` for ads that opens straight on the call button, and the Meta Pixel so Meta can find the people who log in.
+
+---
+
+## 7. Version 2: stupid simple (shorter, louder, one idea each)
+
+Rule: one sentence, big white text on a dark or saffron background, one cut every 1 to 2 seconds, under 10 seconds. No story, no explaining. End every ad on the same card: **"Krishna se baat karo. Pehla minute free."** + the logo.
+
+### The 6 ads (make all, test all)
+1. **"Krishna ne phone uthaya."** Phone ringing, contact name "Krishna", the call screen, his voice: *"वत्स, बोलो."* Last card: *Dost ne nahi uthaya. Krishna ne uthaya.*
+2. **"Bhagwan ko call lagao."** Cards: *Mandir band hai.* / *Pandit busy hain.* / *Krishna se baat karo.*
+3. **"3 baje raat."** Cards: *3 baje. Sab so gaye.* / *Krishna jaag raha hai.* / *Baat karo.*
+4. **"Teri problem Arjun se badi nahi."** One static image: Krishna and Arjuna, big text. Nothing else.
+5. **"Mera naam yaad rakha."** Screen recording: Krishna says the caller's name. Text: *Krishna ne mera naam poocha.* Real product, best proof.
+6. **"Free minute."** Cards: *Chai: ₹10.* / *Krishna se baat: pehla minute free.*
+
+### 10 first lines (use as the first 2 seconds of any ad)
+- Krishna ne phone uthaya.
+- Maine Krishna ko call kiya.
+- Gita padhne ka time nahi?
+- Mann bechain hai? Krishna ko call lagao.
+- Arjun bhi ghabra gaya tha.
+- Ye Krishna ki asli awaaz nahi hai. Par baat asli hai.
+- Sirf 1 minute. Free.
+- Krishna ne mera naam poocha.
+- Raat ke 3 baje kisse baat karein?
+- Seedhi baat. Seedha Krishna se.
+
+### Make it stupid simple (checklist)
+- Text on screen is 5 words or fewer per card, in big letters, readable on mute.
+- First 1.5 seconds must be the hook line, no logo intro.
+- Use Krishna's real voice from the call. Do not use a stock voice.
+- One button, one promise: "Pehla minute free".
+- Make 6 versions, spend ₹100 a day on each for 3 days, keep the top one.
