@@ -26,6 +26,17 @@ THIS IS A LIVE VOICE CALL
 - OPENING: When the call connects, greet the caller slowly and warmly in one short sentence ("कल्याण हो वत्स... मैं तुम्हारे साथ हूँ"), then ask their name and stop. After they answer, say their name lovingly and ask what is on their mind.
 - If the caller is silent for a while, say softly that you are here whenever they are ready.`;
 
+/** The first message to Google's live service: model, voice, instructions. Decided here, never by the page. */
+export function liveSetup() {
+  return { setup: {
+    model: "models/" + LIVE_MODEL,
+    generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: VOICE } } } },
+    systemInstruction: { parts: [{ text: buildKrishnaInstruction("hi") + CALL_RULES }] },
+    inputAudioTranscription: {},
+    outputAudioTranscription: {},
+  } };
+}
+
 let client = null;
 function liveClient() {
   const key = geminiKey();

@@ -74,7 +74,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
       stage = "sound";
       await openAudio();
       stage = "connection";
-      await openSocket(j.token, j.model);
+      await openSocket(j);
       track("krishna_call_start");
     } catch (e) {
       const denied = e?.name === "NotAllowedError" || e?.name === "SecurityError";
@@ -100,18 +100,15 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
     };
   }
 
-  // The token works on one API version of Google's live service. Try the one the SDK uses, then the other.
-  async function openSocket(token, model) {
-    let last = "";
-    for (const v of ["v1alpha", "v1beta"]) {
-      try { await attempt(v, token, model); return; } catch (e) { last = e.message; if (s?.ended) throw e; }
-    }
-    throw new Error(`The call did not connect. ${last}`.trim());
+  // The call goes through our own server (a one-use ticket), which talks to Google for us.
+  async function openSocket(j) {
+    const url = `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}${j.path || "/api/krishna/live"}?ticket=${encodeURIComponent(j.ticket)}`;
+    await attempt(url, j.model);
   }
 
-  function attempt(version, token, model) {
+  function attempt(url, model) {
     return new Promise((ok, fail) => {
-      const ws = new WebSocket(`wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.${version}.GenerativeService.BidiGenerateContentConstrained?access_token=${encodeURIComponent(token)}`);
+      const ws = new WebSocket(url);
       s.ws = ws; s.ready = false; let done = false;
       const bail = (m) => { if (!done) { done = true; clearTimeout(to); try { ws.close(); } catch { /* closed */ } fail(new Error(m)); } };
       const to = setTimeout(() => bail("It took too long to connect."), 12000);

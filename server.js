@@ -31,7 +31,8 @@ import { chapterArt, gitaCover } from "./src/gita-art.js";
 import { renderGitaIndex, renderChapter, chapterOf, GITA_PATHS, krishnaReply } from "./src/gita.js";
 import { buildMyDay } from "./src/myday.js";
 import { renderPujaIndex, renderPuja, pujaOf, PUJA_PATHS, PUJA_HI_PATHS } from "./src/puja.js";
-import { makeCallToken, callBook, MAX_MINUTES } from "./src/call.js";
+import { LIVE_MODEL, callBook, MAX_MINUTES } from "./src/call.js";
+import { attachCallRelay, ticketBook, RELAY_PATH } from "./src/call-relay.js";
 import { lockedFindings, teaseKundli, teaseMatch } from "./src/teaser.js";
 import { signReply, verifyReply, speakKrishna, FREE_LISTENS } from "./src/voice.js";
 import { accountsFromEnv } from "./src/accounts.js";
@@ -603,6 +604,7 @@ app.post("/api/krishna/speak", chatLimit, async (req, res, next) => {
 
 // Krishna on a call. The first minute of each day is free; every minute after is taken from the wallet as it begins.
 const calls = callBook();
+const callTickets = ticketBook();
 app.post("/api/krishna/call/start", chatLimit, async (req, res, next) => {
   try {
     if (!walletOn || !paidVoice()) return res.status(503).json({ error: "Calling Krishna is not switched on yet." });
@@ -616,13 +618,8 @@ app.post("/api/krishna/call/start", chatLimit, async (req, res, next) => {
       paid = await accounts.charge(req, res, { kind: "call", amountPaise: PRICES.call, label: "Krishna call, minute 1" });
       if (!paid) return;
     }
-    let made;
-    try { made = await makeCallToken({ language }); } catch (e) {
-      if (free) calls.giveBackFree(uid); else await paid.refund();
-      throw e;
-    }
     const callId = calls.open(uid, async () => { if (free) calls.giveBackFree(uid); else await paid.refund(); });
-    res.json({ ...made, callId, free, maxMinutes: MAX_MINUTES, pricePaise: PRICES.call, balancePaise: paid ? paid.balancePaise : null });
+    res.json({ ticket: callTickets.issue(callId), path: RELAY_PATH, model: LIVE_MODEL, callId, free, maxMinutes: MAX_MINUTES, pricePaise: PRICES.call, balancePaise: paid ? paid.balancePaise : null });
   } catch (e) {
     const m = aiProblem(e);
     if (m) return res.status(m[0]).json({ error: m[1] });
@@ -810,6 +807,7 @@ app.use((err, _req, res, _next) => {
 });
 
 const port = Number(process.env.PORT) || 3000;
-app.listen(port, "0.0.0.0", () => {
+const httpServer = app.listen(port, "0.0.0.0", () => {
   console.log(`Kundli Kaka is running on http://0.0.0.0:${port}`);
 });
+attachCallRelay(httpServer, callTickets);
