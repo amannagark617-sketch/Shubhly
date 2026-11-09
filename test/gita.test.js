@@ -42,7 +42,8 @@ test("pages show the verses and escape text", () => {
 
 test("Krishna stays on the Gita, calm, honest and safe", () => {
   const t = buildKrishnaInstruction("en");
-  assert.match(t, /only the Bhagavad Gita/i);
+  assert.match(t, /Bhagavata Purana/);
+  assert.match(t, /Never invent a verse/);
   assert.match(t, /AI voice inspired by the Gita/);
   assert.match(t, /Never predict the future/);
   assert.match(t, /14416/);
