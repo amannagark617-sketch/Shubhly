@@ -618,7 +618,7 @@ html.chat-open, html.chat-open body { overflow: hidden; }
 .chat-wall h4 { margin: 0 0 6px; font-size: 1.15rem; }
 .chat-note { display: none; }
 @media (prefers-reduced-motion: reduce) { .chat-panel { animation: none; } .dots i { animation: none; opacity: 0.6; } }
-.tabbar { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.tabbar { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .tabbar a { min-width: 0; text-align: center; font-size: 0.74rem; }
 .tabbar a span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .chat-form textarea { min-height: 48px; line-height: 1.5; }
