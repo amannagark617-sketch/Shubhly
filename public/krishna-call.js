@@ -16,7 +16,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
   let s = null; // the call in progress
   // Soft bansuri in the background, if the file public/audio/krishna-bansuri.mp3 exists. It gets quieter while Krishna speaks.
   let music = null;
-  const MUSIC_LOW = 0.035, MUSIC_HIGH = 0.1;
+  const MUSIC_LOW = 0.03, MUSIC_HIGH = 0.08;
   const startMusic = () => {
     try {
       const m = new Audio("/audio/krishna-bansuri.mp3"); m.loop = true; m.volume = MUSIC_HIGH; music = m;
