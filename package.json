@@ -6,7 +6,7 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "build": "node --test test/*.test.js",
+    "build": "node --check server.js",
     "start": "node server.js",
     "dev": "node --env-file-if-exists=.env server.js",
     "test": "node --test test/*.test.js",
