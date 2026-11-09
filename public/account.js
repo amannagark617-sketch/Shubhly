@@ -117,14 +117,14 @@ export function initAccount({ toast, config }) {
   // ---- the panel ----
   const back = document.createElement("div");
   back.className = "acc-back"; back.hidden = true;
-  back.innerHTML = `<div class="acc-modal" role="dialog" aria-modal="true" aria-labelledby="accTitle"><button type="button" class="acc-x" aria-label="Close">×</button><div class="acc-body" id="accBody"></div></div>`;
+  back.innerHTML = `<div class="acc-modal" role="dialog" aria-modal="true" aria-labelledby="accTitle"><div class="acc-bar"><button type="button" class="acc-x" aria-label="Close"><span class="acc-xt">Close</span><span aria-hidden="true">×</span></button></div><div class="acc-body" id="accBody"></div></div>`;
   document.body.appendChild(back);
   const body = back.querySelector("#accBody");
   const modal = back.querySelector(".acc-modal");
 
   const open = async () => {
     back.hidden = false; document.body.classList.add("acc-open");
-    back.querySelector(".acc-x").setAttribute("aria-label", tr("close"));
+    back.querySelector(".acc-x").setAttribute("aria-label", tr("close")); back.querySelector(".acc-xt").textContent = tr("close");
     state.error = "";
     if (!state.fb) { body.innerHTML = `<p class="acc-wait"><span class="spinner"></span></p>`; try { await ensureFirebase(); } catch { state.error = tr("e_net"); } }
     route();
@@ -291,7 +291,7 @@ export function initAccount({ toast, config }) {
   };
   const priceList = () => {
     const p = cfg.prices; if (!p) return "";
-    return `<h3>${tr("prices_h")}</h3><ul class="acc-prices"><li><span>${tr("p_chat")}</span><b>${inr(p.chat)}</b></li><li><span>${tr("p_krishna")}</span><b>${inr(p.krishna)}</b></li>${p.call ? `<li><span>${tr("p_call")}</span><b>${inr(p.call)}</b></li>` : ""}<li><span>${tr("p_report")}</span><b>${inr(p.report)}</b></li>${p.milan ? `<li><span>${tr("p_milan")}</span><b>${inr(p.milan)}</b></li>` : ""}</ul>`;
+    return `<ul class="acc-prices"><li><span>${tr("p_chat")}</span><b>${inr(p.chat)}</b></li><li><span>${tr("p_krishna")}</span><b>${inr(p.krishna)}</b></li>${p.call ? `<li><span>${tr("p_call")}</span><b>${inr(p.call)}</b></li>` : ""}<li><span>${tr("p_report")}</span><b>${inr(p.report)}</b></li>${p.milan ? `<li><span>${tr("p_milan")}</span><b>${inr(p.milan)}</b></li>` : ""}</ul>`;
   };
   const bonusFor = (rupees) => (cfg.bonus || []).filter((b) => rupees >= b.topup).pop()?.bonus || 0;
 
@@ -309,9 +309,13 @@ export function initAccount({ toast, config }) {
       <p class="acc-note">${tr("pay_note")}${t.live ? "" : " " + tr("test_note")}</p>` : `<p class="acc-muted">${tr("soon")}</p>`;
     mount(`<h2 id="accTitle">${tr("hello", { n: esc(state.user.name || "") })}</h2>
       <div class="acc-balance"><span>${tr("bal")}</span><strong>${esc(inr(bal()))}</strong></div>${state.notice ? `<p class="acc-notice">${esc(state.notice)}</p>` : ""}${err()}${add}
-      ${priceList()}
-      <h3>${tr("hist")}</h3>${rows}
-      <div class="acc-links"><a class="acc-link" href="/my-reports">${tr("my_reports")}</a><button type="button" class="acc-link" id="accEdit">${tr("edit_name")}</button><button type="button" class="acc-link" id="accOut">${tr("logout")}</button></div>`);
+      <div class="acc-rows">
+        <a class="acc-row" href="/my-reports"><span>${tr("my_reports")}</span><i aria-hidden="true">›</i></a>
+        ${priceList() ? `<details class="acc-det"><summary>${tr("prices_h")}</summary>${priceList()}</details>` : ""}
+        <details class="acc-det"><summary>${tr("hist")}</summary>${rows}</details>
+        <button type="button" class="acc-row" id="accEdit"><span>${tr("edit_name")}</span><i aria-hidden="true">›</i></button>
+        <button type="button" class="acc-row acc-out" id="accOut"><span>${tr("logout")}</span></button>
+      </div>`);
     body.querySelector("#accEdit").onclick = viewName;
     body.querySelector("#accOut").onclick = async () => { await state.fb.A.signOut(state.fb.auth); state.view = "login"; state.confirmation = null; close(); };
     if (state.history == null) loadHistory().then(() => { if (!back.hidden && state.view === "wallet" && state.user) viewWallet(); });
