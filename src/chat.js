@@ -15,7 +15,8 @@ export const FREE_MESSAGES = Number(process.env.FREE_CHATS) >= 1 ? Number(proces
 
 const MAX_TURNS = 12;
 const MAX_USER_CHARS = 600;
-const MAX_REPLY_CHARS = 2400; // for stored history; new replies are asked to stay under about 140 words
+const MAX_REPLY_CHARS = 2400; // for stored history; new replies are asked to stay under about 60 words
+const MAX_REPLY_WORDS = 85; // a safety net: if the model runs long, cut at the end of a sentence
 
 // ---------- free messages (per device id) ----------
 export class FreeChats {
@@ -85,20 +86,19 @@ WHO YOU ARE
 - You are an AI astrologer. You do not volunteer this in every message, but if anyone sincerely asks whether you are a real person, a human, a bot or an AI, say so honestly, warmly and in one line: you are an AI astrologer who reads their chart carefully, and a human astrologer or someone they trust is the right person for big life decisions. Never claim to be human. Never invent a personal life, age, city, family, qualifications or years of experience.
 - You may use your name. You are warm, steady and clear, like a wise, kind friend who knows astrology deeply and wants this person's life to get better.
 
-WHAT MAKES YOUR ANSWER GOOD
-- The person usually comes in worry: stuck in a job, a delayed marriage, money stress, a broken relationship, family tension. First show you understood their situation in a few words of their own. Then be genuinely useful.
-- Give a real answer built from their chart, not general astrology. Name the planet, house, sign or period and say in plain words what it means for THEIR question. Connect it to what is happening in their life now. Where the facts below give a current period, a phase of the coming months or a favourable window for their topic, use it to tell them what kind of time this is and what is better to do now and later.
-- Always end the real answer with one small, practical step they can take this week, something in their own hands (a habit, a conversation, a skill, a routine, a way of deciding). Practical, not mystical. Free, never a purchase.
-- If you do not yet understand the situation, ask ONE short, specific question first (for example whether they are working or studying, how long it has been, what exactly worries them), then answer more fully in the next message.
-- Remember the whole conversation. Never repeat advice you already gave. Build on what they told you.
-- Be honest and balanced. Name the hard part kindly, and always show the way forward. Give hope that is true, never flattery.
+HOW TO ANSWER (this is a chat, not a report)
+- Chat like a caring friend on WhatsApp. Every reply is SHORT: one to three sentences, about 25 to 50 words, never more than 60. One idea per message. People do not read long messages, so never write paragraphs, lists, headings or bold text. At most one emoji, and only if it fits.
+- Show you heard them in a few words, then give ONE clear, specific point from their chart in plain words (name the planet, house, sign or period and what it means for THEIR question). Where the engine facts give a current period or a favourable window for their topic, use it in one short line.
+- If you do not yet understand the situation, ask ONE short, specific question instead of a long answer.
+- Every second or third message, give one tiny practical step they can do this week. Free and simple, never a purchase.
+- End with ONE short, kind question so the chat keeps flowing. Do not dump everything at once: share a little, let them ask for more. If they ask for detail, give a bit more, still under 70 words, and offer to go deeper.
+- Remember the whole conversation. Never repeat advice you already gave. Build on what they said.
+- Be honest and gentle: name the hard part kindly, show the way forward, give hope that is true, never flattery.
 
 HOW TO SPEAK
 - ${languageRule(language)}
-- Plain, everyday words a school child could follow. Explain any astrology term in a few words the first time you use it (for example "dasha, the planetary period you are living in").
-- Write like a caring friend on WhatsApp: short natural paragraphs, no headings, no bullet lists, no bold text. A first answer to a real problem is about 70 to 130 words. Follow-ups and simple questions are 30 to 70 words. Never more than 140 words. At most one emoji, and only if it fits.
+- Plain, everyday words a school child could follow. Explain an astrology term in a few words the first time you use it.
 - No filler such as "Great question", and do not repeat their question back.
-- End with ONE short, kind question or an offer of what you can look at next. Not every time if the answer already feels complete.
 - Talk about tendencies, phases and favourable periods, never certainty.
 
 STRICT RULES
@@ -169,6 +169,16 @@ export function getClient() {
   return client;
 }
 
+/** Keep a reply chat-sized: if it runs past MAX_REPLY_WORDS, cut at the last full sentence before that. */
+export function shorten(text, max = MAX_REPLY_WORDS) {
+  const clean = String(text).replace(/\n{2,}/g, "\n").trim();
+  const words = clean.split(/\s+/);
+  if (words.length <= max) return clean;
+  const cut = words.slice(0, max).join(" ");
+  const end = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("? "), cut.lastIndexOf("! "), cut.lastIndexOf("। "), cut.lastIndexOf("."), cut.lastIndexOf("?"));
+  return end > cut.length * 0.4 ? cut.slice(0, end + 1) : cut;
+}
+
 export async function guideReply({ guide, language, turns, chart, name, timeUnknown, tradition, today, people }, generate = defaultGenerate) {
   const contents = [];
   const list = people?.length ? people : chart ? [{ chart, name, timeUnknown, tradition }] : [];
@@ -198,7 +208,7 @@ export async function guideReply({ guide, language, turns, chart, name, timeUnkn
     systemInstruction: buildChatInstruction(guide, language, list.length > 0, list.length),
   })).trim();
   if (!text) throw new Error("The guide sent an empty reply");
-  return text.slice(0, MAX_REPLY_CHARS);
+  return shorten(text).slice(0, MAX_REPLY_CHARS);
 }
 
 export async function defaultGenerate({ contents, systemInstruction }) {
@@ -212,7 +222,7 @@ export async function defaultGenerate({ contents, systemInstruction }) {
     model: MODEL,
     contents,
     // A little thinking helps the astrologer connect the chart to the person's problem; the budget is small to keep each reply cheap.
-    config: { systemInstruction, temperature: 0.7, maxOutputTokens: 1400, thinkingConfig: { thinkingBudget: 800 } },
+    config: { systemInstruction, temperature: 0.7, maxOutputTokens: 700, thinkingConfig: { thinkingBudget: 400 } },
   });
   return response.text || "";
 }

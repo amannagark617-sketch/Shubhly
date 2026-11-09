@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { FreeChats, parseMessages, parseClientId, parseGuide, drawCards, guideReply, buildChatInstruction } from "../src/chat.js";
+import { shorten, FreeChats, parseMessages, parseClientId, parseGuide, drawCards, guideReply, buildChatInstruction } from "../src/chat.js";
 import { GUIDES, isResting, backAt, avatarSvg, istHour } from "../public/guides.js";
 import { InputError } from "../src/validate.js";
 import { computeKundli } from "../src/kundli.js";
@@ -115,5 +115,13 @@ test("two people are read together, with their matching points", async () => {
   assert.match(first, /"together"/);
   assert.match(first, /guna_points/);
   assert.match(seen.systemInstruction, /holds 2 people/);
-  assert.match(seen.systemInstruction, /about 70 to 130 words/);
+  assert.match(seen.systemInstruction, /one to three sentences/);
+});
+
+test("a reply that runs long is cut at the end of a sentence", () => {
+  const long = Array.from({ length: 30 }, (_, i) => `Sentence number ${i} is here with a few words.`).join(" ");
+  const out = shorten(long, 40);
+  assert.ok(out.split(/\s+/).length <= 40);
+  assert.match(out, /\.$/);
+  assert.equal(shorten("Short and kind."), "Short and kind.");
 });
