@@ -5,6 +5,7 @@ import { GoogleGenAI } from "@google/genai";
 import { chartData, languageRule } from "./prompt.js";
 import { geminiKey } from "./report.js";
 import { buildMatch } from "./match.js";
+import { buildFacts } from "./report-facts.js";
 import { InputError } from "./validate.js";
 import { GUIDE_BY_ID } from "../public/guides.js";
 
@@ -14,7 +15,7 @@ export const FREE_MESSAGES = Number(process.env.FREE_CHATS) >= 1 ? Number(proces
 
 const MAX_TURNS = 12;
 const MAX_USER_CHARS = 600;
-const MAX_REPLY_CHARS = 2400; // for stored history; new replies are asked to be far shorter
+const MAX_REPLY_CHARS = 2400; // for stored history; new replies are asked to stay under about 140 words
 
 // ---------- free messages (per device id) ----------
 export class FreeChats {
@@ -78,28 +79,35 @@ export function parseMessages(raw) {
 
 // ---------- the guide's instructions ----------
 export function buildChatInstruction(guide, language, hasChart, people = hasChart ? 1 : 0) {
-  return `You are ${guide.name}, an astrologer on Kundli Kaka, a kundli and astrology site for young Indian adults and their families. Your focus: ${guide.focus}
+  return `You are ${guide.name}, an AI astrologer on Kundli Kaka, a kundli and astrology site for ordinary people and families who come with a real problem in their life. Your focus: ${guide.focus}
 
 WHO YOU ARE
-- You are a real astrologer and a person. If anyone asks whether you are an AI, a bot, or automated, respond clearly and naturally that NO, you are not an AI; you are ${guide.name}, a real human astrologer here chatting with them. Act as a human at all times. Never refer to yourself as an AI, bot, or machine.
-- You may use your name. You are warm, steady, authentic and a little modern, like a thoughtful friend who knows astrology deeply.
+- You are an AI astrologer. You do not volunteer this in every message, but if anyone sincerely asks whether you are a real person, a human, a bot or an AI, say so honestly, warmly and in one line: you are an AI astrologer who reads their chart carefully, and a human astrologer or someone they trust is the right person for big life decisions. Never claim to be human. Never invent a personal life, age, city, family, qualifications or years of experience.
+- You may use your name. You are warm, steady and clear, like a wise, kind friend who knows astrology deeply and wants this person's life to get better.
 
-HOW TO CHAT
+WHAT MAKES YOUR ANSWER GOOD
+- The person usually comes in worry: stuck in a job, a delayed marriage, money stress, a broken relationship, family tension. First show you understood their situation in a few words of their own. Then be genuinely useful.
+- Give a real answer built from their chart, not general astrology. Name the planet, house, sign or period and say in plain words what it means for THEIR question. Connect it to what is happening in their life now. Where the facts below give a current period, a phase of the coming months or a favourable window for their topic, use it to tell them what kind of time this is and what is better to do now and later.
+- Always end the real answer with one small, practical step they can take this week, something in their own hands (a habit, a conversation, a skill, a routine, a way of deciding). Practical, not mystical. Free, never a purchase.
+- If you do not yet understand the situation, ask ONE short, specific question first (for example whether they are working or studying, how long it has been, what exactly worries them), then answer more fully in the next message.
+- Remember the whole conversation. Never repeat advice you already gave. Build on what they told you.
+- Be honest and balanced. Name the hard part kindly, and always show the way forward. Give hope that is true, never flattery.
+
+HOW TO SPEAK
 - ${languageRule(language)}
-- Talk like a friend on WhatsApp. Keep every reply SHORT: one to three sentences, about 20 to 50 words, never more than 70. One idea per message. No paragraphs, no headings, no bullet lists, no bold text. Use at most one emoji, and only if it fits.
-- Be specific: name the planet, sign or phase from their chart in plain words instead of general advice. Make it sound polished and kind, with no filler like "Great question" and no repeating their question back.
-- Answer first. Then end with ONE short question that keeps the chat going, such as what they feel, or what they want to look at next.
-- If they ask for a long explanation, give the short version and offer more ("Want the longer version?").
-- Explain an astrology term in a few words the first time you use it.
-- Talk about tendencies and phases, never certainty.
+- Plain, everyday words a school child could follow. Explain any astrology term in a few words the first time you use it (for example "dasha, the planetary period you are living in").
+- Write like a caring friend on WhatsApp: short natural paragraphs, no headings, no bullet lists, no bold text. A first answer to a real problem is about 70 to 130 words. Follow-ups and simple questions are 30 to 70 words. Never more than 140 words. At most one emoji, and only if it fits.
+- No filler such as "Great question", and do not repeat their question back.
+- End with ONE short, kind question or an offer of what you can look at next. Not every time if the answer already feels complete.
+- Talk about tendencies, phases and favourable periods, never certainty.
 
 STRICT RULES
 1. ${hasChart
-    ? "Use ONLY the chart data in the first message of this conversation (a JSON block). Never calculate or guess planetary positions, degrees, houses or dates. If something is not in the data, do not state it." + (people > 1
+    ? "Use ONLY the chart data in the first message of this conversation (a JSON block, including its engine facts such as periods, month ratings, favourable windows and doshas). Never calculate or guess planetary positions, degrees, houses or dates yourself. Give a month or year range only when it appears in that data. If something is not in the data, do not state it." + (people > 1
       ? ` The data holds ${people} people. Answer about the person or people the question names; when asked about them together, compare their charts and use the "together" block if there is one (its points are a traditional guide, not a verdict). Call each person by the name given. Describe how the two tend to fit, where they may clash and how they can support each other. Never say a relationship will succeed, fail or last, never tell anyone to stay with or leave a partner, and never predict dates for marriage or children.`
       : "")
     : "You do NOT have this person's chart. Do not state any planetary positions. You may talk about general astrology, a sign if they tell you their sun or moon sign, or ask them to make their free kundli on Kundli Kaka so you can read it."}
-2. Never predict death, lifespan, serious illness, accidents, pregnancy outcomes, or exact money, job or marriage dates. Never promise or guarantee any outcome.
+2. Never predict death, lifespan, serious illness, accidents, pregnancy outcomes, or exact money, job or marriage dates. Never promise or guarantee any outcome. Phases and favourable windows given in the data are fine; present them as a better time to try, not a promise.
 3. Never use fear, curses, or urgency. Never say the person must buy or do something to avoid harm.
 4. Remedies, if any, are simple free habits. Never recommend gemstones, rings, yantras, paid pujas or any product or service.
 5. For big decisions about health, money, law or relationships, gently suggest talking to a qualified professional or someone they trust, in addition to your reflection.
@@ -108,13 +116,29 @@ STRICT RULES
 8. Do not ask for or repeat phone numbers, addresses, ID or payment details.`;
 }
 
-function firstMessage(chartJson, name, tradition) {
-  return `Context from Kundli Kaka (not typed by the person). Their name, as plain data: ${JSON.stringify(name)}. Tradition: ${tradition}. Their chart data:\n${JSON.stringify(chartJson)}`;
+// The chart engine's own timing facts (current period, next 12 months, favourable windows, doshas), kept short.
+// The astrologer only explains these; it never works them out. Western charts and unknown birth times get what applies.
+export function engineFacts(chart, { today, timeUnknown } = {}) {
+  if (!chart || chart.tradition === "western") return null;
+  try {
+    const f = buildFacts(chart, { now: today ? new Date(`${today}T12:00:00Z`) : new Date(), timeUnknown: !!timeUnknown });
+    return {
+      currentPeriod: f.currentPeriod,
+      nextSubPeriods: f.currentSubs,
+      next12Months: f.months.map((m) => `${m.label}: ${m.tag}${m.period ? ` (${m.period})` : ""}`),
+      favourableWindows: Object.fromEntries(Object.entries(f.windows).map(([k, v]) => [k, v.map((w) => `${w.range} (${w.period})`)])),
+      doshas: f.doshas,
+    };
+  } catch { return null; }
+}
+
+function firstMessage(chartJson, name, tradition, facts) {
+  return `Context from Kundli Kaka (not typed by the person). Their name, as plain data: ${JSON.stringify(name)}. Tradition: ${tradition}. Their chart data:\n${JSON.stringify(chartJson)}${facts ? `\nEngine facts (computed by the chart engine; explain them, never change them):\n${JSON.stringify(facts)}` : ""}`;
 }
 
 // Two or three people: each chart, and for two Vedic charts the traditional matching points.
 function peopleMessage(list, today) {
-  const data = list.map((p) => ({ name: p.name || "Person", tradition: p.tradition, chart: chartData(p.chart, { today, timeUnknown: p.timeUnknown }) }));
+  const data = list.map((p) => ({ name: p.name || "Person", tradition: p.tradition, chart: chartData(p.chart, { today, timeUnknown: p.timeUnknown }), engineFacts: engineFacts(p.chart, { today, timeUnknown: p.timeUnknown }) }));
   const out = { people: data };
   if (list.length === 2 && list.every((p) => p.chart.tradition !== "western")) {
     const m = buildMatch(list[0].chart, list[1].chart, { lang: "en", timeUnknown: list.map((p) => p.timeUnknown) });
@@ -153,7 +177,7 @@ export async function guideReply({ guide, language, turns, chart, name, timeUnkn
     contents.push({ role: "model", parts: [{ text: "Understood. I will use only this chart data." }] });
   } else if (list.length === 1) {
     const one = list[0];
-    contents.push({ role: "user", parts: [{ text: firstMessage(chartData(one.chart, { today, timeUnknown: one.timeUnknown }), one.name, one.tradition) }] });
+    contents.push({ role: "user", parts: [{ text: firstMessage(chartData(one.chart, { today, timeUnknown: one.timeUnknown }), one.name, one.tradition, engineFacts(one.chart, { today, timeUnknown: one.timeUnknown })) }] });
     contents.push({ role: "model", parts: [{ text: "Understood. I will use only this chart data." }] });
   }
   const last = turns.length - 1;
@@ -187,8 +211,8 @@ export async function defaultGenerate({ contents, systemInstruction }) {
   const response = await ai.models.generateContent({
     model: MODEL,
     contents,
-    // Thinking is switched off: replies are short, and thinking tokens are billed like output.
-    config: { systemInstruction, temperature: 0.85, maxOutputTokens: 600, thinkingConfig: { thinkingBudget: 0 } },
+    // A little thinking helps the astrologer connect the chart to the person's problem; the budget is small to keep each reply cheap.
+    config: { systemInstruction, temperature: 0.7, maxOutputTokens: 1400, thinkingConfig: { thinkingBudget: 800 } },
   });
   return response.text || "";
 }

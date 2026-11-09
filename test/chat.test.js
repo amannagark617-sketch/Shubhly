@@ -67,7 +67,9 @@ test("rest windows follow India time, including overnight ones", () => {
 test("the instructions keep the safety rules", () => {
   for (const g of GUIDES) {
     const s = buildChatInstruction(g, "en", true);
-    assert.match(s, /real astrologer/);
+    assert.match(s, /AI astrologer/);
+    assert.match(s, /Never claim to be human/);
+    assert.doesNotMatch(s, /NO, you are not an AI/);
     assert.match(s, /Never predict death/);
     assert.match(s, /14416/);
     assert.match(s, /gemstones/);
@@ -113,5 +115,5 @@ test("two people are read together, with their matching points", async () => {
   assert.match(first, /"together"/);
   assert.match(first, /guna_points/);
   assert.match(seen.systemInstruction, /holds 2 people/);
-  assert.match(seen.systemInstruction, /one to three sentences/);
+  assert.match(seen.systemInstruction, /about 70 to 130 words/);
 });
