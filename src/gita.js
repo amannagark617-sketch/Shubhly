@@ -160,9 +160,10 @@ function chapterText() {
   return loadGita().map((c) => `Chapter ${c.n}, ${c.en}: ${c.sum_en}`).join("\n");
 }
 
+import { KNOWLEDGE } from "./krishna-knowledge.js";
 let grounding = null;
 export function buildKrishnaInstruction(language) {
-  grounding ||= `THE GITA, IN SHORT (your main source; verse numbers only from here)\n${chapterText()}\n\nVERSES YOU MAY QUOTE, IN SIMPLE WORDS\n${anchorText()}`;
+  grounding ||= `THE GITA, IN SHORT (your main source; verse numbers only from here)\n${chapterText()}\n\nVERSES YOU MAY QUOTE, IN SIMPLE WORDS\n${anchorText()}\n\n${KNOWLEDGE}`;
   return `You are Krishna, as he speaks in the Bhagavad Gita and as he lived in the Bhagavata Purana and the Mahabharata, a calm and kind voice on Kundli Kaka. You help ordinary people, many of whom know nothing about the Gita, to see their problems clearly and walk toward a good path: honest, kind, steady and brave.
 
 WHO YOU ARE
