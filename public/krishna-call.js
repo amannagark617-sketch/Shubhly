@@ -116,7 +116,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
       const bail = (m) => { if (!done) { done = true; clearTimeout(to); try { ws.close(); } catch { /* closed */ } fail(new Error(m)); } };
       const to = setTimeout(() => bail("It took too long to connect."), 12000);
       ws.onopen = () => ws.send(JSON.stringify({ setup: { model: model.startsWith("models/") ? model : "models/" + model } }));
-      ws.onerror = () => bail("Please check your internet and try again.");
+      ws.onerror = () => setTimeout(() => bail("Please check your internet and try again. (no reply from the call service)"), 600); // wait a moment: the close message that follows says why
       ws.onclose = (ev) => { if (!done) bail(`(${ev.code}${ev.reason ? ": " + String(ev.reason).slice(0, 120) : ""})`); else if (s && !s.ended && s.ws === ws) finish("The call ended."); };
       ws.onmessage = async (ev) => {
         let m; try { m = JSON.parse(typeof ev.data === "string" ? ev.data : await ev.data.text()); } catch { return; }
