@@ -582,7 +582,7 @@ function renderLifeReading(data, payload, western) {
   }
   html += `<div class="read-cols">
     <section class="read-good"><h3>${esc(t("rd_shine"))}</h3><ul>${li(r.strengths)}</ul></section>
-    <section class="read-grow"><h3>${esc(t("rd_grow"))}</h3><ul>${li([r.growth])}</ul></section></div>`;
+    ${r.growth ? `<section class="read-grow"><h3>${esc(t("rd_grow"))}</h3><ul>${li([r.growth])}</ul></section>` : ""}</div>`;
 
   if (!western) {
     if (r.periods.length || r.jupiter) html += `<h3 class="read-sub">${esc(t("rd_ahead"))}</h3>`;
@@ -634,7 +634,7 @@ function renderAnswer(data, western, timeUnknown) {
   const main = text(P.pick[0]);
   const sub = a.sub;
   if (!main) { show(box, false); return; }
-  const dos = sub ? `<p><b>${esc(t("rd_bring"))}:</b> ${esc(sub.bring)}</p><p><b>${esc(t("rd_watch"))}:</b> ${esc(sub.watch)}</p>` : "";
+  const dos = sub && sub.bring ? `<p><b>${esc(t("rd_bring"))}:</b> ${esc(sub.bring)}</p><p><b>${esc(t("rd_watch"))}:</b> ${esc(sub.watch)}</p>` : "";
   box.innerHTML = `<h3>${esc(t("ans_h", { p: t(P.key) }))}</h3>
     <p class="answer-main">${esc(main)}</p>
     ${sub && !timeUnknown ? `<h4>${esc(t("ans_phase"))}</h4><p>${esc(sub.text)}</p>${dos}` : ""}
@@ -675,10 +675,10 @@ async function loadPreview(payload, western) {
   show(box, false);
   if (western) return;
   try {
-    const res = await fetch("/api/report/preview", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(payload) });
+    const res = await fetch("/api/report/preview", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...payload, lang: getLang() }) });
     const d = await res.json();
     if (!res.ok || !d.months?.length) return;
-    box.innerHTML = `<h4>${esc(t("pv_h"))}</h4>` + d.months.map((m) => `<div class="rr rr--${m.tag}"><div class="rr-h"><b>${esc(m.label)}</b><span class="pv-tag">${esc(t("pv_" + m.tag))}</span><span class="rr-bar" style="--w:${m.score * 20}%" aria-hidden="true"></span></div></div>`).join("") + `<p class="pv-more">${esc(t("pv_more"))}</p><button type="button" class="btn btn-outline" id="pvShare">${esc(t("pv_share"))}</button>`;
+    box.innerHTML = `<h4>${esc(t("pv_h"))}</h4>` + d.months.map((m) => `<div class="rr rr--${m.tag}"><div class="rr-h"><b>${esc(m.label)}</b><span class="pv-tag">${esc(t("pv_" + m.tag))}</span><span class="rr-bar" style="--w:${m.score * 20}%" aria-hidden="true"></span></div></div>`).join("") + (d.locked?.length ? `<ul class="pv-locks">${d.locked.map((x) => `<li><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><div><b>${esc(x.title)}</b><span>${esc(x.text)}</span></div></li>`).join("")}</ul>` : "") + `<p class="pv-more">${esc(t("pv_more"))}</p><button type="button" class="btn btn-outline" id="pvShare">${esc(t("pv_share"))}</button>`;
     $("pvShare").onclick = () => sharePreview(d.months);
     show(box, true);
   } catch { /* the preview is a bonus; the page works without it */ }
@@ -697,25 +697,13 @@ function renderAbout(data, western) {
     const row = (k) => b[k] ? `<li><b>${esc(b.labels[k].split("{text}")[0].replace("{sign}", SIGN(b[k].signIndex)).trim())}</b> ${esc(b[k].text)}</li>` : "";
     html += `<section class="about-block"><h3>${esc(t("ab_big3"))}</h3><ul class="big3">${row("sun")}${row("moon")}${row("rising")}</ul></section>`;
   }
-  html += `<div class="read-one">`;
-  if (a.rising) {
-    html += `<section class="read-grow"><h3>${esc(t("ab_rising", { sign: SIGN(a.rising.signIndex) }))}: ${esc(t("rd_grow"))}</h3><ul>${li(a.rising.grow)}</ul></section>`;
-  }
-  html += `</div>`;
   html += `<section class="about-block"><h3>${esc(t("ab_star", { star: nak(moon.nakshatra, moon.nakshatraHi || moon.nakshatra) }))}</h3><p>${esc(a.star.text)}</p></section>`;
-  if (a.sub) html += `<section class="about-block"><h3>${esc(t("ab_sub"))}</h3><p>${esc(a.sub.text)}</p><p><b>${esc(t("rd_bring"))}:</b> ${esc(a.sub.bring)}</p><p><b>${esc(t("rd_watch"))}:</b> ${esc(a.sub.watch)}</p></section>`;
+  if (a.sub) html += `<section class="about-block"><h3>${esc(t("ab_sub"))}</h3><p>${esc(a.sub.text)}</p>${a.sub.bring ? `<p><b>${esc(t("rd_bring"))}:</b> ${esc(a.sub.bring)}</p><p><b>${esc(t("rd_watch"))}:</b> ${esc(a.sub.watch)}</p>` : ""}</section>`;
   if (a.focus) html += `<section class="about-block"><h3>${esc(t("ab_focus"))}</h3><p>${esc(a.focus.text)}</p></section>`;
   if (a.money) html += `<section class="about-block"><h3>${esc(t("ab_money"))}</h3><p>${esc(a.money.text)}</p></section>`;
   if (a.love) html += `<section class="about-block"><h3>${esc(t("ab_love"))}</h3><p>${esc(a.love.text)}</p></section>`;
   if (a.career) html += `<section class="about-block"><h3>${esc(t("ab_career"))}</h3><p>${esc(a.career.text)}</p></section>`;
-  const good = a.strong.map((x) => x.text);
-  const care = [...a.tested.map((x) => x.text), ...(a.mars ? [a.mars.text] : []), ...(a.retro ? [a.retro.text.replace("{planets}", a.retro.planets.map((k) => planet(k)).join(", "))] : [])];
-  if (good.length || care.length) {
-    html += `<h3 class="read-sub">${esc(t("ab_chart"))}</h3><div class="read-cols">`;
-    if (good.length) html += `<section class="read-good"><h3>${esc(t("rd_shine"))}</h3><ul>${good.map(li).join("")}</ul></section>`;
-    if (care.length) html += `<section class="read-grow"><h3>${esc(t("rd_grow"))}</h3><ul>${care.map(li).join("")}</ul></section>`;
-    html += `</div>`;
-  }
+  if (a.caution) html += `<section class="about-block about-lock"><h3>${esc(a.caution.title)}</h3><p>${esc(a.caution.text)}</p></section>`;
   box.innerHTML = html;
   show(box, true);
 }
@@ -835,7 +823,7 @@ async function fetchKundli(payload) {
   return api("/api/kundli", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ ...payload, lang: getLang() }),
+    body: JSON.stringify({ ...payload, lang: getLang(), problem: problem || undefined }),
   });
 }
 
@@ -1110,20 +1098,20 @@ $("matchForm").addEventListener("submit", async (e) => {
       <h3 class="read-sub">${esc(t("m_areas"))}</h3>
       <ul class="koota">${r.areas.map((i) => `<li class="koota--${i.level}">
         <div class="koota-top"><b>${esc(i.name)}</b><span>${i.pct}%</span></div>
-        <div class="bar" aria-hidden="true"><i style="width:${i.pct}%"></i></div><p>${esc(i.text)}</p></li>`).join("")}</ul>
+        <div class="bar" aria-hidden="true"><i style="width:${i.pct}%"></i></div>${i.text ? `<p>${esc(i.text)}</p>` : ""}</li>`).join("")}</ul>
       <div class="read-cols">
         <section class="read-good"><h3>${esc(t("m_best"))}</h3><ul><li>${esc(best.name)}: ${esc(best.text)}</li></ul></section>
         ${care ? `<section class="read-grow"><h3>${esc(t("m_care"))}</h3><ul><li>${esc(care.name)}: ${esc(care.text)}</li></ul></section>` : ""}
       </div>
       <h3 class="read-sub">${esc(t("m_people"))}</h3>
       <div class="read-cols">${r.people.map((pp, idx) => `<section class="about-block"><h3>${esc(idx ? n2 : n1)}</h3>
-        <p><b>${esc(sn(SIGN_EN[pp.signIndex], ""))}</b></p><ul><li>${esc(pp.strength)}</li><li>${esc(pp.grow)}</li></ul></section>`).join("")}</div>
+        <p><b>${esc(sn(SIGN_EN[pp.signIndex], ""))}</b></p><ul><li>${esc(pp.strength)}</li>${pp.grow ? `<li>${esc(pp.grow)}</li>` : ""}</ul></section>`).join("")}</div>
       ${r.mangal ? `<section class="about-block"><h3>${esc(t("m_mangal"))}</h3><p>${esc(r.mangal)}</p></section>` : ""}
       <h3 class="read-sub">${esc(t("m_rows"))}</h3>
       <ul class="koota">${r.items.map((i) => `<li class="koota--${i.level}">
         <div class="koota-top"><b>${esc(i.name)}</b><span>${esc(num(i.score))} / ${i.max}</span></div>
         <div class="bar" aria-hidden="true"><i style="width:${(i.score / i.max * 100).toFixed(0)}%"></i></div>
-        <small>${esc(i.measures)}</small><p>${esc(i.text)}</p></li>`).join("")}</ul>
+        <small>${esc(i.measures)}</small>${i.text ? `<p>${esc(i.text)}</p>` : ""}</li>`).join("")}</ul>
       <p class="fine">${esc(r.summary)}</p>
       <button type="button" class="btn btn-outline" id="matchShare">${esc(t("m_share"))}</button>`;
     matchText = `${n1} & ${n2}: ${num(r.total)}/36 (${r.verdict})\nKundli Kaka Kundli Milan: https://kundlikaka.in/match`;

@@ -32,6 +32,7 @@ import { renderGitaIndex, renderChapter, chapterOf, GITA_PATHS, krishnaReply } f
 import { buildMyDay } from "./src/myday.js";
 import { renderPujaIndex, renderPuja, pujaOf, PUJA_PATHS, PUJA_HI_PATHS } from "./src/puja.js";
 import { makeCallToken, callBook, MAX_MINUTES } from "./src/call.js";
+import { lockedFindings, teaseKundli, teaseMatch } from "./src/teaser.js";
 import { signReply, verifyReply, speakKrishna, FREE_LISTENS } from "./src/voice.js";
 import { accountsFromEnv } from "./src/accounts.js";
 import { buildFacts } from "./src/report-facts.js";
@@ -292,7 +293,7 @@ app.post("/api/match", kundliLimit, (req, res, next) => {
     const a = person(req.body?.a);
     const b = person(req.body?.b);
     const lang = req.body?.lang === "hn" ? "hn" : parseLang(req.body?.lang);
-    res.json({ names: [a.name, b.name], ...buildMatch(a.chart, b.chart, { lang, timeUnknown: [a.timeUnknown, b.timeUnknown] }) });
+    res.json({ names: [a.name, b.name], ...teaseMatch(buildMatch(a.chart, b.chart, { lang, timeUnknown: [a.timeUnknown, b.timeUnknown] }), lang) });
   } catch (e) {
     next(e);
   }
@@ -334,7 +335,7 @@ app.post("/api/match/pdf", kundliLimit, async (req, res, next) => {
       const when = DateTime.fromObject({ year: birth.year, month: birth.month, day: birth.day }, { zone: "utc" });
       return { name: cleanName(x?.name), chart: computeKundli(birth), timeUnknown: birth.timeUnknown, date: when.setLocale(locale).toLocaleString({ day: "numeric", month: "long", year: "numeric" }), place: birth.placeLabel };
     });
-    const r = buildMatch(people[0].chart, people[1].chart, { lang, timeUnknown: [people[0].timeUnknown, people[1].timeUnknown] });
+    const r = teaseMatch(buildMatch(people[0].chart, people[1].chart, { lang, timeUnknown: [people[0].timeUnknown, people[1].timeUnknown] }), lang);
     const pdf = await buildMatchPdf({ names: people.map((x) => x.name), r, lang: language, dates: people.map((x) => x.date), placeLabels: people.map((x) => x.place), report: cleanMatchReport(req.body?.report) });
     res.set({ "Content-Type": "application/pdf", "Content-Disposition": 'attachment; filename="kundlikaka-kundli-milan.pdf"', "Cache-Control": "no-store" });
     res.send(pdf);
@@ -366,7 +367,7 @@ app.post("/api/kundli", kundliLimit, (req, res, next) => {
     }
     out.about = buildAbout(chart, { lang: req.body?.lang === "hn" ? "hn" : lang, timeUnknown: birth.timeUnknown });
   out.reading = buildReading(chart, { lang: req.body?.lang === "hn" ? "hn" : lang, timeUnknown: birth.timeUnknown, jupiter, today });
-    res.json(out);
+    res.json(chart.tradition === "western" ? out : teaseKundli(out, req.body?.lang === "hn" ? "hn" : lang, String(req.body?.problem || "")));
   } catch (e) {
     next(e);
   }
@@ -401,7 +402,10 @@ app.post("/api/pdf", kundliLimit, async (req, res, next) => {
     const locale = DATE_LOCALE[language] || "en-IN";
     const when = DateTime.fromObject({ year: birth.year, month: birth.month, day: birth.day }, { zone: "utc" });
     const h12 = birth.hour % 12 || 12;
+    const freePdf = !report || (typeof report === "string" && !report.trim());
+    const locked = freePdf && chart.tradition !== "western" ? lockedFindings(buildFacts(chart, { timeUnknown: birth.timeUnknown }), { lang: language === "hi" ? "hi" : language === "hn" ? "hn" : "en" }) : [];
     const pdf = await buildPdf({
+      locked,
       name: cleanName(req.body?.name),
       chart,
       insights: quickInsights(chart, { timeUnknown: birth.timeUnknown, lang: parseLang(language) }),
@@ -429,7 +433,8 @@ app.post("/api/report/preview", kundliLimit, (req, res, next) => {
     const birth = parseBirthInput(req.body);
     if (birth.tradition === "western") return res.json({ months: [] });
     const facts = buildFacts(computeKundli(birth), { timeUnknown: birth.timeUnknown });
-    res.json({ months: facts.months.slice(0, 3).map(({ label, tag, score }) => ({ label, tag, score })) });
+    const lg = req.body?.lang === "hn" ? "hn" : parseLang(req.body?.lang);
+    res.json({ months: facts.months.slice(0, 3).map(({ label, tag, score }) => ({ label, tag, score })), locked: lockedFindings(facts, { lang: lg }) });
   } catch (e) {
     next(e);
   }

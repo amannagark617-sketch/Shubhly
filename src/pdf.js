@@ -247,7 +247,7 @@ function skyWheel(doc, chart, cx, cy, R, { asc, moon, labelOf }) {
   }
 }
 
-export function buildPdf({ name, chart, insights = {}, lang = "en", report = "", timeUnknown = false, placeLabel = "", dateLabel = "", timeLabel = "" }) {
+export function buildPdf({ name, chart, insights = {}, lang = "en", report = "", timeUnknown = false, placeLabel = "", dateLabel = "", timeLabel = "", locked = [] }) {
   const doc = newDoc();
   const chunks = [];
   doc.on("data", (c) => chunks.push(c));
@@ -479,6 +479,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
   }
 
   const rep = report && typeof report === "object" && !report.markdown ? report : null;
+  const freePdf = !report || (typeof report === "string" && !report.trim()); // the free chart PDF: a clear first look, the details stay in the paid report
   const ELNAMES = {
     en: ["Fire", "Earth", "Air", "Water"], hn: ["Agni", "Prithvi", "Vayu", "Jal"], hi: ["अग्नि", "पृथ्वी", "वायु", "जल"],
     mr: ["अग्नि", "पृथ्वी", "वायू", "जल"], bn: ["অগ্নি", "মাটি", "বায়ু", "জল"], ta: ["நெருப்பு", "நிலம்", "காற்று", "நீர்"],
@@ -490,7 +491,7 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
   // ---- graphics: element balance and the life periods (drawn on the contents page at the end)
   const drawGraphics = (y0) => {
     const counts = elementBalance(chart, { timeUnknown });
-    const showTimeline = !western && !timeUnknown && chart.dasha?.mahadashas?.length;
+    const showTimeline = !freePdf && !western && !timeUnknown && chart.dasha?.mahadashas?.length;
     let gy = y0;
     rich(doc, lab("elements", T("pdf_elements")), L, gy, { size: 11, bold: true, color: MAROON, width: half });
     if (showTimeline) rich(doc, lab("timeline", T("pdf_timeline")), L + half + 14, gy, { size: 11, bold: true, color: MAROON, width: half });
@@ -520,17 +521,19 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
         list.push([b.labels[k].split("{text}")[0].replace("{sign}", sg(SIGN_EN[b[k].signIndex], "")).trim(), b[k].text]);
       }
     }
-    if (about.sub) list.push([T("ab_sub"), about.sub.text]);
-    if (about.focus) list.push([T("ab_focus"), about.focus.text]);
-    if (about.money) list.push([T("ab_money"), about.money.text]);
-    if (about.love) list.push([T("ab_love"), about.love.text]);
-    if (about.career) list.push([T("ab_career"), about.career.text]);
+    if (!freePdf) {
+      if (about.sub) list.push([T("ab_sub"), about.sub.text]);
+      if (about.focus) list.push([T("ab_focus"), about.focus.text]);
+      if (about.money) list.push([T("ab_money"), about.money.text]);
+      if (about.love) list.push([T("ab_love"), about.love.text]);
+      if (about.career) list.push([T("ab_career"), about.career.text]);
+    }
     const accents = [MAROON, GOLD, NAVY, "#2b7a4b", "#2e5e73", "#8a4b7a"];
     for (let i = 0; i < list.length; i += 2) {
       row(tile(L, half, list[i][0], shorten(list[i][1], 230), { accent: accents[i % 6] }), list[i + 1] ? tile(L + half + 14, half, list[i + 1][0], shorten(list[i + 1][1], 230), { accent: accents[(i + 1) % 6] }) : null);
     }
-    const good = about.strong.map((x) => x.text);
-    const care = [...about.tested.map((x) => x.text), ...(about.mars ? [about.mars.text] : [])];
+    const good = freePdf ? [] : about.strong.map((x) => x.text);
+    const care = freePdf ? [] : [...about.tested.map((x) => x.text), ...(about.mars ? [about.mars.text] : [])];
     if (good.length || care.length) {
       row(good.length ? card(L, half, T("rd_shine"), good.map((x) => shorten(x, 150)), "#2b7a4b") : null, care.length ? card(L + half + 14, half, T("rd_grow"), care.map((x) => shorten(x, 150)), "#b27d12") : null);
     }
@@ -728,6 +731,14 @@ export function buildPdf({ name, chart, insights = {}, lang = "en", report = "",
       }
     } else {
       // The free chart PDF: show what the full report adds.
+      if (locked.length) {
+        section(lang === "hi" || lang === "hn" ? "आपकी कुंडली में मिला" : "Found in your chart", MAROON, 160, "report");
+        for (let i = 0; i < locked.length; i += 2) {
+          const mk = (x, j) => tile(j ? L + half + 14 : L, half, x.title, x.text, { accent: j ? GOLD : MAROON });
+          row(mk(locked[i], 0), locked[i + 1] ? mk(locked[i + 1], 1) : null);
+        }
+        y += 6;
+      }
       const bullets = [1, 2, 3, 4, 5].map((i) => T("next_rep_" + i));
       const h = 24 + heightOf(doc, T("next_rep_t"), 13, W - 40, true) + bullets.reduce((n, b2) => n + heightOf(doc, b2, 10, W - 60) + 6, 0) + 36;
       ensure(h + 10);
