@@ -2,9 +2,9 @@
 // Krishna's voice comes back as audio. Each minute after the free one is charged from the wallet as it begins.
 
 const IN_RATE = 16000, OUT_RATE = 24000;
-// Krishna's voice is played a little slower, which also makes it deeper and calmer. 1 is normal; 0.85 is slower still.
-const PLAY_RATE = 0.9;
-const WORKLET = `class Cap extends AudioWorkletProcessor{process(i){const c=i[0]&&i[0][0];if(c)this.port.postMessage(c.slice(0));return true}}registerProcessor("cap",Cap)`;
+// Playback speed. 1 is natural. Below 1 slows the voice but also makes it artificially deep, so it is left at 1.
+const PLAY_RATE = 1;
+const WORKLET = `class Cap extends AudioWorkletProcessor{constructor(){super();this.r=sampleRate/16000;this.inp=[];this.pos=0;this.out=[]}process(i){const c=i[0]&&i[0][0];if(!c)return true;for(let n=0;n<c.length;n++)this.inp.push(c[n]);while(this.pos+1<this.inp.length){const k=Math.floor(this.pos),f=this.pos-k;this.out.push(this.inp[k]*(1-f)+this.inp[k+1]*f);this.pos+=this.r}const d=Math.floor(this.pos);if(d>0){this.inp=this.inp.slice(d);this.pos-=d}while(this.out.length>=1600){const a=new Int16Array(1600);for(let n=0;n<1600;n++){const v=Math.max(-1,Math.min(1,this.out[n]));a[n]=v<0?v*32768:v*32767}this.out=this.out.slice(1600);this.port.postMessage(a.buffer,[a.buffer])}return true}}registerProcessor("cap",Cap)`;
 
 const b64 = (buf) => { let s = ""; const u = new Uint8Array(buf); for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); };
 const unb64 = (s) => { const bin = atob(s), u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return u.buffer; };
@@ -17,12 +17,11 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
   // Soft bansuri in the background, if the file public/audio/krishna-bansuri.mp3 exists. It gets quieter while Krishna speaks.
   let music = null;
   const MUSIC_LOW = 0.05, MUSIC_HIGH = 0.14;
-  const startMusic = async () => {
+  const startMusic = () => {
     try {
-      const head = await fetch("/audio/krishna-bansuri.mp3", { method: "HEAD" });
-      if (!head.ok) return;
-      music = new Audio("/audio/krishna-bansuri.mp3"); music.loop = true; music.volume = MUSIC_HIGH;
-      await music.play();
+      const m = new Audio("/audio/krishna-bansuri.mp3"); m.loop = true; m.volume = MUSIC_HIGH; music = m;
+      m.addEventListener("error", () => { if (music === m) music = null; });
+      m.play().catch(() => { if (music === m) music = null; });
     } catch { music = null; }
   };
   const duck = (speaking) => { if (music) music.volume = speaking ? MUSIC_LOW : MUSIC_HIGH; };
@@ -51,17 +50,24 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
     const w = wallet();
     if (!w) { say("Calling Krishna needs an account. Please log in."); return; }
     if (!w.loggedIn()) { w.prompt("login"); return; }
-    if (!navigator.mediaDevices?.getUserMedia || !window.WebSocket || !window.AudioContext) { say("Your browser cannot make calls. Please open this page in Chrome or Safari."); return; }
+    if (!navigator.mediaDevices?.getUserMedia || !window.WebSocket || !(window.AudioContext || window.webkitAudioContext)) { say("Your browser cannot make calls. Please open this page in Chrome or Safari."); return; }
     startBtn.hidden = true; endBtn.hidden = false; caps.textContent = ""; say("Connecting…"); clock.textContent = "0:00";
     s = { ended: false, sources: new Set(), nextAt: 0, started: 0, timer: 0, ws: null, ctx: null, mic: null, minute: 1, callId: "" };
+    // Phones only allow sound that is set up straight from the tap, so the audio parts are created here, before any waiting.
+    const AC = window.AudioContext || window.webkitAudioContext;
     try {
+      s.ctx = new AC(); s.out = new AC();
+      s.ctx.resume?.(); s.out.resume?.();
+      playUnlock(s.out);
+      startMusic();
+      s.mic = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
       const r = await fetch("/api/krishna/call/start", { method: "POST", headers: { "Content-Type": "application/json", ...(await w.headers()) }, body: JSON.stringify({ language: lang() }) });
       const j = await r.json().catch(() => ({}));
       if (r.status === 401 || r.status === 402) { w.prompt(r.status === 401 ? "login" : "funds", j.needPaise); return finish(""); }
       if (!r.ok) throw new Error(j.error || "Krishna cannot take your call right now. Please try again.");
       if (j.balancePaise != null) w.setBalance(j.balancePaise);
       s.callId = j.callId; s.max = j.maxMinutes; s.free = j.free;
-      await openAudio(); await openSocket(j.token, j.model); startMusic();
+      await openAudio(); await openSocket(j.token, j.model);
       track("krishna_call_start");
     } catch (e) {
       const m = e?.name === "NotAllowedError" ? "Please allow the microphone to talk with Krishna. You were not charged for a call you could not make." : (e.message || "The call did not connect. Please try again.");
@@ -69,21 +75,18 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
     }
   }
 
+  // A silent blip played during the tap, which switches sound on for phones.
+  function playUnlock(ctx) { try { const b = ctx.createBuffer(1, 1, 22050), x = ctx.createBufferSource(); x.buffer = b; x.connect(ctx.destination); x.start(0); } catch { /* not needed */ } }
+
   async function openAudio() {
-    const ctx = new AudioContext({ sampleRate: IN_RATE });
-    await ctx.resume();
-    const mic = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 } });
-    s.ctx = ctx; s.mic = mic;
+    const ctx = s.ctx;
     const url = URL.createObjectURL(new Blob([WORKLET], { type: "text/javascript" }));
     await ctx.audioWorklet.addModule(url); URL.revokeObjectURL(url);
     s.node = new AudioWorkletNode(ctx, "cap");
-    ctx.createMediaStreamSource(mic).connect(s.node);
-    s.out = new AudioContext({ sampleRate: OUT_RATE });
+    ctx.createMediaStreamSource(s.mic).connect(s.node);
     s.node.port.onmessage = (e) => {
       if (!s?.ws || s.ws.readyState !== 1 || !s.ready) return;
-      const f = e.data, pcm = new Int16Array(f.length);
-      for (let i = 0; i < f.length; i++) { const v = Math.max(-1, Math.min(1, f[i])); pcm[i] = v < 0 ? v * 0x8000 : v * 0x7fff; }
-      s.ws.send(JSON.stringify({ realtimeInput: { audio: { data: b64(pcm.buffer), mimeType: `audio/pcm;rate=${IN_RATE}` } } }));
+      s.ws.send(JSON.stringify({ realtimeInput: { audio: { data: b64(e.data), mimeType: `audio/pcm;rate=${IN_RATE}` } } }));
     };
   }
 
