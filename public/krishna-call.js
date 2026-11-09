@@ -70,7 +70,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
       if (r.status === 401 || r.status === 402) { w.prompt(r.status === 401 ? "login" : "funds", j.needPaise); return finish(""); }
       if (!r.ok) throw new Error(j.error || "Krishna cannot take your call right now. Please try again.");
       if (j.balancePaise != null) w.setBalance(j.balancePaise);
-      s.callId = j.callId; s.max = j.maxMinutes; s.free = j.free;
+      s.callId = j.callId; s.max = j.maxMinutes; s.free = j.free; s.price = j.pricePaise;
       stage = "sound";
       await openAudio();
       stage = "connection";
@@ -119,7 +119,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
         let m; try { m = JSON.parse(typeof ev.data === "string" ? ev.data : await ev.data.text()); } catch { return; }
         if (m.setupComplete && !done) {
           done = true; clearTimeout(to); s.ready = true; s.connected = true; s.started = Date.now();
-          say("Krishna is joining…"); tick(); s.timer = setInterval(tick, 1000);
+          say(s.free ? "Krishna is joining… (your free minute for today)" : `Krishna is joining… (₹${Math.round((s.price || 0) / 100)} taken for this minute)`); tick(); s.timer = setInterval(tick, 1000);
           ws.send(JSON.stringify({ clientContent: { turns: [{ role: "user", parts: [{ text: "(कॉल जुड़ गया है। हिंदी में वत्स को स्नेह से आशीर्वाद दो और पूछो कि उनके मन में क्या है।)" }] }], turnComplete: true } }));
           ok();
         }
