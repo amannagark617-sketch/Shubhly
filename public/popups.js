@@ -93,6 +93,28 @@ const POPUPS = [
            ["you", "दोनों की जन्म जानकारी डालिए, मैं दिखाता हूँ।"],
            ["img", "/img/step-2.webp"]] },
     cta: { en: "Compare our charts", hi: "हमारी कुंडलियाँ मिलाएँ" } },
+  { id: "family", paths: [/^\/$/, /^\/kundli/, /^\/blog/], who: KAKA, href: "/kundli?p=family",
+    chat: {
+      en: [["me", "There is so much tension at home. Every day brings a new fight. Is something wrong in our stars?"],
+           ["you", "Home tension is heavy to carry. Your chart shows the periods when family matters are under pressure and when they ease."],
+           ["you", "Give your date, time and place of birth and I will show you the timing, in simple words."],
+           ["img", "/img/step-1.webp"]],
+      hi: [["me", "घर में बहुत तनाव रहता है। रोज़ कोई नया झगड़ा। क्या हमारे ग्रहों में कुछ गड़बड़ है?"],
+           ["you", "घर का तनाव बहुत भारी होता है। आपकी कुंडली दिखाती है कि परिवार के मामलों पर दबाव कब रहता है और कब राहत मिलती है।"],
+           ["you", "जन्म की तारीख, समय और जगह बताइए, मैं सरल शब्दों में समय बताता हूँ।"],
+           ["img", "/img/step-1.webp"]] },
+    cta: { en: "See my family timing", hi: "मेरे परिवार का समय देखें" } },
+  { id: "health", paths: [/^\/$/, /^\/kundli/, /^\/blog/], who: KAKA, href: "/kundli?p=health",
+    chat: {
+      en: [["me", "Someone at home is unwell for a long time and I am very worried. What do the stars say?"],
+           ["you", "I am sorry. Please keep the doctor's treatment first. A chart can only show which periods are heavy and which are gentler, so you can plan your care and your prayers."],
+           ["you", "Add their date, time and place of birth and I will show you."],
+           ["img", "/img/step-1.webp"]],
+      hi: [["me", "घर में कोई बहुत समय से बीमार है और मुझे बहुत चिंता है। ग्रह क्या कहते हैं?"],
+           ["you", "मुझे दुख है। इलाज डॉक्टर का ही पहले रखिए। कुंडली सिर्फ़ यह दिखा सकती है कि कौन-सा समय भारी है और कौन-सा हल्का, ताकि आप देखभाल और प्रार्थना सोच-समझकर कर सकें।"],
+           ["you", "उनकी जन्म की तारीख, समय और जगह डालिए, मैं दिखाता हूँ।"],
+           ["img", "/img/step-1.webp"]] },
+    cta: { en: "See the timing", hi: "समय देखें" } },
   { id: "puja", paths: [/^\/$/, /^\/kundli/, /^\/rashifal/, /^\/panchang/, /^\/blog/, /^\/guides/, /^\/store/], who: KAKA, href: "/puja",
     chat: {
       en: [["me", "Diwali puja is coming and I am not sure what to buy. I do not want to miss anything."],
@@ -131,17 +153,45 @@ const POPUPS = [
 const path = location.pathname;
 const SEEN_KEY = "kk.pop.seen";
 const seenMap = () => { try { return JSON.parse(store.get(SEEN_KEY) || "{}"); } catch { return {}; } };
-const WEEK = 7 * 864e5;
+const DAY = 864e5;
+const MAX_PER_VISIT = 2;
 
+// What is troubling this visitor: the tile they tapped, the saved choice, or a hint from the page itself.
+const PROBLEM_POPUPS = { marriage: ["marriage"], job: ["career"], money: ["money"], family: ["family"], love: ["love"], health: ["health"], confused: ["kundli", "calm"] };
+const PAGE_HINTS = [[/marriage|shaadi|vivah|manglik|milan|match/i, "marriage"], [/job|career|naukri|promotion|business/i, "job"], [/money|dhan|wealth|loan|debt|paisa|finance/i, "money"],
+  [/family|ghar|parent|home|santaan|child/i, "family"], [/love|breakup|relationship|ex-|partner|pyar/i, "love"], [/health|bimari|illness|disease|swasth/i, "health"], [/confus|lost|direction|purpose|stress|anxiety|sleep/i, "confused"]];
+function knownProblem() {
+  const q = new URLSearchParams(location.search).get("p");
+  if (q && PROBLEM_POPUPS[q]) { store.set("kk.problem", q); return q; }
+  const saved = store.get("kk.problem");
+  if (saved && PROBLEM_POPUPS[saved]) return saved;
+  const hint = PAGE_HINTS.find(([r]) => r.test(decodeURIComponent(path)));
+  return hint ? hint[1] : null;
+}
+// Tapping a problem tile saves it at once, so the next popup speaks to that worry.
+document.addEventListener("click", (e) => {
+  const a = e.target.closest?.("a.pick[href*='?p=']"); if (!a) return;
+  const id = new URL(a.href, location.href).searchParams.get("p"); if (PROBLEM_POPUPS[id]) store.set("kk.problem", id);
+}, true);
+
+const shownCount = () => Number(store.sget("kk.pop.count") || 0);
 function pick() {
-  if (store.sget("kk.pop.shown")) return null;
+  if (shownCount() >= MAX_PER_VISIT) return null;
   if (/[?&]internal=1/.test(location.search)) return null;
-  const seen = seenMap(), now = Date.now();
-  const ok = POPUPS.filter((p) => p.paths.some((r) => r.test(path)) && !(seen[p.id] && now - seen[p.id] < WEEK));
-  if (!ok.length) return null;
   // Gita and chat pages keep their own helper; do not stack popups on top of an open chat.
-  if (document.querySelector("#krishna:not([hidden]), #chat:not([hidden])")) return null;
-  return ok[Math.floor(Math.random() * ok.length)];
+  if (document.querySelector("#krishna:not([hidden]), #chat:not([hidden]), .kkp")) return null;
+  if (/^\/(gita|my-reports|account|admin)/.test(path)) return null;
+  const seen = seenMap(), now = Date.now();
+  const fresh = (p, days) => !(seen[p.id] && now - seen[p.id] < days * DAY);
+  const prob = knownProblem();
+  // 1. the visitor's own problem, on any page, again after two days
+  if (prob) {
+    const mine = POPUPS.filter((p) => PROBLEM_POPUPS[prob].includes(p.id) && fresh(p, 2));
+    if (mine.length) return mine[Math.floor(Math.random() * mine.length)];
+  }
+  // 2. otherwise one that fits this page, again after three days, skipping the ones for other worries
+  const ok = POPUPS.filter((p) => p.paths.some((r) => r.test(path)) && fresh(p, 3) && (!prob || !["career", "marriage", "money", "love", "family", "health"].includes(p.id) || PROBLEM_POPUPS[prob].includes(p.id)));
+  return ok.length ? ok[Math.floor(Math.random() * ok.length)] : null;
 }
 
 const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
@@ -152,7 +202,7 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const loadPic = (src) => new Promise((res) => { const i = new Image(); i.onload = () => res(i.naturalWidth ? src : null); i.onerror = () => res(null); i.src = src; });
 
 async function show(p) {
-  store.sset("kk.pop.shown", "1");
+  store.sset("kk.pop.count", String(shownCount() + 1));
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const root = el("aside", "kkp");
   root.setAttribute("role", "dialog"); root.setAttribute("aria-label", p.who.name[lang]);
@@ -209,6 +259,7 @@ async function show(p) {
 }
 
 function showPic(p, src) {
+  store.sset("kk.pop.count", String(shownCount() + 1));
   const root = el("aside", "kkp kkp-picmode");
   root.setAttribute("role", "dialog"); root.setAttribute("aria-label", p.who.name[lang]);
   root.innerHTML = `<div class="kkp-glow" aria-hidden="true"></div>
@@ -231,10 +282,13 @@ function arm() {
   const p = pick(); if (!p) return;
   let fired = false;
   const fire = () => { if (fired) return; fired = true; cleanup(); const q = pick(); if (q) show(q); };
-  const timer = setTimeout(fire, 14000);
-  const onScroll = () => { const h = document.documentElement; if (h.scrollTop / Math.max(1, h.scrollHeight - innerHeight) > 0.45 && performance.now() > 8000) fire(); };
-  const onLeave = (e) => { if (e.clientY < 8 && performance.now() > 8000) fire(); };
+  const timer = setTimeout(fire, knownProblem() ? 5000 : 8000);
+  const onScroll = () => { const h = document.documentElement; if (h.scrollTop / Math.max(1, h.scrollHeight - innerHeight) > 0.25 && performance.now() > 3000) fire(); };
+  const onLeave = (e) => { if (e.clientY < 8 && performance.now() > 3000) fire(); };
   const cleanup = () => { clearTimeout(timer); removeEventListener("scroll", onScroll); document.removeEventListener("mouseleave", onLeave); };
   addEventListener("scroll", onScroll, { passive: true }); document.addEventListener("mouseleave", onLeave);
 }
+// After one is closed, a second can come a minute later on the same visit.
+const rearm = () => { if (shownCount() < MAX_PER_VISIT) setTimeout(arm, 60000); };
+document.addEventListener("click", (e) => { if (e.target.closest?.(".kkp-x, .kkp-later, .kkp-back")) rearm(); });
 if (document.readyState === "complete") arm(); else addEventListener("load", arm, { once: true });
