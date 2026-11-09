@@ -146,7 +146,10 @@ export function initAccount({ toast, config }) {
     state.fb = { auth, A };
     A.onAuthStateChanged(auth, async (u) => {
       if (!u) { state.user = null; state.history = null; saveHint(null); paintButton(); if (!back.hidden) route(); return; }
-      try { await loadMe(); } catch { /* shown by route() if the panel is open */ }
+      // Signed in: fetch the name and balance. A slow phone network can fail once, so try a few times before giving up.
+      for (let i = 0; i < 3; i++) {
+        try { await loadMe(); break; } catch (e) { if (e?.status === 401 || i === 2) break; await new Promise((ok) => setTimeout(ok, 1500 * (i + 1))); }
+      }
       paintButton(); if (!back.hidden) route();
     });
     return state.fb;
@@ -393,8 +396,17 @@ export function initAccount({ toast, config }) {
 
   // ---- start ----
   paintButton();
-  if (hint()) {
-    // Someone who logged in before: show their name and balance straight away, and quietly restore the session.
-    (window.requestIdleCallback || ((f) => setTimeout(f, 1500)))(() => ensureFirebase().catch(() => {}));
-  }
+  // Always restore a saved login, even when this browser has no hint (another tab or page signed in, or the hint was cleared).
+  // Visitors who never logged in have no Firebase storage, so for them nothing extra is downloaded.
+  const restore = async () => {
+    let maybe = !!hint();
+    if (!maybe) {
+      try { maybe = indexedDB.databases ? (await indexedDB.databases()).some((d) => d.name === "firebaseLocalStorageDb") : true; } catch { maybe = true; }
+    }
+    if (maybe) ensureFirebase().catch(() => {});
+  };
+  (window.requestIdleCallback || ((f) => setTimeout(f, 800)))(restore);
+  // Logged in or out in another tab: update this tab's button too.
+  window.addEventListener("storage", (e) => { if (e.key === HINT) { if (!e.newValue) state.user = null; paintButton(); } });
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) restore(); });
 }
