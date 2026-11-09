@@ -616,7 +616,7 @@ app.post("/api/krishna/call/start", chatLimit, async (req, res, next) => {
       if (free) calls.giveBackFree(uid); else await paid.refund();
       throw e;
     }
-    const callId = calls.open(uid);
+    const callId = calls.open(uid, async () => { if (free) calls.giveBackFree(uid); else await paid.refund(); });
     res.json({ ...made, callId, free, maxMinutes: MAX_MINUTES, pricePaise: PRICES.call, balancePaise: paid ? paid.balancePaise : null });
   } catch (e) {
     const m = aiProblem(e);
@@ -640,8 +640,9 @@ app.post("/api/krishna/call/minute", chatLimit, async (req, res, next) => {
   } catch (e) { next(e); }
 });
 app.post("/api/krishna/call/end", chatLimit, async (req, res) => {
-  if (walletOn && (await accounts.authenticate(req, res))) calls.end(String(req.body?.callId || ""));
-  if (!res.headersSent) res.json({ ok: true });
+  if (!walletOn || !(await accounts.authenticate(req, res))) return;
+  const refunded = await calls.end(String(req.body?.callId || ""), req.user.uid, req.body?.failed === true);
+  res.json({ ok: true, refunded });
 });
 
 // The paid AI voice is off unless GEMINI_VOICE=on. Visitors then hear their phone's free voice instead.

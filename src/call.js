@@ -40,7 +40,7 @@ export async function makeCallToken({ language = "en", ai = liveClient() } = {})
   const now = Date.now();
   const t = await ai.authTokens.create({
     config: {
-      uses: 1,
+      uses: 3, // a failed connection attempt can be retried; a session that has started cannot be reused for a new call
       expireTime: new Date(now + (MAX_MINUTES * 60 + 45) * 1000).toISOString(),
       newSessionExpireTime: new Date(now + 90 * 1000).toISOString(),
       liveConnectConstraints: {
@@ -70,9 +70,10 @@ export function callBook({ now = () => Date.now(), maxMinutes = MAX_MINUTES } = 
     freeAvailable: (uid) => freeDay.get(uid) !== today(),
     useFree(uid) { freeDay.set(uid, today()); if (freeDay.size > 50000) freeDay.clear(); },
     giveBackFree(uid) { if (freeDay.get(uid) === today()) freeDay.delete(uid); },
-    open(uid) {
+    /** A call began. undo() gives the first minute back (money or the free minute) if it never connected. */
+    open(uid, undo) {
       const id = crypto.randomBytes(12).toString("hex");
-      calls.set(id, { uid, startedAt: now(), minutes: 1 });
+      calls.set(id, { uid, startedAt: now(), minutes: 1, undo });
       if (calls.size > 20000) calls.clear();
       return id;
     },
@@ -85,6 +86,13 @@ export function callBook({ now = () => Date.now(), maxMinutes = MAX_MINUTES } = 
       return { ok: true, minute: c.minutes + 1 };
     },
     commit(id) { const c = calls.get(id); if (c) c.minutes += 1; },
-    end(id) { calls.delete(id); },
+    /** The call is over. If it never connected, the first minute is given back, once. */
+    async end(id, uid, failed = false) {
+      const c = calls.get(id);
+      if (!c || c.uid !== uid) return false;
+      calls.delete(id);
+      if (failed && c.minutes === 1 && c.undo) { try { await c.undo(); return true; } catch { return false; } }
+      return false;
+    },
   };
 }

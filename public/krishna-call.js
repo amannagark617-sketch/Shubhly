@@ -87,19 +87,28 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
     };
   }
 
-  function openSocket(token, model) {
+  // The token works on one API version of Google's live service. Try the one the SDK uses, then the other.
+  async function openSocket(token, model) {
+    let last = "";
+    for (const v of ["v1alpha", "v1beta"]) {
+      try { await attempt(v, token, model); return; } catch (e) { last = e.message; if (s?.ended) throw e; }
+    }
+    throw new Error(`The call did not connect. ${last}`.trim());
+  }
+
+  function attempt(version, token, model) {
     return new Promise((ok, fail) => {
-      const ws = new WebSocket(`wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained?access_token=${encodeURIComponent(token)}`);
-      s.ws = ws; let done = false;
-      const bail = (m) => { if (!done) { done = true; fail(new Error(m)); } };
-      const to = setTimeout(() => bail("The call did not connect. You were charged only if your minute began. Please try again."), 15000);
+      const ws = new WebSocket(`wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.${version}.GenerativeService.BidiGenerateContentConstrained?access_token=${encodeURIComponent(token)}`);
+      s.ws = ws; s.ready = false; let done = false;
+      const bail = (m) => { if (!done) { done = true; clearTimeout(to); try { ws.close(); } catch { /* closed */ } fail(new Error(m)); } };
+      const to = setTimeout(() => bail("It took too long to connect."), 12000);
       ws.onopen = () => ws.send(JSON.stringify({ setup: { model: model.startsWith("models/") ? model : "models/" + model } }));
-      ws.onerror = () => bail("The call did not connect. Please check your internet and try again.");
-      ws.onclose = () => { clearTimeout(to); if (!done) bail("The call did not connect."); else if (s && !s.ended) finish("The call ended."); };
+      ws.onerror = () => bail("Please check your internet and try again.");
+      ws.onclose = (ev) => { if (!done) bail(`(${ev.code}${ev.reason ? ": " + String(ev.reason).slice(0, 120) : ""})`); else if (s && !s.ended && s.ws === ws) finish("The call ended."); };
       ws.onmessage = async (ev) => {
         let m; try { m = JSON.parse(typeof ev.data === "string" ? ev.data : await ev.data.text()); } catch { return; }
         if (m.setupComplete && !done) {
-          done = true; clearTimeout(to); s.ready = true; s.started = Date.now();
+          done = true; clearTimeout(to); s.ready = true; s.connected = true; s.started = Date.now();
           say("Krishna is joining…"); tick(); s.timer = setInterval(tick, 1000);
           ws.send(JSON.stringify({ clientContent: { turns: [{ role: "user", parts: [{ text: "(कॉल जुड़ गया है। हिंदी में वत्स को स्नेह से आशीर्वाद दो और पूछो कि उनके मन में क्या है।)" }] }], turnComplete: true } }));
           ok();
@@ -110,7 +119,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
         for (const p of c.modelTurn?.parts || []) if (p.inlineData?.data) play(p.inlineData.data);
         if (c.inputTranscription?.text) caption("me", c.inputTranscription.text, true);
         if (c.outputTranscription?.text) caption("ai", c.outputTranscription.text, true);
-        if (c.turnComplete) { if (s) { s.sources.size ? null : say("Listening…"); } }
+        if (c.turnComplete && s && !s.sources.size) say("Listening…");
       };
     });
   }
@@ -155,7 +164,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
     try { old.ws?.close(); } catch { /* closed */ }
     try { old.mic?.getTracks().forEach((t) => t.stop()); } catch { /* stopped */ }
     try { old.node?.disconnect(); old.ctx?.close(); old.out?.close(); } catch { /* closed */ }
-    if (old.callId) { wallet()?.headers().then((h) => fetch("/api/krishna/call/end", { method: "POST", headers: { "Content-Type": "application/json", ...h }, body: JSON.stringify({ callId: old.callId }) })).catch(() => {}); }
+    if (old.callId) { wallet()?.headers().then((h) => fetch("/api/krishna/call/end", { method: "POST", headers: { "Content-Type": "application/json", ...h }, body: JSON.stringify({ callId: old.callId, failed: !old.connected }) })).catch(() => {}); }
     startBtn.hidden = false; endBtn.hidden = true; startBtn.textContent = "Call again";
     say(message || "The call has ended. Thank you for talking with Krishna.");
     track("krishna_call_end", { minutes: old.minute });
