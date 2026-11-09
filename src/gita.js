@@ -43,7 +43,7 @@ const WIDGET = `<section class="kr" id="krishna" aria-labelledby="kr-h" hidden>
     <button type="button" class="btn btn-primary kc-btn" id="kc-start">Call</button>
     <button type="button" class="btn kc-btn kc-end" id="kc-end" hidden>End call</button>
     <p class="kc-price" id="kc-price"></p>
-    <p class="kc-tip">Allow the microphone when asked. Headphones give the clearest voice.</p>
+    <p class="kc-tip">Allow the microphone when asked. Headphones give the clearest voice. Krishna speaks Hindi; say "speak English" if you prefer English.</p>
   </div>
   <div class="kr-log" id="kr-log" role="log" aria-live="polite"></div>
   <div class="kr-ideas" id="kr-ideas">

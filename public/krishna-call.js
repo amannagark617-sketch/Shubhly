@@ -12,6 +12,19 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
   const panel = $("kr-call"), status = $("kc-status"), clock = $("kc-clock"), price = $("kc-price"), caps = $("kc-caps"), endBtn = $("kc-end"), startBtn = $("kc-start"), open = $("kr-callbtn");
   if (!panel || !open) return;
   let s = null; // the call in progress
+  // Soft bansuri in the background, if the file public/audio/krishna-bansuri.mp3 exists. It gets quieter while Krishna speaks.
+  let music = null;
+  const MUSIC_LOW = 0.05, MUSIC_HIGH = 0.14;
+  const startMusic = async () => {
+    try {
+      const head = await fetch("/audio/krishna-bansuri.mp3", { method: "HEAD" });
+      if (!head.ok) return;
+      music = new Audio("/audio/krishna-bansuri.mp3"); music.loop = true; music.volume = MUSIC_HIGH;
+      await music.play();
+    } catch { music = null; }
+  };
+  const duck = (speaking) => { if (music) music.volume = speaking ? MUSIC_LOW : MUSIC_HIGH; };
+  const stopMusic = () => { if (music) { const m = music; music = null; let v = m.volume; const t = setInterval(() => { v -= 0.02; if (v <= 0) { clearInterval(t); m.pause(); } else m.volume = v; }, 60); } };
 
   const inr = (p) => "₹" + (p / 100).toLocaleString("en-IN", { maximumFractionDigits: 2 });
   const say = (t) => { status.textContent = t; };
@@ -46,7 +59,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
       if (!r.ok) throw new Error(j.error || "Krishna cannot take your call right now. Please try again.");
       if (j.balancePaise != null) w.setBalance(j.balancePaise);
       s.callId = j.callId; s.max = j.maxMinutes; s.free = j.free;
-      await openAudio(); await openSocket(j.token, j.model);
+      await openAudio(); await openSocket(j.token, j.model); startMusic();
       track("krishna_call_start");
     } catch (e) {
       const m = e?.name === "NotAllowedError" ? "Please allow the microphone to talk with Krishna. You were not charged for a call you could not make." : (e.message || "The call did not connect. Please try again.");
@@ -86,7 +99,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
         if (m.setupComplete && !done) {
           done = true; clearTimeout(to); s.ready = true; s.started = Date.now();
           say("Krishna is joining…"); tick(); s.timer = setInterval(tick, 1000);
-          ws.send(JSON.stringify({ clientContent: { turns: [{ role: "user", parts: [{ text: "(The caller has just connected. Greet them warmly and ask what is on their mind.)" }] }], turnComplete: true } }));
+          ws.send(JSON.stringify({ clientContent: { turns: [{ role: "user", parts: [{ text: "(कॉल जुड़ गया है। हिंदी में वत्स को स्नेह से आशीर्वाद दो और पूछो कि उनके मन में क्या है।)" }] }], turnComplete: true } }));
           ok();
         }
         const c = m.serverContent;
@@ -107,10 +120,10 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
     const buf = ctx.createBuffer(1, f.length, OUT_RATE); buf.copyToChannel(f, 0);
     const src = ctx.createBufferSource(); src.buffer = buf; src.connect(ctx.destination);
     const at = Math.max(ctx.currentTime + 0.02, s.nextAt); src.start(at); s.nextAt = at + buf.duration;
-    s.sources.add(src); say("Krishna is speaking");
-    src.onended = () => { s?.sources.delete(src); if (s && !s.sources.size && !s.ended) say("Listening…"); };
+    s.sources.add(src); say("Krishna is speaking"); duck(true);
+    src.onended = () => { s?.sources.delete(src); if (s && !s.sources.size && !s.ended) { say("Listening…"); duck(false); } };
   }
-  function stopPlayback() { if (!s) return; for (const x of s.sources) { try { x.stop(); } catch { /* ended */ } } s.sources.clear(); s.nextAt = 0; }
+  function stopPlayback() { if (!s) return; for (const x of s.sources) { try { x.stop(); } catch { /* ended */ } } s.sources.clear(); s.nextAt = 0; duck(false); }
 
   // The clock, and the charge for each new minute as it begins.
   async function tick() {
@@ -136,6 +149,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
     const old = s; s = null; old.ended = true;
     clearInterval(old.timer); stopPlayback.call(null);
     for (const x of old.sources) { try { x.stop(); } catch { /* ended */ } }
+    stopMusic();
     try { old.ws?.close(); } catch { /* closed */ }
     try { old.mic?.getTracks().forEach((t) => t.stop()); } catch { /* stopped */ }
     try { old.node?.disconnect(); old.ctx?.close(); old.out?.close(); } catch { /* closed */ }
