@@ -1757,3 +1757,23 @@ body.blog-page header.nav { position: fixed; }
 .my-reports .btn { display: inline-block; padding: 10px 16px; border: 1px solid #5c1426; border-radius: 0; text-decoration: none; cursor: pointer; font: inherit; }
 .my-reports .btn-primary { background: #5c1426; color: #fff; }
 .my-reports .btn-outline { background: #fff; color: #5c1426; }
+
+/* Krishna call */
+.kr-callbtn { padding: 8px 12px; border: 1.5px solid #243a8c; background: #243a8c; color: #fff; border-radius: 4px; font: inherit; font-weight: 700; font-size: 0.9rem; cursor: pointer; white-space: nowrap; }
+.kr-callbtn[hidden] { display: none; }
+.kr-call { position: relative; padding: 22px 18px; text-align: center; background: #fff; border-bottom: 1px solid #ddd; }
+.kr-call[hidden] { display: none; }
+.kr.on-call .kr-log, .kr.on-call .kr-ideas, .kr.on-call .kr-form { display: none; }
+.kc-close { position: absolute; top: 8px; right: 10px; border: 0; background: none; font-size: 1.6rem; line-height: 1; cursor: pointer; color: #444; }
+.kc-face { width: 96px; height: 96px; object-fit: cover; border-radius: 50%; border: 2px solid #8a6a1f; }
+.kr-call h3 { margin: 10px 0 4px; font-size: 1.25rem; }
+.kc-status { margin: 0; font-weight: 700; color: #243a8c; min-height: 1.4em; }
+.kc-clock { margin: 4px 0 0; font-variant-numeric: tabular-nums; color: #555; min-height: 1.4em; }
+.kc-caps { margin: 12px auto; max-width: 440px; max-height: 150px; overflow-y: auto; text-align: left; font-size: 0.92rem; }
+.kc-caps p { margin: 0 0 6px; padding: 6px 10px; border-left: 3px solid #ccc; }
+.kc-caps .kc-ai { border-color: #8a6a1f; background: #fffdf6; }
+.kc-caps .kc-me { color: #444; }
+.kc-btn { min-width: 150px; }
+.kc-end { background: #b3261e; border-color: #b3261e; color: #fff; }
+.kc-btn[hidden] { display: none; }
+.kc-price, .kc-tip { margin: 10px 0 0; font-size: 0.85rem; color: #555; }

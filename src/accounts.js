@@ -163,7 +163,7 @@ export function createAccounts({ getDeps, razorpay, publicConfig, limits = topup
     res.json({ ok: true });
   }
 
-  return { enabled: true, router, webhook, publicConfig, charge };
+  return { enabled: true, router, webhook, publicConfig, charge, authenticate };
 }
 
 /** Everything is off (and the site is unchanged) until the Firebase settings exist. */

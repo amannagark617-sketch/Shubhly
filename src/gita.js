@@ -30,7 +30,20 @@ const WIDGET = `<section class="kr" id="krishna" aria-labelledby="kr-h" hidden>
   <div class="kr-head">
     <img class="kr-mark" src="/img/krishna-avatar.jpg" alt="" width="40" height="40">
     <div><h2 id="kr-h">Ask Krishna</h2><p>A calm voice that speaks only from the Gita</p></div>
+    <button type="button" class="kr-callbtn" id="kr-callbtn" hidden>Call Krishna</button>
     <button type="button" class="kr-x" id="kr-close" aria-label="Close">×</button>
+  </div>
+  <div class="kr-call" id="kr-call" hidden>
+    <button type="button" class="kc-close" id="kc-close" aria-label="Close the call screen">×</button>
+    <img class="kc-face" src="/img/krishna-avatar.jpg" alt="" width="96" height="96">
+    <h3>Call Krishna</h3>
+    <p class="kc-status" id="kc-status" role="status" aria-live="polite">Press Call to speak with Krishna.</p>
+    <p class="kc-clock" id="kc-clock" aria-hidden="true"></p>
+    <div class="kc-caps" id="kc-caps" aria-live="off"></div>
+    <button type="button" class="btn btn-primary kc-btn" id="kc-start">Call</button>
+    <button type="button" class="btn kc-btn kc-end" id="kc-end" hidden>End call</button>
+    <p class="kc-price" id="kc-price"></p>
+    <p class="kc-tip">Allow the microphone when asked. Headphones give the clearest voice.</p>
   </div>
   <div class="kr-log" id="kr-log" role="log" aria-live="polite"></div>
   <div class="kr-ideas" id="kr-ideas">

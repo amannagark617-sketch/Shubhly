@@ -31,6 +31,7 @@ import { chapterArt, gitaCover } from "./src/gita-art.js";
 import { renderGitaIndex, renderChapter, chapterOf, GITA_PATHS, krishnaReply } from "./src/gita.js";
 import { buildMyDay } from "./src/myday.js";
 import { renderPujaIndex, renderPuja, pujaOf, PUJA_PATHS, PUJA_HI_PATHS } from "./src/puja.js";
+import { makeCallToken, callBook, MAX_MINUTES } from "./src/call.js";
 import { signReply, verifyReply, speakKrishna, FREE_LISTENS } from "./src/voice.js";
 import { accountsFromEnv } from "./src/accounts.js";
 import { buildFacts } from "./src/report-facts.js";
@@ -197,7 +198,7 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.get("/api/config", (_req, res) => {
-  res.json({ built: STARTED, whatsappUrl, gaId, accounts: accounts.publicConfig, voice: process.env.GEMINI_VOICE === "on" });
+  res.json({ built: STARTED, whatsappUrl, gaId, accounts: accounts.publicConfig, voice: process.env.GEMINI_VOICE === "on", call: walletOn && process.env.GEMINI_VOICE === "on" });
 });
 
 // Today's panchang, plus a personal Moon-transit note when `moon` is given.
@@ -593,6 +594,54 @@ app.post("/api/krishna/speak", chatLimit, async (req, res, next) => {
     if (m) return res.status(m[0]).json({ error: m[1] });
     next(e);
   }
+});
+
+// Krishna on a call. The first minute of each day is free; every minute after is taken from the wallet as it begins.
+const calls = callBook();
+app.post("/api/krishna/call/start", chatLimit, async (req, res, next) => {
+  try {
+    if (!walletOn || !paidVoice()) return res.status(503).json({ error: "Calling Krishna is not switched on yet." });
+    if (!aiConfigured()) return res.status(503).json({ error: "Calling Krishna is not switched on yet." });
+    const language = parseLanguage(req.body?.language);
+    let free = false, paid = null;
+    if (!(await accounts.authenticate(req, res))) return;
+    const uid = req.user.uid;
+    if (calls.freeAvailable(uid)) { free = true; calls.useFree(uid); }
+    else {
+      paid = await accounts.charge(req, res, { kind: "call", amountPaise: PRICES.call, label: "Krishna call, minute 1" });
+      if (!paid) return;
+    }
+    let made;
+    try { made = await makeCallToken({ language }); } catch (e) {
+      if (free) calls.giveBackFree(uid); else await paid.refund();
+      throw e;
+    }
+    const callId = calls.open(uid);
+    res.json({ ...made, callId, free, maxMinutes: MAX_MINUTES, pricePaise: PRICES.call, balancePaise: paid ? paid.balancePaise : null });
+  } catch (e) {
+    const m = aiProblem(e);
+    if (m) return res.status(m[0]).json({ error: m[1] });
+    if (e?.code === "AI_NOT_CONFIGURED") return res.status(503).json({ error: "Calling Krishna is not switched on yet." });
+    next(e);
+  }
+});
+// The browser asks for each new minute as it begins. A 402 means the wallet is empty: the call should end.
+app.post("/api/krishna/call/minute", chatLimit, async (req, res, next) => {
+  try {
+    if (!walletOn) return res.status(503).json({ error: "Calling is not available." });
+    if (!(await accounts.authenticate(req, res))) return;
+    const id = String(req.body?.callId || "");
+    const m = calls.nextMinute(id, req.user.uid);
+    if (!m.ok) return res.status(m.reason === "max" ? 409 : 400).json({ code: m.reason, error: m.reason === "max" ? "This call has reached its longest time." : "That minute has not started yet." });
+    const paid = await accounts.charge(req, res, { kind: "call", amountPaise: PRICES.call, label: `Krishna call, minute ${m.minute}` });
+    if (!paid) return;
+    calls.commit(id);
+    res.json({ minute: m.minute, balancePaise: paid.balancePaise });
+  } catch (e) { next(e); }
+});
+app.post("/api/krishna/call/end", chatLimit, async (req, res) => {
+  if (walletOn && (await accounts.authenticate(req, res))) calls.end(String(req.body?.callId || ""));
+  if (!res.headersSent) res.json({ ok: true });
 });
 
 // The paid AI voice is off unless GEMINI_VOICE=on. Visitors then hear their phone's free voice instead.

@@ -40,73 +40,18 @@ if (box) {
   const W = () => window.kkWallet?.enabled ? window.kkWallet : null;
   let left = get("shubhly.chatLeft", null);
   let busy = false;
-  const priceTag = () => { const w = W(); return w ? `Each reply is ₹${w.prices.krishna / 100}. ${voiceOn ? `Hearing Krishna speak it aloud is ₹${w.prices.voice / 100} more.` : ""}` : ""; };
+  const priceTag = () => { const w = W(); return w ? `Each written reply is ₹${w.prices.krishna / 100}.` : ""; };
 
-  // ---- Krishna's voice: a calm voice from the server, or the phone's own voice if that is not available ----
-  let audio = null, stopSpeech = null, voiceOn = false;
-  fetch("/api/config").then((r) => r.json()).then((c) => { voiceOn = !!c.voice; log.querySelectorAll(".kr-listen").forEach(setLabel); }).catch(() => {});
-  const listenLabel = () => { const w = W(); return voiceOn && w ? `Hear Krishna speak · ₹${w.prices.voice / 100}` : voiceOn ? "Hear Krishna speak" : "Listen"; };
-  const setLabel = (b) => { if (!b.dataset.on) b.textContent = listenLabel(); };
-  const stopAll = () => {
-    if (audio) { audio.pause(); audio = null; }
-    if (stopSpeech) { stopSpeech(); stopSpeech = null; }
-    try { speechSynthesis.cancel(); } catch { /* not supported */ }
-    log.querySelectorAll(".kr-listen").forEach((b) => { b.dataset.on = ""; b.textContent = listenLabel(); });
-  };
-  function browserVoice(text, btn) {
-    if (!("speechSynthesis" in window)) { btn.textContent = "Voice not available"; return; }
-    const u = new SpeechSynthesisUtterance(text.slice(0, 900));
-    const hi = /[\u0900-\u097F]/.test(text);
-    u.lang = hi ? "hi-IN" : "en-IN"; u.rate = 0.82; u.pitch = 0.9;
-    const all = speechSynthesis.getVoices(), best = (l) => all.filter((x) => x.lang.replace("_", "-") === l).sort((a, b) => (/google|neural|natural|microsoft/i.test(b.name) ? 1 : 0) - (/google|neural|natural|microsoft/i.test(a.name) ? 1 : 0))[0]; const v = best(u.lang) || all.find((x) => x.lang.startsWith(u.lang.slice(0, 2)));
-    if (v) u.voice = v;
-    u.onend = u.onerror = () => { btn.dataset.on = ""; btn.textContent = listenLabel(); };
-    stopSpeech = () => speechSynthesis.cancel();
-    btn.textContent = "Stop"; btn.dataset.on = "1";
-    speechSynthesis.speak(u);
-  }
-  async function listen(btn, text, sig) {
-    if (btn.dataset.on) { stopAll(); return; }
-    stopAll();
-    btn.textContent = "Preparing the voice…"; btn.dataset.on = "1";
-    track("krishna_listen");
-    try {
-      if (!sig) throw new Error("fallback");
-      const r = await fetch("/api/krishna/speak", { method: "POST", headers: { "Content-Type": "application/json", ...(W() ? await W().headers() : {}) }, body: JSON.stringify({ cid, text, sig }) });
-      if ((r.status === 401 || r.status === 402) && W()) {
-        const j = await r.json().catch(() => ({}));
-        stopAll(); W().prompt(r.status === 401 ? "login" : "funds", j.needPaise);
-        return;
-      }
-      if (!r.ok) throw new Error(String(r.status));
-      if (W() && r.headers.get("X-Balance-Paise")) W().setBalance(Number(r.headers.get("X-Balance-Paise")));
-      const url = URL.createObjectURL(await r.blob());
-      audio = new Audio(url);
-      audio.onended = audio.onerror = () => { URL.revokeObjectURL(url); stopAll(); };
-      await audio.play();
-      btn.textContent = "Stop";
-    } catch (e) {
-      audio = null;
-      track("krishna_listen_fallback", { reason: String(e.message || "error").slice(0, 20) });
-      browserVoice(text, btn);
-    }
-  }
+  const stopAll = () => {};
 
   const add = (role, text, sig) => {
     const d = document.createElement("div");
     d.className = "kr-msg " + (role === "user" ? "km-me" : "km-ai");
     d.textContent = text;
-    if (role !== "user" && sig) addListen(d, text, sig);
     log.appendChild(d);
     log.scrollTop = log.scrollHeight;
     return d;
   };
-  function addListen(d, text, sig) {
-    const b = document.createElement("button");
-    b.type = "button"; b.className = "kr-listen"; b.textContent = listenLabel();
-    b.addEventListener("click", () => listen(b, text, sig));
-    d.appendChild(b);
-  }
   const render = () => {
     log.textContent = "";
     if (!history.length) add("model", "Welcome, dear one. Tell me what is on your mind, and we will look at it together, calmly, in the light of the Gita.");
@@ -129,7 +74,7 @@ if (box) {
     track("krishna_open");
     box.scrollIntoView({ block: "nearest", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   };
-  const close = () => { stopAll(); box.hidden = true; $("kr-open")?.removeAttribute("hidden"); };
+  const close = () => { box.hidden = true; $("kr-open")?.removeAttribute("hidden"); };
   const autosize = () => { input.style.height = "auto"; input.style.height = Math.min(input.scrollHeight, 120) + "px"; };
 
   async function ask(text) {
@@ -160,7 +105,6 @@ if (box) {
       if (!j.reply || !String(j.reply).trim()) throw new Error("Krishna is quiet for a moment. Please ask again.");
       wait.classList.remove("wait");
       wait.textContent = j.reply;
-      if (j.sig) addListen(wait, j.reply, j.sig);
       history.push({ role: "model", text: j.reply, sig: j.sig });
       if (W() && j.balancePaise != null) W().setBalance(j.balancePaise);
       if (Number.isInteger(j.left)) { left = j.left; set("shubhly.chatLeft", left); }
@@ -186,5 +130,12 @@ if (box) {
   input.addEventListener("input", autosize);
   input.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); ask(input.value); } });
   box.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+  // ---- calling Krishna (shown only when the live voice is switched on) ----
+  fetch("/api/config").then((r) => r.json()).then(async (c) => {
+    if (!c.call) return;
+    $("kr-callbtn").hidden = false;
+    const { initCall } = await import("/krishna-call.js");
+    initCall({ root: box, wallet: W, lang: () => get("shubhly.lang", "en"), track });
+  }).catch(() => {});
   if (location.hash === "#krishna") open();
 }
