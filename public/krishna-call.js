@@ -2,6 +2,8 @@
 // Krishna's voice comes back as audio. Each minute after the free one is charged from the wallet as it begins.
 
 const IN_RATE = 16000, OUT_RATE = 24000;
+// Krishna's voice is played a little slower, which also makes it deeper and calmer. 1 is normal; 0.85 is slower still.
+const PLAY_RATE = 0.9;
 const WORKLET = `class Cap extends AudioWorkletProcessor{process(i){const c=i[0]&&i[0][0];if(c)this.port.postMessage(c.slice(0));return true}}registerProcessor("cap",Cap)`;
 
 const b64 = (buf) => { let s = ""; const u = new Uint8Array(buf); for (let i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); };
@@ -118,8 +120,8 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
     const i16 = new Int16Array(unb64(data)), f = new Float32Array(i16.length);
     for (let i = 0; i < i16.length; i++) f[i] = i16[i] / 0x8000;
     const buf = ctx.createBuffer(1, f.length, OUT_RATE); buf.copyToChannel(f, 0);
-    const src = ctx.createBufferSource(); src.buffer = buf; src.connect(ctx.destination);
-    const at = Math.max(ctx.currentTime + 0.02, s.nextAt); src.start(at); s.nextAt = at + buf.duration;
+    const src = ctx.createBufferSource(); src.buffer = buf; src.playbackRate.value = PLAY_RATE; src.connect(ctx.destination);
+    const at = Math.max(ctx.currentTime + 0.02, s.nextAt); src.start(at); s.nextAt = at + buf.duration / PLAY_RATE;
     s.sources.add(src); say("Krishna is speaking"); duck(true);
     src.onended = () => { s?.sources.delete(src); if (s && !s.sources.size && !s.ended) { say("Listening…"); duck(false); } };
   }
