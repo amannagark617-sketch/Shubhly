@@ -652,8 +652,8 @@ app.get("/api/gita/audio/:file", chatLimit, async (req, res, next) => {
   try {
     const m = /^([1-9]\d?)-([1-9]\d{0,2})-(sa|en|hi)\.(?:wav|mp3)$/.exec(req.params.file);
     if (!m) return res.status(404).json({ error: "No such verse." });
-    if (!aiConfigured() || !paidVoice()) {
-      // A finished file may still exist even when the AI key is not set here.
+    if (true) {
+      // Free listening never calls the AI. A finished file may still exist even when the AI key is not set here.
       const have = await verseClip(m[1], m[2], m[3], async () => { const e = new Error("AI is not configured yet"); e.code = "AI_NOT_CONFIGURED"; throw e; });
       return res.sendFile(have.file, { headers: { "Content-Type": have.type, "Cache-Control": "public, max-age=604800" } });
     }

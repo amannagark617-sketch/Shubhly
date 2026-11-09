@@ -1,6 +1,6 @@
 // Plays a verse: the Sanskrit, or its meaning. One clip at a time.
 const track = (n, p) => window.track?.(n, p);
-let audio = null, active = null, token = 0, noServerAudio = false;
+let audio = null, active = null, token = 0;
 
 const toast = (m) => { const d = document.createElement("div"); d.className = "gv-toast"; d.textContent = m; document.body.append(d); setTimeout(() => d.remove(), 2600); };
 function reset() {
@@ -56,33 +56,15 @@ document.addEventListener("click", async (e) => {
   token++;                       // any earlier, still-loading click is now out of date
   if (active === b) return reset();
   reset();
-  const mine = token;
   const [ch, v] = b.dataset.listen.split(".");
   const art = b.closest(".gv");
   const wrap = b.closest(".gita-wrap");
   const lang = b.dataset.kind === "sa" ? "sa" : (wrap?.dataset.lang === "hi" ? "hi" : "en");
   active = b; b.classList.add("wait"); b.textContent = "Loading…";
   track("gita_listen", { verse: b.dataset.listen, kind: lang });
-  try {
-    if (noServerAudio) throw new Error("none");
-    const r = await fetch(`/api/gita/audio/${ch}-${v}-${lang}.wav`);
-    if (!r.ok) throw new Error(String(r.status));
-    if (!/^audio\//.test(r.headers.get("content-type") || "")) throw new Error("none");
-    const url = URL.createObjectURL(await r.blob());
-    if (mine !== token) return;
-    audio = new Audio(url);
-    audio.onended = () => reset();
-    audio.onerror = () => reset();
-    b.classList.remove("wait"); b.classList.add("on"); b.setAttribute("aria-pressed", "true"); b.textContent = "Stop";
-    await audio.play();
-  } catch (err) {
-    if (mine !== token) return;  // a newer click took over
-    if (String(err.message) !== "none" || true) noServerAudio = noServerAudio || /^(503|404|none)$/.test(String(err.message));
-    reset();
-    // Fall back to the phone's own voice so there is always something to hear.
-    active = b; b.classList.remove("wait");
-    const text = spoken(art, lang);
-    browserSpeak(text, lang === "en" ? "en-IN" : "hi-IN", b);
-  }
+  // Free listening uses the phone's own voice only, so it costs nothing.
+  reset();
+  active = b; b.classList.remove("wait");
+  browserSpeak(spoken(art, lang), lang === "en" ? "en-IN" : "hi-IN", b);
 });
 window.addEventListener("pagehide", reset);
