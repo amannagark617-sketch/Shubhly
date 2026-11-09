@@ -55,23 +55,33 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
     s = { ended: false, sources: new Set(), nextAt: 0, started: 0, timer: 0, ws: null, ctx: null, mic: null, minute: 1, callId: "" };
     // Phones only allow sound that is set up straight from the tap, so the audio parts are created here, before any waiting.
     const AC = window.AudioContext || window.webkitAudioContext;
+    let stage = "start";
     try {
+      stage = "audio";
       s.ctx = new AC(); s.out = new AC();
       s.ctx.resume?.(); s.out.resume?.();
       playUnlock(s.out);
       startMusic();
+      stage = "microphone";
       s.mic = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+      stage = "server";
       const r = await fetch("/api/krishna/call/start", { method: "POST", headers: { "Content-Type": "application/json", ...(await w.headers()) }, body: JSON.stringify({ language: lang() }) });
       const j = await r.json().catch(() => ({}));
       if (r.status === 401 || r.status === 402) { w.prompt(r.status === 401 ? "login" : "funds", j.needPaise); return finish(""); }
       if (!r.ok) throw new Error(j.error || "Krishna cannot take your call right now. Please try again.");
       if (j.balancePaise != null) w.setBalance(j.balancePaise);
       s.callId = j.callId; s.max = j.maxMinutes; s.free = j.free;
-      await openAudio(); await openSocket(j.token, j.model);
+      stage = "sound";
+      await openAudio();
+      stage = "connection";
+      await openSocket(j.token, j.model);
       track("krishna_call_start");
     } catch (e) {
-      const m = e?.name === "NotAllowedError" ? "Please allow the microphone to talk with Krishna. You were not charged for a call you could not make." : (e.message || "The call did not connect. Please try again.");
-      finish(m);
+      const denied = e?.name === "NotAllowedError" || e?.name === "SecurityError";
+      const detail = ` [${stage}: ${e?.name || "error"}${e?.message ? " " + String(e.message).slice(0, 90) : ""}]`;
+      finish(denied
+        ? "Please allow the microphone to talk with Krishna. On iPhone: Settings, then Safari, then Microphone, then Allow. You were not charged."
+        : ((e?.message && !/^(NotSupported|Invalid|Type|Reference|Range)/.test(e?.name || "") ? e.message : "The call did not connect. Please try again.") + detail));
     }
   }
 
