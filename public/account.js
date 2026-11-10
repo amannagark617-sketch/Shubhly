@@ -343,8 +343,13 @@ export function initAccount({ toast, config }) {
     try {
       order = await api("/api/account/topup", { method: "POST", body: { amount: rupees } });
       await loadScript(RZP);
+      window.track?.("begin_checkout", { value: order.amountPaise / 100, currency: order.currency || "INR" });
     } catch (e) { state.error = e.code === "AUTH" ? tr("e_generic") : (e.message || tr("e_generic")); return viewWallet(); }
     const done = async (resp) => {
+      // Razorpay has accepted the payment: tell Google Analytics so its buying reports match Razorpay. Only numbers, no personal details.
+      try {
+        window.track?.("purchase", { transaction_id: resp?.razorpay_order_id || order.orderId, value: order.amountPaise / 100, currency: order.currency || "INR", items: [{ item_id: "wallet_topup", item_name: "Wallet top-up", price: order.amountPaise / 100, quantity: 1 }] });
+      } catch { /* never block the wallet */ }
       try {
         const r = await api("/api/account/topup/verify", { method: "POST", body: resp });
         state.user.balancePaise = r.balancePaise; saveHint(state.user); paintButton();

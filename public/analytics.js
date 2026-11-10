@@ -37,6 +37,7 @@ const clean = (p) => {
   const o = {};
   for (const [k, v] of Object.entries(p || {})) {
     if (v === undefined || v === null || v === "") continue;
+    if (k === "items" && Array.isArray(v)) { o.items = v.slice(0, 10).map((i) => ({ item_id: String(i.item_id || "").slice(0, 40), item_name: String(i.item_name || "").slice(0, 60), price: Number(i.price) || 0, quantity: Number(i.quantity) || 1 })); continue; }
     o[String(k).slice(0, 40)] = typeof v === "number" ? (Number.isFinite(v) ? v : 0) : typeof v === "boolean" ? String(v) : String(v).slice(0, 100);
   }
   return o;
