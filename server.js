@@ -31,7 +31,7 @@ import { chapterArt, gitaCover } from "./src/gita-art.js";
 import { renderGitaIndex, renderChapter, chapterOf, GITA_PATHS, krishnaReply } from "./src/gita.js";
 import { buildMyDay } from "./src/myday.js";
 import { renderPujaIndex, renderPuja, pujaOf, PUJA_PATHS, PUJA_HI_PATHS } from "./src/puja.js";
-import { LIVE_MODEL, callBook, costFor, BLOCK_SECONDS, FREE_SECONDS, MAX_MINUTES } from "./src/call.js";
+import { LIVE_MODEL, callBook, costFor, BLOCK_SECONDS, FREE_SECONDS, MAX_MINUTES, MAX_CONCURRENT_CALLS, FREE_CALLS_PER_DAY } from "./src/call.js";
 import { attachCallRelay, ticketBook, RELAY_PATH } from "./src/call-relay.js";
 import { lockedFindings, teaseKundli, teaseMatch } from "./src/teaser.js";
 import { signReply, verifyReply, speakKrishna, FREE_LISTENS } from "./src/voice.js";
@@ -619,18 +619,24 @@ app.post("/api/krishna/speak", chatLimit, async (req, res, next) => {
 // Krishna on a call. The first minute of each day is free; after that the wallet is charged by the second, measured here on the server.
 const calls = callBook();
 const callTickets = ticketBook();
+// Free first-minute calls given out so far today (India time), across everyone. Keeps a crowd from running up the AI bill.
+const freeGiven = { day: "", n: 0 };
 app.post("/api/krishna/call/start", chatLimit, async (req, res, next) => {
   try {
     if (!walletOn || !paidVoice()) return res.status(503).json({ error: "Calling Krishna is not switched on yet." });
     if (!aiConfigured()) return res.status(503).json({ error: "Calling Krishna is not switched on yet." });
     const language = parseLanguage(req.body?.language);
     let free = false, paid = null;
+    // Too many calls at once: say so before anyone is charged.
+    if (calls.active() >= MAX_CONCURRENT_CALLS) return res.status(503).json({ error: "Krishna is speaking with many people right now. Please try again in a minute. You were not charged." });
     if (!(await accounts.authenticate(req, res))) return;
     const uid = req.user.uid, store = req.store;
     // The free minute is kept in the database (once per person per day in India time), so a restart does not hand out another.
     const day = new Date(Date.now() + 19_800_000).toISOString().slice(0, 10);
     await store.upsertUser(uid, req.user);
-    if (await store.takeFreeCall(uid, day)) free = true;
+    if (freeGiven.day !== day) { freeGiven.day = day; freeGiven.n = 0; }
+    // After the day's free calls are used up, calls are paid from the first seconds.
+    if (freeGiven.n < FREE_CALLS_PER_DAY && (await store.takeFreeCall(uid, day))) { free = true; freeGiven.n += 1; }
     else {
       // A call is paid by the second. The first few seconds are taken now; the rest follows the clock while the call runs.
       paid = await accounts.charge(req, res, { kind: "call", amountPaise: costFor(BLOCK_SECONDS, PRICES.call), label: "Krishna call" });
@@ -643,7 +649,7 @@ app.post("/api/krishna/call/start", chatLimit, async (req, res, next) => {
         return store.adjustSpend({ uid, id: spendId, deltaPaise: d, label });
       },
       async give(d, label) { return spendId ? (await store.adjustSpend({ uid, id: spendId, deltaPaise: -d, label })).balancePaise : null; },
-      async undo() { if (free) await store.giveBackFreeCall(uid, day); else if (spendId) await store.refund({ uid, id: spendId }); },
+      async undo() { if (free) { await store.giveBackFreeCall(uid, day); if (freeGiven.day === day && freeGiven.n > 0) freeGiven.n -= 1; } else if (spendId) await store.refund({ uid, id: spendId }); },
     };
     const callId = calls.open(uid, money, { free, charged: paid ? costFor(BLOCK_SECONDS, PRICES.call) : 0 });
     let memory = null;

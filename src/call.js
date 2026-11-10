@@ -11,6 +11,10 @@ import { buildKrishnaInstruction } from "./gita.js";
 
 export const LIVE_MODEL = process.env.GEMINI_LIVE_MODEL || "gemini-3.8-live";
 const VOICE = process.env.GEMINI_CALL_VOICE || process.env.GEMINI_TTS_VOICE || "Algieba"; // a smooth, soft male voice
+/** Limits that keep the bill predictable when a crowd arrives (change them with settings, no code needed). */
+const num = (v, d) => (Number.isFinite(Number(v)) && Number(v) >= 0 && v !== "" && v != null ? Number(v) : d);
+export const MAX_CONCURRENT_CALLS = num(process.env.MAX_CONCURRENT_CALLS, 20); // calls at the same moment
+export const FREE_CALLS_PER_DAY = num(process.env.FREE_CALLS_PER_DAY, 300); // free first-minute calls handed out in a whole day, across everyone
 export const MAX_MINUTES = Number(process.env.CALL_MAX_MINUTES) > 0 ? Number(process.env.CALL_MAX_MINUTES) : 15;
 
 const CALL_RULES = `
@@ -110,6 +114,8 @@ export function callBook({ now = () => Date.now(), maxMinutes = MAX_MINUTES } = 
       return id;
     },
     owner: (id) => calls.get(id)?.uid || done.get(id)?.uid || null,
+    /** How many calls are going on right now. */
+    active: () => calls.size,
     /** The server saw Google accept the call. From now the time counts. */
     markConnected(id) { const c = calls.get(id); if (c && !c.connectedAt) c.connectedAt = now(); },
     seconds(id) { const c = calls.get(id); return c ? used(c) : 0; },

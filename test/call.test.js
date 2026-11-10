@@ -160,3 +160,15 @@ test("a call is paid in one wallet entry that grows and shrinks with the seconds
   assert.equal(rows[0].amountPaise, -400);
   assert.equal(rows[0].label, "Krishna call, 0:30");
 });
+
+test("the book counts calls in progress, so the server can say it is busy", async () => {
+  const b = callBook();
+  const w = wallet(1000);
+  assert.equal(b.active(), 0);
+  const a = b.open("u1", w.money), c = b.open("u2", w.money);
+  assert.equal(b.active(), 2);
+  await b.end(a, "u1", PER_MIN);
+  assert.equal(b.active(), 1);
+  await b.end(c, "u2", PER_MIN);
+  assert.equal(b.active(), 0);
+});
