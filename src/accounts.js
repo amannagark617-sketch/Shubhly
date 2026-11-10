@@ -63,7 +63,7 @@ export function createAccounts({ getDeps, razorpay, publicConfig, limits = topup
         return null;
       }
       return {
-        balancePaise: r.balancePaise,
+        balancePaise: r.balancePaise, id: r.id,
         async refund() {
           try { return (await req.store.refund({ uid, id: r.id })).balancePaise; } catch (e) { console.error("refund failed:", uid, r.id, e?.message || e); return null; }
         },

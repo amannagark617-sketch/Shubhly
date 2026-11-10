@@ -49,7 +49,11 @@ function bridge(client, key, extra = {}, callId = "", hooks = {}) {
   const queue = [];
   let sawSetup = false, upOpen = false;
   const stop = setTimeout(() => { try { client.close(1000, "call time over"); } catch { /* gone */ } try { up.close(); } catch { /* gone */ } }, (MAX_MINUTES * 60 + 30) * 1000);
-  const shut = (why) => { clearTimeout(stop); clearInterval(meter); try { client.close(1011, String(why).slice(0, 100)); } catch { /* gone */ } try { up.close(); } catch { /* gone */ } };
+  const shut = (why) => { gone(); clearTimeout(stop); clearInterval(meter); try { client.close(1011, String(why).slice(0, 100)); } catch { /* gone */ } try { up.close(); } catch { /* gone */ } };
+
+  // However the call ends (the page, Google, the time limit, or a dropped phone), the server settles the wallet to the exact second.
+  let ended = false;
+  const gone = () => { if (!ended) { ended = true; Promise.resolve(hooks.closed?.(callId)).catch(() => {}); } };
 
   up.on("open", () => {
     upOpen = true;
@@ -60,16 +64,18 @@ function bridge(client, key, extra = {}, callId = "", hooks = {}) {
   up.on("message", (data, binary) => {
     if (!connected && data.length < 4096 && data.toString().includes("setupComplete")) {
       connected = true; hooks.onConnected?.(callId);
-      // Time is paid a minute at a time. If the next minute is not bought, the call is cut here, whatever the page does.
-      meter = setInterval(() => {
-        const until = hooks.paidUntil?.(callId);
-        if (until && Date.now() > until) { clearInterval(meter); shut("the paid minute is over"); }
+      // Time is paid by the second, a few seconds ahead. If the wallet cannot cover the next seconds, the call is cut here, whatever the page does.
+      let busy = false;
+      meter = setInterval(async () => {
+        if (busy || !hooks.tick) return;
+        busy = true;
+        try { if ((await hooks.tick(callId)) === false) { clearInterval(meter); shut("wallet empty"); } } catch { /* try again on the next beat */ } finally { busy = false; }
       }, 3000);
     }
     if (client.readyState === WebSocket.OPEN) client.send(data, { binary });
   });
   up.on("close", (code, reason) => {
-    clearTimeout(stop); clearInterval(meter);
+    gone(); clearTimeout(stop); clearInterval(meter);
     try { client.close(code >= 1000 && code < 5000 && code !== 1005 && code !== 1006 ? code : 1011, reason?.toString().slice(0, 100) || "the call service closed"); } catch { /* gone */ }
   });
   up.on("error", (e) => shut("could not reach the call service: " + (e?.message || "error")));
@@ -78,6 +84,6 @@ function bridge(client, key, extra = {}, callId = "", hooks = {}) {
     if (!sawSetup) { sawSetup = true; return; } // the page's own setup is ignored: the server decides the voice and instructions
     if (upOpen) up.send(data, { binary }); else queue.push({ data, binary });
   });
-  client.on("close", () => { clearTimeout(stop); clearInterval(meter); try { up.close(); } catch { /* gone */ } });
+  client.on("close", () => { gone(); clearTimeout(stop); clearInterval(meter); try { up.close(); } catch { /* gone */ } });
   client.on("error", () => shut("connection error"));
 }

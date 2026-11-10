@@ -31,7 +31,7 @@ import { chapterArt, gitaCover } from "./src/gita-art.js";
 import { renderGitaIndex, renderChapter, chapterOf, GITA_PATHS, krishnaReply } from "./src/gita.js";
 import { buildMyDay } from "./src/myday.js";
 import { renderPujaIndex, renderPuja, pujaOf, PUJA_PATHS, PUJA_HI_PATHS } from "./src/puja.js";
-import { LIVE_MODEL, callBook, MAX_MINUTES } from "./src/call.js";
+import { LIVE_MODEL, callBook, costFor, BLOCK_SECONDS, FREE_SECONDS, MAX_MINUTES } from "./src/call.js";
 import { attachCallRelay, ticketBook, RELAY_PATH } from "./src/call-relay.js";
 import { lockedFindings, teaseKundli, teaseMatch } from "./src/teaser.js";
 import { signReply, verifyReply, speakKrishna, FREE_LISTENS } from "./src/voice.js";
@@ -616,7 +616,7 @@ app.post("/api/krishna/speak", chatLimit, async (req, res, next) => {
   }
 });
 
-// Krishna on a call. The first minute of each day is free; every minute after is taken from the wallet as it begins.
+// Krishna on a call. The first minute of each day is free; after that the wallet is charged by the second, measured here on the server.
 const calls = callBook();
 const callTickets = ticketBook();
 app.post("/api/krishna/call/start", chatLimit, async (req, res, next) => {
@@ -626,22 +626,32 @@ app.post("/api/krishna/call/start", chatLimit, async (req, res, next) => {
     const language = parseLanguage(req.body?.language);
     let free = false, paid = null;
     if (!(await accounts.authenticate(req, res))) return;
-    const uid = req.user.uid;
+    const uid = req.user.uid, store = req.store;
     // The free minute is kept in the database (once per person per day in India time), so a restart does not hand out another.
     const day = new Date(Date.now() + 19_800_000).toISOString().slice(0, 10);
-    await req.store.upsertUser(uid, req.user);
-    if (await req.store.takeFreeCall(uid, day)) free = true;
+    await store.upsertUser(uid, req.user);
+    if (await store.takeFreeCall(uid, day)) free = true;
     else {
-      paid = await accounts.charge(req, res, { kind: "call", amountPaise: PRICES.call, label: "Krishna call, minute 1" });
+      // A call is paid by the second. The first few seconds are taken now; the rest follows the clock while the call runs.
+      paid = await accounts.charge(req, res, { kind: "call", amountPaise: costFor(BLOCK_SECONDS, PRICES.call), label: "Krishna call" });
       if (!paid) return;
     }
-    const callId = calls.open(uid, async () => { if (free) await req.store.giveBackFreeCall(uid, day); else await paid.refund(); });
+    let spendId = paid ? paid.id : null;
+    const money = {
+      async take(d, label) {
+        if (!spendId) { const r = await store.spend({ uid, amountPaise: d, kind: "call", label }); if (r.ok) spendId = r.id; return r; }
+        return store.adjustSpend({ uid, id: spendId, deltaPaise: d, label });
+      },
+      async give(d, label) { return spendId ? (await store.adjustSpend({ uid, id: spendId, deltaPaise: -d, label })).balancePaise : null; },
+      async undo() { if (free) await store.giveBackFreeCall(uid, day); else if (spendId) await store.refund({ uid, id: spendId }); },
+    };
+    const callId = calls.open(uid, money, { free, charged: paid ? costFor(BLOCK_SECONDS, PRICES.call) : 0 });
     let memory = null;
     try {
       const m = await req.store.getKrishnaMemory(uid);
       if (m.on) { const u = await req.store.getUser(uid); memory = { name: u?.name || "", notes: m.notes }; }
     } catch { /* the call works without it */ }
-    res.json({ ticket: callTickets.issue(callId, { memory }), path: RELAY_PATH, model: LIVE_MODEL, callId, free, maxMinutes: MAX_MINUTES, pricePaise: PRICES.call, balancePaise: paid ? paid.balancePaise : null });
+    res.json({ ticket: callTickets.issue(callId, { memory }), path: RELAY_PATH, model: LIVE_MODEL, callId, free, freeSeconds: FREE_SECONDS, maxMinutes: MAX_MINUTES, pricePaise: PRICES.call, balancePaise: paid ? paid.balancePaise : null });
   } catch (e) {
     const m = aiProblem(e);
     if (m) return res.status(m[0]).json({ error: m[1] });
@@ -649,24 +659,11 @@ app.post("/api/krishna/call/start", chatLimit, async (req, res, next) => {
     next(e);
   }
 });
-// The browser asks for each new minute as it begins. A 402 means the wallet is empty: the call should end.
-app.post("/api/krishna/call/minute", chatLimit, async (req, res, next) => {
-  try {
-    if (!walletOn) return res.status(503).json({ error: "Calling is not available." });
-    if (!(await accounts.authenticate(req, res))) return;
-    const id = String(req.body?.callId || "");
-    const m = calls.nextMinute(id, req.user.uid);
-    if (!m.ok) return res.status(m.reason === "max" ? 409 : 400).json({ code: m.reason, error: m.reason === "max" ? "This call has reached its longest time." : "That minute has not started yet." });
-    const paid = await accounts.charge(req, res, { kind: "call", amountPaise: PRICES.call, label: `Krishna call, minute ${m.minute}` });
-    if (!paid) return;
-    calls.commit(id);
-    res.json({ minute: m.minute, balancePaise: paid.balancePaise });
-  } catch (e) { next(e); }
-});
 app.post("/api/krishna/call/end", chatLimit, async (req, res) => {
   if (!walletOn || !(await accounts.authenticate(req, res))) return;
-  const refunded = await calls.end(String(req.body?.callId || ""), req.user.uid); // the server decides if it connected; the page cannot ask for a refund
-  res.json({ ok: true, refunded });
+  // The server decides if it connected and how long it lasted; the page cannot ask for a refund or a different time.
+  const r = await calls.end(String(req.body?.callId || ""), req.user.uid, PRICES.call);
+  res.json({ ok: true, refunded: !!r?.refunded, seconds: r?.seconds || 0, chargedPaise: r?.chargedPaise || 0, balancePaise: r?.balancePaise ?? null });
   // If they let Krishna remember them, keep a few short notes from what they said on the call.
   const said = String(req.body?.said || "").replace(/\s+/g, " ").slice(0, 1500);
   if (said.length > 80 && req.body?.failed !== true && req.store) {
@@ -847,4 +844,9 @@ const port = Number(process.env.PORT) || 3000;
 const httpServer = app.listen(port, "0.0.0.0", () => {
   console.log(`Kundli Kaka is running on http://0.0.0.0:${port}`);
 });
-attachCallRelay(httpServer, callTickets, { onConnected: (id) => calls.markConnected(id), paidUntil: (id) => calls.paidUntil(id) });
+attachCallRelay(httpServer, callTickets, {
+  onConnected: (id) => calls.markConnected(id),
+  tick: async (id) => (await calls.settle(id, PRICES.call)).ok,
+  // Settle to the exact second however the call ended (the page, Google, the time limit, a dropped phone).
+  closed: (id) => { const uid = calls.owner(id); return uid && calls.end(id, uid, PRICES.call); },
+});

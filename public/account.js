@@ -10,7 +10,7 @@ const D = {
   en: {
     login_btn: "Login", wallet: "Wallet", close: "Close",
     e_captcha: "We could not check that you are not a robot. Please refresh the page and try again.", e_storage: "Your browser is blocking storage. Turn off private mode or allow cookies, then try again.",
-    prices_h: "What things cost", p_chat: "Astrologer reply", p_krishna: "Krishna reply", p_call: "Call Krishna (per minute)", p_report: "Kundli report with PDF", p_milan: "Couple's Milan report with PDF", my_reports: "My reports",
+    prices_h: "What things cost", p_chat: "Astrologer reply", p_krishna: "Krishna reply", p_call: "Call Krishna (per minute, charged by the second)", p_report: "Kundli report with PDF", p_milan: "Couple's Milan report with PDF", my_reports: "My reports",
     per_reply: "per reply", bonus_tag: "+{a} extra", welcome_note: "New here? Log in with your mobile number to get a {a} welcome credit.",
     h_spend: "Used", h_refund: "Returned (reply failed)", h_welcome: "Welcome credit", h_bonus: "incl. {a} bonus",
     need_login: "Please log in to continue. Your wallet is used for replies and reports.", need_money: "Your wallet needs {a} for this. Add money to continue.",

@@ -120,6 +120,15 @@ export function memoryStore() {
       txs.set(uid, [row, ...(txs.get(uid) || [])]);
       return { ok: true, balancePaise: u.balancePaise, id: row.id };
     },
+    /** Change an earlier spend by deltaPaise (a call is paid by the second). Positive takes more, negative gives back. */
+    async adjustSpend({ uid, id, deltaPaise, label }) {
+      const u = users.get(uid), row = (txs.get(uid) || []).find((r) => r.id === id && r.type === "spend");
+      if (!u || !row || row.refunded) return { ok: false, balancePaise: u?.balancePaise || 0 };
+      if (deltaPaise > 0 && u.balancePaise < deltaPaise) return { ok: false, balancePaise: u.balancePaise };
+      u.balancePaise -= deltaPaise; row.amountPaise -= deltaPaise; row.balanceAfterPaise = u.balancePaise;
+      if (label) row.label = label;
+      return { ok: true, balancePaise: u.balancePaise };
+    },
     /** Give back a spend (the reply failed). Works once per spend. */
     async refund({ uid, id }) {
       const u = users.get(uid), list = txs.get(uid) || [];
@@ -232,6 +241,20 @@ export function firestoreStore(db) {
         tx.update(user(uid), { balancePaise: next });
         tx.set(user(uid).collection("transactions").doc(row.id), row);
         return { ok: true, balancePaise: next, id: row.id };
+      });
+    },
+    async adjustSpend({ uid, id, deltaPaise, label }) {
+      return db.runTransaction(async (tx) => {
+        const rowRef = user(uid).collection("transactions").doc(id);
+        const [uSnap, rSnap] = await Promise.all([tx.get(user(uid)), tx.get(rowRef)]);
+        const row = rSnap.exists ? rSnap.data() : null;
+        const balance = uSnap.exists ? uSnap.data().balancePaise || 0 : 0;
+        if (!row || row.type !== "spend" || row.refunded) return { ok: false, balancePaise: balance };
+        if (deltaPaise > 0 && balance < deltaPaise) return { ok: false, balancePaise: balance };
+        const next = balance - deltaPaise;
+        tx.update(user(uid), { balancePaise: next });
+        tx.update(rowRef, { amountPaise: row.amountPaise - deltaPaise, balanceAfterPaise: next, ...(label ? { label } : {}) });
+        return { ok: true, balancePaise: next };
       });
     },
     async refund({ uid, id }) {

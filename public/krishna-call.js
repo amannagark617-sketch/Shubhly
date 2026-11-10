@@ -1,5 +1,5 @@
 // A live voice call with Krishna. The microphone is streamed to Gemini Live with a short-lived token from our server;
-// Krishna's voice comes back as audio. Each minute after the free one is charged from the wallet as it begins.
+// Krishna's voice comes back as audio. After the free first minute of the day, the wallet is charged by the second (the server keeps the time).
 
 const IN_RATE = 16000, OUT_RATE = 24000;
 // Playback speed. 1 is natural. Below 1 slows the voice but also makes it artificially deep, so it is left at 1.
@@ -47,7 +47,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
   function priceNote() {
     const w = wallet();
     const p = w?.prices?.call;
-    price.textContent = p ? `Your first minute each day is free. After that it is ${inr(p)} a minute from your wallet.` : "";
+    price.textContent = p ? `Your first minute each day is free. After that it is ${inr(p)} a minute, charged by the second. For example, 30 seconds costs ${inr(Math.round(p / 2))}.` : "";
   }
 
   const caption = (who, text, replace) => {
@@ -65,7 +65,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
     if (!w.loggedIn()) { needLogin(); w.prompt("login"); return; }
     if (!navigator.mediaDevices?.getUserMedia || !window.WebSocket || !(window.AudioContext || window.webkitAudioContext)) { say("Your browser cannot make calls. Please open this page in Chrome or Safari."); return; }
     startBtn.hidden = true; endBtn.hidden = false; caps.textContent = ""; say("Connecting…"); clock.textContent = "0:00";
-    s = { ended: false, sources: new Set(), nextAt: 0, started: 0, timer: 0, ws: null, ctx: null, mic: null, minute: 1, callId: "" };
+    s = { ended: false, sources: new Set(), nextAt: 0, started: 0, timer: 0, ws: null, ctx: null, mic: null, callId: "" };
     // Phones only allow sound that is set up straight from the tap, so the audio parts are created here, before any waiting.
     const AC = window.AudioContext || window.webkitAudioContext;
     let stage = "start";
@@ -83,7 +83,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
       if (r.status === 401 || r.status === 402) { w.prompt(r.status === 401 ? "login" : "funds", j.needPaise); return finish(""); }
       if (!r.ok) throw new Error(j.error || "Krishna cannot take your call right now. Please try again.");
       if (j.balancePaise != null) w.setBalance(j.balancePaise);
-      s.callId = j.callId; s.max = j.maxMinutes; s.free = j.free; s.price = j.pricePaise;
+      s.callId = j.callId; s.max = j.maxMinutes; s.free = j.free; s.freeSeconds = j.freeSeconds; s.price = j.pricePaise;
       stage = "sound";
       await openAudio();
       stage = "connection";
@@ -127,12 +127,19 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
       const to = setTimeout(() => bail("It took too long to connect."), 12000);
       ws.onopen = () => ws.send(JSON.stringify({ setup: { model: model.startsWith("models/") ? model : "models/" + model } }));
       ws.onerror = () => setTimeout(() => bail("Please check your internet and try again. (no reply from the call service)"), 600); // wait a moment: the close message that follows says why
-      ws.onclose = (ev) => { if (!done) bail(`(${ev.code}${ev.reason ? ": " + String(ev.reason).slice(0, 120) : ""})`); else if (s && !s.ended && s.ws === ws) finish("The call ended."); };
+      ws.onclose = (ev) => {
+        if (!done) bail(`(${ev.code}${ev.reason ? ": " + String(ev.reason).slice(0, 120) : ""})`);
+        else if (s && !s.ended && s.ws === ws) {
+          // The server cuts the call when the wallet cannot cover the next seconds.
+          if (/wallet/i.test(ev.reason || "")) { finish("Your wallet is empty, so the call has ended. Add money to keep talking with Krishna."); wallet()?.prompt("funds"); }
+          else finish("The call ended.");
+        }
+      };
       ws.onmessage = async (ev) => {
         let m; try { m = JSON.parse(typeof ev.data === "string" ? ev.data : await ev.data.text()); } catch { return; }
         if (m.setupComplete && !done) {
           done = true; clearTimeout(to); s.ready = true; s.connected = true; s.started = Date.now();
-          say(s.free ? "Krishna is joining… (your free minute for today)" : `Krishna is joining… (₹${Math.round((s.price || 0) / 100)} taken for this minute)`); tick(); s.timer = setInterval(tick, 1000);
+          say(s.free ? "Krishna is joining… (your first minute today is free)" : "Krishna is joining… (charged by the second)"); tick(); s.timer = setInterval(tick, 1000);
           ws.send(JSON.stringify({ clientContent: { turns: [{ role: "user", parts: [{ text: "(कॉल जुड़ गया है। हिंदी में वत्स को स्नेह से आशीर्वाद दो और पूछो कि उनके मन में क्या है।)" }] }], turnComplete: true } }));
           ok();
         }
@@ -159,23 +166,16 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
   }
   function stopPlayback() { if (!s) return; for (const x of s.sources) { try { x.stop(); } catch { /* ended */ } } s.sources.clear(); s.nextAt = 0; duck(false); }
 
-  // The clock, and the charge for each new minute as it begins.
-  async function tick() {
+  // The clock, and what the call has cost so far. The server keeps the real count; this is the same sum, shown each second.
+  const mmss = (secs) => `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
+  function tick() {
     if (!s || s.ended) return;
-    const secs = Math.floor((Date.now() - s.started) / 1000);
-    clock.textContent = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
-    if (secs >= s.minute * 60 && !s.charging) {
-      s.charging = true;
-      try {
-        const w = wallet();
-        const r = await fetch("/api/krishna/call/minute", { method: "POST", headers: { "Content-Type": "application/json", ...(await w.headers()) }, body: JSON.stringify({ callId: s.callId }) });
-        const j = await r.json().catch(() => ({}));
-        if (r.ok) { s.minute = j.minute; if (j.balancePaise != null) w.setBalance(j.balancePaise); }
-        else if (r.status === 402) { if (j.balancePaise != null) w.setBalance(j.balancePaise); finish("Your wallet is empty, so the call has ended. Add money to keep talking with Krishna."); w.prompt("funds", j.needPaise); return; }
-        else if (r.status === 409) return finish("This call has reached its longest time. You can call again any time.");
-        else s.minute += 1; // a hiccup: try again next minute rather than cutting the call
-      } catch { /* network blip: the next tick tries again */ } finally { if (s) s.charging = false; }
-    }
+    const secs = Math.max(0, Math.floor((Date.now() - s.started) / 1000));
+    clock.textContent = mmss(secs);
+    const FREE = s.freeSeconds || 60, per = s.price || 0;
+    if (s.free && secs < FREE) { price.textContent = `Free minute: ${FREE - secs} seconds left`; return; }
+    const billable = Math.max(0, secs - (s.free ? FREE : 0));
+    price.textContent = `Call cost so far: ${inr(Math.round(billable * per / 60))} (${inr(per)} a minute, by the second)`;
   }
 
   function finish(message) {
@@ -187,10 +187,19 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
     try { old.ws?.close(); } catch { /* closed */ }
     try { old.mic?.getTracks().forEach((t) => t.stop()); } catch { /* stopped */ }
     try { old.node?.disconnect(); old.ctx?.close(); old.out?.close(); } catch { /* closed */ }
-    if (old.callId) { wallet()?.headers().then((h) => fetch("/api/krishna/call/end", { method: "POST", headers: { "Content-Type": "application/json", ...h }, body: JSON.stringify({ callId: old.callId, failed: !old.connected, said: old.said || "" }) })).catch(() => {}); }
+    // The server settles the wallet to the exact second and tells us what it took; show that, not our own sum.
+    if (old.callId) {
+      const w = wallet();
+      w?.headers().then((h) => fetch("/api/krishna/call/end", { method: "POST", headers: { "Content-Type": "application/json", ...h }, body: JSON.stringify({ callId: old.callId, failed: !old.connected, said: old.said || "" }) }))
+        .then((r) => r.json()).then((j) => {
+          if (j.balancePaise != null) w.setBalance(j.balancePaise);
+          if (j.connected !== false && j.seconds > 0) price.textContent = `This call: ${mmss(j.seconds)} · ${j.chargedPaise ? inr(j.chargedPaise) + " charged" : "free"}`;
+          else if (j.refunded) price.textContent = "You were not charged.";
+        }).catch(() => {});
+    }
     startBtn.hidden = false; endBtn.hidden = true; startBtn.textContent = "Call again";
     say(message || "The call has ended. Thank you for talking with Krishna.");
-    track("krishna_call_end", { minutes: old.minute });
+    track("krishna_call_end", { seconds: Math.max(0, Math.floor((Date.now() - (old.started || Date.now())) / 1000)) });
   }
 
   open.addEventListener("click", () => {

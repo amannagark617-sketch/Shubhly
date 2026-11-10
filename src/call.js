@@ -74,45 +74,96 @@ export async function makeCallToken({ language = "en", ai = liveClient() } = {})
   return { token: t.name, model: LIVE_MODEL };
 }
 
+/** Calls are paid by the second. The first minute of each day is free. */
+export const FREE_SECONDS = 60;
+/** The wallet is charged a few seconds ahead, so a call can be cut the moment the money is gone. */
+export const BLOCK_SECONDS = 10;
+const LEAD_SECONDS = 4;
+/** What `secs` seconds cost at `perMinute` paise a minute, in whole paise (30 s of a Rs 10 minute is 500 paise). */
+export const costFor = (secs, perMinute) => Math.round(Math.max(0, secs) * perMinute / 60);
+const clock = (secs) => `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
+
 /**
- * Keeps track of calls in progress, so a minute can only be charged for a real call, once,
- * and only when that minute has actually begun. The first minute of the day is free.
+ * Keeps track of calls in progress. Time is measured here, on the server, from the moment Google accepted the call,
+ * so the page cannot change what is charged. `money` (given when the call opens) takes from or gives back to the wallet:
+ *   take(deltaPaise, label) -> { ok, balancePaise }   give(deltaPaise, label) -> balancePaise   undo() -> puts everything back
  */
 export function callBook({ now = () => Date.now(), maxMinutes = MAX_MINUTES } = {}) {
-  const calls = new Map(); // id -> { uid, startedAt, minutes }
+  const calls = new Map(); // id -> { uid, connectedAt, free, charged, money, lock }
+  const done = new Map(); // id -> { uid, result } for a few minutes, so a second "end" gets the same answer
   const freeDay = new Map(); // uid -> "YYYY-MM-DD"
   const today = () => new Date(now()).toISOString().slice(0, 10);
-  return {
+  const maxSecs = maxMinutes * 60;
+  const used = (c, at = now()) => (c.connectedAt ? Math.min(maxSecs, Math.max(0, Math.ceil((at - c.connectedAt) / 1000))) : 0);
+  const free = (c) => (c.free ? FREE_SECONDS : 0);
+  const queue = (c, fn) => { const run = (c.lock || Promise.resolve()).then(fn, fn); c.lock = run.catch(() => {}); return run; };
+
+  const book = {
     freeAvailable: (uid) => freeDay.get(uid) !== today(),
     useFree(uid) { freeDay.set(uid, today()); if (freeDay.size > 50000) freeDay.clear(); },
     giveBackFree(uid) { if (freeDay.get(uid) === today()) freeDay.delete(uid); },
-    /** A call began. undo() gives the first minute back (money or the free minute) if it never connected. */
-    open(uid, undo) {
+    /** A call began. `charged` is what was already taken for the first seconds. */
+    open(uid, money = null, { free: isFree = false, charged = 0 } = {}) {
       const id = crypto.randomBytes(12).toString("hex");
-      calls.set(id, { uid, startedAt: now(), connectedAt: 0, minutes: 1, undo });
+      calls.set(id, { uid, connectedAt: 0, free: isFree, charged, money, lock: null });
       if (calls.size > 20000) calls.clear();
       return id;
     },
-    /** The next minute of a call: { ok, minute } when it has begun, else a reason. */
-    nextMinute(id, uid) {
-      const c = calls.get(id);
-      if (!c || c.uid !== uid) return { ok: false, reason: "unknown" };
-      if (c.minutes >= maxMinutes) return { ok: false, reason: "max" };
-      if (now() - c.startedAt < c.minutes * 60000 - 8000) return { ok: false, reason: "early" };
-      return { ok: true, minute: c.minutes + 1 };
-    },
-    commit(id) { const c = calls.get(id); if (c) c.minutes += 1; },
-    /** The server saw Google accept the call. From now the first minute is earned and cannot be refunded. */
+    owner: (id) => calls.get(id)?.uid || done.get(id)?.uid || null,
+    /** The server saw Google accept the call. From now the time counts. */
     markConnected(id) { const c = calls.get(id); if (c && !c.connectedAt) c.connectedAt = now(); },
-    /** When the paid time runs out, in ms. After this the call is cut unless the next minute was bought. */
-    paidUntil(id, graceMs = 25000) { const c = calls.get(id); return c && c.connectedAt ? c.connectedAt + c.minutes * 60000 + graceMs : null; },
-    /** The call is over. If the server never saw it connect, the first minute is given back, once. What the browser says does not matter. */
-    async end(id, uid) {
+    seconds(id) { const c = calls.get(id); return c ? used(c) : 0; },
+    charged(id) { return calls.get(id)?.charged || 0; },
+    /**
+     * Bring the wallet up to date. Mid-call it stays a few seconds ahead of the clock; at the end (`final`) it is exact,
+     * and anything taken ahead is given back. { ok: false } means the money has run out and the call should end.
+     */
+    settle(id, perMinute, final = false) {
       const c = calls.get(id);
-      if (!c || c.uid !== uid) return false;
-      calls.delete(id);
-      if (!c.connectedAt && c.minutes === 1 && c.undo) { try { await c.undo(); return true; } catch { return false; } }
-      return false;
+      if (!c) return Promise.resolve({ ok: false, reason: "unknown" });
+      return queue(c, async () => {
+        const secs = used(c);
+        const label = `Krishna call, ${clock(secs)}`;
+        const billable = (extra) => Math.min(Math.max(0, secs + extra - free(c)), Math.max(0, maxSecs - free(c)));
+        if (!final && c.charged >= costFor(billable(LEAD_SECONDS), perMinute)) return { ok: true };
+        const target = final ? costFor(billable(0), perMinute) : costFor(billable(BLOCK_SECONDS), perMinute);
+        const delta = target - c.charged;
+        if (delta === 0) return { ok: true };
+        if (delta < 0) { const balancePaise = await c.money?.give(-delta, label); c.charged = target; return { ok: true, balancePaise }; }
+        let r = await c.money.take(delta, label);
+        if (r.ok) { c.charged = target; return { ok: true, balancePaise: r.balancePaise }; }
+        // Not enough for the whole block: take what the time so far needs, and the call ends when that runs out.
+        const need = final ? delta : costFor(billable(LEAD_SECONDS), perMinute) - c.charged;
+        if (need > 0 && need < delta) { r = await c.money.take(need, label); if (r.ok) { c.charged += need; return { ok: true, balancePaise: r.balancePaise }; } }
+        if (final && r.balancePaise > 0) { const all = await c.money.take(r.balancePaise, label); if (all.ok) { c.charged += r.balancePaise; return { ok: false, reason: "funds", balancePaise: all.balancePaise }; } }
+        return { ok: false, reason: "funds", balancePaise: r.balancePaise };
+      });
+    },
+    /**
+     * The call is over. One that never connected is put back (the money or the free minute). One that did is settled to the
+     * exact second. Asking twice gets the same answer. What the browser says does not matter.
+     */
+    end(id, uid, perMinute) {
+      const old = done.get(id);
+      if (old) return Promise.resolve(old.uid === uid ? old.result : null);
+      const c = calls.get(id);
+      if (!c || c.uid !== uid) return Promise.resolve(null);
+      if (c.ending) return c.ending;
+      c.ending = (async () => {
+        let result;
+        if (!c.connectedAt) {
+          try { await queue(c, () => c.money?.undo()); } catch { /* the page is told below */ }
+          result = { connected: false, seconds: 0, chargedPaise: 0, refunded: true };
+        } else {
+          const s = await book.settle(id, perMinute, true);
+          result = { connected: true, seconds: used(c), chargedPaise: c.charged, balancePaise: s.balancePaise, refunded: false };
+        }
+        calls.delete(id);
+        done.set(id, { uid, result }); setTimeout(() => done.delete(id), 300_000).unref?.();
+        return result;
+      })();
+      return c.ending;
     },
   };
+  return book;
 }
