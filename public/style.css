@@ -1829,3 +1829,32 @@ body.blog-page header.nav { position: fixed; }
 @media (min-width: 1040px) { .kr-float { bottom: 20px; right: 20px; } }
 @media print { .kr-float, .kr-hero { display: none !important; } }
 .kr-float[hidden] { display: none; }
+
+/* ---- Footer: white, plain and rectangular. One idea per block, so it does not feel crowded. ---- */
+.footer { background: #fff; color: #1b1b3a; padding: 28px 0 96px; border-top: 1px solid #e3e3ee; font-size: 0.95rem; }
+.footer .ft-top { padding-bottom: 18px; }
+.footer .ft-top .brand { color: #1b1b3a; font-size: 1.35rem; margin-bottom: 10px; }
+.footer .ft-top .brand-text b { color: var(--red); }
+.footer .ft-top p { color: #5a5a74; max-width: 46ch; margin: 0; line-height: 1.55; }
+.footer nav.ft-links { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; border-top: 1px solid #e3e3ee; padding: 6px 0; margin: 0; }
+.footer nav.ft-links a { color: #1b1b3a; font-weight: 600; text-decoration: none; padding: 11px 0; border-bottom: 1px solid #f0f0f6; overflow-wrap: anywhere; }
+.footer nav.ft-links a:hover, .footer nav.ft-links a:focus-visible { color: var(--red); }
+.footer nav.ft-links a[href^="mailto"] { grid-column: 1 / -1; font-weight: 500; color: #5a5a74; border-bottom: 0; }
+.footer nav.ft-social { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; border-top: 0; padding: 14px 0 6px; margin: 0; }
+.footer nav.ft-social a { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; border: 1px solid #cfcfe0; border-radius: 0; background: #fff; color: #1b1b3a; font-weight: 600; text-decoration: none; }
+.footer nav.ft-social a:hover, .footer nav.ft-social a:focus-visible { border-color: #1b1b3a; }
+.footer .ft-signs { border-top: 1px solid #e3e3ee; margin-top: 14px; }
+.footer .ft-signs summary { cursor: pointer; padding: 14px 0; font-weight: 600; list-style: none; }
+.footer .ft-signs summary::-webkit-details-marker { display: none; }
+.footer .ft-signs summary::after { content: "+"; float: right; font-weight: 400; }
+.footer .ft-signs[open] summary::after { content: "–"; }
+.footer .ft-signs nav { display: flex; flex-wrap: wrap; gap: 8px 18px; border-top: 0; padding: 0 0 12px; margin: 0; }
+.footer .ft-signs nav a { color: #5a5a74; font-weight: 400; text-decoration: none; }
+.footer .ft-signs nav a:hover { color: var(--red); }
+.footer .ft-base { border-top: 1px solid #e3e3ee; padding-top: 14px; }
+.footer .ft-base p { color: #77778f; font-size: 0.85rem; line-height: 1.55; margin: 0 0 8px; max-width: 60ch; }
+.footer .ft-base .build-tag { opacity: 1; }
+.footer .ft-base .install-btn { margin-top: 6px; border-radius: 0; border: 1px solid #1b1b3a; color: #1b1b3a; }
+@media (min-width: 760px) { .footer nav.ft-links { grid-template-columns: repeat(3, 1fr); } .footer nav.ft-social { grid-template-columns: repeat(3, 160px); } }
+@media (min-width: 1040px) { .footer { padding-bottom: 36px; } }
+.footer .ft-top .brand { text-decoration: none; }

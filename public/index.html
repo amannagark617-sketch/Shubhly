@@ -614,12 +614,11 @@
 
   <footer class="footer">
     <div class="wrap">
-      <a class="brand" href="/" aria-label="Kundli Kaka home"><img class="brand-mark" src="/img/logo-mark.png" alt="" width="36" height="36" /><span class="brand-text">Kundli <b>Kaka</b></span></a>
-      <p data-i="foot1"></p>
-      <p data-i="foot2"></p>
-      <p><a href="mailto:hello@shubhlyastro.in">hello@shubhlyastro.in</a></p>
-      <p class="build-tag" id="buildTag" hidden></p>
-      <nav class="foot-links" aria-label="Pages">
+      <div class="ft-top">
+        <a class="brand" href="/" aria-label="Kundli Kaka home"><img class="brand-mark" src="/img/logo-mark.png" alt="" width="36" height="36" /><span class="brand-text">Kundli <b>Kaka</b></span></a>
+        <p data-i="foot1"></p>
+      </div>
+      <nav class="ft-links" aria-label="Pages">
         <a href="/kundli" data-i="nav_kundli"></a>
         <a href="/rashifal" data-i="nav_rashifal"></a>
         <a href="/match" data-i="nav_match"></a>
@@ -630,27 +629,35 @@
         <a href="/gita">Bhagavad Gita</a>
         <a href="/blog">Blog</a>
         <a href="/blog/how-kundli-kaka-works">How we work</a>
+        <a href="mailto:hello@shubhlyastro.in">hello@shubhlyastro.in</a>
       </nav>
-      <nav class="foot-links foot-social" aria-label="Follow Kundli Kaka">
+      <nav class="ft-social" aria-label="Follow Kundli Kaka">
         <a href="https://www.instagram.com/kundlikaka/" target="_blank" rel="noopener">Instagram</a>
         <a href="https://www.facebook.com/people/Kundli-Kaka/61595737817862/" target="_blank" rel="noopener">Facebook</a>
         <a href="https://www.youtube.com/@kundlikaka" target="_blank" rel="noopener">YouTube</a>
       </nav>
-      <div class="foot-links"><button type="button" class="install-btn" data-install hidden data-i="pwa_install"></button></div>
-      <nav class="foot-links foot-signs" aria-label="Rashifal">
-        <a href="/rashifal/aries">Aries</a>
-        <a href="/rashifal/taurus">Taurus</a>
-        <a href="/rashifal/gemini">Gemini</a>
-        <a href="/rashifal/cancer">Cancer</a>
-        <a href="/rashifal/leo">Leo</a>
-        <a href="/rashifal/virgo">Virgo</a>
-        <a href="/rashifal/libra">Libra</a>
-        <a href="/rashifal/scorpio">Scorpio</a>
-        <a href="/rashifal/sagittarius">Sagittarius</a>
-        <a href="/rashifal/capricorn">Capricorn</a>
-        <a href="/rashifal/aquarius">Aquarius</a>
-        <a href="/rashifal/pisces">Pisces</a>
-      </nav>
+      <details class="ft-signs">
+        <summary>Zodiac signs</summary>
+        <nav aria-label="Rashifal">
+          <a href="/rashifal/aries">Aries</a>
+          <a href="/rashifal/taurus">Taurus</a>
+          <a href="/rashifal/gemini">Gemini</a>
+          <a href="/rashifal/cancer">Cancer</a>
+          <a href="/rashifal/leo">Leo</a>
+          <a href="/rashifal/virgo">Virgo</a>
+          <a href="/rashifal/libra">Libra</a>
+          <a href="/rashifal/scorpio">Scorpio</a>
+          <a href="/rashifal/sagittarius">Sagittarius</a>
+          <a href="/rashifal/capricorn">Capricorn</a>
+          <a href="/rashifal/aquarius">Aquarius</a>
+          <a href="/rashifal/pisces">Pisces</a>
+        </nav>
+      </details>
+      <div class="ft-base">
+        <p data-i="foot2"></p>
+        <p class="build-tag" id="buildTag" hidden></p>
+        <button type="button" class="install-btn" data-install hidden data-i="pwa_install"></button>
+      </div>
     </div>
   </footer>
 
