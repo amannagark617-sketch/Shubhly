@@ -297,7 +297,7 @@ export const TOP = `<body class="blog-page">
   </div>
 </header>`;
 
-export const FOOT = `<footer class="post-foot"><div class="wrap"><p>Kundli Kaka: your kundli, your puja, your vibe.</p></div></footer>
+export const FOOT = `<footer class="post-foot"><div class="wrap"><p>Kundli Kaka: your kundli, your puja, your vibe.</p><p class="post-social"><a href="https://www.instagram.com/kundlikaka/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.facebook.com/people/Kundli-Kaka/61595737817862/" target="_blank" rel="noopener">Facebook</a> · <a href="https://www.youtube.com/@kundlikaka" target="_blank" rel="noopener">YouTube</a></p></div></footer>
 </body></html>`;
 
 const fmt = (d) => new Date(d + "T00:00:00Z").toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
