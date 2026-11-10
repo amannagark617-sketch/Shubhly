@@ -1858,3 +1858,4 @@ body.blog-page header.nav { position: fixed; }
 @media (min-width: 760px) { .footer nav.ft-links { grid-template-columns: repeat(3, 1fr); } .footer nav.ft-social { grid-template-columns: repeat(3, 160px); } }
 @media (min-width: 1040px) { .footer { padding-bottom: 36px; } }
 .footer .ft-top .brand { text-decoration: none; }
+.footer nav.ft-social a img { display: block; flex: none; }
