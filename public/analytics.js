@@ -79,10 +79,9 @@ function start(id) {
     device_class: innerWidth < 640 ? "phone" : innerWidth < 1024 ? "tablet" : "desktop",
   }));
   window.gtag("set", clean({ page_type: info.type, content_id: info.id }));
-  window.gtag("config", id, clean({
-    traffic_type: internal ? "internal" : undefined,
-    debug_mode: qs.get("ga_debug") === "1" ? true : undefined,
-  }));
+  const cfg = clean({ traffic_type: internal ? "internal" : undefined });
+  if (qs.get("ga_debug") === "1") cfg.debug_mode = true; // a real true, not the text "true", or DebugView ignores it
+  window.gtag("config", id, cfg);
   const s = document.createElement("script");
   s.async = true;
   s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(id);
