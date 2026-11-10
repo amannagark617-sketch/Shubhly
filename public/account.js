@@ -150,6 +150,8 @@ export function initAccount({ toast, config }) {
       for (let i = 0; i < 3; i++) {
         try { await loadMe(); break; } catch (e) { if (e?.status === 401 || i === 2) break; await new Promise((ok) => setTimeout(ok, 1500 * (i + 1))); }
       }
+      // A person who just logged in (not one whose saved login was restored): GA4's own login / sign_up events.
+      if (state.loginMethod && state.user) { window.track?.(state.user.needsName ? "sign_up" : "login", { method: state.loginMethod }); state.loginMethod = ""; }
       paintButton(); if (!back.hidden) route();
     });
     return state.fb;
@@ -219,9 +221,11 @@ export function initAccount({ toast, config }) {
     try {
       const { auth, A } = await ensureFirebase();
       auth.languageCode = getLang() === "hi" ? "hi" : "en";
+      state.loginMethod = "google"; window.track?.("login_start", { method: "google" });
       await A.signInWithPopup(auth, new A.GoogleAuthProvider());
     } catch (e) {
       if (e?.code === "auth/popup-closed-by-user" || e?.code === "auth/cancelled-popup-request") return;
+      window.track?.("login_error", { method: "google", step: "popup", code: String(e?.code || "error").slice(0, 40) });
       state.error = authMessage(e); route();
     }
   }
@@ -239,11 +243,14 @@ export function initAccount({ toast, config }) {
       document.getElementById("accCaptcha")?.remove();
       const holder = document.createElement("div"); holder.id = "accCaptcha"; document.body.appendChild(holder); // a fresh element every time, so reCAPTCHA never says "already rendered"
       state.verifier = new A.RecaptchaVerifier(auth, holder, { size: "invisible" });
+      state.loginMethod = "phone"; window.track?.("login_start", { method: "phone" });
       state.confirmation = await A.signInWithPhoneNumber(auth, "+91" + digits, state.verifier);
+      window.track?.("login_otp_sent");
       state.view = "otp"; state.resendAt = Date.now() + 30000; viewOtp();
     } catch (e) {
       try { state.verifier?.clear(); } catch { /* gone already */ }
-      state.verifier = null; console.warn("otp error", e?.code, e?.message); state.error = authMessage(e); viewLogin();
+      state.verifier = null; console.warn("otp error", e?.code, e?.message);
+      window.track?.("login_error", { method: "phone", step: "send_otp", code: String(e?.code || "error").slice(0, 40) }); state.error = authMessage(e); viewLogin();
     }
   }
 
@@ -262,7 +269,7 @@ export function initAccount({ toast, config }) {
     async function confirm() {
       if (code.value.length !== 6 || go.disabled) return;
       busyBtn(go, true, tr("verifying")); state.error = "";
-      try { await state.confirmation.confirm(code.value); } catch (e) { state.error = authMessage(e); viewOtp(); }
+      try { await state.confirmation.confirm(code.value); } catch (e) { window.track?.("login_error", { method: "phone", step: "verify_otp", code: String(e?.code || "error").slice(0, 40) }); state.error = authMessage(e); viewOtp(); }
     }
   }
 
@@ -355,6 +362,7 @@ export function initAccount({ toast, config }) {
         state.user.balancePaise = r.balancePaise; saveHint(state.user); paintButton();
         toast(tr("added_toast", { a: inr(order.amountPaise) }));
       } catch {
+        window.track?.("topup_pending", { value: order.amountPaise / 100 });
         toast(tr("pending")); // the payment went through; the webhook will credit it. Check again shortly.
         for (const wait of [4000, 10000, 20000]) { await new Promise((ok) => setTimeout(ok, wait)); try { await loadMe(); paintButton(); if (state.user.balancePaise > 0) break; } catch { /* keep trying */ } }
       }
@@ -366,9 +374,9 @@ export function initAccount({ toast, config }) {
       prefill: { name: state.user.name || undefined, email: state.user.email || undefined, contact: state.user.phone || undefined },
       theme: { color: "#d8321a" },
       handler: done,
-      modal: { ondismiss: () => { if (!back.hidden && state.view === "wallet") viewWallet(); } },
+      modal: { ondismiss: () => { window.track?.("topup_dismissed", { value: order.amountPaise / 100 }); if (!back.hidden && state.view === "wallet") viewWallet(); } },
     });
-    rzp.on("payment.failed", () => { state.error = tr("failed"); if (!back.hidden) viewWallet(); });
+    rzp.on("payment.failed", () => { window.track?.("topup_failed", { value: order.amountPaise / 100 }); state.error = tr("failed"); if (!back.hidden) viewWallet(); });
     rzp.open();
   }
 
@@ -395,6 +403,7 @@ export function initAccount({ toast, config }) {
     loggedIn: () => !!state.user,
     /** Open the panel, with a short reason on top. kind: "login" | "funds" */
     prompt(kind, needPaise) {
+      window.track?.("wallet_prompt", { kind, need_rupees: needPaise ? needPaise / 100 : undefined });
       state.notice = kind === "funds" ? tr("need_money", { a: inr(needPaise || 0) }) : tr("need_login");
       open().finally(() => { state.notice = ""; });
     },

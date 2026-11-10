@@ -128,6 +128,9 @@ window.fetch = async function (input, init = {}) {
   const ok = res.ok;
   const base = { endpoint: api, status: res.status, latency_ms: ms };
   if (!ok && res.status !== 402) send("api_error", base);
+  // Paid things people could not open: wants to log in, or wallet too low. Which feature, no personal details.
+  if (res.status === 401) send("login_required", { endpoint: api });
+  if (res.status === 402) send("wallet_insufficient", { endpoint: api });
 
   // Read a copy of the answer for the few numbers worth keeping. Never the text.
   const peek = (fn) => res.clone().json().then(fn).catch(() => {});
@@ -142,6 +145,16 @@ window.fetch = async function (input, init = {}) {
     });
   } else if (api === "/api/report") {
     send("report_requested", { status: res.status, latency_ms: ms });
+  } else if (api === "/api/match/report") {
+    send("milan_report_requested", { status: res.status, latency_ms: ms });
+  } else if (api === "/api/match/pdf") {
+    send("milan_pdf_download", { status: res.status, latency_ms: ms });
+  } else if (api === "/api/report/preview") {
+    send("report_preview", { status: res.status, latency_ms: ms });
+  } else if (api === "/api/myday") {
+    send("myday_loaded", { status: res.status, latency_ms: ms });
+  } else if (api === "/api/krishna/speak") {
+    send("krishna_listen", { status: res.status, latency_ms: ms });
   } else if (api === "/api/pdf") {
     send("pdf_download", { status: res.status, latency_ms: ms });
   } else if (api === "/api/places") {
@@ -171,6 +184,10 @@ document.addEventListener("click", (e) => {
   if (lastClick.el === el && now - lastClick.t < 700) lastClick.n += 1; else lastClick.n = 1;
   lastClick.el = el; lastClick.t = now;
   if (lastClick.n === 3) send("rage_click", { el_id: id, el_key: key, section, page_type: info.type });
+
+  // The ways in to Krishna's call: the landing hero, the floating button, the call button inside Krishna's box.
+  const talk = el.closest?.(".kr-hero, .kr-float, #kr-callbtn, a[href$='#call']");
+  if (talk) send("talk_to_krishna_click", { placement: talk.classList.contains("kr-hero") ? "hero" : talk.classList.contains("kr-float") ? "float" : talk.id === "kr-callbtn" ? "krishna_box" : "link", page_type: info.type });
 
   const a = el.closest("a[href]");
   if (a) {

@@ -62,7 +62,8 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
   async function begin() {
     const w = wallet();
     if (!w) { say("Calling Krishna needs an account. Please log in."); return; }
-    if (!w.loggedIn()) { needLogin(); w.prompt("login"); return; }
+    track("call_tap", { logged_in: w.loggedIn() });
+    if (!w.loggedIn()) { needLogin(); track("call_blocked", { reason: "login" }); w.prompt("login"); return; }
     if (!navigator.mediaDevices?.getUserMedia || !window.WebSocket || !(window.AudioContext || window.webkitAudioContext)) { say("Your browser cannot make calls. Please open this page in Chrome or Safari."); return; }
     startBtn.hidden = true; endBtn.hidden = false; caps.textContent = ""; say("Connecting…"); clock.textContent = "0:00";
     s = { ended: false, sources: new Set(), nextAt: 0, started: 0, timer: 0, ws: null, ctx: null, mic: null, callId: "" };
@@ -80,7 +81,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
       stage = "server";
       const r = await fetch("/api/krishna/call/start", { method: "POST", headers: { "Content-Type": "application/json", ...(await w.headers()) }, body: JSON.stringify({ language: lang() }) });
       const j = await r.json().catch(() => ({}));
-      if (r.status === 401 || r.status === 402) { w.prompt(r.status === 401 ? "login" : "funds", j.needPaise); return finish(""); }
+      if (r.status === 401 || r.status === 402) { track("call_blocked", { reason: r.status === 401 ? "login" : "funds" }); w.prompt(r.status === 401 ? "login" : "funds", j.needPaise); return finish(""); }
       if (!r.ok) throw new Error(j.error || "Krishna cannot take your call right now. Please try again.");
       if (j.balancePaise != null) w.setBalance(j.balancePaise);
       s.callId = j.callId; s.max = j.maxMinutes; s.free = j.free; s.freeSeconds = j.freeSeconds; s.price = j.pricePaise;
@@ -88,9 +89,10 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
       await openAudio();
       stage = "connection";
       await openSocket(j);
-      track("krishna_call_start");
+      track("krishna_call_start", { free_minute: !!s.free });
     } catch (e) {
       const denied = e?.name === "NotAllowedError" || e?.name === "SecurityError";
+      track("call_failed", { stage, reason: denied ? "microphone_denied" : String(e?.name || "error").slice(0, 30) });
       const detail = ` [${stage}: ${e?.name || "error"}${e?.message ? " " + String(e.message).slice(0, 90) : ""}]`;
       finish(denied
         ? "Please allow the microphone to talk with Krishna. On iPhone: Settings, then Safari, then Microphone, then Allow. You were not charged."
@@ -193,6 +195,8 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
       w?.headers().then((h) => fetch("/api/krishna/call/end", { method: "POST", headers: { "Content-Type": "application/json", ...h }, body: JSON.stringify({ callId: old.callId, failed: !old.connected, said: old.said || "" }) }))
         .then((r) => r.json()).then((j) => {
           if (j.balancePaise != null) w.setBalance(j.balancePaise);
+          // What the server really counted and charged (numbers only).
+          track("krishna_call_billed", { seconds: j.seconds || 0, charged_rupees: (j.chargedPaise || 0) / 100, free_call: !(j.chargedPaise > 0), connected: j.connected !== false, refunded: !!j.refunded });
           if (j.connected !== false && j.seconds > 0) price.textContent = `This call: ${mmss(j.seconds)} · ${j.chargedPaise ? inr(j.chargedPaise) + " charged" : "free"}`;
           else if (j.refunded) price.textContent = "You were not charged.";
         }).catch(() => {});
