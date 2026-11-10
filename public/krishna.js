@@ -161,6 +161,9 @@ if (box) {
     $("kr-callbtn").hidden = false;
     const { initCall } = await import("/krishna-call.js");
     initCall({ root: box, wallet: W, lang: () => get("shubhly.lang", "en"), track });
+    if (location.hash === "#call") $("kr-callbtn").click();
   }).catch(() => {});
-  if (location.hash === "#krishna") open();
+  // The landing page sends people here with #call: open Krishna and go straight to the call screen.
+  if (location.hash === "#krishna" || location.hash === "#call") open();
+  window.addEventListener("hashchange", () => { if (location.hash === "#call") { open(); if (!$("kr-callbtn").hidden) $("kr-callbtn").click(); } });
 }

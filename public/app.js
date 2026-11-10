@@ -1744,3 +1744,12 @@ async function loadFestivals() {
           : `<span class="fest-none">${esc(L("No good timing found", "शुभ चौघड़िया नहीं मिला", "Shubh chaughadiya nahi mila"))}</span>`}</div>
       </div></li>`).join("");
 }
+
+// Talk to Krishna: the floating button appears only once the big one in the hero has scrolled out of view.
+try {
+  const heroBtn = document.querySelector(".kr-hero"), floatBtn = document.querySelector(".kr-float");
+  if (heroBtn && floatBtn && "IntersectionObserver" in window) {
+    floatBtn.hidden = true;
+    new IntersectionObserver(([e]) => { floatBtn.hidden = e.isIntersecting; }).observe(heroBtn);
+  }
+} catch { /* the buttons simply both stay visible */ }

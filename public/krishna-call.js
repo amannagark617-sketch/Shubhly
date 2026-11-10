@@ -31,6 +31,19 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
   const say = (t) => { status.textContent = t; };
   const show = (on) => { panel.hidden = !on; root.classList.toggle("on-call", on); };
 
+  // Not logged in: say so on the call screen itself and make the button open the login, so a tap is never silent.
+  const loggedOut = () => { const w = wallet(); return !!w && !w.loggedIn(); };
+  function needLogin() {
+    startBtn.textContent = "Log in to call";
+    say("Please log in to talk with Krishna. Your first minute each day is free.");
+  }
+  function readyNote() {
+    if (s || panel.hidden) return;
+    if (loggedOut()) { needLogin(); return; }
+    if (startBtn.textContent === "Log in to call") { startBtn.textContent = "Call"; say("Press Call to speak with Krishna."); }
+  }
+  let watch = 0;
+
   function priceNote() {
     const w = wallet();
     const p = w?.prices?.call;
@@ -49,7 +62,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
   async function begin() {
     const w = wallet();
     if (!w) { say("Calling Krishna needs an account. Please log in."); return; }
-    if (!w.loggedIn()) { w.prompt("login"); return; }
+    if (!w.loggedIn()) { needLogin(); w.prompt("login"); return; }
     if (!navigator.mediaDevices?.getUserMedia || !window.WebSocket || !(window.AudioContext || window.webkitAudioContext)) { say("Your browser cannot make calls. Please open this page in Chrome or Safari."); return; }
     startBtn.hidden = true; endBtn.hidden = false; caps.textContent = ""; say("Connecting…"); clock.textContent = "0:00";
     s = { ended: false, sources: new Set(), nextAt: 0, started: 0, timer: 0, ws: null, ctx: null, mic: null, minute: 1, callId: "" };
@@ -180,7 +193,12 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
     track("krishna_call_end", { minutes: old.minute });
   }
 
-  open.addEventListener("click", () => { show(true); priceNote(); if (!s) say("Press Call to speak with Krishna."); });
+  open.addEventListener("click", () => {
+    show(true); priceNote();
+    if (!s) { startBtn.textContent = "Call"; say("Press Call to speak with Krishna."); readyNote(); }
+    // The login can finish while this screen is open: switch the button back to Call as soon as it does.
+    clearInterval(watch); watch = setInterval(() => { if (panel.hidden) clearInterval(watch); else readyNote(); }, 1000);
+  });
   startBtn.addEventListener("click", begin);
   endBtn.addEventListener("click", () => finish(""));
   $("kc-close").addEventListener("click", () => { if (s) finish(""); show(false); });

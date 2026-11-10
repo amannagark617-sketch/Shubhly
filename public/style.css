@@ -1818,3 +1818,14 @@ body.blog-page header.nav { position: fixed; }
 .kr-mem input { margin-top: 3px; width: 18px; height: 18px; flex: none; }
 .kr-mem-erase { background: none; border: 0; padding: 4px 0; color: #a8321e; text-decoration: underline; font: inherit; cursor: pointer; }
 #kr-mem-state { display: block; margin-top: 4px; color: #5b5b72; }
+
+/* Talk to Krishna on the landing page: one clear button in the hero, and one that stays on screen while scrolling */
+.kr-hero, .kr-float { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); background: #fff; border: 2px solid var(--ink); border-radius: 8px; box-shadow: 4px 4px 0 var(--ink); }
+.kr-hero { width: max-content; max-width: 100%; margin: 16px 0 6px; padding: 8px 20px 8px 8px; }
+.kr-hero img, .kr-float img { border-radius: 50%; border: 2px solid var(--haldi); object-fit: cover; flex: none; }
+.kr-hero b { display: block; font-size: 1.15rem; line-height: 1.2; }
+.kr-hero small { display: block; font-size: 0.88rem; color: #4a4a62; font-weight: 600; }
+.kr-float { position: fixed; right: 12px; bottom: calc(86px + env(safe-area-inset-bottom)); z-index: 54; padding: 6px 14px 6px 6px; font-weight: 800; font-size: 0.95rem; }
+@media (min-width: 1040px) { .kr-float { bottom: 20px; right: 20px; } }
+@media print { .kr-float, .kr-hero { display: none !important; } }
+.kr-float[hidden] { display: none; }
