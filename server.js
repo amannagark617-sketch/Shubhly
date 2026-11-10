@@ -616,7 +616,7 @@ app.post("/api/krishna/speak", chatLimit, async (req, res, next) => {
   }
 });
 
-// Krishna on a call. The first minute of each day is free; after that the wallet is charged by the second, measured here on the server.
+// Krishna on a call. The first minute is free, once for each account; after that the wallet is charged by the second, measured here on the server.
 const calls = callBook();
 const callTickets = ticketBook();
 // Free first-minute calls given out so far today (India time), across everyone. Keeps a crowd from running up the AI bill.
@@ -631,10 +631,12 @@ app.post("/api/krishna/call/start", chatLimit, async (req, res, next) => {
     if (calls.active() >= MAX_CONCURRENT_CALLS) return res.status(503).json({ error: "Krishna is speaking with many people right now. Please try again in a minute. You were not charged." });
     if (!(await accounts.authenticate(req, res))) return;
     const uid = req.user.uid, store = req.store;
-    // The free minute is kept in the database (once per person per day in India time), so a restart does not hand out another.
-    const day = new Date(Date.now() + 19_800_000).toISOString().slice(0, 10);
+    // The free minute is given once to each account, ever, and kept in the database so a restart does not hand out another.
+    // (`today` only counts how many free calls the whole site gave away today, India time.)
+    const day = "first-minute";
+    const today = new Date(Date.now() + 19_800_000).toISOString().slice(0, 10);
     await store.upsertUser(uid, req.user);
-    if (freeGiven.day !== day) { freeGiven.day = day; freeGiven.n = 0; }
+    if (freeGiven.day !== today) { freeGiven.day = today; freeGiven.n = 0; }
     // After the day's free calls are used up, calls are paid from the first seconds.
     if (freeGiven.n < FREE_CALLS_PER_DAY && (await store.takeFreeCall(uid, day))) { free = true; freeGiven.n += 1; }
     else {
@@ -649,7 +651,7 @@ app.post("/api/krishna/call/start", chatLimit, async (req, res, next) => {
         return store.adjustSpend({ uid, id: spendId, deltaPaise: d, label });
       },
       async give(d, label) { return spendId ? (await store.adjustSpend({ uid, id: spendId, deltaPaise: -d, label })).balancePaise : null; },
-      async undo() { if (free) { await store.giveBackFreeCall(uid, day); if (freeGiven.day === day && freeGiven.n > 0) freeGiven.n -= 1; } else if (spendId) await store.refund({ uid, id: spendId }); },
+      async undo() { if (free) { await store.giveBackFreeCall(uid, day); if (freeGiven.day === today && freeGiven.n > 0) freeGiven.n -= 1; } else if (spendId) await store.refund({ uid, id: spendId }); },
     };
     const callId = calls.open(uid, money, { free, charged: paid ? costFor(BLOCK_SECONDS, PRICES.call) : 0 });
     let memory = null;

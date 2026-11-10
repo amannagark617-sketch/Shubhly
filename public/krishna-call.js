@@ -1,5 +1,5 @@
 // A live voice call with Krishna. The microphone is streamed to Gemini Live with a short-lived token from our server;
-// Krishna's voice comes back as audio. After the free first minute of the day, the wallet is charged by the second (the server keeps the time).
+// Krishna's voice comes back as audio. After the free first minute (given once to each account), the wallet is charged by the second (the server keeps the time).
 
 const IN_RATE = 16000, OUT_RATE = 24000;
 // Playback speed. 1 is natural. Below 1 slows the voice but also makes it artificially deep, so it is left at 1.
@@ -35,7 +35,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
   const loggedOut = () => { const w = wallet(); return !!w && !w.loggedIn(); };
   function needLogin() {
     startBtn.textContent = "Log in to call";
-    say("Please log in to talk with Krishna. Your first minute each day is free.");
+    say("Please log in to talk with Krishna. Your first minute is free.");
   }
   function readyNote() {
     if (s || panel.hidden) return;
@@ -47,7 +47,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
   function priceNote() {
     const w = wallet();
     const p = w?.prices?.call;
-    price.textContent = p ? `Your first minute each day is free. After that it is ${inr(p)} a minute, charged by the second. For example, 30 seconds costs ${inr(Math.round(p / 2))}.` : "";
+    price.textContent = p ? `Your first minute is free. After that it is ${inr(p)} a minute, charged by the second. For example, 30 seconds costs ${inr(Math.round(p / 2))}.` : "";
   }
 
   const caption = (who, text, replace) => {
@@ -141,7 +141,7 @@ export function initCall({ root, wallet, lang, track = () => {} }) {
         let m; try { m = JSON.parse(typeof ev.data === "string" ? ev.data : await ev.data.text()); } catch { return; }
         if (m.setupComplete && !done) {
           done = true; clearTimeout(to); s.ready = true; s.connected = true; s.started = Date.now();
-          say(s.free ? "Krishna is joining… (your first minute today is free)" : "Krishna is joining… (charged by the second)"); tick(); s.timer = setInterval(tick, 1000);
+          say(s.free ? "Krishna is joining… (your first minute is free)" : "Krishna is joining… (charged by the second)"); tick(); s.timer = setInterval(tick, 1000);
           ws.send(JSON.stringify({ clientContent: { turns: [{ role: "user", parts: [{ text: "(कॉल जुड़ गया है। हिंदी में वत्स को स्नेह से आशीर्वाद दो और पूछो कि उनके मन में क्या है।)" }] }], turnComplete: true } }));
           ok();
         }

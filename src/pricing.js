@@ -11,7 +11,7 @@ export function pricesFromEnv(env = process.env) {
     chat: rupees(env, "PRICE_CHAT_RUPEES", 300), // one reply from an astrologer
     krishna: rupees(env, "PRICE_KRISHNA_RUPEES", 200), // one reply from Krishna
     voice: rupees(env, "PRICE_VOICE_RUPEES", 900), // Krishna's spoken voice, on top of the text
-    call: rupees(env, "PRICE_CALL_RUPEES", 1000), // a live call with Krishna, per minute (the first minute of each day is free)
+    call: rupees(env, "PRICE_CALL_RUPEES", 1000), // a live call with Krishna, per minute (the first minute is free, once for each account)
     report: rupees(env, "PRICE_REPORT_RUPEES", 9900), // kundli report with PDF
     milan: rupees(env, "PRICE_MILAN_RUPEES", 16900), // couple's Kundli Milan report with PDF
   };

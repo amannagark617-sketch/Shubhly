@@ -78,7 +78,7 @@ export async function makeCallToken({ language = "en", ai = liveClient() } = {})
   return { token: t.name, model: LIVE_MODEL };
 }
 
-/** Calls are paid by the second. The first minute of each day is free. */
+/** Calls are paid by the second. The first minute is free, once for each account. */
 export const FREE_SECONDS = 60;
 /** The wallet is charged a few seconds ahead, so a call can be cut the moment the money is gone. */
 export const BLOCK_SECONDS = 10;
