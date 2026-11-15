@@ -57,6 +57,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 app.set("trust proxy", true); // behind Cloud Run / a load balancer
 app.disable("x-powered-by");
+// AI Studio's hosting can expose a pass-through to Google's Gemini API at /gemini-api-proxy that adds our key.
+// This site never uses it (the server calls Gemini itself), so refuse it before anything else can answer.
+app.use((req, res, next) => {
+  if (/^\/gemini-api-proxy(\/|$)/i.test(req.path)) return res.status(404).type("text/plain").send("Not found");
+  next();
+});
 // When PUBLIC_URL is set, the old addresses (old domain, www, the Cloud Run link) send visitors
 // to the real domain with a permanent redirect, so search engines and shared links follow.
 const CANONICAL = (process.env.PUBLIC_URL || "").replace(/\/+$/, "");
