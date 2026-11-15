@@ -9,6 +9,7 @@ RUN npm ci --omit=dev
 COPY server.js ./
 COPY src ./src
 COPY public ./public
+COPY data ./data
 
 # Cloud Run sends traffic to the port in $PORT (8080 by default).
 EXPOSE 8080
