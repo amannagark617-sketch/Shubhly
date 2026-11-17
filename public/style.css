@@ -1865,3 +1865,13 @@ body.blog-page header.nav { position: fixed; }
 .lang-row button { min-height: 44px; padding: 8px 16px; background: #fff; color: var(--ink); border: 1px solid #c9c9da; border-radius: 3px; font: inherit; font-weight: 700; font-size: 1rem; cursor: pointer; }
 .lang-row button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
 .lang-row button:focus-visible { outline: 3px solid var(--haldi); outline-offset: 2px; }
+
+/* ---------- calm theme: white pages, plain strong headings, rectangles in place of pills ---------- */
+:root {
+  --bg: #ffffff;
+  --display: "Hind", "Noto Sans Devanagari", "Noto Sans Bengali", "Noto Sans Tamil", "Noto Sans Gujarati", "Hind Guntur", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+h1, h2, h3 { font-weight: 700; letter-spacing: -0.01em; line-height: 1.18; }
+.btn, .tag, .quick, .mood, .saved-chip, .chip, .plan-tag, .badge-ai, .chip-btn, .ctx-share, .read-when em, .live-pill, .who-chip, .online-pill, .wc-ribbon, .toast, .rashi-btn.mine::after, .slot--now::after { border-radius: 4px; }
+.btn { border: 1.5px solid var(--ink); box-shadow: none; }
+.btn:hover { box-shadow: 0 4px 12px rgba(27, 27, 58, 0.16); }
