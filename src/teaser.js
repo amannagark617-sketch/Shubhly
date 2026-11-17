@@ -73,7 +73,7 @@ export function lockedFindings(facts, { chart, lang = "en" } = {}) {
 }
 
 /** The free kundli: the chart, the three signs, today's chapter and a few findings. No dates of later chapters, no windows, no fixes. */
-const PROBLEM_KEY = { marriage: "love", job: "career", money: "money", family: "focus", love: "love", confused: "focus" };
+const PROBLEM_KEY = { marriage: "love", job: "career", money: "money", family: "focus", love: "love", confused: "focus", children: "focus", abroad: "career" };
 export function teaseKundli(out, lang = "en", problem = "") {
   const T = W[PICK(lang)];
   const a = out.about;

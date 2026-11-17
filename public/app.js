@@ -610,6 +610,8 @@ const PROBLEMS = {
   family: { key: "pk_family", topic: "general", guide: "family", pick: ["focus", "sub"] },
   love: { key: "pk_love", topic: "marriage", guide: "love", pick: ["love", "sub"] },
   health: { key: "pk_health", topic: "general", guide: "health", pick: ["health", "sub"] },
+  children: { key: "pk_children", topic: "general", guide: "family", pick: ["children", "sub"] },
+  abroad: { key: "pk_abroad", topic: "career", guide: "job", pick: ["abroad", "sub"] },
   confused: { key: "pk_confused", topic: "general", guide: "tarot", pick: ["focus", "sub"] },
 };
 let problem = null;
@@ -630,7 +632,7 @@ function renderAnswer(data, western, timeUnknown) {
   const P = PROBLEMS[problem];
   const a = data.about;
   if (!P || !a || western) { show(box, false); return; }
-  const text = (k) => (k === "health" ? t("ans_health") : a[k]?.text);
+  const text = (k) => (["health", "children", "abroad"].includes(k) ? t("ans_" + k) : a[k]?.text);
   const main = text(P.pick[0]);
   const sub = a.sub;
   if (!main) { show(box, false); return; }
@@ -644,7 +646,7 @@ function renderAnswer(data, western, timeUnknown) {
     </div>
     <p class="answer-fine">${esc(t("ans_fine"))}</p>`;
   show(box, true);
-  $("answerChat").onclick = () => guides?.ask?.("", P.guide);
+  $("answerChat").onclick = () => guides?.ask?.(t("wl_q_" + problem), P.guide);
   $("answerReport").onclick = () => document.getElementById("reportBtn")?.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
@@ -1312,6 +1314,7 @@ function setLanguage(l, { first = false } = {}) {
   document.dispatchEvent(new Event("kk:lang"));
   applyStatic();
   decorateHero();
+  document.querySelectorAll("#langRow [data-lang]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
   renderOnline();
   renderTarot();
   renderLangMenu();
@@ -1552,6 +1555,13 @@ if ("serviceWorker" in navigator) window.addEventListener("load", () => navigato
 (async function init() {
   const saved = store.get("shubhly.lang", "en");
   setLanguage(LANGS.includes(saved) ? saved : "en", { first: true });
+  // The three languages most visitors want, as plain buttons at the top of the home page
+  $("langRow")?.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-lang]");
+    if (!b) return;
+    setLanguage(b.dataset.lang);
+    window.track?.("language_pick", { lang: b.dataset.lang, place: "hero" });
+  });
   guides = initGuides({ t, getLang, store, toast, getPeople: chatPeople, getBrief: chartBrief, share: shareKundli });
   {
     let p = new URLSearchParams(location.search).get("p");

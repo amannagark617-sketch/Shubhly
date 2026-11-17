@@ -1859,3 +1859,9 @@ body.blog-page header.nav { position: fixed; }
 @media (min-width: 1040px) { .footer { padding-bottom: 36px; } }
 .footer .ft-top .brand { text-decoration: none; }
 .footer nav.ft-social a img { display: block; flex: none; }
+
+/* ---------- language buttons at the top of the home page ---------- */
+.lang-row { display: flex; gap: 8px; margin: 0 0 18px; }
+.lang-row button { min-height: 44px; padding: 8px 16px; background: #fff; color: var(--ink); border: 1px solid #c9c9da; border-radius: 3px; font: inherit; font-weight: 700; font-size: 1rem; cursor: pointer; }
+.lang-row button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.lang-row button:focus-visible { outline: 3px solid var(--haldi); outline-offset: 2px; }

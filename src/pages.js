@@ -13,7 +13,7 @@ const ALL = ["hero", "marquee", "s3d", "aaj", "rashifal", "kundli", "match", "gu
 export const PAGES = {
   home: {
     path: "/",
-    on: ["hero", "marquee", "s3d", "aaj", "rashifal", "how", "faq", "final"],
+    on: ["hero", "how", "faq", "final"],
     title: "Kundli Kaka: Free Kundli, Daily Rashifal & Panchang",
     desc: "Free daily rashifal, panchang and choghadiya, plus your kundli in minutes. Kundli Kaka: your kundli, your puja, your vibe.",
     main: "hero",
@@ -41,7 +41,7 @@ export const PAGES = {
   },
   panchang: {
     path: "/panchang",
-    on: ["aaj", "final"],
+    on: ["aaj", "s3d", "final"],
     title: "Today's Panchang, Tithi, Nakshatra & Choghadiya | Kundli Kaka",
     desc: "Today's panchang for your city: tithi, nakshatra, yoga, karana, sunrise and sunset, Rahu Kaal and the choghadiya, calculated from the real sky.",
     main: "aaj",

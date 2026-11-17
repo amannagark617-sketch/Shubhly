@@ -93,6 +93,11 @@
       <div class="wrap hero-in">
         <div>
           <a class="online-pill" id="onlinePill" href="/guides" hidden><span class="dot" aria-hidden="true"></span><span id="onlineText"></span><span class="online-faces" id="onlineFaces" aria-hidden="true"></span></a>
+          <div class="lang-row" id="langRow" role="group" aria-label="Language">
+            <button type="button" data-lang="hi" lang="hi">हिंदी</button>
+            <button type="button" data-lang="hn">Hinglish</button>
+            <button type="button" data-lang="en">English</button>
+          </div>
           <h1 id="hero-h" data-i="hero_h"></h1>
           <p class="hero-lead" data-i="hero_lead"></p>
           <a class="kr-hero" href="/gita#call" data-track="krishna_hero"><img src="/img/krishna-avatar.jpg" width="56" height="56" alt=""><span><b data-i="hero_krishna"></b><small data-i="hero_krishna_sub"></small></span></a>
@@ -104,6 +109,8 @@
             <li><a class="pick" href="/kundli?p=family"><svg class="pick-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7.5 9 7.5M5.5 9.5V20h13V9.5M10 20v-6h4v6"/></svg><span data-i="pk_family"></span></a></li>
             <li><a class="pick" href="/kundli?p=love"><svg class="pick-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M15.5 14.5c3 0 5.5 2 5.5 5"/></svg><span data-i="pk_love"></span></a></li>
             <li><a class="pick" href="/kundli?p=health"><svg class="pick-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3.5h6v5.5h5.5v6H15v5.5H9V15H3.5V9H9z"/></svg><span data-i="pk_health"></span></a></li>
+            <li><a class="pick" href="/kundli?p=children"><svg class="pick-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.5" r="3.2"/><path d="M6 20c0-3.6 2.6-6 6-6s6 2.4 6 6M9.5 12.5l-3-2M14.5 12.5l3-2"/></svg><span data-i="pk_children"></span></a></li>
+            <li><a class="pick" href="/kundli?p=abroad"><svg class="pick-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 16.5l18-6-2-3.5-5 1.5-6-5-2 .7 4 5.6-4.5 1.4-2-1.7-1.5.5z"/><path d="M4 20.5h16"/></svg><span data-i="pk_abroad"></span></a></li>
             <li><a class="pick" href="/kundli?p=confused"><svg class="pick-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.6a2.5 2.5 0 1 1 3.6 2.2c-.7.4-1.1 1-1.1 1.8M12 17h.01"/></svg><span data-i="pk_confused"></span></a></li>
           </ul>
           <p class="pick-note" data-i="pk_note"></p>
@@ -127,29 +134,6 @@
     </section>
 
     <div class="marquee" id="marquee" aria-hidden="true"><div class="track" id="marqueeTrack"></div></div>
-
-    <section class="s3d" id="s3d" aria-labelledby="s3d-h">
-      <div class="s3d-stick">
-        <div class="wrap s3d-in">
-          <div class="s3d-copy">
-            <h2 id="s3d-h" data-i="s3d_h"></h2>
-            <ol class="s3d-steps">
-              <li data-s="0"><h3 data-i="s3d_1h"></h3><p data-i="s3d_1p"></p></li>
-              <li data-s="1"><h3 data-i="s3d_2h"></h3><p data-i="s3d_2p"></p></li>
-              <li data-s="2"><h3 data-i="s3d_3h"></h3><p data-i="s3d_3p"></p></li>
-            </ol>
-          </div>
-          <div class="s3d-scene">
-            <div class="s3d-sky" id="s3dSky" role="img" data-i-aria="s3d_h"></div>
-            <div class="s3d-obj" id="s3dObj" aria-hidden="true"></div>
-            <div class="s3d-badge" id="s3dBadge" hidden>
-              <span id="s3dLabel"></span>
-              <button type="button" class="btn btn-primary" id="s3dMode"></button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <section class="block" id="aaj" aria-labelledby="aaj-h">
       <div class="wrap">
@@ -266,6 +250,29 @@
               <button type="button" class="fest-btn" data-sound aria-pressed="false">Awaaz chalu karo</button>
             </div>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="s3d" id="s3d" aria-labelledby="s3d-h">
+      <div class="s3d-stick">
+        <div class="wrap s3d-in">
+          <div class="s3d-copy">
+            <h2 id="s3d-h" data-i="s3d_h"></h2>
+            <ol class="s3d-steps">
+              <li data-s="0"><h3 data-i="s3d_1h"></h3><p data-i="s3d_1p"></p></li>
+              <li data-s="1"><h3 data-i="s3d_2h"></h3><p data-i="s3d_2p"></p></li>
+              <li data-s="2"><h3 data-i="s3d_3h"></h3><p data-i="s3d_3p"></p></li>
+            </ol>
+          </div>
+          <div class="s3d-scene">
+            <div class="s3d-sky" id="s3dSky" role="img" data-i-aria="s3d_h"></div>
+            <div class="s3d-obj" id="s3dObj" aria-hidden="true"></div>
+            <div class="s3d-badge" id="s3dBadge" hidden>
+              <span id="s3dLabel"></span>
+              <button type="button" class="btn btn-primary" id="s3dMode"></button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
