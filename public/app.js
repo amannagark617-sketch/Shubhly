@@ -1008,6 +1008,7 @@ function openSharedKundli() {
   $("form").requestSubmit();
 }
 
+$("moreChart")?.addEventListener("toggle", () => window.dispatchEvent(new Event("resize")));
 $("scrollReport").addEventListener("click", () => {
   $("reportCard").scrollIntoView({ behavior: "smooth", block: "start" });
 });

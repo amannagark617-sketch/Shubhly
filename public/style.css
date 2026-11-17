@@ -1875,3 +1875,11 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.01em; line-height: 1.18; }
 .btn, .tag, .quick, .mood, .saved-chip, .chip, .plan-tag, .badge-ai, .chip-btn, .ctx-share, .read-when em, .live-pill, .who-chip, .online-pill, .wc-ribbon, .toast, .rashi-btn.mine::after, .slot--now::after { border-radius: 4px; }
 .btn { border: 1.5px solid var(--ink); box-shadow: none; }
 .btn:hover { box-shadow: 0 4px 12px rgba(27, 27, 58, 0.16); }
+
+/* result page: chart, table and 3D sky sit behind one fold */
+.more-chart > summary { cursor: pointer; font-weight: 700; padding: 4px 0; list-style: none; }
+.more-chart > summary::-webkit-details-marker { display: none; }
+.more-chart > summary::after { content: " +"; }
+.more-chart[open] > summary::after { content: " \2212"; }
+.more-chart[open] > summary { margin-bottom: 14px; }
+.more-chart > .card { box-shadow: none; border: 0; padding: 0; margin: 0 0 18px; }

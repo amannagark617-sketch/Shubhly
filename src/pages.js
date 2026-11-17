@@ -64,7 +64,7 @@ export const PAGES = {
     path: "/report",
     on: ["report", "faq"],
     title: "Kundli Report: Career, Money, Love & Life Periods | Kundli Kaka",
-    desc: "A personal kundli report made from your own chart: career, money, love, health and the periods of your life, in one PDF. Opening soon.",
+    desc: "A personal kundli report made from your own chart: career, money, love, health and the periods of your life, in one PDF.",
     main: "report",
   },
   store: {

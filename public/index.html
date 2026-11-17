@@ -37,7 +37,6 @@
         <a href="/kundli" data-i="nav_cta"></a>
         <a href="/rashifal" data-i="nav_rashifal"></a>
         <a href="/guides" data-i="nav_ask"></a>
-        <a href="/store" data-i="nav_store"></a>
         <div class="nav-dropdown">
           <button type="button" class="nav-btn" data-i="nav_more" aria-haspopup="menu" aria-expanded="false"></button>
           <ul class="nav-menu" role="menu">
@@ -71,8 +70,7 @@
           <a href="/kundli" data-i="nav_cta"></a>
           <a href="/rashifal" data-i="nav_rashifal"></a>
           <a href="/guides" data-i="nav_ask"></a>
-          <a href="/store" data-i="nav_store"></a>
-        </div>
+          </div>
         <div class="drawer-section">
           <h3 class="drawer-heading" data-i="nav_more"></h3>
           <a href="/panchang"><span data-i="nav_today"></span><small data-i="nav_today_sub"></small></a>
@@ -381,6 +379,20 @@
 
           <div class="card read" id="aboutCard" hidden></div>
 
+          <div class="card" id="next">
+            
+            <div class="next-main" hidden>
+              <button type="button" class="btn btn-primary next-go" id="scrollReport"></button>
+            </div>
+            <div class="next-free">
+              <span class="next-tag" data-i="next_free"></span>
+              <button type="button" class="btn btn-outline" id="shareBtn" data-i="g_share_k"></button>
+              <a class="btn btn-outline" id="waBtn" href="#" target="_blank" rel="noopener" hidden data-i="next_wa"></a>
+            </div>
+          </div>
+
+          <details class="card more-chart" id="moreChart">
+            <summary data-i="more_chart"></summary>
           <div class="card">
             <div class="chart-wrap">
               <div>
@@ -409,22 +421,7 @@
             <p class="sky-info" id="skyInfo" aria-live="polite"></p>
           </div>
 
-          <div class="card" id="next">
-            <h3 class="card-h" data-i="next_h"></h3>
-            <div class="next-main">
-              <h4 data-i="next_rep_t"></h4>
-              <ul class="next-list">
-                <li data-i="next_rep_1"></li><li data-i="next_rep_2"></li><li data-i="next_rep_3"></li>
-                <li data-i="next_rep_4"></li><li data-i="next_rep_5"></li><li data-i="next_rep_6"></li>
-              </ul>
-              <button type="button" class="btn btn-primary next-go" id="scrollReport"></button>
-            </div>
-            <div class="next-free">
-              <span class="next-tag" data-i="next_free"></span>
-              <button type="button" class="btn btn-outline" id="shareBtn" data-i="g_share_k"></button>
-              <a class="btn btn-outline" id="waBtn" href="#" target="_blank" rel="noopener" hidden data-i="next_wa"></a>
-            </div>
-          </div>
+          </details>
 
           <div class="card" id="reportCard">
             <h3 class="card-h" data-i="rep_h"></h3>
@@ -632,7 +629,6 @@
         <a href="/panchang" data-i="nav_today"></a>
         <a href="/guides" data-i="nav_guides"></a>
         <a href="/tarot" data-i="nav_tarot"></a>
-        <a href="/store" data-i="nav_store"></a>
         <a href="/gita">Bhagavad Gita</a>
         <a href="/blog">Blog</a>
         <a href="/blog/how-kundli-kaka-works">How we work</a>
