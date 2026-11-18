@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { computeKundli } from "./src/kundli.js";
 import { searchPlaces } from "./src/geocode.js";
 import { generateReport, generateJson, aiConfigured, geminiKeyName, parseReport } from "./src/report.js";
+import { chartData } from "./src/prompt.js";
 import { DateTime } from "luxon";
 import { computePanchang } from "./src/panchang.js";
 import { buildDailyHoroscope } from "./src/horoscope.js";
@@ -14,7 +15,7 @@ import { quickInsights } from "./src/insights.js";
 import { buildPdf, buildMatchPdf } from "./src/pdf.js";
 import { DATE_LOCALE } from "./public/names.js";
 import {
-  FreeChats, FREE_MESSAGES, guideReply, parseClientId, parseGuide, parseMessages,
+  FreeChats, FREE_MESSAGES, guideReply, parseClientId, parseGuide, parseMessages, engineFacts,
 } from "./src/chat.js";
 import { isResting, backAt } from "./public/guides.js";
 import { sadeSati, saturnWindow, jupiterWindow, slowPlanets } from "./src/transits.js";
@@ -482,6 +483,8 @@ app.post("/api/report", reportLimit, async (req, res, next) => {
 });
 
 // ---- AI astrologers ------------------------------------------------------------
+import { ChatSessions } from "./src/chat-session.js";
+const chatSessions = new ChatSessions();
 const freeChats = new FreeChats();
 // A second guard by network address, so clearing the browser does not give three more messages.
 const ipChats = new FreeChats(FREE_MESSAGES * 3);
@@ -493,7 +496,7 @@ const guidesAlwaysOn = process.env.GUIDES_ALWAYS_ON === "1";
 app.get("/api/chat/status", dailyLimit, (req, res, next) => {
   try {
     const cid = parseClientId(req.query.cid);
-    res.json({ left: Number.isFinite(FREE_MESSAGES) ? freeChats.left(cid) : null, free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null });
+    res.json({ left: Number.isFinite(FREE_MESSAGES) ? Math.min(freeChats.left(cid), ipChats.left(ipKey(req))) : null, free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null, minutePaise: PRICES.chatMin });
   } catch (e) {
     next(e);
   }
@@ -530,17 +533,46 @@ app.post("/api/chat", chatLimit, async (req, res, next) => {
       const birth = parseBirthInput(x);
       return { name: cleanName(x?.name), chart: computeKundli(birth), timeUnknown: birth.timeUnknown === true, tradition: birth.tradition || "vedic" };
     });
-    const job = await paidJob(req, res, { kind: "chat", amountPaise: PRICES.chat, label: guide.name }, () => guideReply({
-      guide,
-      language,
-      turns,
-      people,
-      today: new Date().toISOString().slice(0, 10),
-    }));
-    if (!job) return;
-    if (walletOn) return res.json({ reply: job.value, left: null, free: null, balancePaise: job.balancePaise });
-    const left = spend(req, cid);
-    res.json({ reply: job.value, left: Number.isFinite(left) ? left : null, free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null });
+    const today = new Date().toISOString().slice(0, 10);
+    const answer = (lastFree) => guideReply({ guide, language, turns, people, today, lastFree });
+    const freeNow = freeChats.left(cid) > 0 && ipChats.left(ipKey(req)) > 0;
+    const pub = (extra) => ({ free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null, minutePaise: PRICES.chatMin, ...extra });
+
+    if (!walletOn) {
+      const job = await paidJob(req, res, { kind: "chat", amountPaise: PRICES.chat, label: guide.name }, () => answer(freeChats.left(cid) === 1));
+      if (!job) return;
+      const left = spend(req, cid);
+      return res.json({ reply: job.value, ...pub({ left: Number.isFinite(left) ? left : null }) });
+    }
+
+    // With accounts on: the first free questions cost nothing; after that chatting is paid by the minute.
+    if (freeNow) {
+      const reply = await answer(freeChats.left(cid) === 1);
+      const left = spend(req, cid);
+      return res.json({ reply, ...pub({ left }) });
+    }
+    if (!(await accounts.authenticate(req, res))) return;
+    const uid = req.user.uid;
+    const running = chatSessions.active(uid);
+    if (running) {
+      if (!chatSessions.take(uid)) return res.status(429).json({ code: "SLOW", error: "Please give the astrologer a few seconds to reply.", ...pub({ left: 0, until: running.until }) });
+      try {
+        const reply = await answer(false);
+        return res.json({ reply, ...pub({ left: 0, until: running.until }) });
+      } catch (e) { chatSessions.giveBack(uid); throw e; }
+    }
+    const paid = await accounts.charge(req, res, { kind: "chat", amountPaise: PRICES.chatMin, label: `${guide.name} · 1 min` });
+    if (!paid) return;
+    const minute = chatSessions.open(uid);
+    chatSessions.take(uid);
+    try {
+      const reply = await answer(false);
+      return res.json({ reply, ...pub({ left: 0, until: minute.until, balancePaise: paid.balancePaise }) });
+    } catch (e) {
+      chatSessions.close(uid);
+      e.refundedBalance = await paid.refund();
+      throw e;
+    }
   } catch (e) {
     const m = aiProblem(e);
     if (m) return res.status(m[0]).json({ error: m[1] });
@@ -571,7 +603,18 @@ app.post("/api/krishna", chatLimit, async (req, res, next) => {
           saveNote = (n) => { noted = n; };
         }
       }
-      const out = await krishnaReply({ language, turns, memory, onNote: saveNote });
+      // Their own kundli, if the page sent one, so Krishna can show a path and not only general teaching.
+      let kundli = null;
+      try {
+        const x = Array.isArray(req.body?.people) ? req.body.people[0] : null;
+        if (x) {
+          const birth = parseBirthInput(x);
+          const chart = computeKundli(birth);
+          const today = new Date().toISOString().slice(0, 10);
+          kundli = { name: cleanName(x?.name), chart: chartData(chart, { today, timeUnknown: birth.timeUnknown === true }), engineFacts: engineFacts(chart, { today, timeUnknown: birth.timeUnknown === true }) };
+        }
+      } catch { /* Krishna answers without it */ }
+      const out = await krishnaReply({ language, turns, memory, onNote: saveNote, kundli });
       if (noted) req.store.setKrishnaMemory(req.user.uid, { on: true, notes: [...memory.notes, noted] }).catch(() => {});
       return out;
     });

@@ -35,7 +35,7 @@ async function setup({ welcome = 1000 } = {}) {
 }
 
 test("prices have sensible defaults and can be overridden", () => {
-  assert.deepEqual(pricesFromEnv({}), { chat: 300, krishna: 200, voice: 900, call: 1000, report: 9900, milan: 16900 });
+  assert.deepEqual(pricesFromEnv({}), { chat: 300, chatMin: 500, krishna: 200, voice: 900, call: 1000, report: 9900, milan: 16900 });
   assert.equal(pricesFromEnv({ PRICE_CHAT_RUPEES: "4" }).chat, 400);
   assert.equal(pricesFromEnv({ PRICE_CHAT_RUPEES: "abc" }).chat, 300);
   assert.equal(welcomePaise({}), 1000);

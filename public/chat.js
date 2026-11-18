@@ -23,6 +23,8 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
   let opener = null;
   let cached = null; // last brief, kept while switching guides
   let brief = null; // what we know about the visitor's kundli, for the open chat
+  let until = 0; // when the paid minute ends (ms), 0 = none running
+  let armed = false; // the visitor tapped "continue" for paid chat
 
   const hist = (id) => store.get(`shubhly.chat.${id}`, []);
   const save = () => store.set(`shubhly.chat.${open.id}`, history.slice(-HISTORY_KEEP));
@@ -30,6 +32,13 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
   const W = () => window.kkWallet?.enabled ? window.kkWallet : null; // the wallet, when accounts are switched on
   const limited = () => !W() && left !== null;
   const out = () => limited() && left <= 0;
+  const paidMode = () => !!W() && left !== null && left <= 0; // the free questions are used: chat is paid by the minute
+  const sessionOn = () => until > Date.now();
+  const needsContinue = () => paidMode() && !sessionOn() && !armed;
+  const minPaise = () => W()?.prices?.chatMin || 500;
+  const clock = (ms) => { const sec = Math.max(0, Math.ceil(ms / 1000)); return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`; };
+  const hhmm = (at) => at ? new Date(at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true }).toUpperCase() : "";
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const avatar = (g, cls = "") => g.image
     ? `<div class="avatar ${cls}"><img src="${g.image}" alt="${g.name}" loading="lazy" class="guide-avatar-img"></div>`
     : `<div class="avatar ${cls}"><span class="avatar-placeholder">${g.name.charAt(0)}</span></div>`;
@@ -85,10 +94,11 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
   }
 
   // ---------- panel ----------
-  function bubble(m) {
+  function bubble(m, seen = true) {
+    const time = m.at ? `<span class="msg-t">${esc(hhmm(m.at))}${m.role === "user" ? `<span class="tick${seen ? " tick--read" : ""}" aria-hidden="true">\u2713\u2713</span>` : ""}</span>` : "";
     return m.role === "user"
-      ? `<div class="msg msg--me"><p>${esc(m.text)}</p></div>`
-      : `<div class="msg msg--guide">${renderMarkdown(m.text)}</div>`;
+      ? `<div class="msg msg--me"><p>${esc(m.text)}</p>${time}</div>`
+      : `<div class="msg msg--guide">${renderMarkdown(m.text)}${time}</div>`;
   }
 
   function renderLog() {
@@ -99,7 +109,8 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
       ? t("g_intro_chart", { user: brief.user, name: open.name, summary: brief.summary }).replace(/\s+,/g, ",")
       : t("g_intro", { name: open.name, role: role(open).toLowerCase() });
     const intro = `<div class="msg msg--guide"><p>${esc(hello)}</p></div>`;
-    $("chatLog").innerHTML = intro + history.map(bubble).join("");
+    const hint = W() && left > 0 && !history.length ? `<div class="msg-note">${esc(t("g_free_hint", { n: left }))}</div>` : "";
+    $("chatLog").innerHTML = hint + intro + history.map((m) => bubble(m)).join("");
     scrollDown();
     const starters = [...gtext(open.starters, getLang())];
     if (together) starters.unshift(t("g_pair_q1"), t("g_pair_q2"), t("g_pair_q3"));
@@ -129,6 +140,10 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     }).join("");
   }
 
+  function timerText() {
+    return sessionOn() ? t("g_time_left", { t: clock(until - Date.now()) }) + " · " + t("g_min_price", { p: "₹" + minPaise() / 100 }) : t("g_min_price", { p: "₹" + minPaise() / 100 });
+  }
+
   function renderMeta() {
     const all = getPeople();
     const sel = selected();
@@ -144,14 +159,23 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
       : "";
     const shareBtn = sel.length ? `<button type="button" class="ctx-share" id="chatShare">${esc(t("g_share_k"))}</button>` : "";
     const w = W();
+    const bal = w && w.loggedIn() ? " · " + esc(t("g_wallet", { b: "₹" + (w.balance() / 100).toLocaleString("en-IN") })) : "";
     const lft = w
-      ? `<span class="chat-left">${esc(t("g_price", { p: "₹" + (w.prices.chat / 100) }))}${w.loggedIn() ? " · " + esc(t("g_wallet", { b: "₹" + (w.balance() / 100).toLocaleString("en-IN") })) : ""}</span>`
+      ? (left > 0
+        ? `<span class="chat-left chat-left--free">${esc(t("g_free_q", { n: left }))}</span>`
+        : `<span class="chat-left"><span id="chatTimer">${esc(timerText())}</span>${bal}</span>`)
       : limited() ? `<span class="chat-left">${esc(t("g_free_left", { n: left }))}</span>` : "";
     $("chatCtx").innerHTML = `<div class="ctx-who-row">${people}</div>${chips ? `<div class="ctx-chips">${chips}</div>` : ""}${shareBtn}${lft}`;
     const wall = out();
+    const cont = needsContinue();
+    $("chatCont").hidden = !cont;
+    if (cont && open) {
+      $("chatContAv").innerHTML = open.image ? `<img src="${open.image}" alt="" class="guide-avatar-img">` : "";
+      $("chatContTx").textContent = t(until ? "g_cont_over" : "g_cont_h", { p: "₹" + minPaise() / 100 });
+    }
     $("chatWall").hidden = !wall;
     if (wall && !window.__wallSeen) { window.__wallSeen = true; window.track?.("chat_limit_reached"); }
-    $("chatForm").hidden = wall;
+    $("chatForm").hidden = wall || cont;
     renderList();
     scrollDown();
   }
@@ -183,7 +207,10 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     if (opener && document.contains(opener)) opener.focus();
   }
 
+  function status(on) { if (open) $("chatRole").textContent = on ? t("g_typing_s") : role(open); }
+
   function typing(on) {
+    status(on);
     const el = $("chatLog").querySelector(".msg--typing");
     if (!on) { el?.remove(); return; }
     if (el) return;
@@ -197,14 +224,19 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     if (!text || busy || !open || out()) return;
     busy = true;
     const g = open;
-    history.push({ role: "user", text });
+    const t0 = Date.now();
+    history.push({ role: "user", text, at: t0 });
     save();
-    $("chatLog").insertAdjacentHTML("beforeend", bubble({ role: "user", text }));
+    $("chatLog").querySelector(".msg-note")?.remove();
+    $("chatLog").insertAdjacentHTML("beforeend", bubble({ role: "user", text, at: t0 }, false));
+    const mine = $("chatLog").lastElementChild;
     $("chatLog").querySelector(".msg--error")?.remove();
     $("chatStarters").innerHTML = "";
     $("chatInput").value = "";
     fit();
-    typing(true);
+    scrollDown();
+    // Like a real chat: the message is seen, then the astrologer types. Replies are never instant.
+    const seenTimer = setTimeout(() => { mine.querySelector(".tick")?.classList.add("tick--read"); typing(true); }, 900);
     $("chatSend").disabled = true;
     try {
       const res = await fetch("/api/chat", {
@@ -214,7 +246,14 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
       });
       let data = null;
       try { data = await res.json(); } catch { /* ignore */ }
-      if (open?.id !== g.id) return; // closed or switched meanwhile
+      if (open?.id !== g.id) { clearTimeout(seenTimer); return; } // closed or switched meanwhile
+      if (res.ok && data?.reply && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const delay = Math.min(8000, 2400 + data.reply.length * 28);
+        await sleep(Math.max(0, delay - (Date.now() - t0)));
+        if (open?.id !== g.id) { clearTimeout(seenTimer); return; }
+      }
+      clearTimeout(seenTimer);
+      mine.querySelector(".tick")?.classList.add("tick--read");
       typing(false);
       if ((res.status === 401 || res.status === 402) && W()) {
         history.pop(); save();
@@ -240,14 +279,16 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
         return;
       }
       if (!res.ok) throw new Error(data?.error || t("err_generic"));
-      history.push({ role: "model", text: data.reply });
+      history.push({ role: "model", text: data.reply, at: Date.now() });
       save();
       setLeft(data.left);
+      if (data.until) { until = data.until; armed = true; }
       if (W() && data.balancePaise != null) W().setBalance(data.balancePaise);
-      $("chatLog").insertAdjacentHTML("beforeend", bubble({ role: "model", text: data.reply }));
+      $("chatLog").insertAdjacentHTML("beforeend", bubble({ role: "model", text: data.reply, at: Date.now() }));
       scrollDown();
       renderMeta();
     } catch (e) {
+      clearTimeout(seenTimer);
       typing(false);
       history.pop(); save();
       $("chatLog").lastElementChild?.remove();
@@ -292,6 +333,20 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     e.preventDefault();
     send($("chatInput").value);
   });
+  $("chatContGo").addEventListener("click", () => {
+    if (W() && !W().loggedIn()) { W().prompt("login"); return; }
+    armed = true;
+    window.track?.("chat_continue_tap");
+    renderMeta();
+    const draft = $("chatInput").value.trim();
+    if (draft) send(draft); else $("chatInput").focus();
+  });
+  setInterval(() => {
+    if (!open) return;
+    const el = $("chatTimer");
+    if (el) el.textContent = timerText();
+    if (until && !sessionOn() && armed) { armed = false; renderMeta(); } // the paid minute ran out
+  }, 1000);
   $("chatInput").addEventListener("input", fit);
   $("chatInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey && !e.isComposing && !matchMedia("(pointer: coarse)").matches) {

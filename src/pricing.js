@@ -9,6 +9,7 @@ const rupees = (env, key, fallback) => {
 export function pricesFromEnv(env = process.env) {
   return {
     chat: rupees(env, "PRICE_CHAT_RUPEES", 300), // one reply from an astrologer
+    chatMin: rupees(env, "PRICE_CHAT_MIN_RUPEES", 500), // chatting with an astrologer after the free questions, per minute
     krishna: rupees(env, "PRICE_KRISHNA_RUPEES", 200), // one reply from Krishna
     voice: rupees(env, "PRICE_VOICE_RUPEES", 900), // Krishna's spoken voice, on top of the text
     call: rupees(env, "PRICE_CALL_RUPEES", 1000), // a live call with Krishna, per minute (the first minute is free, once for each account)

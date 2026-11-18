@@ -116,7 +116,7 @@ if (box) {
       const r = await fetch("/api/krishna", {
         method: "POST",
         headers: { "Content-Type": "application/json", ...(W() ? await W().headers() : {}) },
-        body: JSON.stringify({ cid, language: get("shubhly.lang", "en"), messages: history.slice(-12) }),
+        body: JSON.stringify({ cid, language: get("shubhly.lang", "en"), messages: history.slice(-12), people: get("shubhly.profiles", []).slice(0, 1) }),
       });
       const j = await r.json().catch(() => ({}));
       if ((r.status === 401 || r.status === 402) && W()) {

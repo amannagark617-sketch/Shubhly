@@ -721,6 +721,10 @@
         <div class="chat-ctx" id="chatCtx"></div>
         <div class="chat-log" id="chatLog" aria-live="polite"></div>
         <div class="chat-starters" id="chatStarters"></div>
+        <div class="chat-cont" id="chatCont" hidden>
+          <div class="chat-cont-row"><div class="avatar avatar--sm" id="chatContAv"></div><p id="chatContTx"></p></div>
+          <button type="button" class="btn btn-primary btn-wide" id="chatContGo" data-i="g_cont_btn"></button>
+        </div>
         <div class="chat-wall" id="chatWall" hidden>
           <h4 data-i="g_limit_h"></h4>
           <p data-i="g_limit_p"></p>
@@ -729,7 +733,7 @@
         </div>
         <form class="chat-form" id="chatForm">
           <textarea id="chatInput" rows="1" maxlength="600" data-i-ph="g_ph" data-i-aria="g_ph"></textarea>
-          <button type="submit" class="btn btn-primary" id="chatSend" data-i="g_send"></button>
+          <button type="submit" class="btn btn-primary chat-send" id="chatSend" data-i-aria="g_send">&#10148;</button>
         </form>
         <p class="chat-note" id="chatNote"></p>
       </section>
