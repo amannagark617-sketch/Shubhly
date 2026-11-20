@@ -10,7 +10,8 @@ test("the last free reply is asked to leave an honest, specific opening for more
   const last = buildChatInstruction(g, "hn", true, 1, { lastFree: true });
   assert.match(last, /LAST FREE REPLY/);
   assert.match(last, /do not create fear/i);
-  assert.match(buildChatInstruction(g, "hn", true, 1), /hidden enemies/);
+  assert.match(buildChatInstruction(g, "hn", true, 1), /nazar/);
+  assert.match(buildChatInstruction(g, "hn", true, 1), /NEVER say that a particular person/);
 });
 
 test("Krishna shows a path from the visitor's kundli only when one is given", () => {
