@@ -115,7 +115,7 @@ test("two people are read together, with their matching points", async () => {
   assert.match(first, /"together"/);
   assert.match(first, /guna_points/);
   assert.match(seen.systemInstruction, /holds 2 people/);
-  assert.match(seen.systemInstruction, /one to three sentences/);
+  assert.match(seen.systemInstruction, /SEPARATE very short messages/);
 });
 
 test("a reply that runs long is cut at the end of a sentence", () => {

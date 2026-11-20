@@ -488,6 +488,9 @@ const chatSessions = new ChatSessions();
 const freeChats = new FreeChats();
 // A second guard by network address, so clearing the browser does not give three more messages.
 const ipChats = new FreeChats(FREE_MESSAGES * 3);
+// The opening read after someone shares their birth details is free, once for each astrologer, so it never uses up a question.
+const introChats = new FreeChats(1);
+const ipIntro = new FreeChats(12);
 const ipKey = (req) => "ip:" + (req.ip || "");
 const used = (req, cid) => freeChats.left(cid) <= 0 || ipChats.left(ipKey(req)) <= 0;
 const spend = (req, cid) => { ipChats.use(ipKey(req)); return freeChats.use(cid); };
@@ -515,7 +518,9 @@ app.post("/api/chat", chatLimit, async (req, res, next) => {
         error: `${guide.name} is resting right now and is back at ${backAt(guide)} (India time). Another guide is available.`,
       });
     }
-    if (!walletOn && used(req, cid)) {
+    const wantsIntro = req.body?.intro === true && turns.length === 1 && Array.isArray(req.body?.people) && req.body.people.length > 0
+      && introChats.left(cid + guide.id) > 0 && ipIntro.left(ipKey(req)) > 0;
+    if (!wantsIntro && !walletOn && used(req, cid)) {
       return res.status(402).json({
         code: "LIMIT",
         left: 0,
@@ -534,9 +539,16 @@ app.post("/api/chat", chatLimit, async (req, res, next) => {
       return { name: cleanName(x?.name), chart: computeKundli(birth), timeUnknown: birth.timeUnknown === true, tradition: birth.tradition || "vedic" };
     });
     const today = new Date().toISOString().slice(0, 10);
-    const answer = (lastFree) => guideReply({ guide, language, turns, people, today, lastFree });
+    const answer = (lastFree, intro = false) => guideReply({ guide, language, turns, people, today, lastFree, intro });
     const freeNow = freeChats.left(cid) > 0 && ipChats.left(ipKey(req)) > 0;
     const pub = (extra) => ({ free: Number.isFinite(FREE_MESSAGES) ? FREE_MESSAGES : null, minutePaise: PRICES.chatMin, ...extra });
+
+    if (wantsIntro && people.length) {
+      const reply = await answer(false, true);
+      introChats.use(cid + guide.id);
+      ipIntro.use(ipKey(req));
+      return res.json({ reply, ...pub({ left: Number.isFinite(FREE_MESSAGES) ? Math.min(freeChats.left(cid), ipChats.left(ipKey(req))) : null }) });
+    }
 
     if (!walletOn) {
       const job = await paidJob(req, res, { kind: "chat", amountPaise: PRICES.chat, label: guide.name }, () => answer(freeChats.left(cid) === 1));

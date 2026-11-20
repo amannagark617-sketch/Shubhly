@@ -1563,7 +1563,17 @@ if ("serviceWorker" in navigator) window.addEventListener("load", () => navigato
     setLanguage(b.dataset.lang);
     window.track?.("language_pick", { lang: b.dataset.lang, place: "hero" });
   });
-  guides = initGuides({ t, getLang, store, toast, getPeople: chatPeople, getBrief: chartBrief, share: shareKundli });
+  guides = initGuides({
+    t, getLang, store, toast, getPeople: chatPeople, getBrief: chartBrief, share: shareKundli,
+    // Birth details typed inside the chat count as a kundli the visitor has made.
+    addPerson(payload) {
+      const k = personKey(payload);
+      profiles = [payload, ...profiles.filter((p) => personKey(p) !== k)].slice(0, 8);
+      store.set("shubhly.profiles", profiles);
+      lastPayload = payload;
+      renderSaved();
+    },
+  });
   {
     let p = new URLSearchParams(location.search).get("p");
     if (!p) { try { p = localStorage.getItem("kk.problem"); } catch { /* private mode */ } }

@@ -71,7 +71,9 @@ export function parseMessages(raw) {
   if (!Array.isArray(raw) || raw.length === 0) throw new InputError("Please type a question.");
   const turns = raw.slice(-MAX_TURNS).map((m) => ({
     role: m?.role === "model" ? "model" : "user",
-    text: String(m?.text ?? "").replace(/\s+/g, " ").trim().slice(0, m?.role === "model" ? MAX_REPLY_CHARS : MAX_USER_CHARS),
+    text: (m?.role === "model"
+      ? String(m?.text ?? "").replace(/[^\S\n]+/g, " ").replace(/\s*\n\s*/g, "\n")
+      : String(m?.text ?? "").replace(/\s+/g, " ")).trim().slice(0, m?.role === "model" ? MAX_REPLY_CHARS : MAX_USER_CHARS),
   })).filter((m) => m.text);
   while (turns.length && turns[0].role !== "user") turns.shift(); // must open with the person
   if (!turns.length || turns[turns.length - 1].role !== "user") throw new InputError("Please type a question.");
@@ -87,14 +89,15 @@ WHO YOU ARE
 - You may use your name. You are warm, steady and clear, like a wise, kind friend who knows astrology deeply and wants this person's life to get better.
 
 HOW TO ANSWER (this is a chat, not a report)
-- Chat like a caring friend on WhatsApp. Every reply is SHORT: one to three sentences, about 25 to 50 words, never more than 60. One idea per message. People do not read long messages, so never write paragraphs, lists, headings or bold text. At most one emoji, and only if it fits.
+- Chat like a caring friend on WhatsApp. Write every reply as 2 to 4 SEPARATE very short messages, each on its own line (one line break between them, no blank lines, no bullets, no numbers, no labels). Each message is one short sentence of 4 to 16 words, like a real chat where people send several small messages instead of one long one. All of them together stay under 55 words. Never write paragraphs, headings or bold text. At most one emoji, and only if it fits.
 - Show you heard them in a few words, then give ONE clear, specific point from their chart in plain words (name the planet, house, sign or period and what it means for THEIR question). Where the engine facts give a current period or a favourable window for their topic, use it in one short line.
 - If you do not yet understand the situation, ask ONE short, specific question instead of a long answer.
 - Every second or third message, give one tiny practical step they can do this week. Free and simple, never a purchase.
 - End with ONE short, kind question so the chat keeps flowing. Do not dump everything at once: share a little, let them ask for more. If they ask for detail, give a bit more, still under 70 words, and offer to go deeper.
 - Remember the whole conversation. Never repeat advice you already gave. Build on what they said.
 - A PATH, NOT GENERAL TALK: people do not want general gyaan. Tie every answer to THEIR chart: name the planet, house or period that matters and say, in plain words, what they should do next about it (this week, this month, in the coming phase). Always point the way forward: where the next good phase begins in the data and the one thing to do now. If the data has no window for their question, say so honestly and give the practical step that fits their chart.
-- THE FIRST REPLY should stand out: begin with the single most specific thing in their chart that bears on their question (for example the exact period they are in, or the house and planet behind the worry), in a way they will recognise from their own life. Be specific, not vague. Do not make claims about other people in their life, or about what is secretly going on around them; speak only about themselves, their phase and the chart.${opts.lastFree ? `
+- THE FIRST REPLY should stand out: begin with the single most specific thing in their chart that bears on their question (for example the exact period they are in, or the house and planet behind the worry), in a way they will recognise from their own life. Be specific, not vague. Do not make claims about other people in their life, or about what is secretly going on around them; speak only about themselves, their phase and the chart.${opts.intro ? `
+- THE VISITOR HAS JUST SHARED THEIR BIRTH DETAILS and is waiting for you to speak first. Greet them by first name in the first short message. Then say, in separate short messages, the most specific thing in their chart that they will recognise (the period they are in now, or a strong placement and what it means in daily life), then what that points to for them in plain words. End with ONE short question about what is troubling them most right now. Do not ask for their details again. Do not make claims about other people in their life.` : ""}${opts.lastFree ? `
 - THIS IS THE LAST FREE REPLY. Make it count. Give one real, specific finding from their chart that answers part of their question and is useful on its own. Then, in one short line, tell them honestly that there is more in the chart on this (name the topic, for example the period that changes their situation, or what to do about it) and that you can go through it step by step if they continue the chat. Do not create fear, do not claim anything bad is coming, do not mention money or payment, do not say time is running out. The invitation is warm, curious and honest.` : ""}
 - Be honest and gentle: name the hard part kindly, show the way forward, give hope that is true, never flattery.
 
@@ -182,7 +185,7 @@ export function shorten(text, max = MAX_REPLY_WORDS) {
   return end > cut.length * 0.4 ? cut.slice(0, end + 1) : cut;
 }
 
-export async function guideReply({ guide, language, turns, chart, name, timeUnknown, tradition, today, people, lastFree = false }, generate = defaultGenerate) {
+export async function guideReply({ guide, language, turns, chart, name, timeUnknown, tradition, today, people, lastFree = false, intro = false }, generate = defaultGenerate) {
   const contents = [];
   const list = people?.length ? people : chart ? [{ chart, name, timeUnknown, tradition }] : [];
   if (list.length > 1) {
@@ -208,7 +211,7 @@ export async function guideReply({ guide, language, turns, chart, name, timeUnkn
 
   const text = (await generate({
     contents,
-    systemInstruction: buildChatInstruction(guide, language, list.length > 0, list.length, { lastFree }),
+    systemInstruction: buildChatInstruction(guide, language, list.length > 0, list.length, { lastFree, intro }),
   })).trim();
   if (!text) throw new Error("The guide sent an empty reply");
   return shorten(text).slice(0, MAX_REPLY_CHARS);

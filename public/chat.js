@@ -6,7 +6,7 @@ import { esc, renderMarkdown } from "/lib.js";
 const $ = (id) => document.getElementById(id);
 const HISTORY_KEEP = 30;
 
-export function initGuides({ t, getLang, store, toast, getPeople, getBrief, share }) {
+export function initGuides({ t, getLang, store, toast, getPeople, getBrief, share, addPerson }) {
   const cid = (() => {
     let id = store.get("shubhly.cid", null);
     if (!id) {
@@ -52,7 +52,7 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     const all = getPeople();
     const keys = store.get(WHO, []);
     const picked = all.filter((p) => keys.includes(p.key));
-    return (picked.length ? picked : all.slice(0, 1)).slice(0, 3);
+    return (picked.length ? picked : all.slice(0, 1)).slice(0, 1);
   }
   function toggle(key) {
     let keys = selected().map((p) => p.key);
@@ -94,7 +94,15 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
   }
 
   // ---------- panel ----------
+  const parts = (text) => String(text).split(/\n+/).map((x) => x.trim()).filter(Boolean);
+  const stamp = (at) => at ? `<span class="msg-t">${esc(hhmm(at))}</span>` : "";
+  const guideBubble = (text, at) => `<div class="msg msg--guide">${renderMarkdown(text)}${stamp(at)}</div>`;
+
   function bubble(m, seen = true) {
+    if (m.role !== "user") {
+      const ps = parts(m.text);
+      return ps.map((x, i) => guideBubble(x, i === ps.length - 1 ? m.at : 0)).join("");
+    }
     const time = m.at ? `<span class="msg-t">${esc(hhmm(m.at))}${m.role === "user" ? `<span class="tick${seen ? " tick--read" : ""}" aria-hidden="true">\u2713\u2713</span>` : ""}</span>` : "";
     return m.role === "user"
       ? `<div class="msg msg--me"><p>${esc(m.text)}</p>${time}</div>`
@@ -102,21 +110,57 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
   }
 
   function renderLog() {
-    const together = selected().length > 1;
-    const hello = together
-      ? t("g_pair_intro", { names: names() })
-      : brief
-      ? t("g_intro_chart", { user: brief.user, name: open.name, summary: brief.summary }).replace(/\s+,/g, ",")
-      : t("g_intro", { name: open.name, role: role(open).toLowerCase() });
+    const together = false;
+    const known = getPeople().length > 0;
+    const hello = known ? t("g_intro", { name: open.name, role: role(open).toLowerCase() }) : t("g_det_ask", { name: open.name });
     const intro = `<div class="msg msg--guide"><p>${esc(hello)}</p></div>`;
     const hint = W() && left > 0 && !history.length ? `<div class="msg-note">${esc(t("g_free_hint", { n: left }))}</div>` : "";
-    $("chatLog").innerHTML = hint + intro + history.map((m) => bubble(m)).join("");
+    $("chatLog").innerHTML = hint + intro + history.map((m) => bubble(m)).join("") + (!known && !history.length ? detailsCard() : "");
     scrollDown();
     const starters = [...gtext(open.starters, getLang())];
     if (together) starters.unshift(t("g_pair_q1"), t("g_pair_q2"), t("g_pair_q3"));
     else if (brief?.moon) starters.unshift(t("g_ask_moon", { sign: brief.moon }));
-    $("chatStarters").innerHTML = history.length || out() ? "" :
+    $("chatStarters").innerHTML = history.length || out() || !known ? "" :
       starters.slice(0, 3).map((s) => `<button type="button" class="chip-btn">${esc(s)}</button>`).join("");
+  }
+
+  // ---------- birth details, asked inside the chat ----------
+  function detailsCard() {
+    return `<form class="msg msg--form" id="chatDet" autocomplete="off" novalidate>
+      <input type="text" id="detName" placeholder="${esc(t("g_det_name"))}" aria-label="${esc(t("g_det_name"))}" maxlength="60" autocomplete="off">
+      <label class="det-l">${esc(t("g_det_date"))}<input type="date" id="detDate" max="${new Date().toISOString().slice(0, 10)}"></label>
+      <label class="det-l">${esc(t("g_det_time"))}<input type="time" id="detTime"></label>
+      <label class="det-chk"><input type="checkbox" id="detUnk"> ${esc(t("g_det_unk"))}</label>
+      <div class="det-place"><input type="text" id="detPlace" placeholder="${esc(t("g_det_place"))}" aria-label="${esc(t("g_det_place"))}" role="combobox" aria-expanded="false" aria-controls="detPlaces" autocomplete="off"><ul id="detPlaces" class="det-list" role="listbox" hidden></ul></div>
+      <p class="det-err" id="detErr" role="alert" hidden></p>
+      <button type="submit" class="btn btn-primary btn-wide">${esc(t("g_det_send"))}</button>
+    </form>`;
+  }
+
+  let detPlace = null, detTimer = 0, detSeq = 0;
+  async function findPlaces(text) {
+    const r = await fetch(`/api/places?q=${encodeURIComponent(text)}`);
+    const d = await r.json();
+    return (d.places || []).filter((p) => p.tz);
+  }
+  function showPlaces(items) {
+    const ul = $("detPlaces"); if (!ul) return;
+    ul.innerHTML = items.map((p, i) => `<li role="option" data-i="${i}">${esc(p.label)}</li>`).join("");
+    ul.hidden = !items.length;
+    ul._items = items;
+    $("detPlace")?.setAttribute("aria-expanded", String(items.length > 0));
+  }
+
+  const introKey = () => `shubhly.intro.${open?.id}`;
+  /** Send the visitor's details as their first message, like a chat does, and let the astrologer speak first. */
+  function startIntro(payload) {
+    if (!open || busy || history.length) return;
+    const day = new Date(payload.date + "T12:00:00").toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+    const clockTime = new Date("2000-01-01T" + payload.time).toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", hour12: true }).toUpperCase();
+    const when = payload.timeUnknown ? "" : `, ${t("g_det_time")}: ${clockTime}`;
+    const text = t("g_det_msg", { name: payload.name || "", date: day, time: when, place: payload.place?.label || "" });
+    store.set(introKey(), 1);
+    send(text, { intro: true });
   }
 
   // Errors show inside the chat; a toast would sit behind the open chat.
@@ -165,7 +209,7 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
         ? `<span class="chat-left chat-left--free">${esc(t("g_free_q", { n: left }))}</span>`
         : `<span class="chat-left"><span id="chatTimer">${esc(timerText())}</span>${bal}</span>`)
       : limited() ? `<span class="chat-left">${esc(t("g_free_left", { n: left }))}</span>` : "";
-    $("chatCtx").innerHTML = `<div class="ctx-who-row">${people}</div>${chips ? `<div class="ctx-chips">${chips}</div>` : ""}${shareBtn}${lft}`;
+    $("chatCtx").innerHTML = lft;
     const wall = out();
     const cont = needsContinue();
     $("chatCont").hidden = !cont;
@@ -198,6 +242,9 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     if (!out() && matchMedia("(pointer: fine)").matches) setTimeout(() => $("chatInput").focus(), 50);
     // Read the visitor's kundli so the guide can greet them by it.
     if (!brief) loadBrief();
+    // Someone who already made a kundli is read straight away; a new visitor is asked for their details first.
+    const first = selected()[0];
+    if (first && !history.length && !store.get(introKey(), 0)) setTimeout(() => startIntro(first.payload), 700);
   }
 
   function closeChat() {
@@ -219,9 +266,9 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     scrollDown();
   }
 
-  async function send(text) {
+  async function send(text, opts = {}) {
     text = text.trim();
-    if (!text || busy || !open || out()) return;
+    if (!text || busy || !open || (out() && !opts.intro)) return;
     busy = true;
     const g = open;
     const t0 = Date.now();
@@ -242,13 +289,13 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "content-type": "application/json", ...(W() ? await W().headers() : {}) },
-        body: JSON.stringify({ guide: g.id, cid, messages: history, language: getLang(), people: selected().map((p) => p.payload) }),
+        body: JSON.stringify({ guide: g.id, cid, messages: history, language: getLang(), people: selected().map((p) => p.payload), ...(opts.intro ? { intro: true } : {}) }),
       });
       let data = null;
       try { data = await res.json(); } catch { /* ignore */ }
       if (open?.id !== g.id) { clearTimeout(seenTimer); return; } // closed or switched meanwhile
       if (res.ok && data?.reply && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        const delay = Math.min(8000, 2400 + data.reply.length * 28);
+        const delay = Math.min(4500, 1800 + (parts(data.reply)[0] || "").length * 30);
         await sleep(Math.max(0, delay - (Date.now() - t0)));
         if (open?.id !== g.id) { clearTimeout(seenTimer); return; }
       }
@@ -284,8 +331,18 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
       setLeft(data.left);
       if (data.until) { until = data.until; armed = true; }
       if (W() && data.balancePaise != null) W().setBalance(data.balancePaise);
-      $("chatLog").insertAdjacentHTML("beforeend", bubble({ role: "model", text: data.reply, at: Date.now() }));
-      scrollDown();
+      const ps = parts(data.reply);
+      const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      for (let i = 0; i < ps.length; i++) {
+        if (i > 0) {
+          typing(true);
+          if (!calm) await sleep(Math.min(2400, 900 + ps[i].length * 28));
+          typing(false);
+          if (open?.id !== g.id) break;
+        }
+        $("chatLog").insertAdjacentHTML("beforeend", guideBubble(ps[i], i === ps.length - 1 ? Date.now() : 0));
+        scrollDown();
+      }
       renderMeta();
     } catch (e) {
       clearTimeout(seenTimer);
@@ -332,6 +389,43 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
   $("chatForm").addEventListener("submit", (e) => {
     e.preventDefault();
     send($("chatInput").value);
+  });
+  $("chatLog").addEventListener("input", (e) => {
+    if (e.target.id === "detUnk") { $("detTime").disabled = e.target.checked; return; }
+    if (e.target.id !== "detPlace") return;
+    detPlace = null;
+    clearTimeout(detTimer);
+    const q = e.target.value.trim();
+    if (q.length < 2) { showPlaces([]); return; }
+    detTimer = setTimeout(async () => {
+      const mine = ++detSeq;
+      try { const items = await findPlaces(q); if (mine === detSeq) showPlaces(items); } catch { /* the form still works with the first match */ }
+    }, 280);
+  });
+  $("chatLog").addEventListener("mousedown", (e) => {
+    const li = e.target.closest("#detPlaces li");
+    if (!li) return;
+    e.preventDefault();
+    detPlace = $("detPlaces")._items[Number(li.dataset.i)];
+    $("detPlace").value = detPlace.label;
+    showPlaces([]);
+  });
+  $("chatLog").addEventListener("submit", async (e) => {
+    if (e.target.id !== "chatDet") return;
+    e.preventDefault();
+    const err = $("detErr"), unk = $("detUnk").checked;
+    const name = $("detName").value.trim(), date = $("detDate").value, time = unk ? "12:00" : $("detTime").value, text = $("detPlace").value.trim();
+    const fail = (m) => { err.textContent = m; err.hidden = false; };
+    if (!name || !date || !time || text.length < 2) return fail(t("g_det_err"));
+    try {
+      detPlace = detPlace || (await findPlaces(text))[0];
+      if (!detPlace) return fail(t("f_err_place"));
+    } catch { return fail(t("err_generic")); }
+    const payload = { name, date, time, timeUnknown: unk, place: detPlace, tradition: "vedic" };
+    addPerson(payload);
+    window.track?.("chat_details_sent");
+    e.target.remove();
+    startIntro(payload);
   });
   $("chatContGo").addEventListener("click", () => {
     if (W() && !W().loggedIn()) { W().prompt("login"); return; }
