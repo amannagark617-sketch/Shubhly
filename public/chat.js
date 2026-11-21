@@ -6,7 +6,7 @@ import { esc, renderMarkdown } from "/lib.js";
 const $ = (id) => document.getElementById(id);
 const HISTORY_KEEP = 30;
 
-export function initGuides({ t, getLang, store, toast, getPeople, getBrief, share, addPerson }) {
+export function initGuides({ t, getLang, store, toast, getPeople, getBrief, share, addPerson, getChartSvg }) {
   const cid = (() => {
     let id = store.get("shubhly.cid", null);
     if (!id) {
@@ -44,7 +44,7 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     : `<div class="avatar ${cls}"><span class="avatar-placeholder">${g.name.charAt(0)}</span></div>`;
   const role = (g) => gtext(g.role, getLang());
   // "Meera AI": the AI label is part of the name, not a tag under it.
-  const named = (g) => `${esc(g.name)} <span class="ai-suffix"></span>`;
+  const named = (g) => `${esc(g.name)}<i class="vtick" role="img" aria-label="${esc(t("g_ai_read"))}" title="${esc(t("g_ai_read"))}"></i> <span class="ai-suffix"></span>`;
 
   // ---------- who the chat is about (one person, or two or three together) ----------
   const WHO = "shubhly.chatWho";
@@ -98,7 +98,21 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
   const stamp = (at) => at ? `<span class="msg-t">${esc(hhmm(at))}</span>` : "";
   const guideBubble = (text, at) => `<div class="msg msg--guide">${renderMarkdown(text)}${stamp(at)}</div>`;
 
+  const chartBubble = () => `<div class="msg msg--guide msg--chart" data-chart><span class="sr">${esc(t("g_chart_cap"))}</span><div class="chart-slot"></div><p class="chart-cap">${esc(t("g_chart_cap"))}</p></div>`;
+  /** Fill every chart bubble in the log with the visitor's own kundli chart. */
+  async function fillCharts() {
+    const first = selected()[0];
+    const boxes = [...$("chatLog").querySelectorAll(".msg--chart:not([data-done])")];
+    if (!first || !boxes.length || !getChartSvg) return;
+    try {
+      const svg = await getChartSvg(first.payload);
+      boxes.forEach((b) => { b.dataset.done = "1"; b.querySelector(".chart-slot").innerHTML = svg; });
+    } catch { boxes.forEach((b) => b.remove()); }
+    scrollDown();
+  }
+
   function bubble(m, seen = true) {
+    if (m.chart) return chartBubble();
     if (m.role !== "user") {
       const ps = parts(m.text);
       return ps.map((x, i) => guideBubble(x, i === ps.length - 1 ? m.at : 0)).join("");
@@ -116,6 +130,7 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
     const intro = `<div class="msg msg--guide"><p>${esc(hello)}</p></div>`;
     const hint = W() && left > 0 && !history.length ? `<div class="msg-note">${esc(t("g_free_hint", { n: left }))}</div>` : "";
     $("chatLog").innerHTML = hint + intro + history.map((m) => bubble(m)).join("") + (!known && !history.length ? detailsCard() : "");
+    fillCharts();
     scrollDown();
     const starters = [...gtext(open.starters, getLang())];
     if (together) starters.unshift(t("g_pair_q1"), t("g_pair_q2"), t("g_pair_q3"));
@@ -342,6 +357,18 @@ export function initGuides({ t, getLang, store, toast, getPeople, getBrief, shar
         }
         $("chatLog").insertAdjacentHTML("beforeend", guideBubble(ps[i], i === ps.length - 1 ? Date.now() : 0));
         scrollDown();
+      }
+      if (opts.intro && open?.id === g.id && getChartSvg) {
+        // Like a real astrologer, a small picture of their kundli follows the first words.
+        typing(true);
+        if (!calm) await sleep(1100);
+        typing(false);
+        if (open?.id === g.id) {
+          history.push({ role: "model", text: t("g_chart_cap"), at: Date.now(), chart: true });
+          save();
+          $("chatLog").insertAdjacentHTML("beforeend", chartBubble());
+          fillCharts();
+        }
       }
       renderMeta();
     } catch (e) {

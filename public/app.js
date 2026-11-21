@@ -1565,6 +1565,11 @@ if ("serviceWorker" in navigator) window.addEventListener("load", () => navigato
   });
   guides = initGuides({
     t, getLang, store, toast, getPeople: chatPeople, getBrief: chartBrief, share: shareKundli,
+    // The small kundli chart the astrologer sends in the chat.
+    async getChartSvg(birth) {
+      const data = lastResult && lastPayload === birth ? lastResult : await fetchKundli(birth);
+      return data.chart.tradition === "western" ? westernSvg(data.chart) : chartSvg(data.chart);
+    },
     // Birth details typed inside the chat count as a kundli the visitor has made.
     addPerson(payload) {
       const k = personKey(payload);

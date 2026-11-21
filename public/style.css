@@ -1931,3 +1931,13 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -0.01em; line-height: 1.18; }
 .det-list li:hover { background: #e7f6f3; }
 .det-err { margin: 0; color: var(--red); font-weight: 700; font-size: 0.86rem; }
 .msg--form .btn { background: #075e54; color: #fff; border: 0; border-radius: 10px; box-shadow: none; }
+
+/* chat: only the astrologer you picked, a green mark by the name, a small kundli chart bubble */
+.chat-side { display: none !important; }
+@media (min-width: 900px) {
+  .chat-shell { grid-template-columns: minmax(0, 1fr) !important; width: min(560px, 96vw); }
+}
+.vtick { display: inline-block; vertical-align: -2px; width: 16px; height: 16px; margin-left: 5px; border-radius: 50%; background: #25d366 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.2 8.4l2.4 2.4 5-5.2' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat; }
+.chat .msg--chart { padding: 8px; width: min(70%, 230px); max-width: 70%; }
+.chart-slot svg { display: block; width: 100%; height: auto; border-radius: 6px; }
+.chart-cap { margin: 6px 2px 0; font-size: 0.8rem; color: #54656f; font-weight: 700; }
